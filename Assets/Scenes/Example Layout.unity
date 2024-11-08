@@ -148,21 +148,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc98e70009532841aaf458d6ff9749a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DMZMaterial: {fileID: 2100000, guid: 8c675380cd159234789315052a91a8ff, type: 2}
+  Settings: {fileID: 11400000, guid: ffad65a290f847d4c8940456a79fbf5a, type: 2}
   Turtles:
-    Material: {fileID: 2100000, guid: 647222234772c424cbe0fb03453830fe, type: 2}
     TotalCreeps: 10
     LivingCreeps: 7
   Robots:
-    Material: {fileID: 2100000, guid: 625b47edd10496246860704d4a36c0c0, type: 2}
     TotalCreeps: 10
     LivingCreeps: 7
   BattleFrontIndex: 0
   ChunkMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   Count: 5
-  Width: 60
+  Width: 66
   Height: 20
-  Gap: 0.25
+  Gap: 0.2
 --- !u!4 &44366135
 Transform:
   m_ObjectHideFlags: 0
@@ -237,8 +235,8 @@ Transform:
   m_GameObject: {fileID: 474374513}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
-  m_LocalScale: {x: 64, y: 1, z: 48}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalScale: {x: 72, y: 1, z: 48}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 818567588}
