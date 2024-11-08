@@ -34,6 +34,10 @@ public class Mover : MonoBehaviour {
     }
   }
 
+  public void SetDesiredMoveAndFacing(Vector3 move, Vector3 facing) {
+    SetDesiredMove(move);
+    SetDesiredFacing(facing);
+  }
   public void SetDesiredMove(Vector3 v) => DesiredMoveDir = v;
   public void SetDesiredFacing(Vector3 v) => DesiredFacing = v;
   public void Teleport(Vector3 destination) => TeleportDestination = destination;

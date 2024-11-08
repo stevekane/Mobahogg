@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MoveAbility : Ability, IAbilityWithParameter<Vector2> {
   public Vector2 Parameter { get; set; }
-  public float MoveSpeed = 5f;
 
   protected override void Awake() {
     base.Awake();
@@ -14,10 +13,7 @@ public class MoveAbility : Ability, IAbilityWithParameter<Vector2> {
   }
 
   void Tick() {
-    if (Parameter.sqrMagnitude > 0) {
-      var delta = Time.fixedDeltaTime * MoveSpeed * Parameter.XZ();
-      OwnerComponent<Mover>().Move(delta);
-      Camera.main.transform.position += delta;
-    }
+    var dir = Parameter.XZ();
+    OwnerComponent<Mover>().SetDesiredMoveAndFacing(dir, dir.TryGetDirection() ?? AbilityManager.transform.forward);
   }
 }

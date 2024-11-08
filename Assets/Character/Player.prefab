@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingTags: 64
-  MoveSpeed: 5
 --- !u!1 &1584958360778587952
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8619956637712327671, guid: 8be1a7dda6d35204a81a57ffae3d4fce, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -372,6 +375,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8619956637712327671, guid: 8be1a7dda6d35204a81a57ffae3d4fce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2678994205221719099}
+    - targetCorrespondingSourceObject: {fileID: 8619956637712327671, guid: 8be1a7dda6d35204a81a57ffae3d4fce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1202184069088334256}
   m_SourcePrefab: {fileID: 100100000, guid: 8be1a7dda6d35204a81a57ffae3d4fce, type: 3}
 --- !u!1 &3246161502380361497 stripped
 GameObject:
@@ -394,17 +400,17 @@ MonoBehaviour:
     Millis: 100
   AbilityManager: {fileID: 5067220121653370259}
   Move:
-    Action: {fileID: 269974575475353438, guid: cba86345bf2f80648920b808607811b8, type: 3}
+    ActionRef: {fileID: 0}
     Type: 2
     Ability: {fileID: 2030398660773178403}
   Mappings:
-  - Action: {fileID: -2439711996852377159, guid: cba86345bf2f80648920b808607811b8, type: 3}
+  - ActionRef: {fileID: -2439711996852377159, guid: cba86345bf2f80648920b808607811b8, type: 3}
     Type: 0
     Ability: {fileID: 1264409409160209007}
-  - Action: {fileID: -2439711996852377159, guid: cba86345bf2f80648920b808607811b8, type: 3}
+  - ActionRef: {fileID: -2439711996852377159, guid: cba86345bf2f80648920b808607811b8, type: 3}
     Type: 1
     Ability: {fileID: 196962558009215354}
-  - Action: {fileID: 7513822391263972581, guid: cba86345bf2f80648920b808607811b8, type: 3}
+  - ActionRef: {fileID: 7513822391263972581, guid: cba86345bf2f80648920b808607811b8, type: 3}
     Type: 0
     Ability: {fileID: 2300854834102208998}
 --- !u!114 &509727374999822592
@@ -470,7 +476,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d73e10901dc6041b463f410ee1f9aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseAttributes: []
+  BaseAttributes:
+  - Attribute:
+      Value: 3
+      String: MoveSpeed
+    Value:
+      Flat: 5
+      AddFactor: 0
+      MultFactor: 1
+  - Attribute:
+      Value: 4
+      String: TurnSpeed
+    Value:
+      Flat: 720
+      AddFactor: 0
+      MultFactor: 1
+  - Attribute:
+      Value: 16
+      String: LocalTimeScale
+    Value:
+      Flat: 1
+      AddFactor: 0
+      MultFactor: 1
+--- !u!114 &1202184069088334256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3246161502380361497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbfca25133700f4f97847f275f4ec3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3540483696790045452 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7750344754634205154, guid: 8be1a7dda6d35204a81a57ffae3d4fce, type: 3}

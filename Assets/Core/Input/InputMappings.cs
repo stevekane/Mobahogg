@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,8 +10,12 @@ public enum InputActionType {
 }
 
 [Serializable]
-public struct InputToAbilityMapping {
-  public InputActionReference Action;
+public class InputToAbilityMapping {
+  // Note: ActionRef seems to refer directly to an asset on disk, not an instance that is tied to a particular Inputs instance.
+  // This means we can't access it directly in order to react to button presses, because that won't be restricted to the Inputs
+  // device list. To fix this, we lookup and cache the Action instance referred to by ActionRef.
+  public InputActionReference ActionRef;
+  [NonSerialized] public InputAction Action;
   public InputActionType Type;
   public Ability Ability;
 }
@@ -29,11 +32,17 @@ public class InputMappings : MonoBehaviour {
 
   Inputs Inputs;
 
+  public void AssignDevices(InputDevice[] devices) {
+    Inputs.devices = devices;
+  }
+
   void Awake() {
     Inputs = new();
     Inputs.Enable();
-    Move.Action.asset.Enable();
-    Mappings.ForEach(m => m.Action.asset.Enable());
+    Move.Action = Inputs.Player.Move;
+    Mappings.ForEach(m => {
+      m.Action = Inputs.FindAction(m.ActionRef.name);
+    });
   }
 
   void OnDestroy() {
@@ -42,7 +51,7 @@ public class InputMappings : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    AbilityManager.TryRun(Move.Ability, Move.Action.action.ReadValue<Vector2>());
+    AbilityManager.TryRun(Move.Ability, Move.Action.ReadValue<Vector2>());
 
     // TODO: This is just a skeleton. Features to add/consider:
     // - buffering
@@ -58,16 +67,16 @@ public class InputMappings : MonoBehaviour {
 
   bool CheckInputBuffer(InputToAbilityMapping m) {
     Func<bool> activated = m.Type switch {
-      InputActionType.JustDown => m.Action.action.WasPressedThisFrame,
-      InputActionType.JustUp => m.Action.action.WasReleasedThisFrame,
+      InputActionType.JustDown => m.Action.WasPressedThisFrame,
+      InputActionType.JustUp => m.Action.WasReleasedThisFrame,
       _ => null
     };
     if (activated())
-      Buffer[(m.Action.action, m.Type)] = Timeval.TickCount;
-    return (Buffer.TryGetValue((m.Action.action, m.Type), out int tickCount) && Timeval.TickCount - tickCount <= BufferDuration.Ticks);
+      Buffer[(m.Action, m.Type)] = Timeval.TickCount;
+    return (Buffer.TryGetValue((m.Action, m.Type), out int tickCount) && Timeval.TickCount - tickCount <= BufferDuration.Ticks);
   }
 
   void ConsumeInputBuffer(InputToAbilityMapping m) {
-    Buffer.Remove((m.Action.action, m.Type));
+    Buffer.Remove((m.Action, m.Type));
   }
 }
