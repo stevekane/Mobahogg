@@ -24,6 +24,7 @@ public abstract class Ability : MonoBehaviour {
   public virtual bool CanRun(IEventSource entry) => true;
   public virtual void Stop() { Tags = default;  }
 
+  protected T OwnerComponent<T>() => AbilityManager.GetComponent<T>();
   protected AbilityManager AbilityManager;
   protected AbilityTag Tags;
 

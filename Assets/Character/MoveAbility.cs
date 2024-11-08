@@ -16,7 +16,7 @@ public class MoveAbility : Ability, IAbilityWithParameter<Vector2> {
   void Tick() {
     if (Parameter.sqrMagnitude > 0) {
       var delta = Time.fixedDeltaTime * MoveSpeed * Parameter.XZ();
-      AbilityManager.transform.position += delta;
+      OwnerComponent<Mover>().Move(delta);
       Camera.main.transform.position += delta;
     }
   }

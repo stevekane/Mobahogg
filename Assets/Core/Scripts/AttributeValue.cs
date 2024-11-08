@@ -1,25 +1,5 @@
 using System;
-
-[Serializable]
-public enum AttributeTag {
-  Damage,
-  Health,
-  Knockback,
-  Weight,
-  MoveSpeed,
-  TurnSpeed,
-  AttackSpeed,
-  MaxFallSpeed,
-  Gravity,
-  HasGravity,
-  CanAttack,
-  IsHittable,
-  IsDamageable,
-  IsGrounded,
-  IsHurt,
-  IsInterruptible,
-  GoldGain,
-}
+using System.Collections.Generic;
 
 // AttributeValues serve to accumulate a single value from multiple sources.
 // Example: Damage =
@@ -43,4 +23,5 @@ public class AttributeValue {
     MultFactor *= other.MultFactor;
     return this;
   }
+  public AttributeValue MergedWith(AttributeValue other) { return TimesOne.Merge(this).Merge(other); }
 }
