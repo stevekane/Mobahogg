@@ -188,7 +188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180758536}
   m_Layer: 0
-  m_Name: CHARACTER (1)
+  m_Name: Robot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1112,7 +1112,7 @@ GameObject:
   - component: {fileID: 2143266087}
   - component: {fileID: 2143266088}
   m_Layer: 0
-  m_Name: CHARACTER
+  m_Name: Turtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
