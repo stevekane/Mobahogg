@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,15 +11,21 @@ public class PlayerManager : SingletonBehavior<PlayerManager> {
   Dictionary<Player, InputDevice> PlayerGamepads = new();
 
   bool JoinWasPressed = false;
+  bool Initialized = false;
   protected override void AwakeSingleton() {
+    Initialized = true;
     Inputs = new();
     Inputs.Player.JoinTeam1.performed += ctx => PlayerPressedJoin(ctx, 1);
     Inputs.Player.JoinTeam2.performed += ctx => PlayerPressedJoin(ctx, 2);
+
+    if (Player.Get() is var player && player)
+      RegisterPlayer(player);
   }
   void OnEnable() => Inputs.Enable();
   void OnDisable() => Inputs.Disable();
 
   public void RegisterPlayer(Player player) {
+    if (!Initialized) return;
     if (!JoinWasPressed) {
       // Special case for debugging - a Player exists in the scene. Assign them a gamepad.
       var gamepad = Gamepad.all.FirstOrDefault(g => g.name.Contains("DualShock")) ?? Gamepad.current;

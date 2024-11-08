@@ -400,7 +400,7 @@ MonoBehaviour:
     Millis: 100
   AbilityManager: {fileID: 5067220121653370259}
   Move:
-    ActionRef: {fileID: 0}
+    ActionRef: {fileID: 269974575475353438, guid: cba86345bf2f80648920b808607811b8, type: 3}
     Type: 2
     Ability: {fileID: 2030398660773178403}
   Mappings:

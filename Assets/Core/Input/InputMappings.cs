@@ -39,9 +39,11 @@ public class InputMappings : MonoBehaviour {
   void Awake() {
     Inputs = new();
     Inputs.Enable();
-    Move.Action = Inputs.Player.Move;
+    Move.Action = Inputs.FindAction(Move.ActionRef.name);
+    Move.Action.Enable();
     Mappings.ForEach(m => {
       m.Action = Inputs.FindAction(m.ActionRef.name);
+      m.Action.Enable();
     });
   }
 
