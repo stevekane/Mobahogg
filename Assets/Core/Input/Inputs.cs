@@ -40,7 +40,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""name"": ""Main"",
                     ""type"": ""Button"",
                     ""id"": ""ea21c06c-3827-4c77-86dd-c0c8a91995e8"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -49,7 +49,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""name"": ""Alt"",
                     ""type"": ""Button"",
                     ""id"": ""be552001-c555-4e16-8b30-591f3c8a7238"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -58,7 +58,25 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""name"": ""Two"",
                     ""type"": ""Button"",
                     ""id"": ""dbcddc00-58af-4a27-962d-9535cee7ad09"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JoinTeam1"",
+                    ""type"": ""Button"",
+                    ""id"": ""99ae2159-423d-490d-a6d9-779a5079c01b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""JoinTeam2"",
+                    ""type"": ""Button"",
+                    ""id"": ""48e5c42b-5a05-4c2d-996b-91db5a3244c7"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -133,11 +151,33 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f5c7c5cd-72f1-425d-8173-e83468258d09"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""47887da3-956b-47f6-835b-f53ed93558ba"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
+                    ""action"": ""Main"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89561d9a-2e3a-4e00-b442-2ce248a3f568"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Main"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -155,12 +195,78 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""079defbb-63e5-478e-ac9a-9bb377d05b96"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d6b4dcf3-e51b-4f58-9d94-acf53bd5e761"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Two"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""324329bf-c299-4d70-b27c-ee2a91c10323"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Two"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f40c9f14-d779-4c76-a2f9-621a6d0c5713"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""JoinTeam1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""daa56bff-50b3-43d0-ab15-5a24219ced8b"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""JoinTeam1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ace08ef-a138-4b0f-b064-96150be8ed41"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""JoinTeam2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""537d6120-87e4-40f4-9f71-cb8b8caa3a6c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""JoinTeam2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,6 +287,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Main = m_Player.FindAction("Main", throwIfNotFound: true);
         m_Player_Alt = m_Player.FindAction("Alt", throwIfNotFound: true);
         m_Player_Two = m_Player.FindAction("Two", throwIfNotFound: true);
+        m_Player_JoinTeam1 = m_Player.FindAction("JoinTeam1", throwIfNotFound: true);
+        m_Player_JoinTeam2 = m_Player.FindAction("JoinTeam2", throwIfNotFound: true);
     }
 
     ~@Inputs()
@@ -251,6 +359,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Main;
     private readonly InputAction m_Player_Alt;
     private readonly InputAction m_Player_Two;
+    private readonly InputAction m_Player_JoinTeam1;
+    private readonly InputAction m_Player_JoinTeam2;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -259,6 +369,8 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Main => m_Wrapper.m_Player_Main;
         public InputAction @Alt => m_Wrapper.m_Player_Alt;
         public InputAction @Two => m_Wrapper.m_Player_Two;
+        public InputAction @JoinTeam1 => m_Wrapper.m_Player_JoinTeam1;
+        public InputAction @JoinTeam2 => m_Wrapper.m_Player_JoinTeam2;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,6 +392,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Two.started += instance.OnTwo;
             @Two.performed += instance.OnTwo;
             @Two.canceled += instance.OnTwo;
+            @JoinTeam1.started += instance.OnJoinTeam1;
+            @JoinTeam1.performed += instance.OnJoinTeam1;
+            @JoinTeam1.canceled += instance.OnJoinTeam1;
+            @JoinTeam2.started += instance.OnJoinTeam2;
+            @JoinTeam2.performed += instance.OnJoinTeam2;
+            @JoinTeam2.canceled += instance.OnJoinTeam2;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -296,6 +414,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Two.started -= instance.OnTwo;
             @Two.performed -= instance.OnTwo;
             @Two.canceled -= instance.OnTwo;
+            @JoinTeam1.started -= instance.OnJoinTeam1;
+            @JoinTeam1.performed -= instance.OnJoinTeam1;
+            @JoinTeam1.canceled -= instance.OnJoinTeam1;
+            @JoinTeam2.started -= instance.OnJoinTeam2;
+            @JoinTeam2.performed -= instance.OnJoinTeam2;
+            @JoinTeam2.canceled -= instance.OnJoinTeam2;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -328,5 +452,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnMain(InputAction.CallbackContext context);
         void OnAlt(InputAction.CallbackContext context);
         void OnTwo(InputAction.CallbackContext context);
+        void OnJoinTeam1(InputAction.CallbackContext context);
+        void OnJoinTeam2(InputAction.CallbackContext context);
     }
 }
