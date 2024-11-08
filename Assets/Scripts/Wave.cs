@@ -19,12 +19,11 @@ public class Wave : MonoBehaviour {
 
   [Serializable]
   public class Team {
-    public Material Material;
     public int TotalCreeps = 10;
     public int LivingCreeps = 7;
   }
 
-  public Material DMZMaterial;
+  public VisualizationSettings Settings;
   public Team Turtles = new();
   public Team Robots = new();
   [Range(-32,32)]
@@ -48,14 +47,14 @@ public class Wave : MonoBehaviour {
     var count = 2*Count+1;
     var width = (float)Width;
     var dp = width / count * Vector3.right;
-    var position = new Vector3(-width / 2, 0, 0) + dp / 2;
+    var position = new Vector3(-width/2, 0, 0) + dp / 2;
     var scale = new Vector3(width / count - Gap, .05f, Height);
     for (var i = -Count; i <= Count; i++) {
       var material = BattleFrontIndex < i
-        ? Turtles.Material
+        ? Settings.WaveMaterialTurtles
         : BattleFrontIndex > i
-          ? Robots.Material
-          : DMZMaterial;
+          ? Settings.WaveMaterialRobots
+          : Settings.WaveMaterialDMZ;
       var matrix = Matrix4x4.TRS(position, Quaternion.identity, scale);
       Graphics.DrawMesh(ChunkMesh, matrix, material, 0);
       position += dp;
