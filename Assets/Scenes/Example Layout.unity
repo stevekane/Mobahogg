@@ -150,17 +150,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Settings: {fileID: 11400000, guid: ffad65a290f847d4c8940456a79fbf5a, type: 2}
   Turtles:
-    TotalCreeps: 10
-    LivingCreeps: 7
+    LivingCreeps: 25
+    DeadCreeps: 3
   Robots:
-    TotalCreeps: 10
-    LivingCreeps: 7
+    LivingCreeps: 36
+    DeadCreeps: 3
+  Seed: 18
   BattleFrontIndex: 0
   ChunkMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  Count: 5
-  Width: 66
-  Height: 20
+  ChunksPerTeam: 5
   Gap: 0.2
+  Width: 7
+  Height: 20
+  Count: 4
 --- !u!4 &44366135
 Transform:
   m_ObjectHideFlags: 0
