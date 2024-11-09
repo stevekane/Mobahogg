@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -30,6 +31,9 @@ public class Wave : MonoBehaviour {
   [Range(0,32)]
   public int Count = 5;
 
+  List<int> TurtleIndices = new(256);
+  List<int> RobotIndices = new(256);
+
   void Update() {
     var count = 2*Count+1;
     var totalWidth = count*Width;
@@ -47,33 +51,51 @@ public class Wave : MonoBehaviour {
       position += dp;
     }
 
-    RenderScattered(Turtles.LivingCreeps, Settings.CreepMesh, Settings.CreepMaterialTurtles, ChunkOffset(BattleFrontIndex+1), Width, Seed+1);
-    RenderScattered(Robots.LivingCreeps, Settings.CreepMesh, Settings.CreepMaterialRobots, ChunkOffset(BattleFrontIndex-1), Width, Seed-1);
+    RenderCreeps(Turtles, TurtleIndices, BattleFrontIndex+1, Settings.CreepMesh, Settings.CreepMaterialTurtles, Settings.TokenMesh, Settings.TokenMaterialTurtles, Seed+1);
+    RenderCreeps(Robots, RobotIndices, BattleFrontIndex-1, Settings.CreepMesh, Settings.CreepMaterialRobots, Settings.TokenMesh, Settings.TokenMaterialRobots, Seed-1);
   }
 
-  /*
-
-  */
-  Vector3 ChunkOffset(int index) {
-    return new Vector3(Width*index-.5f*Width, 0, -.5f*Height);
-  }
-
-  void RenderScattered(
-  int count,
-  Mesh mesh,
-  Material material,
-  Vector3 Offset,
-  float width,
+  // TODO: Turtles are hard-coded here
+  void RenderCreeps(
+  Team team,
+  List<int> indices,
+  int chunkIndex,
+  Mesh creepMesh,
+  Material creepMaterial,
+  Mesh tokenMesh,
+  Material tokenMaterial,
   int seed) {
-    var maxIndex = Width*Height-1;
-    var randomGenerator = new System.Random(seed);
-    for (var i = 0; i < count; i++) {
-      var index = randomGenerator.Next(0, maxIndex);
-      var z = index / width;
-      var x = index % width;
-      var position = new Vector3(x, 0, z);
-      var matrix = Matrix4x4.TRS(Offset+position, Quaternion.identity, Vector3.one);
-      Graphics.DrawMesh(mesh, matrix, material, 0);
+    var offset = ChunkOffset(chunkIndex);
+    Shuffle(indices, Width*Height, seed);
+    for (var i = 0; i < team.DeadCreeps; i++)
+      RenderScattered(indices[i], tokenMesh, tokenMaterial, offset, Width);
+    for (var i = 0; i < team.LivingCreeps; i++)
+      RenderScattered(indices[i+team.DeadCreeps], creepMesh, creepMaterial, offset, Width);
+  }
+
+  // In-place operation
+  void Shuffle(List<int> xs, int count, int seed) {
+    var gen = new System.Random(seed);
+    xs.Clear();
+    for (var i = 0; i < count; i++)
+      xs.Add(i);
+    for (var i = 0; i < count; i++)  {
+      int randomIndex = gen.Next(0, count);
+      int temp = xs[i];
+      xs[i] = xs[randomIndex];
+      xs[randomIndex] = temp;
     }
+  }
+
+  Vector3 ChunkOffset(float index) {
+    return new Vector3((index-.5f)*Width+.5f, 0, -Height/2f+.5f);
+  }
+
+  void RenderScattered(int index, Mesh mesh, Material material, Vector3 Offset, float width) {
+    var z = index / (int)width;
+    var x = index % width;
+    var position = Offset+new Vector3(x, 0, z);
+    var matrix = Matrix4x4.TRS(position, Quaternion.identity, Vector3.one);
+    Graphics.DrawMesh(mesh, matrix, material, 0);
   }
 }
