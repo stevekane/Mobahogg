@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TokenMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   TokenMaterialNeutral: {fileID: 2100000, guid: 8c675380cd159234789315052a91a8ff, type: 2}
-  TokenMaterialTurtles: {fileID: 2100000, guid: 647222234772c424cbe0fb03453830fe, type: 2}
-  TokenMaterialRobots: {fileID: 2100000, guid: 625b47edd10496246860704d4a36c0c0, type: 2}
+  TokenMaterialTurtles: {fileID: 2100000, guid: 08c5ce64fa7992a4b90f7a4905d9df8f, type: 2}
+  TokenMaterialRobots: {fileID: 2100000, guid: feef1eb7cdfcf5747bbf950f10b496a7, type: 2}
   CreepMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  CreepMaterialTurtles: {fileID: 2100000, guid: 647222234772c424cbe0fb03453830fe, type: 2}
-  CreepMaterialRobots: {fileID: 2100000, guid: 625b47edd10496246860704d4a36c0c0, type: 2}
+  CreepMaterialTurtles: {fileID: 2100000, guid: 08c5ce64fa7992a4b90f7a4905d9df8f, type: 2}
+  CreepMaterialRobots: {fileID: 2100000, guid: feef1eb7cdfcf5747bbf950f10b496a7, type: 2}
   WaveChunkMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   WaveMaterialTurtles: {fileID: 2100000, guid: 647222234772c424cbe0fb03453830fe, type: 2}
   WaveMaterialRobots: {fileID: 2100000, guid: 625b47edd10496246860704d4a36c0c0, type: 2}

@@ -17,13 +17,10 @@ public class Wave : MonoBehaviour {
   [Range(-32,32)]
   public int BattleFrontIndex;
 
+  [Header("Battlefield Chunks")]
   public Mesh ChunkMesh;
-  [Range(0, 100)]
-  public int ChunksPerTeam = 5;
   [Range(0, 1)]
   public float Gap = .25f;
-
-  [Header("Battlefield Chunks")]
   [Range(1, 64)]
   public int Width = 30;
   [Range(1, 64)]
@@ -38,7 +35,7 @@ public class Wave : MonoBehaviour {
     var count = 2*Count+1;
     var totalWidth = count*Width;
     var dp = Width*Vector3.right;
-    var position = new Vector3(-totalWidth/2f, 0, 0)+dp/2;
+    var position = transform.position+new Vector3(-totalWidth/2f, 0, 0)+dp/2;
     var scale = new Vector3(Width-Gap, .05f, Height);
     for (var i = -Count; i <= Count; i++) {
       var material = BattleFrontIndex < i
@@ -55,7 +52,6 @@ public class Wave : MonoBehaviour {
     RenderCreeps(Robots, RobotIndices, BattleFrontIndex-1, Settings.CreepMesh, Settings.CreepMaterialRobots, Settings.TokenMesh, Settings.TokenMaterialRobots, Seed-1);
   }
 
-  // TODO: Turtles are hard-coded here
   void RenderCreeps(
   Team team,
   List<int> indices,
@@ -73,7 +69,6 @@ public class Wave : MonoBehaviour {
       RenderScattered(indices[i+team.DeadCreeps], creepMesh, creepMaterial, offset, Width);
   }
 
-  // In-place operation
   void Shuffle(List<int> xs, int count, int seed) {
     var gen = new System.Random(seed);
     xs.Clear();
@@ -88,14 +83,14 @@ public class Wave : MonoBehaviour {
   }
 
   Vector3 ChunkOffset(float index) {
-    return new Vector3((index-.5f)*Width+.5f, 0, -Height/2f+.5f);
+    return transform.position+new Vector3((index-.5f)*Width+.5f, 0, -Height/2f+.5f);
   }
 
   void RenderScattered(int index, Mesh mesh, Material material, Vector3 Offset, float width) {
     var z = index / (int)width;
     var x = index % width;
     var position = Offset+new Vector3(x, 0, z);
-    var matrix = Matrix4x4.TRS(position, Quaternion.identity, Vector3.one);
+    var matrix = Matrix4x4.TRS(position, Quaternion.identity, .5f*Vector3.one);
     Graphics.DrawMesh(mesh, matrix, material, 0);
   }
 }
