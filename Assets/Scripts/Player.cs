@@ -23,14 +23,9 @@ public class Player : MonoBehaviour {
 
   public float MoveSpeed;
 
-  void Awake() {
-    SpinAbility = new SpinAbility(this, Animator, this.destroyCancellationToken);
-    SpinAbility.AbilitySettings = Settings;
-    MoveSpeed = Settings.GroundMoveSpeed;
-  }
-
   void Start() {
     InitializeAttack();
+    MoveSpeed = Settings.GroundMoveSpeed;
   }
 
   Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
@@ -163,57 +158,4 @@ public class Player : MonoBehaviour {
     }
   }
   #endregion
-
-  #region SPIN
-  public SpinAbility SpinAbility;
-  #endregion
-}
-
-public abstract class AsyncAbility {
-  protected CancellationToken ParentToken;
-  protected CancellationTokenSource TokenSource;
-
-  public abstract bool CanRun();
-  public abstract UniTask Run(CancellationToken token);
-  public bool IsRunning => TokenSource != null;
-  public bool TryRun() {
-    if (CanRun()) {
-      Setup();
-      Run(TokenSource.Token).ContinueWith(Cleanup).Forget();
-      return true;
-    } else {
-      return false;
-    }
-  }
-  void Setup() {
-    TokenSource?.Cancel();
-    TokenSource?.Dispose();
-    TokenSource = CancellationTokenSource.CreateLinkedTokenSource(ParentToken);
-  }
-  void Cleanup() {
-    TokenSource?.Cancel();
-    TokenSource?.Dispose();
-    TokenSource = null;
-  }
-}
-
-public class SpinAbility : AsyncAbility {
-  public AbilitySettings AbilitySettings;
-  public Player Player;
-  public Animator Animator;
-  public SpinAbility(Player player, Animator animator, CancellationToken token) {
-    Player = player;
-    Animator = animator;
-    ParentToken = token;
-  }
-  public override bool CanRun() => !IsRunning && !Player.IsAttacking() && !Player.IsDashing();
-  public override async UniTask Run(CancellationToken token) {
-    try {
-      Animator.SetBool("Spinning", true);
-      await UniTask.DelayFrame(AbilitySettings.TotalSpinFrames, PlayerLoopTiming.FixedUpdate, token);
-    } finally {
-      Debug.Log($"{Animator} {Animator == null}");
-      Animator.SetBool("Spinning", false);
-    }
-  }
 }

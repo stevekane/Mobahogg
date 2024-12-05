@@ -5,7 +5,7 @@ public class LocalClockAnimatorBrain : MonoBehaviour {
   [SerializeField] Animator Animator;
   [SerializeField] LocalClock LocalClock;
 
-  void Awake() {
+  void Start() {
     Animator.enabled = false;
   }
 

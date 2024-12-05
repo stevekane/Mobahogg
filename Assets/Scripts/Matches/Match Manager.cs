@@ -103,10 +103,15 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     return battleResult;
   }
 
+  public bool ALWAYS_RELOAD = false;
   async UniTask PreBattle(CancellationToken token) {
     try {
       Debug.Log("Pre Battle");
-      SceneManager.LoadScene(CurrentBattleScreen.name);
+      var isActiveScene = SceneManager.GetActiveScene().name == CurrentBattleScreen.name;
+      if (ALWAYS_RELOAD || !isActiveScene) {
+        Debug.Log("Scene reloaded");
+        await SceneManager.LoadSceneAsync(CurrentBattleScreen.name);
+      }
       PreBattleOverlay.gameObject.SetActive(true);
       PreBattleOverlay.SetName(CurrentBattleScreen.name);
       PreBattleOverlay.SetBattleIndex(BattleIndex, max: 2);

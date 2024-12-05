@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
   [SerializeField] Player Player;
+  [SerializeField] SpinAbility SpinAbility;
 
   public int PortIndex;
 
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance.TryUnlisten("Jump", PortIndex, HandleJump);
     InputRouter.Instance.TryUnlisten("Dash", PortIndex, HandleDash);
     InputRouter.Instance.TryUnlisten("Attack", PortIndex, HandleAttack);
+    InputRouter.Instance.TryUnlisten("Spin", PortIndex, HandleSpin);
     InputRouter.Instance.TryUnlisten("Test", PortIndex, HandleTest);
   }
 
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour {
 
   public void HandleAttack(PortAction action) => Player.TryAttack();
 
-  public void HandleSpin(PortAction action) => Player.SpinAbility.TryRun();
+  public void HandleSpin(PortAction action) => SpinAbility.TryRun();
 
   public void HandleTest(PortAction action) => WorldSpaceMessageManager.Instance.SpawnMessage("Cracktober", Player.transform.position, 3);
 }
