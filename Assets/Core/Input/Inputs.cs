@@ -32,12 +32,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""5dc7827f-deb5-4c28-8a05-7e68a66e5277"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""StickDeadzone"",
+                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Main"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""ea21c06c-3827-4c77-86dd-c0c8a91995e8"",
                     ""expectedControlType"": """",
@@ -46,7 +46,16 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Alt"",
+                    ""name"": ""Spin"",
+                    ""type"": ""Button"",
+                    ""id"": ""f365a451-b99f-4c50-8d50-2aa4170f6179"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""be552001-c555-4e16-8b30-591f3c8a7238"",
                     ""expectedControlType"": """",
@@ -55,27 +64,18 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Two"",
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e5f4ae2-cbeb-46e7-a25d-ffee2db20d37"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cast Spell"",
                     ""type"": ""Button"",
                     ""id"": ""dbcddc00-58af-4a27-962d-9535cee7ad09"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""JoinTeam1"",
-                    ""type"": ""Button"",
-                    ""id"": ""99ae2159-423d-490d-a6d9-779a5079c01b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""JoinTeam2"",
-                    ""type"": ""Button"",
-                    ""id"": ""48e5c42b-5a05-4c2d-996b-91db5a3244c7"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -167,7 +167,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Main"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -178,18 +178,29 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Main"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f54a66b-876a-405e-aada-76c9e5e06036"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spin"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""dad8c103-b182-4161-89d3-c7cf41538fd9"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Alt"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -200,7 +211,29 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Alt"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""600666ff-7010-48ac-beae-2435c1d138d1"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1140e8a-742c-43d2-83e6-4f0ec4ee180e"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -211,7 +244,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Two"",
+                    ""action"": ""Cast Spell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -222,51 +255,151 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Two"",
+                    ""action"": ""Cast Spell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""TitleScreen"",
+            ""id"": ""5a97e697-8ecb-48ee-a256-76d51f135d54"",
+            ""actions"": [
                 {
-                    ""name"": """",
-                    ""id"": ""f40c9f14-d779-4c76-a2f9-621a6d0c5713"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
+                    ""name"": ""StartMatch"",
+                    ""type"": ""Button"",
+                    ""id"": ""d413e98b-cced-45b5-933e-91c7471b8951"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard"",
-                    ""action"": ""JoinTeam1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""daa56bff-50b3-43d0-ab15-5a24219ced8b"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""JoinTeam1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""5ace08ef-a138-4b0f-b064-96150be8ed41"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard"",
-                    ""action"": ""JoinTeam2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""537d6120-87e4-40f4-9f71-cb8b8caa3a6c"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""id"": ""f5bef909-d254-4c41-89a5-ac8198d06cbd"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""JoinTeam2"",
+                    ""action"": ""StartMatch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""MatchSetup"",
+            ""id"": ""9968ff93-a537-49be-9d53-ee898a11e174"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleJoin"",
+                    ""type"": ""Button"",
+                    ""id"": ""42c0a69e-f144-4450-8653-1307b450b2ab"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleTeam"",
+                    ""type"": ""Button"",
+                    ""id"": ""80315961-e664-4741-ba26-dcada1fe545a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleReady"",
+                    ""type"": ""Button"",
+                    ""id"": ""0fac0c70-e6a1-4f23-87fb-df9a763ee6d8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeName"",
+                    ""type"": ""Button"",
+                    ""id"": ""697bfbdd-9079-48c5-9297-067f87e10298"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""98e02db1-e17a-4566-aea3-d43e00fdf2dd"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleJoin"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""562cd9c2-0c97-43c0-89f8-ec9fde1a8668"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleTeam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""021df130-772d-49bc-a3a5-18ac9c915f00"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleReady"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bac975f6-45d4-4612-b1d1-9b451d87ef6b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeName"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Test"",
+            ""id"": ""612e0f97-d166-4679-b87b-41c9411ea62b"",
+            ""actions"": [
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""86406238-99ac-4757-90a1-a586a8cdb47d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fee34adc-495a-4474-a379-36fb595640a0"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -284,16 +417,31 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Main = m_Player.FindAction("Main", throwIfNotFound: true);
-        m_Player_Alt = m_Player.FindAction("Alt", throwIfNotFound: true);
-        m_Player_Two = m_Player.FindAction("Two", throwIfNotFound: true);
-        m_Player_JoinTeam1 = m_Player.FindAction("JoinTeam1", throwIfNotFound: true);
-        m_Player_JoinTeam2 = m_Player.FindAction("JoinTeam2", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Spin = m_Player.FindAction("Spin", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_CastSpell = m_Player.FindAction("Cast Spell", throwIfNotFound: true);
+        // TitleScreen
+        m_TitleScreen = asset.FindActionMap("TitleScreen", throwIfNotFound: true);
+        m_TitleScreen_StartMatch = m_TitleScreen.FindAction("StartMatch", throwIfNotFound: true);
+        // MatchSetup
+        m_MatchSetup = asset.FindActionMap("MatchSetup", throwIfNotFound: true);
+        m_MatchSetup_ToggleJoin = m_MatchSetup.FindAction("ToggleJoin", throwIfNotFound: true);
+        m_MatchSetup_ToggleTeam = m_MatchSetup.FindAction("ToggleTeam", throwIfNotFound: true);
+        m_MatchSetup_ToggleReady = m_MatchSetup.FindAction("ToggleReady", throwIfNotFound: true);
+        m_MatchSetup_ChangeName = m_MatchSetup.FindAction("ChangeName", throwIfNotFound: true);
+        // Test
+        m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
+        m_Test_Test = m_Test.FindAction("Test", throwIfNotFound: true);
     }
 
     ~@Inputs()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Inputs.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_TitleScreen.enabled, "This will cause a leak and performance issues, Inputs.TitleScreen.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MatchSetup.enabled, "This will cause a leak and performance issues, Inputs.MatchSetup.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Test.enabled, "This will cause a leak and performance issues, Inputs.Test.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -356,21 +504,21 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Main;
-    private readonly InputAction m_Player_Alt;
-    private readonly InputAction m_Player_Two;
-    private readonly InputAction m_Player_JoinTeam1;
-    private readonly InputAction m_Player_JoinTeam2;
+    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Spin;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_CastSpell;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
         public PlayerActions(@Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Main => m_Wrapper.m_Player_Main;
-        public InputAction @Alt => m_Wrapper.m_Player_Alt;
-        public InputAction @Two => m_Wrapper.m_Player_Two;
-        public InputAction @JoinTeam1 => m_Wrapper.m_Player_JoinTeam1;
-        public InputAction @JoinTeam2 => m_Wrapper.m_Player_JoinTeam2;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Spin => m_Wrapper.m_Player_Spin;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @CastSpell => m_Wrapper.m_Player_CastSpell;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,21 +531,21 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Main.started += instance.OnMain;
-            @Main.performed += instance.OnMain;
-            @Main.canceled += instance.OnMain;
-            @Alt.started += instance.OnAlt;
-            @Alt.performed += instance.OnAlt;
-            @Alt.canceled += instance.OnAlt;
-            @Two.started += instance.OnTwo;
-            @Two.performed += instance.OnTwo;
-            @Two.canceled += instance.OnTwo;
-            @JoinTeam1.started += instance.OnJoinTeam1;
-            @JoinTeam1.performed += instance.OnJoinTeam1;
-            @JoinTeam1.canceled += instance.OnJoinTeam1;
-            @JoinTeam2.started += instance.OnJoinTeam2;
-            @JoinTeam2.performed += instance.OnJoinTeam2;
-            @JoinTeam2.canceled += instance.OnJoinTeam2;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Spin.started += instance.OnSpin;
+            @Spin.performed += instance.OnSpin;
+            @Spin.canceled += instance.OnSpin;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @CastSpell.started += instance.OnCastSpell;
+            @CastSpell.performed += instance.OnCastSpell;
+            @CastSpell.canceled += instance.OnCastSpell;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -405,21 +553,21 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Main.started -= instance.OnMain;
-            @Main.performed -= instance.OnMain;
-            @Main.canceled -= instance.OnMain;
-            @Alt.started -= instance.OnAlt;
-            @Alt.performed -= instance.OnAlt;
-            @Alt.canceled -= instance.OnAlt;
-            @Two.started -= instance.OnTwo;
-            @Two.performed -= instance.OnTwo;
-            @Two.canceled -= instance.OnTwo;
-            @JoinTeam1.started -= instance.OnJoinTeam1;
-            @JoinTeam1.performed -= instance.OnJoinTeam1;
-            @JoinTeam1.canceled -= instance.OnJoinTeam1;
-            @JoinTeam2.started -= instance.OnJoinTeam2;
-            @JoinTeam2.performed -= instance.OnJoinTeam2;
-            @JoinTeam2.canceled -= instance.OnJoinTeam2;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Spin.started -= instance.OnSpin;
+            @Spin.performed -= instance.OnSpin;
+            @Spin.canceled -= instance.OnSpin;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @CastSpell.started -= instance.OnCastSpell;
+            @CastSpell.performed -= instance.OnCastSpell;
+            @CastSpell.canceled -= instance.OnCastSpell;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -437,6 +585,168 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // TitleScreen
+    private readonly InputActionMap m_TitleScreen;
+    private List<ITitleScreenActions> m_TitleScreenActionsCallbackInterfaces = new List<ITitleScreenActions>();
+    private readonly InputAction m_TitleScreen_StartMatch;
+    public struct TitleScreenActions
+    {
+        private @Inputs m_Wrapper;
+        public TitleScreenActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @StartMatch => m_Wrapper.m_TitleScreen_StartMatch;
+        public InputActionMap Get() { return m_Wrapper.m_TitleScreen; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TitleScreenActions set) { return set.Get(); }
+        public void AddCallbacks(ITitleScreenActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TitleScreenActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TitleScreenActionsCallbackInterfaces.Add(instance);
+            @StartMatch.started += instance.OnStartMatch;
+            @StartMatch.performed += instance.OnStartMatch;
+            @StartMatch.canceled += instance.OnStartMatch;
+        }
+
+        private void UnregisterCallbacks(ITitleScreenActions instance)
+        {
+            @StartMatch.started -= instance.OnStartMatch;
+            @StartMatch.performed -= instance.OnStartMatch;
+            @StartMatch.canceled -= instance.OnStartMatch;
+        }
+
+        public void RemoveCallbacks(ITitleScreenActions instance)
+        {
+            if (m_Wrapper.m_TitleScreenActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITitleScreenActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TitleScreenActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TitleScreenActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TitleScreenActions @TitleScreen => new TitleScreenActions(this);
+
+    // MatchSetup
+    private readonly InputActionMap m_MatchSetup;
+    private List<IMatchSetupActions> m_MatchSetupActionsCallbackInterfaces = new List<IMatchSetupActions>();
+    private readonly InputAction m_MatchSetup_ToggleJoin;
+    private readonly InputAction m_MatchSetup_ToggleTeam;
+    private readonly InputAction m_MatchSetup_ToggleReady;
+    private readonly InputAction m_MatchSetup_ChangeName;
+    public struct MatchSetupActions
+    {
+        private @Inputs m_Wrapper;
+        public MatchSetupActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleJoin => m_Wrapper.m_MatchSetup_ToggleJoin;
+        public InputAction @ToggleTeam => m_Wrapper.m_MatchSetup_ToggleTeam;
+        public InputAction @ToggleReady => m_Wrapper.m_MatchSetup_ToggleReady;
+        public InputAction @ChangeName => m_Wrapper.m_MatchSetup_ChangeName;
+        public InputActionMap Get() { return m_Wrapper.m_MatchSetup; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MatchSetupActions set) { return set.Get(); }
+        public void AddCallbacks(IMatchSetupActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MatchSetupActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MatchSetupActionsCallbackInterfaces.Add(instance);
+            @ToggleJoin.started += instance.OnToggleJoin;
+            @ToggleJoin.performed += instance.OnToggleJoin;
+            @ToggleJoin.canceled += instance.OnToggleJoin;
+            @ToggleTeam.started += instance.OnToggleTeam;
+            @ToggleTeam.performed += instance.OnToggleTeam;
+            @ToggleTeam.canceled += instance.OnToggleTeam;
+            @ToggleReady.started += instance.OnToggleReady;
+            @ToggleReady.performed += instance.OnToggleReady;
+            @ToggleReady.canceled += instance.OnToggleReady;
+            @ChangeName.started += instance.OnChangeName;
+            @ChangeName.performed += instance.OnChangeName;
+            @ChangeName.canceled += instance.OnChangeName;
+        }
+
+        private void UnregisterCallbacks(IMatchSetupActions instance)
+        {
+            @ToggleJoin.started -= instance.OnToggleJoin;
+            @ToggleJoin.performed -= instance.OnToggleJoin;
+            @ToggleJoin.canceled -= instance.OnToggleJoin;
+            @ToggleTeam.started -= instance.OnToggleTeam;
+            @ToggleTeam.performed -= instance.OnToggleTeam;
+            @ToggleTeam.canceled -= instance.OnToggleTeam;
+            @ToggleReady.started -= instance.OnToggleReady;
+            @ToggleReady.performed -= instance.OnToggleReady;
+            @ToggleReady.canceled -= instance.OnToggleReady;
+            @ChangeName.started -= instance.OnChangeName;
+            @ChangeName.performed -= instance.OnChangeName;
+            @ChangeName.canceled -= instance.OnChangeName;
+        }
+
+        public void RemoveCallbacks(IMatchSetupActions instance)
+        {
+            if (m_Wrapper.m_MatchSetupActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMatchSetupActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MatchSetupActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MatchSetupActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MatchSetupActions @MatchSetup => new MatchSetupActions(this);
+
+    // Test
+    private readonly InputActionMap m_Test;
+    private List<ITestActions> m_TestActionsCallbackInterfaces = new List<ITestActions>();
+    private readonly InputAction m_Test_Test;
+    public struct TestActions
+    {
+        private @Inputs m_Wrapper;
+        public TestActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Test => m_Wrapper.m_Test_Test;
+        public InputActionMap Get() { return m_Wrapper.m_Test; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TestActions set) { return set.Get(); }
+        public void AddCallbacks(ITestActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TestActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TestActionsCallbackInterfaces.Add(instance);
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
+        }
+
+        private void UnregisterCallbacks(ITestActions instance)
+        {
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
+        }
+
+        public void RemoveCallbacks(ITestActions instance)
+        {
+            if (m_Wrapper.m_TestActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITestActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TestActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TestActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public TestActions @Test => new TestActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -449,10 +759,25 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnMain(InputAction.CallbackContext context);
-        void OnAlt(InputAction.CallbackContext context);
-        void OnTwo(InputAction.CallbackContext context);
-        void OnJoinTeam1(InputAction.CallbackContext context);
-        void OnJoinTeam2(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnSpin(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnCastSpell(InputAction.CallbackContext context);
+    }
+    public interface ITitleScreenActions
+    {
+        void OnStartMatch(InputAction.CallbackContext context);
+    }
+    public interface IMatchSetupActions
+    {
+        void OnToggleJoin(InputAction.CallbackContext context);
+        void OnToggleTeam(InputAction.CallbackContext context);
+        void OnToggleReady(InputAction.CallbackContext context);
+        void OnChangeName(InputAction.CallbackContext context);
+    }
+    public interface ITestActions
+    {
+        void OnTest(InputAction.CallbackContext context);
     }
 }

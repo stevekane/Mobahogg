@@ -10,12 +10,12 @@
                     "type": "Value",
                     "id": "5dc7827f-deb5-4c28-8a05-7e68a66e5277",
                     "expectedControlType": "Vector2",
-                    "processors": "StickDeadzone",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Main",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "ea21c06c-3827-4c77-86dd-c0c8a91995e8",
                     "expectedControlType": "",
@@ -24,7 +24,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Alt",
+                    "name": "Spin",
+                    "type": "Button",
+                    "id": "f365a451-b99f-4c50-8d50-2aa4170f6179",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
                     "type": "Button",
                     "id": "be552001-c555-4e16-8b30-591f3c8a7238",
                     "expectedControlType": "",
@@ -33,27 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Two",
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "4e5f4ae2-cbeb-46e7-a25d-ffee2db20d37",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cast Spell",
                     "type": "Button",
                     "id": "dbcddc00-58af-4a27-962d-9535cee7ad09",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "JoinTeam1",
-                    "type": "Button",
-                    "id": "99ae2159-423d-490d-a6d9-779a5079c01b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "JoinTeam2",
-                    "type": "Button",
-                    "id": "48e5c42b-5a05-4c2d-996b-91db5a3244c7",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -145,7 +145,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Main",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -156,18 +156,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Main",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f54a66b-876a-405e-aada-76c9e5e06036",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spin",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "dad8c103-b182-4161-89d3-c7cf41538fd9",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Alt",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -178,7 +189,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Alt",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "600666ff-7010-48ac-beae-2435c1d138d1",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1140e8a-742c-43d2-83e6-4f0ec4ee180e",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -189,7 +222,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Two",
+                    "action": "Cast Spell",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -200,51 +233,151 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Two",
+                    "action": "Cast Spell",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "TitleScreen",
+            "id": "5a97e697-8ecb-48ee-a256-76d51f135d54",
+            "actions": [
                 {
-                    "name": "",
-                    "id": "f40c9f14-d779-4c76-a2f9-621a6d0c5713",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
+                    "name": "StartMatch",
+                    "type": "Button",
+                    "id": "d413e98b-cced-45b5-933e-91c7471b8951",
+                    "expectedControlType": "",
                     "processors": "",
-                    "groups": ";Keyboard",
-                    "action": "JoinTeam1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "daa56bff-50b3-43d0-ab15-5a24219ced8b",
-                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "JoinTeam1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "5ace08ef-a138-4b0f-b064-96150be8ed41",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard",
-                    "action": "JoinTeam2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "537d6120-87e4-40f4-9f71-cb8b8caa3a6c",
-                    "path": "<Gamepad>/rightTrigger",
+                    "id": "f5bef909-d254-4c41-89a5-ac8198d06cbd",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "JoinTeam2",
+                    "action": "StartMatch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "MatchSetup",
+            "id": "9968ff93-a537-49be-9d53-ee898a11e174",
+            "actions": [
+                {
+                    "name": "ToggleJoin",
+                    "type": "Button",
+                    "id": "42c0a69e-f144-4450-8653-1307b450b2ab",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleTeam",
+                    "type": "Button",
+                    "id": "80315961-e664-4741-ba26-dcada1fe545a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleReady",
+                    "type": "Button",
+                    "id": "0fac0c70-e6a1-4f23-87fb-df9a763ee6d8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeName",
+                    "type": "Button",
+                    "id": "697bfbdd-9079-48c5-9297-067f87e10298",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "98e02db1-e17a-4566-aea3-d43e00fdf2dd",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleJoin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "562cd9c2-0c97-43c0-89f8-ec9fde1a8668",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleTeam",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "021df130-772d-49bc-a3a5-18ac9c915f00",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleReady",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bac975f6-45d4-4612-b1d1-9b451d87ef6b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeName",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Test",
+            "id": "612e0f97-d166-4679-b87b-41c9411ea62b",
+            "actions": [
+                {
+                    "name": "Test",
+                    "type": "Button",
+                    "id": "86406238-99ac-4757-90a1-a586a8cdb47d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fee34adc-495a-4474-a379-36fb595640a0",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

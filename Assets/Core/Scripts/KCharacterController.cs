@@ -5,12 +5,8 @@ using System;
 [RequireComponent(typeof(KinematicCharacterMotor))]
 [DefaultExecutionOrder(-101)] // Runs right before PhysicsSystem
 public class KCharacterController : MonoBehaviour, ICharacterController {
-  public float MaxMoveSpeed;
   public Vector3 PhysicsAcceleration;
   public Vector3 PhysicsVelocity;
-  public Vector3 DesiredVelocity;
-  public Vector3 ScriptVelocity;
-  public bool HasGravity = true;
 
   public Action<HitStabilityReport> OnCollision;
   public Action<HitStabilityReport> OnLedge;
@@ -64,11 +60,6 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     Motor.enabled = false;
   }
 
-  void FixedUpdate() {
-    //AbilityManager.SetTag(AbilityTag.Grounded, Motor.GroundingStatus.FoundAnyGround);
-    //AbilityManager.SetTag(AbilityTag.Airborne, !Motor.GroundingStatus.FoundAnyGround);
-  }
-
   void OnDestroy() {
     Motor.CharacterController = null;
   }
@@ -80,28 +71,10 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float dt) {
-    if (DirectMove) {
-      currentVelocity = ScriptVelocity;
-    } else {
-      var grounded = Motor.GroundingStatus.FoundAnyGround;
-      var steeringVector = (DesiredVelocity - PhysicsVelocity).XZ();
-      var desiredMagnitude = steeringVector.magnitude;
-      var maxSteeringMagnitude = (grounded || !HasGravity) ? 2f * MaxMoveSpeed : 0f;
-      var boundedSteeringVelocity = Mathf.Min(desiredMagnitude, maxSteeringMagnitude) * steeringVector.normalized;
-      // TODO: maybe move this out of here to own gravity component?
-      PhysicsAcceleration += grounded || !HasGravity ? Vector3.zero : Physics.gravity;
-      PhysicsVelocity += boundedSteeringVelocity;
-      PhysicsVelocity += ScriptVelocity;
-      PhysicsVelocity += dt * PhysicsAcceleration;
-      PhysicsVelocity.y = grounded ? 0 : PhysicsVelocity.y;
-      currentVelocity = PhysicsVelocity;
-    }
-    const float MAX_MOVE_SPEED = 5; // TODO: This is obviously bullshit
-    if (TryGetComponent(out Animator animator))
-      animator.SetFloat("Normalized Move Speed", DesiredVelocity.sqrMagnitude / MAX_MOVE_SPEED);
+    PhysicsVelocity += dt * PhysicsAcceleration;
+    PhysicsVelocity.y = (IsGrounded && PhysicsVelocity.y < 0) ? 0 : PhysicsVelocity.y;
+    currentVelocity = PhysicsVelocity;
     PhysicsAcceleration = Vector3.zero;
-    DesiredVelocity = Vector3.zero;
-    ScriptVelocity = Vector3.zero;
   }
 
   public void AfterCharacterUpdate(float deltaTime) {

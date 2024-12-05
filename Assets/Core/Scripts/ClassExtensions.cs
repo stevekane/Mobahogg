@@ -171,7 +171,6 @@ public static class ArrayLikeExtensions {
       yield return (item, i++);
     }
   }
-
   public static T[] SortedCopy<T>(this T[] xs) {
     var ys = new T[xs.Length];
     xs.CopyTo(ys, 0);
