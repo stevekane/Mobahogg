@@ -20,5 +20,5 @@ MonoBehaviour:
   DashTotalDistance: 2
   WindupAttackFrames: 12
   ActiveAttackFrames: 3
-  RecoveryAttackFrames: 6
-  TotalSpinFrames: 30
+  RecoveryAttackFrames: 12
+  TotalSpinFrames: 60

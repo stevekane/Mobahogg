@@ -10,8 +10,10 @@ public class Player : MonoBehaviour {
   [SerializeField] KCharacterController CharacterController;
 
   [Header("Child References")]
-  [SerializeField] Hitbox AttackHitbox;
   [SerializeField] Animator Animator;
+
+  public AttackAbility AttackAbility;
+  public SpinAbility SpinAbility;
 
   // TODO: Obviously this is all trash
   public void OnHurt(Combatant attacker) {
@@ -24,7 +26,6 @@ public class Player : MonoBehaviour {
   public float MoveSpeed;
 
   void Start() {
-    InitializeAttack();
     MoveSpeed = Settings.GroundMoveSpeed;
   }
 
@@ -70,7 +71,7 @@ public class Player : MonoBehaviour {
   #region DASH
   int DashFramesRemaining;
   CancellationTokenSource DashCancelTokenSource;
-  public bool CanDash() => CharacterController.IsGrounded && !IsDashing() && !IsAttacking();
+  public bool CanDash() => CharacterController.IsGrounded && !IsDashing() && !AttackAbility.IsRunning;
   public bool IsDashing() => DashFramesRemaining > 0;
   public bool TryDash() {
     if (CanDash()) {
@@ -110,51 +111,6 @@ public class Player : MonoBehaviour {
       }
     } finally {
       DashFramesRemaining = 0;
-    }
-  }
-  #endregion
-
-  #region ATTACK
-  CancellationTokenSource AttackCancelTokenSource;
-  public bool CanAttack() => CharacterController.IsGrounded && DashFramesRemaining <= 0 && !IsAttacking();
-  public bool IsAttacking() => AttackCancelTokenSource != null;
-  public bool TryAttack() {
-    if (CanAttack()) {
-      BeginAttack();
-      return true;
-    } else {
-      return false;
-    }
-  }
-  public void InitializeAttack() {
-    AttackHitbox.CollisionEnabled = false;
-  }
-  void BeginAttack() {
-    AttackCancelTokenSource?.Cancel();
-    AttackCancelTokenSource?.Dispose();
-    AttackCancelTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
-    RunAttack(AttackCancelTokenSource.Token).ContinueWith(EndAttack).Forget();
-  }
-  void CancelAttack() {
-    AttackCancelTokenSource?.Cancel();
-    AttackCancelTokenSource?.Dispose();
-    AttackCancelTokenSource = null;
-  }
-  void EndAttack() {
-    CancelAttack();
-  }
-  async UniTask RunAttack(CancellationToken token) {
-    try {
-      Animator.SetTrigger("Attack");
-      MoveSpeed = 0;
-      await UniTask.DelayFrame(Settings.WindupAttackFrames, PlayerLoopTiming.FixedUpdate, token);
-      AttackHitbox.CollisionEnabled = true;
-      await UniTask.DelayFrame(Settings.ActiveAttackFrames, PlayerLoopTiming.FixedUpdate, token);
-      AttackHitbox.CollisionEnabled = false;
-      await UniTask.DelayFrame(Settings.RecoveryAttackFrames, PlayerLoopTiming.FixedUpdate, token);
-    } finally {
-      MoveSpeed = Settings.GroundMoveSpeed;
-      AttackHitbox.CollisionEnabled = false;
     }
   }
   #endregion

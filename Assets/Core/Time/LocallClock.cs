@@ -10,6 +10,7 @@ public class LocalClock : MonoBehaviour, IClock {
   public bool Frozen() => Parent().Frozen() || IsFrozen;
   public int FixedFrame() => TickCount;
   public float DeltaTime() => Frozen() ? 0 : Parent().DeltaTime();
+  public int DeltaFrames() => Frozen() ? 0 : 1;
 
   int TickCount = 0;
   bool IsFrozen;

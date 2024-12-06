@@ -1,23 +1,29 @@
-using System;
 using UnityEngine;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 
-public class SpinAbility : AbstractAsyncAbility {
+public class SpinAbility : MonoBehaviour {
   [SerializeField] AbilitySettings AbilitySettings;
   [SerializeField] Player Player;
   [SerializeField] Animator Animator;
+  [SerializeField] LocalClock LocalClock;
+  [SerializeField] AttackAbility AttackAbility;
 
-  public override bool CanRun() => !IsRunning && !Player.IsAttacking() && !Player.IsDashing();
-  public override async UniTask Run(CancellationToken token) {
-    try {
-      Animator.SetBool("Spinning", true);
-      await UniTask.DelayFrame(AbilitySettings.TotalSpinFrames, PlayerLoopTiming.FixedUpdate, token);
-    } catch (OperationCanceledException e) {
-      Debug.Log($"Canceled {e.Message}");
-    } finally {
-      Debug.Log($"{Animator} {Animator == null}");
-      Animator.SetBool("Spinning", false);
+  int FramesRemaining;
+
+  public bool CanRun() => !Player.IsDashing() && !AttackAbility.IsRunning;
+  public bool TryRun() {
+    if (CanRun()) {
+      FramesRemaining = AbilitySettings.TotalSpinFrames;
+      return true;
+    } else {
+      return false;
     }
+  }
+  public void Cancel() {
+    FramesRemaining = 0;
+  }
+
+  void FixedUpdate() {
+    FramesRemaining = Mathf.Max(0, FramesRemaining-LocalClock.DeltaFrames());
+    Animator.SetBool("Spinning", FramesRemaining > 0);
   }
 }

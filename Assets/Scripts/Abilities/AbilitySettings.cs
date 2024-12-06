@@ -28,6 +28,9 @@ public class AbilitySettings : ScriptableObject {
   public int WindupAttackFrames = 3;
   public int ActiveAttackFrames = 3;
   public int RecoveryAttackFrames = 6;
+  public int TotalAttackFrames => WindupAttackFrames + ActiveAttackFrames + RecoveryAttackFrames;
+  public int ActiveStartFrame => WindupAttackFrames;
+  public int ActiveEndFrame => WindupAttackFrames + ActiveAttackFrames;
 
   [Header("Spin")]
   public int TotalSpinFrames = 30;

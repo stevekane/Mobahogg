@@ -14,7 +14,7 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   [Header("Match State")]
   public int BattleIndex;
   public List<ActivePlayer> Players;
-  public List<Team> Teams;
+  public List<TeamState> Teams;
 
   [Header("Configuration")]
   [SerializeField] SceneAsset[] BattleScreens;
@@ -94,7 +94,7 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   async UniTask<BattleResult> RunBattle(CancellationToken token) {
     BattleResult battleResult = null;
     await PreBattle(token);
-    Teams = new() { new Team(TeamType.Turtles), new Team(TeamType.Robots) };
+    Teams = new() { new TeamState(TeamType.Turtles), new TeamState(TeamType.Robots) };
     do {
       await UniTask.NextFrame(cancellationToken: token);
       battleResult = CheckBattleWinningConditions();
@@ -147,9 +147,9 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   }
 
   // TODO: Make use of this allocated list to avoid allocations during winning conditions checks
-  List<Team> WinningConditionsTeams = new(4);
-  BattleResult ResultFor(Func<Team,bool> endingCondition, Func<Team, bool> winningCondition, VictoryType victoryType) {
-    return new BattleResult(victoryType, Teams.Any(endingCondition) ? Teams.Where(winningCondition).ToArray() : new Team[0]);
+  List<TeamState> WinningConditionsTeams = new(4);
+  BattleResult ResultFor(Func<TeamState,bool> endingCondition, Func<TeamState, bool> winningCondition, VictoryType victoryType) {
+    return new BattleResult(victoryType, Teams.Any(endingCondition) ? Teams.Where(winningCondition).ToArray() : new TeamState[0]);
   }
 
   MatchResult CheckMatchWinningConditions() {
@@ -185,9 +185,9 @@ public class MatchResult {
 [Serializable]
 public class BattleResult {
   public VictoryType VictoryType;
-  public Team[] Teams;
+  public TeamState[] Teams;
   public TeamType? Winner => Teams.Length == 1 ? Teams[0].TeamType : null;
-  public BattleResult(VictoryType victoryType, Team[] teams) {
+  public BattleResult(VictoryType victoryType, TeamState[] teams) {
     VictoryType = victoryType;
     Teams = teams;
   }
@@ -210,7 +210,7 @@ public class BattleResult {
 public class ActivePlayer {
   public TeamType TeamType;
   public string Name;
-  public bool IsMemberOf(Team team) => TeamType == team.TeamType;
+  public bool IsMemberOf(TeamState team) => TeamType == team.TeamType;
   public static ActivePlayer From(PotentialPlayer potentialPlayer) {
     return new ActivePlayer {
       TeamType = potentialPlayer.Team ? TeamType.Turtles : TeamType.Robots,
@@ -220,13 +220,13 @@ public class ActivePlayer {
 }
 
 [Serializable]
-public class Team {
+public class TeamState {
   public TeamType TeamType;
   public int LivesRemaining;
   public int ResourcesRequired;
   public bool HasType(TeamType type) => TeamType == type;
   public bool HasMember(ActivePlayer player) => TeamType == player.TeamType;
-  public Team(TeamType teamType) {
+  public TeamState(TeamType teamType) {
     TeamType = teamType;
     LivesRemaining = MatchManager.Instance.MatchSettings.INITIAL_LIVES;
     ResourcesRequired = MatchManager.Instance.MatchSettings.INITIAL_REQUIRED_RESOURCES;
