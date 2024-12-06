@@ -22,8 +22,4 @@ public class Creep : MonoBehaviour {
       CreepManager.OnCreepDeath(this, LastAttacker);
     }
   }
-
-  void OnDrawGizmosSelected() {
-    Debug.Log(Health.Value);
-  }
 }

@@ -36,6 +36,10 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     Teams.Where(t => t.HasType(teamType)).ForEach(t => t.ResourcesRequired--);
   }
 
+  public void DefeatByGolem(TeamType teamType) {
+    Teams.Where(t => t.HasType(teamType)).ForEach(t => t.KilledByGolem = true);
+  }
+
   public void StartMatch(IEnumerable<PotentialPlayer> potentialPlayers) {
     OnStartMatch.Fire(potentialPlayers);
   }
@@ -139,7 +143,7 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   List<BattleResult> ScreenResults = new(4);
   BattleResult CheckBattleWinningConditions() {
     var killerResult = ResultFor(t => t.LivesRemaining <= 0, t => t.LivesRemaining > 0, VictoryType.Killer);
-    var summonerResult = ResultFor(t => false, t => true, VictoryType.Summoner);
+    var summonerResult = ResultFor(t => t.KilledByGolem, t => !t.KilledByGolem, VictoryType.Summoner);
     var foragerResult = ResultFor(t => t.ResourcesRequired <= 0, t => t.ResourcesRequired <= 0, VictoryType.Forager);
     var results = new List<BattleResult> { killerResult, summonerResult, foragerResult };
     var result = results.FirstOrDefault(r => r.Teams.Length == 1) ?? results.FirstOrDefault(r => r.Teams.Length > 1);
@@ -224,14 +228,17 @@ public class TeamState {
   public TeamType TeamType;
   public int LivesRemaining;
   public int ResourcesRequired;
+  public bool KilledByGolem;
   public bool HasType(TeamType type) => TeamType == type;
   public bool HasMember(ActivePlayer player) => TeamType == player.TeamType;
   public TeamState(TeamType teamType) {
     TeamType = teamType;
+    KilledByGolem = false;
     LivesRemaining = MatchManager.Instance.MatchSettings.INITIAL_LIVES;
     ResourcesRequired = MatchManager.Instance.MatchSettings.INITIAL_REQUIRED_RESOURCES;
   }
   public void Reset() {
+    KilledByGolem = false;
     LivesRemaining = MatchManager.Instance.MatchSettings.INITIAL_LIVES;
     ResourcesRequired = MatchManager.Instance.MatchSettings.INITIAL_REQUIRED_RESOURCES;
   }

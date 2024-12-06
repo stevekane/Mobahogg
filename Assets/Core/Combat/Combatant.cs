@@ -9,11 +9,11 @@ public class Combatant : MonoBehaviour {
 
   void OnHit(Combatant victim) {
     HitStop.FramesRemaining = HitStopFrames;
-    if (HitFlinchName != "") Animator.SetTrigger(HitFlinchName);
+    if (Animator && HitFlinchName != "") Animator.SetTrigger(HitFlinchName);
   }
 
   void OnHurt(Combatant attacker) {
     HitStop.FramesRemaining = HitStopFrames;
-    if (HurtFlinchName != "") Animator.SetTrigger(HurtFlinchName);
+    if (Animator && HurtFlinchName != "") Animator.SetTrigger(HurtFlinchName);
   }
 }
