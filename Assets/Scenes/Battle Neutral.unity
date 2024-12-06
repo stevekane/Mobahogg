@@ -969,7 +969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1162941850
 Transform:
   m_ObjectHideFlags: 0
@@ -1083,7 +1083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7760936782829562045, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9139747016867494336, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2018,7 +2018,7 @@ MonoBehaviour:
   CreepPrefab: {fileID: 8818560946984399107, guid: cc0e6884c52086340af97b2fc8a89715, type: 3}
   DeadCreepPrefab: {fileID: 8513358180541010708, guid: a6e50b3c8df31084fad132dae41160ac, type: 3}
   MAX_LIVING_CREEPS: 15
-  CREEP_SPAWN_FRAME_INTERVAL: 300
+  CREEP_SPAWN_FRAME_INTERVAL: 60
 --- !u!114 &1844339071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2152,6 +2152,7 @@ GameObject:
   - component: {fileID: 2001542290}
   - component: {fileID: 2001542294}
   - component: {fileID: 2001542295}
+  - component: {fileID: 2001542296}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2292,6 +2293,18 @@ MonoBehaviour:
   Target: {fileID: 1057569916}
   distance: 44.1
   pitch: 60
+--- !u!114 &2001542296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001542289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4cba5a16834baa4d8a7004a12234714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2143266087 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9139747016867494336, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}

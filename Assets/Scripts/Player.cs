@@ -15,14 +15,6 @@ public class Player : MonoBehaviour {
   public AttackAbility AttackAbility;
   public SpinAbility SpinAbility;
 
-  // TODO: Obviously this is all trash
-  public void OnHurt(Combatant attacker) {
-    Debug.Log("Help I been hit");
-    Animator.SetTrigger("Hit Flinch");
-    GetComponentInChildren<HitStop>().FramesRemaining = 10;
-    attacker.GetComponentInChildren<HitStop>().FramesRemaining = 10;
-  }
-
   public float MoveSpeed;
 
   void Start() {

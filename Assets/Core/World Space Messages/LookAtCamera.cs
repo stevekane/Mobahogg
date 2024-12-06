@@ -1,13 +1,9 @@
 using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour {
-  Camera Camera;
-
-  void Start() {
-    Camera = Camera.main;
-  }
-
   void LateUpdate() {
-    transform.LookAt(transform.position + Camera.transform.forward);
+    var camera = CameraManager.Instance.Active;
+    if (camera)
+      transform.LookAt(transform.position + camera.transform.forward);
   }
 }

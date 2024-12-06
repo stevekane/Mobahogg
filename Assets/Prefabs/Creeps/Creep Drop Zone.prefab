@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamType: 0
   BoxCollider: {fileID: 3942984374646216960}
+  FramesPerConsumption: 60
 --- !u!65 &3942984374646216960
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -269,7 +269,6 @@ GameObject:
   - component: {fileID: 4052262537614486644}
   - component: {fileID: 2235593046035439474}
   - component: {fileID: 548442601719462120}
-  - component: {fileID: 2045523723859461337}
   m_Layer: 6
   m_Name: Attack Hitbox
   m_TagString: Untagged
@@ -327,19 +326,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2045523723859461337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3079015546439036017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c7185dfae49af34b93bfdff014913b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CreepOwner: {fileID: 8946980519217053265}
 --- !u!1 &5449728817738610857
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,6 +546,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitStopFrames: 8
+  HitFlinchName: Hit Flinch
+  HurtFlinchName: Hurt Flinch
+  HitStop: {fileID: 7551776237143256265}
+  Animator: {fileID: 4768944636430819183}
 --- !u!114 &3542533184097295049
 MonoBehaviour:
   m_ObjectHideFlags: 0

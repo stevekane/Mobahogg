@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 8818560946984399107}
   - component: {fileID: 4867644372670552702}
   - component: {fileID: 1737775483512742949}
+  - component: {fileID: 3266990220738265490}
   m_Layer: 0
   m_Name: Creep
   m_TagString: Untagged
@@ -192,6 +193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 1737775483512742949}
   Health: {fileID: 4127077189639119260}
+  HitStopFrames: 3
   CreepManager: {fileID: 0}
 --- !u!114 &4867644372670552702
 MonoBehaviour:
@@ -205,6 +207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitStopFrames: 8
+  HitFlinchName: 
+  HurtFlinchName: 
+  HitStop: {fileID: 3266990220738265490}
+  Animator: {fileID: 0}
 --- !u!114 &1737775483512742949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,6 +224,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3266990220738265490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4386271687128637325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf1953f6fcede547a1e9c6e00b21c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalClock: {fileID: 1737775483512742949}
+  FramesRemaining: 0
 --- !u!1 &7214133272393518286
 GameObject:
   m_ObjectHideFlags: 0

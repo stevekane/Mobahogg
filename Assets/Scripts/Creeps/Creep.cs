@@ -10,9 +10,11 @@ public class Creep : MonoBehaviour {
   CreepOwner LastAttacker;
 
   void OnHurt(Combatant attacker) {
-    Health.Add(-1);
+    // TODO: Technically, many blows could land here.
+    // maybe need to handle this case with some kind
+    // of incoming damage buffer or something?
+    Health.Change(-1);
     LastAttacker = attacker.GetComponent<CreepOwner>();
-    Debug.Log($"{attacker.name} dealt 1 damage to {name}");
   }
 
   void FixedUpdate() {
