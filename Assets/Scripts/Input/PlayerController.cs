@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-  [SerializeField] Player Player;
-
   public int PortIndex;
 
   void Start() {
@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance.TryListen("Dash", PortIndex, HandleDash);
     InputRouter.Instance.TryListen("Attack", PortIndex, HandleAttack);
     InputRouter.Instance.TryListen("Spin", PortIndex, HandleSpin);
-    InputRouter.Instance.TryListen("Test", PortIndex, HandleTest);
   }
 
   void OnDestroy() {
@@ -20,18 +19,18 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance.TryUnlisten("Dash", PortIndex, HandleDash);
     InputRouter.Instance.TryUnlisten("Attack", PortIndex, HandleAttack);
     InputRouter.Instance.TryUnlisten("Spin", PortIndex, HandleSpin);
-    InputRouter.Instance.TryUnlisten("Test", PortIndex, HandleTest);
   }
 
-  public void HandleMove(PortAction action) => Player.TryMove(action.Value);
+  IEnumerable<Player> PlayersOnPort =>
+    LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
 
-  public void HandleJump(PortAction action) => Player.TryJump();
+  public void HandleMove(PortAction action) => PlayersOnPort.ForEach(p => p.TryMove(action.Value));
 
-  public void HandleDash(PortAction action) => Player.TryDash();
+  public void HandleJump(PortAction action) => PlayersOnPort.ForEach(p => p.TryJump());
 
-  public void HandleAttack(PortAction action) => Player.AttackAbility.TryRun();
+  public void HandleDash(PortAction action) => PlayersOnPort.ForEach(p => p.TryDash());
 
-  public void HandleSpin(PortAction action) => Player.SpinAbility.TryRun();
+  public void HandleAttack(PortAction action) => PlayersOnPort.ForEach(p => p.AttackAbility.TryRun());
 
-  public void HandleTest(PortAction action) => WorldSpaceMessageManager.Instance.SpawnMessage("Cracktober", Player.transform.position, 3);
+  public void HandleSpin(PortAction action) => PlayersOnPort.ForEach(p => p.SpinAbility.TryRun());
 }

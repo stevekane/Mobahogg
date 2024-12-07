@@ -530,7 +530,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   CharacterController: {fileID: 3542533184097295049}
+  LocalClock: {fileID: 988945814378296752}
   Animator: {fileID: 4768944636430819183}
+  Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}
   SpinAbility: {fileID: 7493328923366163232}
   MoveSpeed: 0
@@ -733,6 +735,7 @@ GameObject:
   - component: {fileID: 4751482104723936499}
   - component: {fileID: 9118137953106980674}
   - component: {fileID: 6233153455102195460}
+  - component: {fileID: 94004394668583191}
   m_Layer: 0
   m_Name: State
   m_TagString: Untagged
@@ -768,7 +771,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
-  FramesRemaining: 0
 --- !u!114 &4751482104723936499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,6 +810,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Default>k__BackingField: 1
+--- !u!114 &94004394668583191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9154293866625994780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22522bd23a0756e40b7684796dfd04c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Current: 1
 --- !u!1001 &1388274480085082878
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -32,9 +32,7 @@ public class CreepManager : MonoBehaviour {
   }
 
   public void SpawnCreep(Vector3 position) {
-    var creep = Instantiate(CreepPrefab, position, Quaternion.identity, transform);
-    creep.CreepManager = this;
-    LivingCreeps.Add(creep);
+    LivingCreeps.Add(Instantiate(CreepPrefab, position, Quaternion.identity, transform));
   }
 
   void FixedUpdate() {

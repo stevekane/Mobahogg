@@ -28,8 +28,8 @@ public class MatchManager : SingletonBehavior<MatchManager> {
 
   EventSource<IEnumerable<PotentialPlayer>> OnStartMatch = new();
 
-  public void DeductLife(TeamType teamType) {
-    Teams.Where(t => t.HasType(teamType)).ForEach(t => t.LivesRemaining--);
+  public void SetLives(TeamType teamType, int count) {
+    Teams.Where(t => t.HasType(teamType)).ForEach(t => t.LivesRemaining = count);
   }
 
   public void DeductRequiredResource(TeamType teamType) {

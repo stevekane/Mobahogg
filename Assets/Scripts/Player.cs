@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using State;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -10,15 +11,32 @@ public class Player : MonoBehaviour {
   [SerializeField] KCharacterController CharacterController;
 
   [Header("Child References")]
+  [SerializeField] LocalClock LocalClock;
   [SerializeField] Animator Animator;
+  [SerializeField] Health Health;
 
   public AttackAbility AttackAbility;
   public SpinAbility SpinAbility;
-
   public float MoveSpeed;
+  public int PortIndex;
+
+  void OnHurt(Combatant attacker) {
+    Health.Change(-1);
+  }
 
   void Start() {
+    LivesManager.Active.Players.AddFirst(this);
     MoveSpeed = Settings.GroundMoveSpeed;
+  }
+
+  void OnDestroy() {
+    LivesManager.Active.Players.Remove(this);
+  }
+
+  void FixedUpdate() {
+    if (!LocalClock.Frozen() && Health.Value <= 0) {
+      LivesManager.Active.OnPlayerDeath(this);
+    }
   }
 
   Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
