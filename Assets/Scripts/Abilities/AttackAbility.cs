@@ -10,7 +10,7 @@ public class AttackAbility : MonoBehaviour {
 
   int Frame;
 
-  void Start() {
+  void Awake() {
     Frame = Settings.TotalAttackFrames;
     Hitbox.CollisionEnabled = false;
   }

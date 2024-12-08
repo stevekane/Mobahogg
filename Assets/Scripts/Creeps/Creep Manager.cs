@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Managers)]
 public class CreepManager : MonoBehaviour {
   public static CreepManager Active;
 
@@ -9,19 +10,16 @@ public class CreepManager : MonoBehaviour {
   [SerializeField] DeadCreep DeadCreepPrefab;
   [SerializeField] int MAX_LIVING_CREEPS = 15;
   [SerializeField] int CREEP_SPAWN_FRAME_INTERVAL = 300;
+  public List<Creep> LivingCreeps = new(128);
 
   int FramesTillNextSpawn;
-  List<Creep> LivingCreeps = new(128);
 
-  // Sort of a per-battle psuedo-singleton... maybe there is some better way?
   void Awake() {
     Active = this;
   }
 
   public void OnCreepDeath(Creep creep, CreepOwner owner) {
-    Debug.Log($"{creep.name} was killed by {owner?.name}");
     Destroy(creep.gameObject);
-    LivingCreeps.Remove(creep);
     var position = creep.transform.position;
     var rotation = creep.transform.rotation;
     var deadCreep = Instantiate(DeadCreepPrefab, position, rotation, transform);

@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 8946980519217053265}
   - component: {fileID: 306565525089974642}
   m_Layer: 0
-  m_Name: Player Character
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,6 +536,7 @@ MonoBehaviour:
   AttackAbility: {fileID: 5165232841971343211}
   SpinAbility: {fileID: 7493328923366163232}
   MoveSpeed: 0
+  PortIndex: 0
 --- !u!114 &6859262562219351446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,7 +568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhysicsAcceleration: {x: 0, y: 0, z: 0}
   PhysicsVelocity: {x: 0, y: 0, z: 0}
-  Motor: {fileID: 0}
+  Motor: {fileID: 3726876089221691650}
   DirectMove: 0
   IsOnLedge: 0
   LedgeDirection: {x: 0, y: 0, z: 0}

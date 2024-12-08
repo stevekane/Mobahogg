@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Managers)]
 public class GolemManager : MonoBehaviour {
   public static GolemManager Active;
 
@@ -9,7 +10,6 @@ public class GolemManager : MonoBehaviour {
   public List<GolemAttractor> GolemAttractors = new();
 
   public void AlertGolemsTo(GolemAttractor golemAttractor) {
-    Debug.Log($"Golems alerted to {golemAttractor.name}");
     Golems.ForEach(g => g.PursueAttractor(golemAttractor));
   }
 

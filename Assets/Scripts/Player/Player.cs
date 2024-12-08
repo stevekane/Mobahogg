@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using State;
 using UnityEngine;
 
-[Default]
+[DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Player : MonoBehaviour {
   [Header("Settings")]
   [SerializeField] AbilitySettings Settings;

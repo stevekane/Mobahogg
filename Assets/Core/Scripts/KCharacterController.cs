@@ -45,19 +45,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   public bool IsStableOnGround => Motor.GroundingStatus.IsStableOnGround;
 
   void Awake() {
-    this.InitComponent(out Motor);
-  }
-
-  void Start() {
     Motor.CharacterController = this;
-  }
-
-  void OnEnable() {
-    Motor.enabled = true;
-  }
-
-  void OnDisable() {
-    Motor.enabled = false;
   }
 
   void OnDestroy() {

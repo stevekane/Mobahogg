@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using State;
 using UnityEngine;
 
 public class CreepDropZone : MonoBehaviour {
-  [SerializeField] TeamType TeamType;
   [SerializeField] BoxCollider BoxCollider;
   [SerializeField] int FramesPerConsumption = 60;
 
@@ -26,7 +26,7 @@ public class CreepDropZone : MonoBehaviour {
         position: deadCreep.transform.position + Vector3.up,
         lifetime: 3);
       FramesTillConsumption = FramesPerConsumption;
-      MatchManager.Instance.DeductRequiredResource(TeamType);
+      MatchManager.Instance.DeductRequiredResource(GetComponent<Team>().TeamType);
       Destroy(deadCreep.gameObject);
     } else {
       FramesTillConsumption = Mathf.Max(0, FramesTillConsumption-1);
@@ -34,7 +34,8 @@ public class CreepDropZone : MonoBehaviour {
   }
 
   void OnDrawGizmos() {
-    var color = TeamType == TeamType.Turtles ? Color.green : Color.red;
+    var team = GetComponent<Team>();
+    var color = team.TeamType == TeamType.Turtles ? Color.green : Color.red;
     color.a = 0.3f;
     var position = transform.TransformPoint(BoxCollider.center);
     Gizmos.color = color;

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Golem : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Rigidbody Rigidbody;
