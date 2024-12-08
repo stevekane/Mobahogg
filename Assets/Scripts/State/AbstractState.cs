@@ -1,6 +1,6 @@
 using UnityEngine;
 
 namespace State {
-  [DefaultExecutionOrder(100)]
+  [DefaultExecutionOrder((int)ExecutionGroups.State)]
   public abstract class AbstractState : MonoBehaviour {}
 }
