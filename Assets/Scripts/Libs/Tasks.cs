@@ -2,9 +2,15 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 public static class Tasks {
+  public static async UniTask DelayWith(int frames, LocalClock localClock, CancellationToken token) {
+    while (frames > 0) {
+      await UniTask.DelayFrame(1, PlayerLoopTiming.FixedUpdate);
+      frames -= localClock.DeltaFrames();
+    }
+  }
+
   public static async UniTask ListenFor(EventSource source, CancellationToken token) {
     var fired = false;
     void CB() => fired = true;

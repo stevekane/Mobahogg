@@ -12,20 +12,16 @@ public static class AudioExtensions {
 
 public class AudioManager : SingletonBehavior<AudioManager> {
   [SerializeField] AudioClip BackgroundMusic;
+  [SerializeField] float SoundCooldown = 0.05f;
+  [SerializeField] AudioSource MusicSource;
+  [SerializeField] AudioSource SoundSource;
 
-  public AudioSource MusicSource;
-  public AudioSource SoundSource;
-  public float SoundCooldown = .05f;
-
-  void Start() {
-    MusicSource.Play(BackgroundMusic);
-  }
+  Dictionary<AudioClip, float> SoundLastPlayed = new();
 
   public void ResetBackgroundMusic() {
     MusicSource.Play(BackgroundMusic);
   }
 
-  Dictionary<AudioClip, float> SoundLastPlayed = new();
   public void PlaySoundWithCooldown(AudioClip clip) {
     if (!clip) return;
     var lastPlayed = SoundLastPlayed.GetValueOrDefault(clip);
