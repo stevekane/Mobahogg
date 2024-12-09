@@ -327,6 +327,57 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &3683463593941235901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7105776654639325804}
+  - component: {fileID: 8517117487763200628}
+  m_Layer: 0
+  m_Name: Spell Cast Ability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7105776654639325804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683463593941235901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7340116597315303376}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8517117487763200628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683463593941235901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21b9a64cb9c89842808b848bbb64d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpellHolder: {fileID: 4106878518632410812}
+  CharacterController: {fileID: 3542533184097295049}
+  Player: {fileID: 5297446814743032710}
+  AttackAbility: {fileID: 5165232841971343211}
+  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
+  Animator: {fileID: 4768944636430819183}
+  LocalClock: {fileID: 988945814378296752}
 --- !u!1 &5308709295670658322
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +684,7 @@ MonoBehaviour:
   Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}
   SpinAbility: {fileID: 7493328923366163232}
+  SpellCastAbility: {fileID: 8517117487763200628}
   MoveSpeed: 0
   PortIndex: 0
 --- !u!114 &6859262562219351446
@@ -819,6 +871,7 @@ Transform:
   m_Children:
   - {fileID: 7105188854446980595}
   - {fileID: 8286050532191162084}
+  - {fileID: 7105776654639325804}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9154293866625994780

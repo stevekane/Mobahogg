@@ -20,7 +20,7 @@ public class AttackAbility : MonoBehaviour {
   public bool CanRun
     => CharacterController.IsGrounded
     && !Player.IsDashing()
-    && Frame < Settings.WindupAttackFrames || Frame >= Settings.TotalAttackFrames;
+    && (Frame < Settings.WindupAttackFrames || Frame >= Settings.TotalAttackFrames);
 
   public bool TryRun() {
     if (CanRun) {

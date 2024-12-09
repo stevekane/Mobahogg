@@ -5,14 +5,17 @@ using UnityEngine;
 public class SpellHolder : AbstractState {
   public static int MAX_SPELL_QUEUE_SIZE = 3;
 
-  public readonly EventSource<Spell> OnObtainSpell = new();
+  public readonly EventSource<Spell> OnAddSpell = new();
+  public readonly EventSource<Spell> OnRemoveSpell = new();
 
-  Queue<Spell> NextSpellQueue = new(3);
-  Queue<Spell> CurrentSpellQueue = new(3);
+  Queue<Spell> NextSpellQueue = new();
+  Queue<Spell> CurrentSpellQueue = new();
   int CurrentSpellQueueSize = 3;
   int NextSpellQueueSize = 3;
+  int DequeueCount;
   public Queue<Spell> SpellQueue => CurrentSpellQueue;
   public int SpellQueueSize => CurrentSpellQueueSize;
+  public void Dequeue() => DequeueCount++;
   public bool TryAdd(Spell spell) {
     if (CurrentSpellQueue.Count < CurrentSpellQueueSize) {
       NextSpellQueue.Enqueue(spell);
@@ -37,8 +40,12 @@ public class SpellHolder : AbstractState {
     // IMPORTANT: SINGLE LOOP SO THAT CURRENTSPELL.COUNT is right for listeners
     foreach (var spell in NextSpellQueue) {
       CurrentSpellQueue.Enqueue(spell);
-      OnObtainSpell.Fire(spell);
+      OnAddSpell.Fire(spell);
     }
+    for (var i = 0; i < DequeueCount; i++) {
+      OnRemoveSpell.Fire(CurrentSpellQueue.Dequeue());
+    }
+    DequeueCount = 0;
     NextSpellQueue.Clear();
     CurrentSpellQueueSize = NextSpellQueueSize;
   }

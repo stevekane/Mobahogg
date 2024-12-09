@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 
   public AttackAbility AttackAbility;
   public SpinAbility SpinAbility;
+  public SpellCastAbility SpellCastAbility;
   public float MoveSpeed;
   public int PortIndex;
 
