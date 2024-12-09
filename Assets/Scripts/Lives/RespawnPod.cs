@@ -10,6 +10,7 @@ public enum RespawnPodState {
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class RespawnPod : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
+  [SerializeField] Collider Collider;
 
   public int PortIndex { get; private set; }
 
@@ -23,7 +24,6 @@ public class RespawnPod : MonoBehaviour {
     State = RespawnPodState.Respawning;
     FramesRemaining = frameDelay;
     PortIndex = portIndex;
-    Debug.Log($"Pod Respawn Started {PortIndex}");
   }
 
   void Start() {
@@ -38,10 +38,12 @@ public class RespawnPod : MonoBehaviour {
     if (LocalClock.Frozen() || State != RespawnPodState.Respawning)
       return;
     if (FramesRemaining <= 0) {
+      // Destroy is delayed to end of frame. Instantiate is instant.
+      // Therefore, must disable the collider on the pod to prevent unwanted interaction
       State = RespawnPodState.Used;
-      LivesManager.Active.SpawnPlayerFromPod(this);
+      Collider.enabled = false;
       Destroy(gameObject);
-      Debug.Log($"Pod Spawn initiated {PortIndex}");
+      LivesManager.Active.SpawnPlayerFromPod(this);
     }
     FramesRemaining -= LocalClock.DeltaFrames();
   }

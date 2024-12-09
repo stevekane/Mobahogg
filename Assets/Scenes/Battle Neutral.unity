@@ -923,7 +923,7 @@ GameObject:
   - component: {fileID: 511581051}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1172,6 +1172,8 @@ Transform:
   m_Children:
   - {fileID: 921789899}
   - {fileID: 1162941850}
+  - {fileID: 706283170}
+  - {fileID: 1390202584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &643615358 stripped
@@ -1211,6 +1213,51 @@ Transform:
   - {fileID: 511581047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &706283169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 706283170}
+  - component: {fileID: 706283171}
+  m_Layer: 0
+  m_Name: Third Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &706283170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706283169}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 628578577}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &706283171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706283169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 947ebe64c7804864c925b47c62f18d3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PortIndex: 2
 --- !u!1001 &744060811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1586,7 +1633,7 @@ GameObject:
   m_Layer: 0
   m_Name: Camera Origin
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1826,10 +1873,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SproutPrefab: {fileID: 5706908931577266517, guid: e3243ebcaaa6a37468daaeca784f2942, type: 3}
   FlowerPrefab: {fileID: 357578967424604775, guid: 152fda37f8ad0be4c8f12e9fa8db18e9, type: 3}
+  SpellChargePrefab: {fileID: 3476870386574036591, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
+  SpellChargesPerFlower: 3
+  SpellChargeLaunchStrength: 30
   PlantingZones: []
   Pollens: []
   Sprouts: []
   Flowers: []
+  SpellCharges: []
 --- !u!1 &1188569541
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,6 +1981,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2595816520642639848, guid: be97e7cb154d51848a664c3640df3c34, type: 3}
   m_PrefabInstance: {fileID: 1305173820}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1390202583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1390202584}
+  - component: {fileID: 1390202585}
+  m_Layer: 0
+  m_Name: Fourth Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1390202584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390202583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 628578577}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1390202585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390202583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 947ebe64c7804864c925b47c62f18d3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PortIndex: 3
 --- !u!1001 &1440069553
 PrefabInstance:
   m_ObjectHideFlags: 0

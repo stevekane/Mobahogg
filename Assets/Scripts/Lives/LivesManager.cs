@@ -29,6 +29,7 @@ public class LivesManager : MonoBehaviour {
   public void OnPlayerDeath(Player victim) {
     var playerTeam = victim.GetComponent<Team>();
     var playerCreepOwner = victim.GetComponent<CreepOwner>();
+    playerCreepOwner.Creeps.ForEach(c => c.State = DeadCreepState.Free);
     playerCreepOwner.Creeps.ForEach(c => c.Owner = null);
     Destroy(victim.gameObject);
     TryStartRespawnFromPod(playerTeam.TeamType, victim.PortIndex);

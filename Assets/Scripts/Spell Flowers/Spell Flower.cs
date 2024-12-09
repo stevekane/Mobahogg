@@ -35,12 +35,12 @@ public class SpellFlower : MonoBehaviour {
     Animator.SetTrigger("Open");
     // AudioManager.Instance.PlaySoundWithCooldown(OpenAudioClip);
     await Tasks.DelayWith(OpenDuration, LocalClock, token);
-    // TODO: Implement some kind of fadeaway
     Destroy(gameObject);
   }
 
   void FixedUpdate() {
     if (!Open && Health.Value <= 0) {
+      SpellFlowerManager.Active.OnFlowerOpen(this);
       OnOpen(this.destroyCancellationToken).Forget();
     }
   }
