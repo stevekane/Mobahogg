@@ -16,7 +16,6 @@ public class SpellStaff : MonoBehaviour {
     SpellCharges.Enqueue(staffCharge);
   }
 
-  // annoying fucking bookkeeping shit
   void ShiftSpells(Spell spell) {
     var spellCharge = SpellCharges.Dequeue();
     for (var i = 0; i < SpellCharges.Count; i++) {

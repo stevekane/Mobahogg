@@ -8,9 +8,9 @@ public class SpellFlowerManager : MonoBehaviour {
 
   [SerializeField] SpellFlowerSprout SproutPrefab;
   [SerializeField] SpellFlower FlowerPrefab;
-  [SerializeField] SpellCharge SpellChargePrefab;
   [SerializeField] int SpellChargesPerFlower = 3;
   [SerializeField] int SpellChargeLaunchStrength = 3;
+  [SerializeField] SpellDescriptions SpellDescriptions;
 
   public List<SpellFlowerPlantingZone> PlantingZones = new();
   public List<SpellFlowerPollen> Pollens = new();
@@ -53,8 +53,10 @@ public class SpellFlowerManager : MonoBehaviour {
 
   public void OnFlowerOpen(SpellFlower flower) {
     for (var i = 0; i < SpellChargesPerFlower; i++) {
+      var spellIndex = Random.Range(0, SpellDescriptions.Value.Count);
+      var spellChargePrefab = SpellDescriptions.Value[spellIndex].SpellCharge;
       var charge = Instantiate(
-        SpellChargePrefab,
+        spellChargePrefab,
         flower.transform.position,
         flower.transform.rotation,
         transform);

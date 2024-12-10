@@ -1873,9 +1873,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SproutPrefab: {fileID: 5706908931577266517, guid: e3243ebcaaa6a37468daaeca784f2942, type: 3}
   FlowerPrefab: {fileID: 357578967424604775, guid: 152fda37f8ad0be4c8f12e9fa8db18e9, type: 3}
-  SpellChargePrefab: {fileID: 3476870386574036591, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
   SpellChargesPerFlower: 3
   SpellChargeLaunchStrength: 30
+  SpellDescriptions: {fileID: 11400000, guid: 4d234f7f56eee424c930de68d8bfe024, type: 2}
   PlantingZones: []
   Pollens: []
   Sprouts: []

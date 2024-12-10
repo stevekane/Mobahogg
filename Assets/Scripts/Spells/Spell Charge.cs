@@ -2,7 +2,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class SpellCharge : MonoBehaviour {
-  [SerializeField] Spell Spell;
+  public Spell SpellPreab;
 
   void Start() {
     SpellFlowerManager.Active.SpellCharges.Add(this);
@@ -20,7 +20,7 @@ public class SpellCharge : MonoBehaviour {
       position.y = Mathf.CeilToInt(position.y);
       rigidbody.isKinematic = true;
     } else if (other.TryGetComponent(out SpellCollector collector)) {
-      if (collector.TryCollect(Spell)) {
+      if (collector.TryCollect(SpellPreab)) {
         Destroy(gameObject);
       }
     }
