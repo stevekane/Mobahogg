@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // N.B. Owner reference is volatile. Don't forget to check
-public class FireballSpell : Spell {
+public class FireSpell : Spell {
   [SerializeField] GameObject FireballPrefab;
 
   GameObject FireballInstance;

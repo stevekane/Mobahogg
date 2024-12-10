@@ -10,11 +10,6 @@ public class SpellCastAbility : MonoBehaviour {
   [SerializeField] Animator Animator;
   [SerializeField] LocalClock LocalClock;
 
-  /*
-  Remove the first spell.
-  Could color the spell charges to verify the behavior is correct
-  */
-
   int Frame;
 
   void Awake() {

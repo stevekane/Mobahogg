@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2936631149846173898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6805018600111259960}
+  - component: {fileID: -4930965651544694728}
+  - component: {fileID: -3430863795634221194}
+  m_Layer: 0
+  m_Name: Water Spell
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6805018600111259960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936631149846173898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7507299, y: 18.038809, z: -34.529564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-4930965651544694728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936631149846173898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35484a074ed3fea4c877976372b31f14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpellStaffChargePrefab: {fileID: 8135008453134902453, guid: 38eae478a9e61064ab60c901f15430b9, type: 3}
+  WaterBallPrefab: {fileID: 5361970549713510377, guid: b4af83cc570066540b85583904faf278, type: 3}
+  BlizzardPrefab: {fileID: 6179352667459640958, guid: c6087d1f1f67cac45864c55cff3c1c9e, type: 3}
+  LocalClock: {fileID: -3430863795634221194}
+  Delta: {x: 0, y: 5, z: 10}
+  TravelFrames: 60
+  BlizzardFrames: 300
+--- !u!114 &-3430863795634221194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936631149846173898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

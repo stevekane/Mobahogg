@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 
 public class SpellStaff : MonoBehaviour {
-  [SerializeField] GameObject SpellStaffCharge;
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] List<Transform> SpellChargeLocations;
 
@@ -12,7 +11,7 @@ public class SpellStaff : MonoBehaviour {
   void AddSpell(Spell spell) {
     var index = SpellHolder.SpellQueue.Count-1;
     var owner = SpellChargeLocations[index];
-    var staffCharge = Instantiate(SpellStaffCharge, owner);
+    var staffCharge = Instantiate(spell.SpellStaffChargePrefab, owner);
     SpellCharges.Enqueue(staffCharge);
   }
 
