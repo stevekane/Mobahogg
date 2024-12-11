@@ -6,6 +6,7 @@ public class WaterSpell : Spell {
   [SerializeField] GameObject WaterBallPrefab;
   [SerializeField] GameObject WaterBallExplosionPrefab;
   [SerializeField] GameObject BlizzardPrefab;
+  [SerializeField] GameObject CloudPrefab;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Vector3 Delta = new(0, 5, 10);
   [SerializeField] int TravelFrames = 60;
@@ -28,7 +29,8 @@ public class WaterSpell : Spell {
     }
     Destroy(waterBall.gameObject);
     Instantiate(WaterBallExplosionPrefab, end, Quaternion.identity, transform);
-    Instantiate(BlizzardPrefab, end + 10*Vector3.up, Quaternion.identity, transform);
+    Instantiate(BlizzardPrefab, end, Quaternion.identity, transform);
+    Instantiate(CloudPrefab, end, Quaternion.identity, transform);
     await Tasks.DelayWith(BlizzardFrames, LocalClock, token);
     Destroy(gameObject);
   }

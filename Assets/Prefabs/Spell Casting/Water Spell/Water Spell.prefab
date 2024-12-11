@@ -49,8 +49,9 @@ MonoBehaviour:
   WaterBallPrefab: {fileID: 5361970549713510377, guid: b4af83cc570066540b85583904faf278, type: 3}
   WaterBallExplosionPrefab: {fileID: 8675524183408365156, guid: e4b57ad63e945904f94694ee8f096064, type: 3}
   BlizzardPrefab: {fileID: 6179352667459640958, guid: c6087d1f1f67cac45864c55cff3c1c9e, type: 3}
+  CloudPrefab: {fileID: 3509371114665690665, guid: a6d9ba8d4c4593e4da5f26039b5c68af, type: 3}
   LocalClock: {fileID: -3430863795634221194}
-  Delta: {x: 0, y: 5, z: 10}
+  Delta: {x: 0, y: 10, z: 10}
   TravelFrames: 60
   BlizzardFrames: 300
 --- !u!114 &-3430863795634221194
