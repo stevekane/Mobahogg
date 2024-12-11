@@ -5,6 +5,6 @@ public class LocalClockSpinner : MonoBehaviour {
   [SerializeField] float DegreesPerSecond = 360;
 
   void FixedUpdate() {
-    transform.Rotate(Vector3.up, Clock.DeltaTime() * DegreesPerSecond);
+    transform.Rotate(transform.up, Clock.DeltaTime() * DegreesPerSecond);
   }
 }
