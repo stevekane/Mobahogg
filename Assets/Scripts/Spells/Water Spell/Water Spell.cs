@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaterSpell : Spell {
   [SerializeField] GameObject WaterBallPrefab;
+  [SerializeField] GameObject WaterBallExplosionPrefab;
   [SerializeField] GameObject BlizzardPrefab;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Vector3 Delta = new(0, 5, 10);
@@ -26,7 +27,8 @@ public class WaterSpell : Spell {
       await Tasks.DelayWith(1, LocalClock, token);
     }
     Destroy(waterBall.gameObject);
-    Instantiate(BlizzardPrefab, end, Quaternion.identity, transform);
+    Instantiate(WaterBallExplosionPrefab, end, Quaternion.identity, transform);
+    Instantiate(BlizzardPrefab, end + 10*Vector3.up, Quaternion.identity, transform);
     await Tasks.DelayWith(BlizzardFrames, LocalClock, token);
     Destroy(gameObject);
   }

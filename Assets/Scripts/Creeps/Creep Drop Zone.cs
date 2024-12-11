@@ -11,7 +11,6 @@ public class CreepDropZone : MonoBehaviour {
 
   public void EnqueueToConsume(DeadCreep deadCreep) {
     var position = transform.TransformPoint(2 * Random.onUnitSphere);
-    Debug.Log(position);
     deadCreep.State = DeadCreepState.PreConsume;
     deadCreep.Owner = null;
     deadCreep.Destination = position;
