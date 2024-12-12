@@ -34,7 +34,7 @@ public class SpellFlower : MonoBehaviour {
     Open = true;
     Animator.SetTrigger("Open");
     // AudioManager.Instance.PlaySoundWithCooldown(OpenAudioClip);
-    await Tasks.DelayWith(OpenDuration, LocalClock, token);
+    await Tasks.Delay(OpenDuration, LocalClock, token);
     Destroy(gameObject);
   }
 

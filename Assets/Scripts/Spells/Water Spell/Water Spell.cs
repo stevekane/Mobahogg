@@ -25,13 +25,13 @@ public class WaterSpell : Spell {
       var rb = waterBall.GetComponent<Rigidbody>();
       var position = Vector3.Lerp(start, end, (float)i / travelFramesF);
       rb.MovePosition(position);
-      await Tasks.DelayWith(1, LocalClock, token);
+      await Tasks.Delay(1, LocalClock, token);
     }
     Destroy(waterBall.gameObject);
     Instantiate(WaterBallExplosionPrefab, end, Quaternion.identity, transform);
     Instantiate(BlizzardPrefab, end, Quaternion.identity, transform);
     Instantiate(CloudPrefab, end, Quaternion.identity, transform);
-    await Tasks.DelayWith(BlizzardFrames, LocalClock, token);
+    await Tasks.Delay(BlizzardFrames, LocalClock, token);
     Destroy(gameObject);
   }
 }

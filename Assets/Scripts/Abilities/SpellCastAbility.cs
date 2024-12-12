@@ -32,7 +32,7 @@ public class SpellCastAbility : MonoBehaviour {
       // this feels odd?
       // At the least, having to call ElementAt and ALSO Dequeue is quite strange
       var spellPrefab = SpellHolder.SpellQueue.ElementAt(0);
-      var position = transform.position + transform.forward;
+      var position = transform.position + transform.forward + transform.up;
       var rotation = transform.rotation;
       var spell = Instantiate(spellPrefab);
       spell.Cast(position, rotation, Player);

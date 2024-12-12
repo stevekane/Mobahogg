@@ -1,8 +1,9 @@
 using UnityEngine;
 
 public class LocalClockSpinner : MonoBehaviour {
+  public float DegreesPerSecond = 360;
+
   [SerializeField] LocalClock Clock;
-  [SerializeField] float DegreesPerSecond = 360;
 
   void FixedUpdate() {
     transform.Rotate(transform.up, Clock.DeltaTime() * DegreesPerSecond);

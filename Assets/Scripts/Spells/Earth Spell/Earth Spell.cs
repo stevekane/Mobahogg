@@ -46,7 +46,7 @@ public class EarthSpell : Spell {
   }
 
   async UniTask Run(Vector3 start, Vector3 end, CancellationToken token) {
-    var earthBall = Instantiate(EarthBallPrefab, start, Quaternion.identity, transform);
+    var earthBall = Instantiate(EarthBallPrefab, start, Quaternion.LookRotation(end-start), transform);
     var travelFramesF = (float)TravelFrames;
     var direction = (end-start).normalized;
     var deposits = TravelDistance / Density;
@@ -94,7 +94,7 @@ public class EarthSpell : Spell {
         }
       }
       rb.MovePosition(position);
-      await Tasks.DelayWith(1, LocalClock, token);
+      await Tasks.Delay(1, LocalClock, token);
     }
     // Destroy ball
     Destroy(earthBall.gameObject);
@@ -102,7 +102,7 @@ public class EarthSpell : Spell {
     Rocks.ForEach(s => s.SetActive(false));
     Spikes.ForEach(s => s.SetActive(true));
     Spikes.ForEach(s => Instantiate(RockSprayPrefab, s.transform.position, s.transform.rotation, transform));
-    await Tasks.DelayWith(LingerFrames, LocalClock, token);
+    await Tasks.Delay(LingerFrames, LocalClock, token);
     // Clean up
     Destroy(gameObject);
   }
