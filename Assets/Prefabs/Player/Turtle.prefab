@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2927453885365952350, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 56e12f8b73d5f2b4fb4b0b5f9b15d79a, type: 2}
     - target: {fileID: 7760936782829562045, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Turtle
       objectReference: {fileID: 0}
     - target: {fileID: 9139747016867494336, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_LocalPosition.x

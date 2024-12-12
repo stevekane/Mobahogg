@@ -49,8 +49,4 @@ public class SpellHolder : AbstractState {
     NextSpellQueue.Clear();
     CurrentSpellQueueSize = NextSpellQueueSize;
   }
-
-  void OnDrawGizmosSelected() {
-    Debug.Log($"{CurrentSpellQueue.Count} spells in queue");
-  }
 }

@@ -10,7 +10,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1215187046419096498, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
       propertyPath: m_Name
-      value: Respawn Pod
+      value: Respawn Pod Turtles
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179280699337153240, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179280699337153240, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179280699337153240, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179280699337153240, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5331734417647352499, guid: 87a4967568a256541ac1fb5a26983f1d, type: 3}
       propertyPath: m_LocalPosition.x

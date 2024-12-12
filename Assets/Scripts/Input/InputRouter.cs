@@ -75,6 +75,7 @@ public class InputPort {
   }
 }
 
+[DefaultExecutionOrder((int)ExecutionGroups.Input)]
 public class InputRouter : SingletonBehavior<InputRouter> {
   public static int MAX_PORT_COUNT = 8;
 
@@ -145,6 +146,7 @@ public class InputRouter : SingletonBehavior<InputRouter> {
       var v = a.ReadValue<Vector2>();
       v = v.magnitude > StickDeadZone ? v : default;
       InputPorts[portIndex].TrySetValue(ctx.action.name, v);
+      Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {v}");
     }
   }
 

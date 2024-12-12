@@ -36,9 +36,10 @@ public static class Tasks {
   Func<float,float> easingFunction,
   Action<float> action,
   CancellationToken token) {
-    await Tasks.EveryFrame(frames, localClock, frame => action(Mathf.Lerp(start, end, easingFunction((float)frame/frames))), token);
+    await EveryFrame(frames, localClock, frame => action(Mathf.Lerp(start, end, easingFunction((float)frame/frames))), token);
   }
 
+  // This runs in LOCAL space of the moving object. Maybe make this flexible / optional?
   public static async UniTask MoveBy(
   Transform t,
   Vector3 destination,
@@ -51,7 +52,7 @@ public static class Tasks {
     var localToWorldMatrix = t.localToWorldMatrix;
     var start = Vector3.zero;
     var end = destination;
-    await Tasks.EveryFrame(frames, clock, frame => {
+    await EveryFrame(frames, clock, frame => {
       var x = Mathf.Lerp(start.x, end.x, xEasing((float)frame/frames));
       var y = Mathf.Lerp(start.y, end.y, yEasing((float)frame/frames));
       var z = Mathf.Lerp(start.z, end.z, zEasing((float)frame/frames));
@@ -110,7 +111,10 @@ public static class Tasks {
     }
   }
 
-  public static async UniTask DoEveryFrameForDuration(float duration, Action<float, float> action, CancellationToken token) {
+  public static async UniTask DoEveryFrameForDuration(
+  float duration,
+  Action<float, float> action,
+  CancellationToken token) {
     float elapsed = 0f;
     while (elapsed < duration) {
       elapsed += Time.deltaTime;
