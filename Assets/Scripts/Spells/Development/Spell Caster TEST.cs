@@ -8,19 +8,21 @@ public class SpellCasterTEST : MonoBehaviour {
   [SerializeField] WaterSpell WaterSpell;
 
   void Start() {
-    InputRouter.Instance.TryListen("Move", PortIndex, HandleTurn);
-    InputRouter.Instance.TryListen("Spin", PortIndex, HandleEarth);
-    InputRouter.Instance.TryListen("Cast Spell", PortIndex, HandleFire);
-    InputRouter.Instance.TryListen("Jump", PortIndex, HandleAir);
-    InputRouter.Instance.TryListen("Attack", PortIndex, HandleWater);
+    Debug.Log("TEST CASTER START");
+    InputRouter.Instance?.TryListen("Move", PortIndex, HandleTurn);
+    InputRouter.Instance?.TryListen("Spin", PortIndex, HandleEarth);
+    InputRouter.Instance?.TryListen("Cast Spell", PortIndex, HandleFire);
+    InputRouter.Instance?.TryListen("Jump", PortIndex, HandleAir);
+    InputRouter.Instance?.TryListen("Attack", PortIndex, HandleWater);
   }
 
   void OnDestroy() {
-    InputRouter.Instance.TryUnlisten("Move", PortIndex, HandleTurn);
-    InputRouter.Instance.TryUnlisten("Spin", PortIndex, HandleEarth);
-    InputRouter.Instance.TryUnlisten("Cast Spell", PortIndex, HandleFire);
-    InputRouter.Instance.TryUnlisten("Jump", PortIndex, HandleAir);
-    InputRouter.Instance.TryUnlisten("Attack", PortIndex, HandleWater);
+    Debug.Log("TEST CASTER DESTROY");
+    InputRouter.Instance?.TryUnlisten("Move", PortIndex, HandleTurn);
+    InputRouter.Instance?.TryUnlisten("Spin", PortIndex, HandleEarth);
+    InputRouter.Instance?.TryUnlisten("Cast Spell", PortIndex, HandleFire);
+    InputRouter.Instance?.TryUnlisten("Jump", PortIndex, HandleAir);
+    InputRouter.Instance?.TryUnlisten("Attack", PortIndex, HandleWater);
   }
 
   public void HandleEarth(PortAction action) {

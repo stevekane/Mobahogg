@@ -14,19 +14,26 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   [Header("Match State")]
   public int BattleIndex;
   public List<ActivePlayer> Players;
-  public List<TeamState> Teams;
 
-  [Header("Configuration")]
-  [SerializeField] SceneAsset[] BattleScreens;
-  [SerializeField] Timeval PregameDuration = Timeval.FromSeconds(3);
+  [Header("Battle State")]
+  public List<TeamState> Teams;
 
   [Header("References")]
   [SerializeField] PreBattleOverlay PreBattleOverlay;
   [SerializeField] PostBattleOverlay PostBattleOverlay;
 
-  SceneAsset CurrentBattleScreen => BattleScreens[BattleIndex + BattleScreens.Length / 2];
+  string CurrentBattleScreen =>
+    MatchConfig
+      ? MatchConfig.SceneName(BattleIndex + MatchConfig.BattleCount / 2)
+      : null;
 
-  EventSource<IEnumerable<PotentialPlayer>> OnStartMatch = new();
+  MatchConfig MatchConfig;
+
+  // TODO: This is really hacky way to "check for this". This whole class
+  // should get rewritten to be more evented and far less stupid than it currently is.
+  public bool IsActiveMatch => MatchConfig != null;
+
+  EventSource OnStartMatch = new();
 
   public void SetLives(TeamType teamType, int count) {
     Teams.Where(t => t.HasType(teamType)).ForEach(t => t.LivesRemaining = count);
@@ -40,8 +47,11 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     Teams.Where(t => t.HasType(teamType)).ForEach(t => t.KilledByGolem = true);
   }
 
-  public void StartMatch(IEnumerable<PotentialPlayer> potentialPlayers) {
-    OnStartMatch.Fire(potentialPlayers);
+  public void StartMatch(IEnumerable<PotentialPlayer> potentialPlayers, MatchConfig matchConfig) {
+    MatchConfig = matchConfig;
+    BattleIndex = matchConfig.StartingBattleIndex;
+    Players = potentialPlayers.Select(ActivePlayer.From).ToList();
+    OnStartMatch.Fire();
   }
 
   protected override async void AwakeSingleton() {
@@ -54,11 +64,11 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     CancellationTokenSource matchTokenSource = null;
     try {
       while (true) {
-        var potentialPlayers = await Tasks.ListenFor(OnStartMatch, token);
+        await Tasks.ListenFor(OnStartMatch, token);
         matchTokenSource?.Cancel();
         matchTokenSource?.Dispose();
         matchTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
-        RunMatch(potentialPlayers, matchTokenSource.Token).Forget();
+        RunMatch(matchTokenSource.Token).Forget();
       }
     } finally {
       matchTokenSource?.Cancel();
@@ -66,10 +76,10 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     }
   }
 
-  async UniTask<MatchResult> RunMatch(IEnumerable<PotentialPlayer> potentialPlayers, CancellationToken token) {
+  async UniTask<MatchResult> RunMatch(CancellationToken token) {
     BattleResult battleResult = null;
     MatchResult matchResult = null;
-    await PreMatch(potentialPlayers, token);
+    await PreMatch(token);
     do {
       battleResult = await RunBattle(token);
       BattleIndex = battleResult.Winner switch {
@@ -83,15 +93,17 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     return matchResult;
   }
 
-  async UniTask PreMatch(IEnumerable<PotentialPlayer> potentialPlayers, CancellationToken token) {
+  async UniTask PreMatch(CancellationToken token) {
     Debug.Log("Pre Match");
-    Players = potentialPlayers.Select(ActivePlayer.From).ToList();
     await UniTask.NextFrame(token);
   }
 
   async UniTask PostMatch(MatchResult result, CancellationToken token) {
     Debug.Log($"Post Match {result}");
     await UniTask.NextFrame(token);
+    if (MatchConfig.RepeatMatch) {
+      OnStartMatch.Fire();
+    }
   }
 
   // TODO: Check conditions sync and end immediately otherwise wait till next frame?
@@ -110,12 +122,12 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   async UniTask PreBattle(CancellationToken token) {
     try {
       Debug.Log("Pre Battle");
-      await SceneManager.LoadSceneAsync(CurrentBattleScreen.name);
+      await SceneManager.LoadSceneAsync(CurrentBattleScreen);
       PreBattleOverlay.gameObject.SetActive(true);
-      PreBattleOverlay.SetName(CurrentBattleScreen.name);
-      PreBattleOverlay.SetBattleIndex(BattleIndex, max: 2);
-      PreBattleOverlay.SetCountdown(Mathf.RoundToInt(PregameDuration.Seconds));
-      var duration = PregameDuration.Seconds;
+      PreBattleOverlay.SetName(CurrentBattleScreen);
+      PreBattleOverlay.SetBattleIndex(BattleIndex, max: MatchConfig.BattleCount / 2);
+      PreBattleOverlay.SetCountdown(Mathf.RoundToInt(MatchConfig.PreBattleDuration.Seconds));
+      var duration = MatchConfig.PreBattleDuration.Seconds;
       void UpdateCountdown(float dt, float elapsed) => PreBattleOverlay.SetCountdown(duration-elapsed);
       await Tasks.DoEveryFrameForDuration(duration, UpdateCountdown, token);
     } finally {
@@ -128,7 +140,7 @@ public class MatchManager : SingletonBehavior<MatchManager> {
       Debug.Log($"Post Battle {result}");
       PostBattleOverlay.gameObject.SetActive(true);
       PostBattleOverlay.SetWinner(result.ToString());
-      await UniTask.Delay(3000);
+      await UniTask.Delay(MatchConfig.PostBattleDuration.Ticks);
     } finally {
       PostBattleOverlay.gameObject.SetActive(false);
     }

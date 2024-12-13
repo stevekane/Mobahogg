@@ -32,6 +32,7 @@ public static class Names {
 
 public class MatchSetup : MonoBehaviour {
   [SerializeField] List<MatchSetupPlayerGridCard> PlayerGridCards;
+  [SerializeField] MatchConfig MatchConfig;
 
   List<PotentialPlayer> Players;
 
@@ -115,7 +116,7 @@ public class MatchSetup : MonoBehaviour {
     };
     PlayerGridCards[index].Render(player);
     if (Players.TrueForAll(p => p.State == PotentialPlayerState.Ready || p.State == PotentialPlayerState.Disconnected)) {
-      MatchManager.Instance.StartMatch(Players.Where(p => p.State == PotentialPlayerState.Ready));
+      MatchManager.Instance.StartMatch(Players.Where(p => p.State == PotentialPlayerState.Ready), MatchConfig);
     }
   }
 

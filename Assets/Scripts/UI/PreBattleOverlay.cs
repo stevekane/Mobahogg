@@ -16,9 +16,15 @@ public class PreBattleOverlay : MonoBehaviour {
   }
 
   // N.B. This index is -Max -> Max since that more naturally expresses which team is winning
-  public void SetBattleIndex(int index, int max) {
+  public void SetBattleIndex(int activeBattleIndex, int max) {
+    // Set active for all cells based on max
     for (var i = 0; i < BattleFieldMapCells.Length; i++) {
-      BattleFieldMapCells[i].color = i == index+max ? Color.white : Color.gray;
+      var battleIndex = i-max;
+      BattleFieldMapCells[i].gameObject.SetActive(Mathf.Abs(battleIndex) <= max);
+    }
+    // Color the cells
+    for (var i = 0; i < BattleFieldMapCells.Length; i++) {
+      BattleFieldMapCells[i].color = i == activeBattleIndex+max ? Color.white : Color.gray;
     }
   }
 }

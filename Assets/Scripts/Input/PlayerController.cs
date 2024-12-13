@@ -6,21 +6,21 @@ public class PlayerController : MonoBehaviour {
   public int PortIndex;
 
   void Start() {
-    InputRouter.Instance.TryListen("Move", PortIndex, HandleMove);
-    InputRouter.Instance.TryListen("Jump", PortIndex, HandleJump);
-    InputRouter.Instance.TryListen("Dash", PortIndex, HandleDash);
-    InputRouter.Instance.TryListen("Attack", PortIndex, HandleAttack);
-    InputRouter.Instance.TryListen("Cast Spell", PortIndex, HandleCastSpell);
-    InputRouter.Instance.TryListen("Spin", PortIndex, HandleSpin);
+    InputRouter.Instance?.TryListen("Move", PortIndex, HandleMove);
+    InputRouter.Instance?.TryListen("Jump", PortIndex, HandleJump);
+    InputRouter.Instance?.TryListen("Dash", PortIndex, HandleDash);
+    InputRouter.Instance?.TryListen("Attack", PortIndex, HandleAttack);
+    InputRouter.Instance?.TryListen("Cast Spell", PortIndex, HandleCastSpell);
+    InputRouter.Instance?.TryListen("Spin", PortIndex, HandleSpin);
   }
 
   void OnDestroy() {
-    InputRouter.Instance.TryUnlisten("Move", PortIndex, HandleMove);
-    InputRouter.Instance.TryUnlisten("Jump", PortIndex, HandleJump);
-    InputRouter.Instance.TryUnlisten("Dash", PortIndex, HandleDash);
-    InputRouter.Instance.TryUnlisten("Attack", PortIndex, HandleAttack);
-    InputRouter.Instance.TryUnlisten("Cast Spell", PortIndex, HandleCastSpell);
-    InputRouter.Instance.TryUnlisten("Spin", PortIndex, HandleSpin);
+    InputRouter.Instance?.TryUnlisten("Move", PortIndex, HandleMove);
+    InputRouter.Instance?.TryUnlisten("Jump", PortIndex, HandleJump);
+    InputRouter.Instance?.TryUnlisten("Dash", PortIndex, HandleDash);
+    InputRouter.Instance?.TryUnlisten("Attack", PortIndex, HandleAttack);
+    InputRouter.Instance?.TryUnlisten("Cast Spell", PortIndex, HandleCastSpell);
+    InputRouter.Instance?.TryUnlisten("Spin", PortIndex, HandleSpin);
   }
 
   IEnumerable<Player> PlayersOnPort =>

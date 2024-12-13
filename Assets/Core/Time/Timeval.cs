@@ -3,7 +3,7 @@ using UnityEngine;
 
 [Serializable]
 public class Timeval {
-  public static int FixedUpdatePerSecond = 60;
+  public static int FixedUpdatePerSecond = GameManager.FIXED_FPS;
   public static int TickCount = 0;
 
   [SerializeField] public float Millis = 1;

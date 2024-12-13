@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using State;
-using UnityEngine;
 
 public class SpellHolder : AbstractState {
   public static int MAX_SPELL_QUEUE_SIZE = 3;

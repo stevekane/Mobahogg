@@ -1,9 +1,11 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBehavior<GameManager> {
+  public static string TEST_BATTLE_FLAG_NAME = "Test_Battle";
   public static string BOOT_SCENE_NAME = "Boot";
+  public static string TITLE_SCENE_NAME = "TitleScreen";
+  public static string MATCH_LAUNCHER_SCENE_NAME = "MatchLauncher";
   static public int FIXED_FPS = 60;
   static public int FPS = 60;
 
@@ -15,22 +17,12 @@ public class GameManager : SingletonBehavior<GameManager> {
     // Consider what this might mean for how to do this "properly"
     Application.targetFrameRate = FPS;
     Time.fixedDeltaTime = 1f/FIXED_FPS;
+    #if UNITY_EDITOR
+    var openScene = SceneManager.GetActiveScene().name;
     SceneManager.LoadScene(BOOT_SCENE_NAME);
-  }
-
-  [Header("Scenes")]
-  [SerializeField] SceneAsset FirstScene;
-  [SerializeField] bool LoadFakeMatch;
-
-  void Start() {
-    if (LoadFakeMatch) {
-      var players = new PotentialPlayer[2] {
-        new PotentialPlayer { Name = "Alice", Team = true, State = PotentialPlayerState.Ready },
-        new PotentialPlayer { Name = "Bob", Team = false, State = PotentialPlayerState.Ready }
-      };
-      MatchManager.Instance.StartMatch(players);
-    } else {
-      SceneManager.LoadScene(FirstScene.name);
-    }
+    SceneManager.LoadScene(openScene);
+    #else
+    SceneManager.LoadScene(FIRST_SCENE_NAME);
+    #endif
   }
 }
