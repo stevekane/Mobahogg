@@ -22,11 +22,17 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   [SerializeField] PreBattleOverlay PreBattleOverlay;
   [SerializeField] PostBattleOverlay PostBattleOverlay;
 
+  int MaxBattleIndex =>
+    MatchConfig
+      ? MatchConfig.BattleSceneNames.Length / 2
+      : 0;
   string CurrentBattleScreen =>
     MatchConfig
       ? MatchConfig.SceneName(BattleIndex + MatchConfig.BattleCount / 2)
       : null;
 
+  // Mactch configuration
+  IEnumerable<PotentialPlayer> PotentialPlayers;
   MatchConfig MatchConfig;
 
   // TODO: This is really hacky way to "check for this". This whole class
@@ -48,9 +54,10 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   }
 
   public void StartMatch(IEnumerable<PotentialPlayer> potentialPlayers, MatchConfig matchConfig) {
+    PotentialPlayers = potentialPlayers;
     MatchConfig = matchConfig;
     BattleIndex = matchConfig.StartingBattleIndex;
-    Players = potentialPlayers.Select(ActivePlayer.From).ToList();
+    Players = PotentialPlayers.Select(ActivePlayer.From).ToList();
     OnStartMatch.Fire();
   }
 
@@ -94,15 +101,15 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   }
 
   async UniTask PreMatch(CancellationToken token) {
-    Debug.Log("Pre Match");
     await UniTask.NextFrame(token);
   }
 
   async UniTask PostMatch(MatchResult result, CancellationToken token) {
-    Debug.Log($"Post Match {result}");
     await UniTask.NextFrame(token);
+    // Kind of a hacky way to try to restart the match for quick testing...
     if (MatchConfig.RepeatMatch) {
-      OnStartMatch.Fire();
+      Debug.Log("Calling Start match for repeat reasons");
+      StartMatch(PotentialPlayers, MatchConfig);
     }
   }
 
@@ -121,7 +128,6 @@ public class MatchManager : SingletonBehavior<MatchManager> {
 
   async UniTask PreBattle(CancellationToken token) {
     try {
-      Debug.Log("Pre Battle");
       await SceneManager.LoadSceneAsync(CurrentBattleScreen);
       PreBattleOverlay.gameObject.SetActive(true);
       PreBattleOverlay.SetName(CurrentBattleScreen);
@@ -137,10 +143,9 @@ public class MatchManager : SingletonBehavior<MatchManager> {
 
   async UniTask PostBattle(BattleResult result, CancellationToken token) {
     try {
-      Debug.Log($"Post Battle {result}");
       PostBattleOverlay.gameObject.SetActive(true);
       PostBattleOverlay.SetWinner(result.ToString());
-      await UniTask.Delay(MatchConfig.PostBattleDuration.Ticks);
+      await UniTask.DelayFrame(MatchConfig.PostBattleDuration.Ticks, delayTiming: PlayerLoopTiming.FixedUpdate, cancellationToken: token);
     } finally {
       PostBattleOverlay.gameObject.SetActive(false);
     }
@@ -164,11 +169,11 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   }
 
   MatchResult CheckMatchWinningConditions() {
-    return BattleIndex switch {
-      < -2 => new MatchResult { WinningTeamType = TeamType.Turtles },
-      > 2 => new MatchResult { WinningTeamType = TeamType.Robots },
-      _ => null
-    };
+    return BattleIndex <= -MaxBattleIndex
+      ? new MatchResult { WinningTeamType = TeamType.Turtles }
+      : BattleIndex >= MaxBattleIndex
+        ? new MatchResult { WinningTeamType = TeamType.Robots }
+        : null;
   }
 }
 

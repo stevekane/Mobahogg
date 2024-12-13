@@ -1383,7 +1383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &830113839
 Transform:
   m_ObjectHideFlags: 0
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PreBattleDuration:
-    Millis: 3000
+    Millis: 0
   PostBattleDuration:
     Millis: 3000
 --- !u!4 &880772740 stripped
@@ -3202,6 +3202,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 830113839}
   - {fileID: 467934632}
   - {fileID: 421562605}
   - {fileID: 804580359}
@@ -3210,4 +3211,3 @@ SceneRoots:
   - {fileID: 1701442461}
   - {fileID: 628578577}
   - {fileID: 132361522}
-  - {fileID: 830113839}

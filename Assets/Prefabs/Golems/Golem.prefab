@@ -183,7 +183,7 @@ MonoBehaviour:
   FramesOfPursuit: 600
   MaxAngleForMovement: 5
   TurnSpeed: 360
-  MoveSpeed: 1
+  MoveSpeed: 10
 --- !u!114 &1644414499652508572
 MonoBehaviour:
   m_ObjectHideFlags: 0
