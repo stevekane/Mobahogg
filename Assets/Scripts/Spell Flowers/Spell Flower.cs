@@ -39,7 +39,7 @@ public class SpellFlower : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (!Open && Health.Value <= 0) {
+    if (!Open && Health.CurrentValue <= 0) {
       SpellFlowerManager.Active.OnFlowerOpen(this);
       OnOpen(this.destroyCancellationToken).Forget();
     }

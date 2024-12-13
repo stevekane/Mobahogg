@@ -61,6 +61,8 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     OnStartMatch.Fire();
   }
 
+  // TODO: This throws an error when application shuts down. Not sure it matters
+  // but perhaps it indicates a subtle issue in understanding.
   protected override async void AwakeSingleton() {
     await Messages(this.destroyCancellationToken);
   }

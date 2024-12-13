@@ -22,7 +22,7 @@ public class Creep : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (!LocalClock.Frozen() && Health.Value <= 0) {
+    if (!LocalClock.Frozen() && Health.CurrentValue <= 0) {
       CreepManager.Active.OnCreepDeath(this, LastAttacker);
     }
   }

@@ -16,6 +16,8 @@ public class Player : MonoBehaviour {
   [SerializeField] Animator Animator;
   [SerializeField] Health Health;
 
+  // TODO: Would it make sense to use the already-available "name" property Unity has?
+  public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public AttackAbility AttackAbility;
   public SpinAbility SpinAbility;
   public SpellCastAbility SpellCastAbility;
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (!LocalClock.Frozen() && Health.Value <= 0) {
+    if (!LocalClock.Frozen() && Health.CurrentValue <= 0) {
       LivesManager.Active.OnPlayerDeath(this);
     }
   }

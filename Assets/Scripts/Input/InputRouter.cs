@@ -114,19 +114,22 @@ public class InputRouter : SingletonBehavior<InputRouter> {
       foreach (var action in actionMap.actions) {
         if (action.type != InputActionType.Value) {
           action.performed += OnButtonAction;
-        } else {
-          action.performed += OnValueAction;
-          action.canceled += OnValueAction;
         }
       }
     }
   }
 
+  /*
+  Somehow, we need to track inputs from multiple controllers in a sensible way.
+  Possibly look at how it's done in the old Vapor Game?
+  */
   void FixedUpdate() {
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
         if (action.type == InputActionType.Value) {
           for (var i = 0; i < InputPorts.Length; i++) {
+            // TODO: Read value from each device here
+            InputPorts[i].TrySetValue(action.name, action.ReadValue<Vector2>());
             InputPorts[i].TrySend(action.name);
           }
         }
@@ -136,19 +139,20 @@ public class InputRouter : SingletonBehavior<InputRouter> {
 
   void OnButtonAction(InputAction.CallbackContext ctx) {
     if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
+      Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {ctx.action.name}");
       InputPorts[portIndex].TrySend(ctx.action.name);
     }
   }
 
-  void OnValueAction(InputAction.CallbackContext ctx) {
-    if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
-      var a = Inputs.FindAction(ctx.action.name);
-      var v = a.ReadValue<Vector2>();
-      v = v.magnitude > StickDeadZone ? v : default;
-      InputPorts[portIndex].TrySetValue(ctx.action.name, v);
-      Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {v}");
-    }
-  }
+  // void OnValueAction(InputAction.CallbackContext ctx) {
+  //   if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
+  //     var a = Inputs.FindAction(ctx.action.name);
+  //     var v = a.ReadValue<Vector2>();
+  //     v = v.magnitude > StickDeadZone ? v : default;
+  //     InputPorts[portIndex].TrySetValue(ctx.action.name, v);
+  //     Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {v}");
+  //   }
+  // }
 
   // scan the ports checking for the first that isn't occupied
   // TODO: This will not add the device at all if every port is occupied... maybe not desired
