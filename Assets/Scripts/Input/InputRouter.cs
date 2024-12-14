@@ -114,6 +114,8 @@ public class InputRouter : SingletonBehavior<InputRouter> {
       foreach (var action in actionMap.actions) {
         if (action.type != InputActionType.Value) {
           action.performed += OnButtonAction;
+        } else if (action.type == InputActionType.Value) {
+
         }
       }
     }
@@ -127,6 +129,12 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
         if (action.type == InputActionType.Value) {
+          foreach (var control in action.controls) {
+            if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
+              // var value = action.ReadValue<Vector2>(device);
+            }
+          }
+
           for (var i = 0; i < InputPorts.Length; i++) {
             // TODO: Read value from each device here
             InputPorts[i].TrySetValue(action.name, action.ReadValue<Vector2>());
