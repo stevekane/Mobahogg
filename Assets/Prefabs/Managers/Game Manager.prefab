@@ -81,7 +81,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4122808805077543598
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f3ae0964c928e40946ba9682380126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowDebug: 0
+  ShowDebug: 1
   StickDeadZone: 0.125
 --- !u!1 &775946101672713982
 GameObject:
@@ -190,7 +190,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4986956846316922466
@@ -352,17 +352,8 @@ MonoBehaviour:
   BattleIndex: 0
   Players: []
   Teams: []
-  BattleScreens:
-  - {fileID: 102900000, guid: b61fb2549374cfe479411f5aa17fd54e, type: 3}
-  - {fileID: 102900000, guid: b61fb2549374cfe479411f5aa17fd54e, type: 3}
-  - {fileID: 102900000, guid: b61fb2549374cfe479411f5aa17fd54e, type: 3}
-  - {fileID: 102900000, guid: b61fb2549374cfe479411f5aa17fd54e, type: 3}
-  - {fileID: 102900000, guid: b61fb2549374cfe479411f5aa17fd54e, type: 3}
-  PregameDuration:
-    Millis: 3000
   PreBattleOverlay: {fileID: 1492880650126238717}
   PostBattleOverlay: {fileID: 1238301045836176325}
-  ALWAYS_RELOAD: 0
 --- !u!1 &2455305733867200550
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,9 +579,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundMusic: {fileID: 0}
+  SoundCooldown: 0.05
   MusicSource: {fileID: 4573573527663126273}
   SoundSource: {fileID: 274998427430004593}
-  SoundCooldown: 0.05
 --- !u!1 &3865125652414957134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,7 +1365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6090450452424235079
@@ -1612,8 +1603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f450ccf6d605eab4fb851b38808ae2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirstScene: {fileID: 102900000, guid: 9c7850cabf174004f946cecdf435dc27, type: 3}
-  LoadFakeMatch: 0
 --- !u!1 &8432661548332636793
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,7 +2044,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6774414278252412918

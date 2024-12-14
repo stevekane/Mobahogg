@@ -64,6 +64,17 @@ public class InputPort {
     }
   }
 
+  public bool TryGetValue(string actionName, out Vector2 value) {
+    var action = Inputs.FindAction(actionName);
+    if (Values.ContainsKey(action)) {
+      value = Values[action];
+      return true;
+    } else {
+      value = default;
+      return false;
+    }
+  }
+
   public bool TrySend(string actionName) {
     var action = Inputs.FindAction(actionName);
     if (Pushed.TryGetValue(action, out EventSource<PortAction> source)) {
@@ -112,33 +123,29 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     }
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
-        if (action.type != InputActionType.Value) {
+        var myAction = Inputs.FindAction(action.name);
+        if (myAction.type == InputActionType.Button) {
           action.performed += OnButtonAction;
-        } else if (action.type == InputActionType.Value) {
-
+        } else {
+          foreach (var control in myAction.controls) {
+            Debug.Log($"{action.name} found associated with device {control.device.deviceId}");
+          }
         }
       }
     }
   }
 
-  /*
-  Somehow, we need to track inputs from multiple controllers in a sensible way.
-  Possibly look at how it's done in the old Vapor Game?
-  */
+  // Send values once per frame... maybe?
   void FixedUpdate() {
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
         if (action.type == InputActionType.Value) {
           foreach (var control in action.controls) {
             if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
-              // var value = action.ReadValue<Vector2>(device);
+              var value = (Vector2)control.ReadValueAsObject();
+              InputPorts[portIndex].TrySetValue(action.name, value);
+              InputPorts[portIndex].TrySend(action.name);
             }
-          }
-
-          for (var i = 0; i < InputPorts.Length; i++) {
-            // TODO: Read value from each device here
-            InputPorts[i].TrySetValue(action.name, action.ReadValue<Vector2>());
-            InputPorts[i].TrySend(action.name);
           }
         }
       }
@@ -147,20 +154,9 @@ public class InputRouter : SingletonBehavior<InputRouter> {
 
   void OnButtonAction(InputAction.CallbackContext ctx) {
     if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
-      Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {ctx.action.name}");
       InputPorts[portIndex].TrySend(ctx.action.name);
     }
   }
-
-  // void OnValueAction(InputAction.CallbackContext ctx) {
-  //   if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
-  //     var a = Inputs.FindAction(ctx.action.name);
-  //     var v = a.ReadValue<Vector2>();
-  //     v = v.magnitude > StickDeadZone ? v : default;
-  //     InputPorts[portIndex].TrySetValue(ctx.action.name, v);
-  //     Debug.Log($"FRAME:{Time.frameCount} FIXED:{TimeManager.Instance.FixedFrame()} {ctx.control.device} value {v}");
-  //   }
-  // }
 
   // scan the ports checking for the first that isn't occupied
   // TODO: This will not add the device at all if every port is occupied... maybe not desired
@@ -206,7 +202,11 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     GUILayout.BeginVertical("box");
     GUILayout.Label("Device to Port Map:");
     foreach (var kvp in DeviceToPortMap) {
+      var portIndex = kvp.Value;
       GUILayout.Label($"Port {kvp.Value}: {kvp.Key.displayName} ({kvp.Key.deviceId})");
+      if (InputPorts[portIndex].TryGetValue("Move", out var value)) {
+        GUILayout.Label($"\tMove {value})");
+      }
     }
     GUILayout.EndVertical();
   }
