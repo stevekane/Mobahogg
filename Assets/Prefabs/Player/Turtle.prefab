@@ -300,6 +300,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turtle
       objectReference: {fileID: 0}
+    - target: {fileID: 7909639373944858235, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 8080500432809139459, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
