@@ -112,7 +112,6 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     }
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
-        if (action.type == InputActionType.)
         if (action.type != InputActionType.Value) {
           action.performed += OnButtonAction;
         } else if (action.type == InputActionType.Value) {
