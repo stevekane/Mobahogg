@@ -1204,7 +1204,7 @@ MonoBehaviour:
   Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   CharacterController: {fileID: 3542533184097295049}
   LocalClock: {fileID: 988945814378296752}
-  Animator: {fileID: 0}
+  Animator: {fileID: 4075815647026140715}
   Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}
   SpinAbility: {fileID: 7493328923366163232}

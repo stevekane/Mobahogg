@@ -382,34 +382,6 @@
                     "isPartOfComposite": false
                 }
             ]
-        },
-        {
-            "name": "BUFFER",
-            "id": "5ba9c34d-2ba5-4f65-b0e7-3ccc9c56b701",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "a79eff81-a6ac-45aa-a54e-9137b59f6668",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "7a4dc2de-99ea-4935-9929-09875d23be3f",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
         }
     ],
     "controlSchemes": [

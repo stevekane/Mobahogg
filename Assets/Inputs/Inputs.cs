@@ -404,34 +404,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""BUFFER"",
-            ""id"": ""5ba9c34d-2ba5-4f65-b0e7-3ccc9c56b701"",
-            ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""a79eff81-a6ac-45aa-a54e-9137b59f6668"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""7a4dc2de-99ea-4935-9929-09875d23be3f"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -462,9 +434,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         // Test
         m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
         m_Test_Test = m_Test.FindAction("Test", throwIfNotFound: true);
-        // BUFFER
-        m_BUFFER = asset.FindActionMap("BUFFER", throwIfNotFound: true);
-        m_BUFFER_Newaction = m_BUFFER.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@Inputs()
@@ -473,7 +442,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_TitleScreen.enabled, "This will cause a leak and performance issues, Inputs.TitleScreen.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_MatchSetup.enabled, "This will cause a leak and performance issues, Inputs.MatchSetup.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Test.enabled, "This will cause a leak and performance issues, Inputs.Test.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_BUFFER.enabled, "This will cause a leak and performance issues, Inputs.BUFFER.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -779,52 +747,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         }
     }
     public TestActions @Test => new TestActions(this);
-
-    // BUFFER
-    private readonly InputActionMap m_BUFFER;
-    private List<IBUFFERActions> m_BUFFERActionsCallbackInterfaces = new List<IBUFFERActions>();
-    private readonly InputAction m_BUFFER_Newaction;
-    public struct BUFFERActions
-    {
-        private @Inputs m_Wrapper;
-        public BUFFERActions(@Inputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_BUFFER_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_BUFFER; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(BUFFERActions set) { return set.Get(); }
-        public void AddCallbacks(IBUFFERActions instance)
-        {
-            if (instance == null || m_Wrapper.m_BUFFERActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_BUFFERActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
-        }
-
-        private void UnregisterCallbacks(IBUFFERActions instance)
-        {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
-        }
-
-        public void RemoveCallbacks(IBUFFERActions instance)
-        {
-            if (m_Wrapper.m_BUFFERActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IBUFFERActions instance)
-        {
-            foreach (var item in m_Wrapper.m_BUFFERActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_BUFFERActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public BUFFERActions @BUFFER => new BUFFERActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -857,9 +779,5 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     public interface ITestActions
     {
         void OnTest(InputAction.CallbackContext context);
-    }
-    public interface IBUFFERActions
-    {
-        void OnNewaction(InputAction.CallbackContext context);
     }
 }
