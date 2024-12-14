@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2242912633529634348, guid: 23ce52e19d7309f45af82efec31e9f8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2356609047591340200, guid: 23ce52e19d7309f45af82efec31e9f8c, type: 3}
       propertyPath: m_Name
       value: Golem Attractor Kill Turtles
