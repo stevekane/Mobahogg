@@ -56,8 +56,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1507988426077526115}
   - component: {fileID: 1563920336793990102}
-  - component: {fileID: 2301109101856093421}
+  - component: {fileID: 4338497250253402903}
   - component: {fileID: 1871566482669820744}
+  - component: {fileID: 9201510557991558497}
   m_Layer: 7
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -93,28 +94,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Combatant: {fileID: 4867644372670552702}
-  Collider: {fileID: 2301109101856093421}
---- !u!135 &2301109101856093421
-SphereCollider:
+  Collider: {fileID: 0}
+--- !u!114 &4338497250253402903
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4121835395612132702}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 1, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed0c820d559a3d46a9f9711d8999957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 4386271687128637325}
 --- !u!54 &1871566482669820744
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -142,6 +135,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &9201510557991558497
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4121835395612132702}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4386271687128637325
 GameObject:
   m_ObjectHideFlags: 0

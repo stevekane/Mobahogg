@@ -11,8 +11,8 @@ public class AbilitySettings : ScriptableObject {
   [Header("Move")]
   public float GroundMoveSpeed = 5;
   public float AirSpeedDecayFactor = 0.25f;
-  public float AirMoveSpeed(Vector3 velocity) =>
-    GroundMoveSpeed * Mathf.Exp(-AirSpeedDecayFactor*velocity.XZ().magnitude);
+  public float AirMoveSpeed(float groundSpeed) =>
+    Mathf.Exp(-AirSpeedDecayFactor*groundSpeed);
 
   [Header("Jump")]
   float JumpHeight = 2;

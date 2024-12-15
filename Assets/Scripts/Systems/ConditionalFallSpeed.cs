@@ -9,6 +9,6 @@ public class ConditionalFallSpeed : MonoBehaviour {
   [SerializeField] FallSpeed FallSpeed;
 
   void FixedUpdate() {
-    FallSpeed.Set(Settings.GravityFactor(CharacterController.PhysicsVelocity) * Physics.gravity.y);
+    FallSpeed.Set(Settings.GravityFactor(CharacterController.Velocity) * Physics.gravity.y);
   }
 }

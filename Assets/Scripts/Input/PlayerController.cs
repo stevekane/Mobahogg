@@ -26,7 +26,10 @@ public class PlayerController : MonoBehaviour {
   IEnumerable<Player> PlayersOnPort =>
     LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
 
-  public void HandleMove(PortAction action) => PlayersOnPort.ForEach(p => p.TryMove(action.Value));
+  public void HandleMove(PortAction action) {
+    PlayersOnPort.ForEach(p => p.MoveAbility.TryRun(action.Value));
+    PlayersOnPort.ForEach(p => p.TurnAbility.TryRun(action.Value));
+  }
 
   public void HandleJump(PortAction action) => PlayersOnPort.ForEach(p => p.TryJump());
 

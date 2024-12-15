@@ -159,9 +159,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3819775648488176637}
+  - component: {fileID: 1857411986770491689}
+  - component: {fileID: 4128773286275973863}
   - component: {fileID: 738729566027829612}
   - component: {fileID: 3665951881694665802}
-  - component: {fileID: 1857411986770491689}
   m_Layer: 7
   m_Name: Hurt Box
   m_TagString: Untagged
@@ -184,6 +185,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5122815404004266545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1857411986770491689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323854207461201266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce0c9e24a5611d40b8628b31748e2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 1554700379096458506}
+  Collider: {fileID: 738729566027829612}
+--- !u!114 &4128773286275973863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323854207461201266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed0c820d559a3d46a9f9711d8999957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 1556140678386049670}
 --- !u!135 &738729566027829612
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -232,20 +260,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1857411986770491689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4323854207461201266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce0c9e24a5611d40b8628b31748e2d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Combatant: {fileID: 1554700379096458506}
-  Collider: {fileID: 738729566027829612}
 --- !u!1001 &6020937343895814824
 PrefabInstance:
   m_ObjectHideFlags: 0

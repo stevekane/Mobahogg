@@ -21,7 +21,8 @@ public class Player : MonoBehaviour {
   public AttackAbility AttackAbility;
   public SpinAbility SpinAbility;
   public SpellCastAbility SpellCastAbility;
-  public float MoveSpeed;
+  public MoveAbility MoveAbility;
+  public TurnAbility TurnAbility;
   public int PortIndex;
 
   void OnHurt(Combatant attacker) {
@@ -30,7 +31,6 @@ public class Player : MonoBehaviour {
 
   void Start() {
     LivesManager.Active.Players.AddFirst(this);
-    MoveSpeed = Settings.GroundMoveSpeed;
   }
 
   void OnDestroy() {
@@ -42,9 +42,6 @@ public class Player : MonoBehaviour {
       LivesManager.Active.OnPlayerDeath(this);
     }
   }
-
-  Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
-    Mathf.Min(v.magnitude, maxMagnitude) * v.normalized;
 
   #region JUMP
   public bool CanJump() => CharacterController.IsGrounded;
@@ -62,26 +59,9 @@ public class Player : MonoBehaviour {
   }
   #endregion
 
-  #region MOVE
-  public bool CanMove() => true;
-  public bool TryMove(Vector2 value) {
-    if (CanMove()) {
-      var currentVelocity = CharacterController.PhysicsVelocity.XZ();
-      var desiredVelocity = MoveSpeed * value.XZ().normalized;
-      var maxMoveSpeed = CharacterController.IsGrounded
-        ? Settings.GroundMoveSpeed
-        : Settings.AirMoveSpeed(CharacterController.PhysicsVelocity);
-      var targetVelocity = (desiredVelocity-currentVelocity).XZ();
-      var steeringVelocity = TruncateByMagnitude(targetVelocity, maxMoveSpeed);
-      CharacterController.PhysicsAcceleration += steeringVelocity / Time.fixedDeltaTime;
-      CharacterController.Forward = desiredVelocity.magnitude > 0 ? desiredVelocity : CharacterController.Forward;
-      return true;
-    } else {
-      return false;
-    }
-  }
-  #endregion
-
+  // TODO: Could move to library?
+  Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
+    Mathf.Min(v.magnitude, maxMagnitude) * v.normalized;
   #region DASH
   int DashFramesRemaining;
   CancellationTokenSource DashCancelTokenSource;
@@ -115,12 +95,12 @@ public class Player : MonoBehaviour {
       var dt = Time.fixedDeltaTime;
       var dashSpeed = Settings.DashSpeed(dt);
       while (DashFramesRemaining-- > 0) {
-        var currentVelocity = CharacterController.PhysicsVelocity;
+        var currentVelocity = CharacterController.Velocity;
         var desiredVelocity = dashSpeed * CharacterController.Forward;
         var targetVelocity = (desiredVelocity-currentVelocity).XZ();
         var maxMoveSpeed = dashSpeed;
         var nextVelocity = TruncateByMagnitude(targetVelocity, maxMoveSpeed);
-        CharacterController.PhysicsAcceleration += 1/dt * nextVelocity;
+        CharacterController.Acceleration += 1/dt * nextVelocity;
         await UniTask.NextFrame(token);
       }
     } finally {

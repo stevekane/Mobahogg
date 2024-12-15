@@ -1,12 +1,22 @@
+using AimAssist;
+using State;
 using UnityEngine;
 
 public class AttackAbility : MonoBehaviour {
-  [SerializeField] KCharacterController CharacterController;
-  [SerializeField] Player Player;
+  [Header("Reads From")]
+  [SerializeField] AimAssistTargeter AimAssistTargeter;
   [SerializeField] AbilitySettings Settings;
-  [SerializeField] Animator Animator;
+  [SerializeField] AimAssistQuery AimAssistQuery;
+  [SerializeField] Player Player;
   [SerializeField] LocalClock LocalClock;
+  [SerializeField] float ForwardMotion = 1;
+
+  [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
+  [SerializeField] Animator Animator;
+  [SerializeField] MoveSpeed MoveSpeed;
+  [SerializeField] TurnSpeed TurnSpeed;
+  [SerializeField] KCharacterController CharacterController;
 
   int Frame;
 
@@ -16,14 +26,24 @@ public class AttackAbility : MonoBehaviour {
   }
 
   public bool IsRunning => Frame < Settings.TotalAttackFrames;
+  public bool IsWindup => Frame >= 0 && Frame < Settings.ActiveStartFrame;
+  public bool IsActive => Frame >= Settings.ActiveStartFrame && Frame < Settings.ActiveEndFrame;
+  public int WindupFrames => Settings.ActiveStartFrame;
 
   public bool CanRun
     => CharacterController.IsGrounded
     && !Player.IsDashing()
-    && (Frame < Settings.WindupAttackFrames || Frame >= Settings.TotalAttackFrames);
+    && (Frame < Settings.WindupAttackFrames || Frame >= Settings.TotalAttackFrames)
+    && !LocalClock.Frozen();
 
   public bool TryRun() {
     if (CanRun) {
+      var bestTarget = AimAssistManager.Instance.BestTarget(AimAssistTargeter, AimAssistQuery);
+      if (bestTarget) {
+        var delta = bestTarget.transform.position-transform.position;
+        var direction = delta.normalized;
+        CharacterController.Forward = direction;
+      }
       Animator.SetTrigger("Attack");
       Frame = 0;
       return true;
@@ -37,7 +57,18 @@ public class AttackAbility : MonoBehaviour {
   }
 
   void FixedUpdate() {
+    if (!IsRunning)
+      return;
+    Hitbox.CollisionEnabled = IsActive;
+    MoveSpeed.Set(0);
+    TurnSpeed.Set(0);
+    if (IsWindup) {
+      var speed = ForwardMotion / (WindupFrames * Time.fixedDeltaTime);
+      Debug.Log($"Setting Speed {speed}");
+      CharacterController.Velocity = speed * CharacterController.Forward;
+    } else {
+      CharacterController.Velocity = Vector3.zero;
+    }
     Frame = Mathf.Min(Settings.TotalAttackFrames, Frame+LocalClock.DeltaFrames());
-    Hitbox.CollisionEnabled = Frame >= Settings.ActiveStartFrame && Frame < Settings.ActiveEndFrame;
   }
 }

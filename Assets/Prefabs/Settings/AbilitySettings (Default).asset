@@ -18,7 +18,7 @@ MonoBehaviour:
   AirSpeedDecayFactor: 0.25
   DashTotalFrames: 6
   DashTotalDistance: 2
-  WindupAttackFrames: 12
+  WindupAttackFrames: 6
   ActiveAttackFrames: 3
   RecoveryAttackFrames: 12
   TotalSpinFrames: 60

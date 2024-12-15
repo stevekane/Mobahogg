@@ -11,6 +11,6 @@ public class Gravity : MonoBehaviour {
   void FixedUpdate() {
     if (!LocalGravity.Value)
       return;
-    CharacterController.PhysicsAcceleration.y += FallSpeed.Value;
+    CharacterController.Acceleration.y += FallSpeed.Value;
   }
 }

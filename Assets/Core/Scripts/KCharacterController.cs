@@ -5,11 +5,25 @@ using System;
 [RequireComponent(typeof(KinematicCharacterMotor))]
 [DefaultExecutionOrder(-101)] // Runs right before PhysicsSystem
 public class KCharacterController : MonoBehaviour, ICharacterController {
-  public Vector3 PhysicsAcceleration;
-  public Vector3 PhysicsVelocity;
+  [SerializeField] LocalClock LocalClock;
+
+
+  public Vector3 Acceleration;
+  public Vector3 Velocity;
 
   public Action<HitStabilityReport> OnCollision;
   public Action<HitStabilityReport> OnLedge;
+
+  /*
+  I think just like other stateful systems, we want to control the update order here.
+  We also want to control the double-buffering of the writable values including
+  Forward
+  Position
+  Rotation
+  Velocity
+  Acceleration
+  UnGrounded
+  */
 
   public KinematicCharacterMotor Motor;
 
@@ -19,8 +33,8 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
 
   public void Launch(Vector3 acceleration) {
     Unground();
-    PhysicsVelocity.y = 0;
-    PhysicsAcceleration += acceleration;
+    Velocity.y = 0;
+    Acceleration += acceleration;
   }
 
   public Vector3 Position {
@@ -59,10 +73,11 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float dt) {
-    PhysicsVelocity += dt * PhysicsAcceleration;
-    PhysicsVelocity.y = (IsGrounded && PhysicsVelocity.y < 0) ? 0 : PhysicsVelocity.y;
-    currentVelocity = PhysicsVelocity;
-    PhysicsAcceleration = Vector3.zero;
+    var localDeltaTime = LocalClock.Frozen() ? 0 : dt;
+    Velocity += localDeltaTime * Acceleration;
+    Velocity.y = (IsGrounded && Velocity.y < 0) ? 0 : Velocity.y;
+    Acceleration = Vector3.zero;
+    currentVelocity = LocalClock.Frozen() ? Vector3.zero : Velocity;
   }
 
   public void AfterCharacterUpdate(float deltaTime) {
