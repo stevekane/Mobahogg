@@ -23,6 +23,16 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance?.TryUnlisten("Spin", PortIndex, HandleSpin);
   }
 
+  // TODO:
+  // This is sort of a hack for now to send MoveEvents for any player controller
+  // That does not have an active connected device
+  // Think of this like a poor-man's AI
+  void FixedUpdate() {
+    if (InputRouter.Instance.HasConnectedDevice(PortIndex))
+      return;
+    PlayersOnPort.ForEach(p => p.MoveAbility.TryRun(Vector2.zero));
+  }
+
   IEnumerable<Player> PlayersOnPort =>
     LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
 

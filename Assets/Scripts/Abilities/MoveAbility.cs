@@ -15,6 +15,7 @@ public class MoveAbility : MonoBehaviour {
   public bool CanRun()
     => MoveSpeed.Value > 0
     && !LocalClock.Frozen();
+
   public bool TryRun(Vector2 value) {
     if (CanRun()) {
       var currentVelocity = CharacterController.Velocity.XZ();
