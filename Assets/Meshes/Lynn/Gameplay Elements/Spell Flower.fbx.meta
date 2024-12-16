@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: c6630e332c88e2b4ea347541e8dc5de2
+guid: cafcd34f2e8595e4dba62abb5fedf0d1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaf
+    second: {fileID: 2100000, guid: 01a721923a7c52a4eb7dbc0dcf99055a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: dce758a5b885ff349a4de2dee4981bdd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
