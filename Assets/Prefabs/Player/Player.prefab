@@ -1458,6 +1458,7 @@ GameObject:
   - component: {fileID: 8946980519217053265}
   - component: {fileID: 306565525089974642}
   - component: {fileID: 978821676424060464}
+  - component: {fileID: 8300348243121620764}
   - component: {fileID: 4075815647026140715}
   m_Layer: 0
   m_Name: Player
@@ -1552,11 +1553,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitFlinchName: Hit Flinch
   HurtFlinchName: Hurt Flinch
+  Animator: {fileID: 4075815647026140715}
   Health: {fileID: 94004394668583191}
   HitStop: {fileID: 7551776237143256265}
   Knockback: {fileID: 527207892934507696}
+  Flash: {fileID: 8300348243121620764}
   Vibrator: {fileID: 978821676424060464}
-  Animator: {fileID: 4075815647026140715}
   OnHurt:
     m_PersistentCalls:
       m_Calls: []
@@ -1714,6 +1716,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 6821628318837372643}
   LocalClock: {fileID: 988945814378296752}
+--- !u!114 &8300348243121620764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6919ed33cf8baa4386e99747ed65d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererRoots:
+  - {fileID: 6821628318837372643}
+  - {fileID: 895960136487685972}
+  LocalClock: {fileID: 988945814378296752}
+  FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
 --- !u!95 &4075815647026140715
 Animator:
   serializedVersion: 7

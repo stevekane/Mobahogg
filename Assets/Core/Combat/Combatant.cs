@@ -10,6 +10,7 @@ public class Combatant : MonoBehaviour {
   [SerializeField] Health Health;
   [SerializeField] HitStop HitStop;
   [SerializeField] Knockback Knockback;
+  [SerializeField] Flash Flash;
   [SerializeField] Vibrator Vibrator;
   [SerializeField] UnityEvent<MeleeAttackEvent> OnHurt;
   [SerializeField] UnityEvent<MeleeAttackEvent> OnHit;
@@ -34,6 +35,8 @@ public class Combatant : MonoBehaviour {
       HitStop.FramesRemaining = meleeAttackEvent.Config.HitStopDuration.Ticks;
     if (Knockback)
       Knockback.Add(meleeAttackEvent.Knockback, meleeAttackEvent.KnockbackFrames);
+    if (Flash)
+      Flash.Set(meleeAttackEvent.Config.HitStopDuration.Ticks);
     if (Vibrator)
       Vibrator.Vibrate(
         meleeAttackEvent.ToVictim,
