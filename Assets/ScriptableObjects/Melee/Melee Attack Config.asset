@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: -1
   HitStopDuration:
-    Millis: 100
+    Millis: 150
   KnockbackDuration:
     Millis: 200
   KnockBackStrength: 400
+  VibrationAmplitude: 0.05
+  VibrationFrequency: 20

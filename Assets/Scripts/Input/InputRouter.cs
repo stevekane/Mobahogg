@@ -127,10 +127,6 @@ public class InputRouter : SingletonBehavior<InputRouter> {
         var myAction = Inputs.FindAction(action.name);
         if (myAction.type == InputActionType.Button) {
           action.performed += OnButtonAction;
-        } else {
-          foreach (var control in myAction.controls) {
-            Debug.Log($"{action.name} found associated with device {control.device.deviceId}");
-          }
         }
       }
     }
@@ -143,7 +139,9 @@ public class InputRouter : SingletonBehavior<InputRouter> {
         if (action.type == InputActionType.Value) {
           foreach (var control in action.controls) {
             if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
+              // TODO: I believe this allocates. ReadIntoBuffer seems to avoid it
               var value = (Vector2)control.ReadValueAsObject();
+              value = value.magnitude < StickDeadZone ? default : value;
               InputPorts[portIndex].TrySetValue(action.name, value);
               InputPorts[portIndex].TrySend(action.name);
             }

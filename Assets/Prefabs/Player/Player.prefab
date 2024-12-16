@@ -46,6 +46,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233802415540036917}
   m_CullTransparentMesh: 1
+--- !u!1 &1217977203557540929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6821628318837372643}
+  m_Layer: 0
+  m_Name: Model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6821628318837372643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217977203557540929}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9139747016867494336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1529338545694879980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1457,7 @@ GameObject:
   - component: {fileID: 2145952843222249182}
   - component: {fileID: 8946980519217053265}
   - component: {fileID: 306565525089974642}
+  - component: {fileID: 978821676424060464}
   - component: {fileID: 4075815647026140715}
   m_Layer: 0
   m_Name: Player
@@ -1455,6 +1487,7 @@ Transform:
   - {fileID: 895960136487685972}
   - {fileID: 3292955890552622805}
   - {fileID: 8962118446809299405}
+  - {fileID: 6821628318837372643}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &988945814378296752
@@ -1522,6 +1555,7 @@ MonoBehaviour:
   Health: {fileID: 94004394668583191}
   HitStop: {fileID: 7551776237143256265}
   Knockback: {fileID: 527207892934507696}
+  Vibrator: {fileID: 978821676424060464}
   Animator: {fileID: 4075815647026140715}
   OnHurt:
     m_PersistentCalls:
@@ -1666,6 +1700,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TeamType: 0
+--- !u!114 &978821676424060464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ac4748fe7ae9949967d4d80e08c40b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 6821628318837372643}
+  LocalClock: {fileID: 988945814378296752}
 --- !u!95 &4075815647026140715
 Animator:
   serializedVersion: 7
@@ -1933,6 +1981,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8286050532191162084}
     m_Modifications:
+    - target: {fileID: 1010469353794949301, guid: 46251c357a645f04c85bb9ee5cde4d37, type: 3}
+      propertyPath: m_Asset
+      value: 
+      objectReference: {fileID: 8926484042661614526, guid: a477cc5faf5246f4e9473fa965aed1b6, type: 3}
     - target: {fileID: 1010469353794949301, guid: 46251c357a645f04c85bb9ee5cde4d37, type: 3}
       propertyPath: m_InitialEventName
       value: 

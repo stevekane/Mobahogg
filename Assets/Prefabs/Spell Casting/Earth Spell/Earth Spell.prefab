@@ -51,10 +51,10 @@ MonoBehaviour:
   SpikePrefab: {fileID: 4996498879357762785, guid: ff7d34eb33a47c846beb8b46741e746d, type: 3}
   RockSprayPrefab: {fileID: 8494183708781325791, guid: e3b953b5cf1a62a4093a4068f9f1a1a1, type: 3}
   LocalClock: {fileID: -564473775087849227}
-  TravelDistance: 10
+  TravelDistance: 30
   TravelFrames: 120
   LingerFrames: 120
-  Density: 0.25
+  Density: 0.5
 --- !u!114 &-564473775087849227
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,9 @@ namespace Melee {
     public MeleeAttackConfig Config;
     public Combatant Attacker;
     public Combatant Victim;
-    public Vector3 KnockbackDirection =>
+    public Vector3 ToVictim =>
+      Attacker.transform.position - Victim.transform.position;
+    public Vector3 Knockback =>
       Config.KnockBackStrength * (Victim.transform.position - Attacker.transform.position).normalized;
     public int KnockbackFrames =>
       Config.KnockbackDuration.Ticks;

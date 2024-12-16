@@ -10,5 +10,7 @@ namespace Melee {
     [Header("Knockback")]
     public Timeval KnockbackDuration = Timeval.FromMillis(200);
     public float KnockBackStrength = 10;
+    public float VibrationAmplitude = 0.125f;
+    public float VibrationFrequency = 30;
   }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RisingGravityFactor: 4
   FallingGravityFactor: 8
-  GroundMoveSpeed: 5
+  GroundMoveSpeed: 10
   AirSpeedDecayFactor: 0.25
   DashTotalFrames: 6
   DashTotalDistance: 2
