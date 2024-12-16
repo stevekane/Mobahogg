@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: -1
   HitStopDuration:
-    Millis: 150
+    Millis: 250
   KnockbackDuration:
     Millis: 200
   KnockBackStrength: 400
