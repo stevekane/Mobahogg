@@ -25,8 +25,8 @@ public class AirSpell : Spell {
       LocalClock,
       TravelFrames,
       EasingFunctions.Linear,
-      EasingFunctions.EaseOutQuint,
       EasingFunctions.EaseInQuint,
+      EasingFunctions.EaseOutQuint,
       token);
     var spinUp = Tasks.Tween(
       MinSpinSpeed,
