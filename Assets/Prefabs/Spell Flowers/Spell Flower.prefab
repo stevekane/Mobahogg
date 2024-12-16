@@ -70,10 +70,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitStopFrames: 4
   HitFlinchName: 
   HurtFlinchName: 
+  Health: {fileID: 5713830838292507878}
   HitStop: {fileID: 1302685244887154213}
+  Knockback: {fileID: 0}
   Animator: {fileID: 7199647156013182808}
 --- !u!114 &1302685244887154213
 MonoBehaviour:

@@ -1,8 +1,10 @@
+using Melee;
 using UnityEngine;
 
 public class Hitbox : MonoBehaviour {
   [SerializeField] Combatant Combatant;
   [SerializeField] Collider Collider;
+  [SerializeField] MeleeAttackConfig MeleeAttackConfig;
 
   public Combatant Owner => Combatant;
 
@@ -13,8 +15,13 @@ public class Hitbox : MonoBehaviour {
 
   void OnTriggerEnter(Collider c) {
     if (c.TryGetComponent(out Hurtbox hurtbox) && hurtbox.Owner != Owner) {
-      Owner.SendMessage("OnHit", hurtbox.Owner, SendMessageOptions.DontRequireReceiver);
-      hurtbox.Owner.SendMessage("OnHurt", Owner, SendMessageOptions.DontRequireReceiver);
+      var attackEvent = new MeleeAttackEvent {
+        Config = MeleeAttackConfig,
+        Attacker = Owner,
+        Victim = hurtbox.Owner
+      };
+      Owner.Hit(attackEvent);
+      hurtbox.Owner.Hurt(attackEvent);
     }
   }
 }

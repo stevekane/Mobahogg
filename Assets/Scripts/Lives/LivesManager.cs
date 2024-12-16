@@ -30,15 +30,14 @@ public class LivesManager : MonoBehaviour {
     playerCreepOwner.Creeps.ForEach(c => c.State = DeadCreepState.Free);
     playerCreepOwner.Creeps.ForEach(c => c.Owner = null);
     Destroy(victim.gameObject);
-    TryStartRespawnFromPod(playerTeam.TeamType, victim.PortIndex);
+    TryStartRespawnFromPod(playerTeam.TeamType, RespawnFrameDelay, victim.PortIndex);
   }
 
   // Called to begin spawning process from a pod
-  public void TryStartRespawnFromPod(TeamType teamType, int portIndex) {
+  public void TryStartRespawnFromPod(TeamType teamType, int frameDelay, int portIndex) {
     var pod = UsablePodForTeam(teamType);
-    Debug.Log($"{pod} found for connected player {MatchManager.Instance.Players[portIndex].Name}on port {portIndex}");
     if (pod) {
-      pod.StartRespawn(RespawnFrameDelay, portIndex);
+      pod.StartRespawn(frameDelay, portIndex);
     }
   }
 
@@ -60,8 +59,7 @@ public class LivesManager : MonoBehaviour {
   // TODO: Doing this OnStart feels kinda stupid.
   // Probably should be some explicit sort of "OnBattle" or "OnPreBattle"
   void Start() {
-    Debug.Log($"{MatchManager.Instance.Players.Count} Players connected and should be spawned");
-    MatchManager.Instance.Players.ForEach((p,i) => TryStartRespawnFromPod(p.TeamType, i));
+    MatchManager.Instance.Players.ForEach((p,i) => TryStartRespawnFromPod(p.TeamType, 0, i));
   }
 
   void FixedUpdate() {

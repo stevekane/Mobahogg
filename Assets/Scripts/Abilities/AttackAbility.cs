@@ -1,6 +1,7 @@
 using AimAssist;
 using State;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class AttackAbility : MonoBehaviour {
   [Header("Reads From")]
@@ -17,6 +18,7 @@ public class AttackAbility : MonoBehaviour {
   [SerializeField] MoveSpeed MoveSpeed;
   [SerializeField] TurnSpeed TurnSpeed;
   [SerializeField] KCharacterController CharacterController;
+  [SerializeField] VisualEffect VisualEffect;
 
   int Frame;
 
@@ -45,6 +47,7 @@ public class AttackAbility : MonoBehaviour {
         CharacterController.Forward = direction;
       }
       Animator.SetTrigger("Attack");
+      VisualEffect.Play();
       Frame = 0;
       return true;
     } else {
@@ -64,7 +67,6 @@ public class AttackAbility : MonoBehaviour {
     TurnSpeed.Set(0);
     if (IsWindup) {
       var speed = ForwardMotion / (WindupFrames * Time.fixedDeltaTime);
-      Debug.Log($"Setting Speed {speed}");
       CharacterController.Velocity = speed * CharacterController.Forward;
     } else {
       CharacterController.Velocity = Vector3.zero;

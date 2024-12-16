@@ -21,10 +21,6 @@ public class SpellFlower : MonoBehaviour {
     SpellFlowerManager.Active.Flowers.Remove(this);
   }
 
-  void OnHurt(Combatant attacker) {
-    Health.Change(-1);
-  }
-
   [ContextMenu("Open")]
   void TestOpen() {
     OnOpen(this.destroyCancellationToken).Forget();

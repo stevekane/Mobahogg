@@ -100,15 +100,16 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   [SerializeField] bool ShowDebug;
 
   [Header("Configuration")]
-  [SerializeField] float StickDeadZone = .125f;
+  [SerializeField] float StickDeadZone = 0.125f;
 
-  public bool TryListen(string actionName, int portIndex, Action<PortAction> cb) {
-    return InputPorts[portIndex].TryListen(actionName, cb);
-  }
+  public bool HasConnectedDevice(int portIndex) =>
+    DeviceToPortMap.Values.Contains(portIndex);
 
-  public bool TryUnlisten(string actionName, int portIndex, Action<PortAction> cb) {
-    return InputPorts[portIndex].TryUnlisten(actionName, cb);
-  }
+  public bool TryListen(string actionName, int portIndex, Action<PortAction> cb) =>
+    InputPorts[portIndex].TryListen(actionName, cb);
+
+  public bool TryUnlisten(string actionName, int portIndex, Action<PortAction> cb) =>
+    InputPorts[portIndex].TryUnlisten(actionName, cb);
 
   bool ValidDevice(InputDevice device) => device is Gamepad;
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using State;
+using Melee;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Creep : MonoBehaviour {
@@ -8,17 +9,16 @@ public class Creep : MonoBehaviour {
 
   CreepOwner LastAttacker;
 
+  public void OnHurt(MeleeAttackEvent attackEvent) {
+    LastAttacker = attackEvent.Attacker.GetComponent<CreepOwner>();
+  }
+
   void Start() {
     CreepManager.Active.LivingCreeps.Add(this);
   }
 
   void OnDestroy() {
     CreepManager.Active.LivingCreeps.Remove(this);
-  }
-
-  void OnHurt(Combatant attacker) {
-    Health.Change(-1);
-    LastAttacker = attacker.GetComponent<CreepOwner>();
   }
 
   void FixedUpdate() {
