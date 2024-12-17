@@ -47,7 +47,7 @@ MonoBehaviour:
   SpellStaffChargePrefab: {fileID: 8308523887207664424, guid: 719f862b9ddb51d40aa98e136baada39, type: 3}
   FireballPrefab: {fileID: 70581433308528248, guid: fe1e6a560e342654db53a74a1aa91c69, type: 3}
   SpreadAngle: 45
-  Speed: 5
+  Speed: 15
   MinSpeedScale: 0.8
   MaxSpeedScale: 1
   Count: 7

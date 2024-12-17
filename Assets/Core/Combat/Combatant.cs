@@ -23,6 +23,7 @@ public class Combatant : MonoBehaviour {
     // TODO: Have some kind of attacker knockback?
     // if (Knockback)
     //  Knockback.Add(meleeAttackEvent.KnockbackDirection, meleeAttackEvent.KnockbackFrames);
+    CameraManager.Instance.Shake(meleeAttackEvent.Config.CameraShakeIntensity);
     OnHit?.Invoke(meleeAttackEvent);
   }
 
