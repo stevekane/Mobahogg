@@ -38,7 +38,7 @@ public class Player : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (!LocalClock.Frozen() && Health.CurrentValue <= 0) {
+    if (!LocalClock.Frozen() && (Health.CurrentValue <= 0 || transform.position.y <= -10)) {
       LivesManager.Active.OnPlayerDeath(this);
     }
   }
