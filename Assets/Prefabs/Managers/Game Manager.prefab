@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f3ae0964c928e40946ba9682380126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowDebug: 1
+  ShowDebug: 0
   StickDeadZone: 0.125
 --- !u!1 &775946101672713982
 GameObject:
