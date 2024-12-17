@@ -164,11 +164,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitStopFrames: 4
   HitFlinchName: 
   HurtFlinchName: 
-  HitStop: {fileID: 3882344225743725218}
   Animator: {fileID: 0}
+  Health: {fileID: 0}
+  HitStop: {fileID: 3882344225743725218}
+  Knockback: {fileID: 0}
+  Flash: {fileID: 0}
+  Vibrator: {fileID: 0}
+  OnHurt:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2949947159812517617}
+        m_TargetAssemblyTypeName: GolemAttractor, Assembly-CSharp
+        m_MethodName: OnHurt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3882344225743725218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +226,7 @@ GameObject:
   - component: {fileID: 8987951356623010749}
   - component: {fileID: 6614252842905638520}
   - component: {fileID: 7807416527116630482}
+  - component: {fileID: 4153480812289453140}
   - component: {fileID: 1863899086473139187}
   m_Layer: 7
   m_Name: HurtBox
@@ -263,6 +285,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Combatant: {fileID: 753689784302649128}
   Collider: {fileID: 6614252842905638520}
+--- !u!114 &4153480812289453140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2801346473473433946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed0c820d559a3d46a9f9711d8999957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 2356609047591340200}
 --- !u!54 &1863899086473139187
 Rigidbody:
   m_ObjectHideFlags: 0

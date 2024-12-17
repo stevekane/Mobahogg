@@ -29,12 +29,14 @@ public class Golem : MonoBehaviour {
       var dt = LocalClock.DeltaTime();
       var delta = CurrentAttractor.transform.position-transform.position;
       var desiredDirection = delta.normalized;
-      var desiredRotation = Quaternion.LookRotation(desiredDirection);
-      var angleFromDesiredHeading = Vector3.Angle(transform.forward, desiredDirection);
-      var moveSpeed = angleFromDesiredHeading <= MaxAngleForMovement ? MoveSpeed : 0;
-      var nextPosition = Vector3.MoveTowards(transform.position, CurrentAttractor.transform.position, dt * moveSpeed);
-      var nextRotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, dt * TurnSpeed);
-      Rigidbody.Move(nextPosition, nextRotation);
+      if (delta.magnitude > 0) {
+        var angleFromDesiredHeading = Vector3.Angle(transform.forward, desiredDirection);
+        var moveSpeed = angleFromDesiredHeading <= MaxAngleForMovement ? MoveSpeed : 0;
+        var nextPosition = Vector3.MoveTowards(transform.position, CurrentAttractor.transform.position, dt * moveSpeed);
+        var desiredRotation = Quaternion.LookRotation(desiredDirection);
+        var nextRotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, dt * TurnSpeed);
+        Rigidbody.Move(nextPosition, nextRotation);
+      }
       PursuitFramesRemaining = Mathf.Max(0, PursuitFramesRemaining-df);
     } else {
       CurrentAttractor = null;

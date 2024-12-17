@@ -1,3 +1,4 @@
+using Melee;
 using State;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class GolemAttractor : MonoBehaviour {
   public BoxCollider ZoneCollider;
   public Collider BellCollider;
 
-  void OnHurt(Combatant attacker) {
+  public void OnHurt(MeleeAttackEvent attackEvent) {
     GolemManager.Active.AlertGolemsTo(this);
   }
 
