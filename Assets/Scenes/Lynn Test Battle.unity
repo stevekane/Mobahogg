@@ -1699,11 +1699,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
   m_PrefabInstance: {fileID: 278255722}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &284166701 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 1033461212}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &294492686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3909,11 +3904,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8000710587882087634, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
   m_PrefabInstance: {fileID: 637898056}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &643615358 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 7832724541123541330}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &647154384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 81e7b4532dc239f408d45821e3eacf4e, type: 3}
@@ -4175,63 +4165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PortIndex: 2
---- !u!1001 &744060811
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!1001 &763531194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5629,63 +5562,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8000710587882087634, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
   m_PrefabInstance: {fileID: 1027816211}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1033461212
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!1 &1036304794 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7861369402025419032, guid: 23d0424b00352034a9db098204dedadc, type: 3}
@@ -6143,7 +6019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1181073219
 Transform:
   m_ObjectHideFlags: 0
@@ -6157,12 +6033,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 643615358}
-  - {fileID: 1644008969}
-  - {fileID: 284166701}
-  - {fileID: 1478648418}
-  - {fileID: 1218473583}
-  - {fileID: 1574260002}
   - {fileID: 1188569542}
   m_Father: {fileID: 467934632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6178,11 +6048,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6382cc72df4152419fb68fae144f01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SpellDescriptions: {fileID: 11400000, guid: 4d234f7f56eee424c930de68d8bfe024, type: 2}
+  PollenPrefab: {fileID: 437143226844866735, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
   SproutPrefab: {fileID: 5706908931577266517, guid: e3243ebcaaa6a37468daaeca784f2942, type: 3}
   FlowerPrefab: {fileID: 357578967424604775, guid: 152fda37f8ad0be4c8f12e9fa8db18e9, type: 3}
   SpellChargesPerFlower: 3
   SpellChargeLaunchStrength: 30
-  SpellDescriptions: {fileID: 11400000, guid: 4d234f7f56eee424c930de68d8bfe024, type: 2}
+  MaxLivingPlants: 6
+  PollenSpawnHeight: 25
+  PollenSpawnCooldown:
+    Millis: 3000
   PlantingZones: []
   Pollens: []
   Sprouts: []
@@ -6366,11 +6241,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81e7b4532dc239f408d45821e3eacf4e, type: 3}
---- !u!4 &1218473583 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 1516228303}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1238288036
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7527,73 +7397,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d1a5986c02adff4cba7be9b561100f0, type: 3}
---- !u!4 &1478648418 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 744060811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1487139333 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9a8cd0d15e447da479c4a85b17323548, type: 3}
   m_PrefabInstance: {fileID: 1821378117}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1516228303
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!1001 &1517766360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7798,11 +7606,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 81e7b4532dc239f408d45821e3eacf4e, type: 3}
   m_PrefabInstance: {fileID: 692244036}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1574260002 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 2009288677}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1589424381
 PrefabInstance:
@@ -8096,11 +7899,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3d1a5986c02adff4cba7be9b561100f0, type: 3}
   m_PrefabInstance: {fileID: 1469912164}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1644008969 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-  m_PrefabInstance: {fileID: 1823341703}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1648454228
 PrefabInstance:
@@ -8921,63 +8719,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a8cd0d15e447da479c4a85b17323548, type: 3}
---- !u!1001 &1823341703
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!1001 &1840687023
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9503,63 +9244,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abaa481346a6c7b46b0e14e16207140e, type: 3}
---- !u!1001 &2009288677
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -11
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!4 &2039314219 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9a8cd0d15e447da479c4a85b17323548, type: 3}
@@ -10152,63 +9836,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
---- !u!1001 &7832724541123541330
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1181073219}
-    m_Modifications:
-    - target: {fileID: 2508221502282257890, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_Name
-      value: Spell Flower Pollen
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226832241806146089, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
