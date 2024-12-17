@@ -10,6 +10,7 @@ public class CreepManager : MonoBehaviour {
   [SerializeField] DeadCreep DeadCreepPrefab;
   [SerializeField] int MAX_LIVING_CREEPS = 15;
   [SerializeField] int CREEP_SPAWN_FRAME_INTERVAL = 300;
+
   public List<Creep> LivingCreeps = new(128);
 
   int FramesTillNextSpawn;
@@ -23,22 +24,28 @@ public class CreepManager : MonoBehaviour {
   // Not sure though because this still does create some link between an element
   // of the Creep system and the combat system... maybe not avoidable?
   // They would have to communicate via some data after all...
+  // Additional consideration, eventually damage is dealt through spells
+  // as well. therefore using a meleeAttack is unlikely to be the right approach
   public void OnOwnerDeath(CreepOwner creepOwner) {
     var lastAttacker = creepOwner.GetComponent<Combatant>().LastAttacker;
     if (lastAttacker) {
       var newOwner = lastAttacker.GetComponent<CreepOwner>();
-      creepOwner.Creeps.ForEach(newOwner.Creeps.Add);
-    } else {
-      creepOwner.Creeps.ForEach(c => Destroy(c.gameObject));
+      for (var i = creepOwner.DeadCreeps.Count-1; i >= 0; i--) {
+        var deadCreep = creepOwner.DeadCreeps[i];
+        if (newOwner.TryPossess(deadCreep)) {
+          creepOwner.DeadCreeps.RemoveAt(i);
+        }
+      }
     }
-    creepOwner.Creeps.Clear();
+    creepOwner.DeadCreeps.ForEach(c => Destroy(c.gameObject, 1));
+    creepOwner.DeadCreeps.Clear();
   }
 
   public void OnCreepDeath(Creep creep, CreepOwner owner) {
     var position = creep.transform.position;
     var rotation = creep.transform.rotation;
     var deadCreep = Instantiate(DeadCreepPrefab, position, rotation, transform);
-    owner.Creeps.Add(deadCreep);
+    owner.DeadCreeps.Add(deadCreep);
     Destroy(creep.gameObject);
   }
 

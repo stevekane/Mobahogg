@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6448981528825758926}
   - component: {fileID: 3942984374646216960}
   - component: {fileID: 6969312777922283899}
+  - component: {fileID: 7564214304543847501}
   m_Layer: 8
   m_Name: Creep Drop Zone
   m_TagString: Untagged
@@ -46,9 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847bc58cf35b659478a7f7d1bff3d0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TeamType: 0
+  SacrificeTransformPrefab: {fileID: 2151013746883252915, guid: 88726567d151cca48849b4e252abfc60, type: 3}
+  Team: {fileID: 6969312777922283899}
+  LocalClock: {fileID: 7564214304543847501}
   BoxCollider: {fileID: 3942984374646216960}
   FramesPerConsumption: 60
+  SacrificeTransforms: []
+  MoveSpeed: 10
+  TurnSpeed: 360
 --- !u!65 &3942984374646216960
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,8 +74,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 4, z: 3}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Size: {x: 3, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 4.5}
 --- !u!114 &6969312777922283899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,3 +89,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TeamType: 0
+--- !u!114 &7564214304543847501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669433148562419921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

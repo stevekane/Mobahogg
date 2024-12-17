@@ -3,29 +3,69 @@ using State;
 using UnityEngine;
 
 public class CreepDropZone : MonoBehaviour {
+  [SerializeField] Transform SacrificeTransformPrefab;
+  [SerializeField] Team Team;
+  [SerializeField] LocalClock LocalClock;
   [SerializeField] BoxCollider BoxCollider;
   [SerializeField] int FramesPerConsumption = 60;
+  [SerializeField] List<Transform> SacrificeTransforms;
+  [SerializeField] float MoveSpeed = 10;
+  [SerializeField] float TurnSpeed = 360;
 
+  int Consumed;
   int FramesTillConsumption;
-  Queue<DeadCreep> CreepsToConsume = new(128);
+  List<DeadCreep> DeadCreeps = new(24);
 
-  public void EnqueueToConsume(DeadCreep deadCreep) {
-    var position = transform.TransformPoint(2 * Random.onUnitSphere);
-    var rotation = Quaternion.LookRotation(transform.position-position).normalized;
-    deadCreep.transform.SetPositionAndRotation(position, rotation);
-    FramesTillConsumption = CreepsToConsume.Count > 0 ? FramesTillConsumption : FramesPerConsumption;
-    CreepsToConsume.Enqueue(deadCreep);
+  void Start() {
+    var ri = Quaternion.Euler(0, -60, 0);
+    var rf = Quaternion.Euler(0, 60, 0);
+    var count = 11;
+    for (var i = 0; i <= (count-1); i++) {
+      var r = Quaternion.Slerp(ri, rf, (float)i/count);
+      var position = transform.position + 5 * (r * transform.forward);
+      var rotation = Quaternion.LookRotation((transform.position - position).normalized);
+      var sacrificeTransform = Instantiate(
+        SacrificeTransformPrefab,
+        position,
+        rotation,
+        CreepManager.Active.transform);
+      SacrificeTransforms.Add(sacrificeTransform);
+    }
+    MatchManager.Instance.SetRequiredResources(Team.TeamType, SacrificeTransforms.Count);
+  }
+
+  public bool TryAdd(DeadCreep deadCreep) {
+    if (DeadCreeps.Count < SacrificeTransforms.Count) {
+      FramesTillConsumption = DeadCreeps.Count > 0 ? FramesTillConsumption : FramesPerConsumption;
+      DeadCreeps.Add(deadCreep);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void FixedUpdate() {
-    if (FramesTillConsumption <= 0 && CreepsToConsume.TryDequeue(out var deadCreep)) {
+    var dt = LocalClock.DeltaTime();
+    for (var i = 0; i < DeadCreeps.Count; i++) {
+      var currentPosition = DeadCreeps[i].transform.position;
+      var targetPosition = SacrificeTransforms[i].position;
+      var position = Vector3.MoveTowards(currentPosition, targetPosition, dt * MoveSpeed);
+      var currentRotation = DeadCreeps[i].transform.rotation;
+      var targetRotation = SacrificeTransforms[i].rotation;
+      var rotation = Quaternion.RotateTowards(currentRotation, targetRotation, dt * TurnSpeed);
+      DeadCreeps[i].transform.SetPositionAndRotation(position, rotation);
+    }
+    if (FramesTillConsumption <= 0 && Consumed < DeadCreeps.Count) {
+      var deadCreep = DeadCreeps[Consumed];
       WorldSpaceMessageManager.Instance.SpawnMessage(
         message: "DEVOURED",
         position: deadCreep.transform.position + Vector3.up,
         lifetime: 3);
+      Consumed++;
       FramesTillConsumption = FramesPerConsumption;
-      MatchManager.Instance.DeductRequiredResource(GetComponent<Team>().TeamType);
-      Destroy(deadCreep.gameObject);
+      MatchManager.Instance.DeductRequiredResource(Team.TeamType);
+      // TODO: Probably want to like... do something here like play a throwing animation or whatever
+      // Destroy(deadCreep.gameObject);
     } else {
       FramesTillConsumption = Mathf.Max(0, FramesTillConsumption-1);
     }

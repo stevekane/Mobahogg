@@ -45,6 +45,10 @@ public class MatchManager : SingletonBehavior<MatchManager> {
     Teams.Where(t => t.HasType(teamType)).ForEach(t => t.LivesRemaining = count);
   }
 
+  public void SetRequiredResources(TeamType teamType, int count) {
+    Teams.Where(t => t.HasType(teamType)).ForEach(t => t.ResourcesRequired = count);
+  }
+
   public void DeductRequiredResource(TeamType teamType) {
     Teams.Where(t => t.HasType(teamType)).ForEach(t => t.ResourcesRequired--);
   }
