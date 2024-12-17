@@ -12,7 +12,7 @@ public class DeadCreep : MonoBehaviour {
 
   void FixedUpdate() {
     var target = Owner
-      ? Owner.transform.TransformPoint(Vector3.back)
+      ? Owner.transform.TransformPoint((Owner.Creeps.IndexOf(this)+1) * Vector3.back)
       : Destination;
     var delta = target-transform.position;
     var dt = LocalClock.DeltaTime();
