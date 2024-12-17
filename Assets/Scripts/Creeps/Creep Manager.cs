@@ -20,14 +20,15 @@ public class CreepManager : MonoBehaviour {
 
   // TODO: Better way to do this would be CreepOwner subscribes to Combatant.OnHurt
   // And stores its own notion of last attacker which it uses here
+  // Not sure though because this still does create some link between an element
+  // of the Creep system and the combat system... maybe not avoidable?
+  // They would have to communicate via some data after all...
   public void OnOwnerDeath(CreepOwner creepOwner) {
     var lastAttacker = creepOwner.GetComponent<Combatant>().LastAttacker;
     if (lastAttacker) {
       var newOwner = lastAttacker.GetComponent<CreepOwner>();
       creepOwner.Creeps.ForEach(newOwner.Creeps.Add);
-      creepOwner.Creeps.ForEach(c => c.Owner = newOwner);
     } else {
-      creepOwner.Creeps.ForEach(c => c.Owner = null);
       creepOwner.Creeps.ForEach(c => Destroy(c.gameObject));
     }
     creepOwner.Creeps.Clear();
@@ -37,8 +38,6 @@ public class CreepManager : MonoBehaviour {
     var position = creep.transform.position;
     var rotation = creep.transform.rotation;
     var deadCreep = Instantiate(DeadCreepPrefab, position, rotation, transform);
-    deadCreep.CreepManager = this;
-    deadCreep.Owner = owner;
     owner.Creeps.Add(deadCreep);
     Destroy(creep.gameObject);
   }

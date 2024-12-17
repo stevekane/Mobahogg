@@ -11,9 +11,8 @@ public class CreepDropZone : MonoBehaviour {
 
   public void EnqueueToConsume(DeadCreep deadCreep) {
     var position = transform.TransformPoint(2 * Random.onUnitSphere);
-    deadCreep.Consume = true;
-    deadCreep.Owner = null;
-    deadCreep.Destination = position;
+    var rotation = Quaternion.LookRotation(transform.position-position).normalized;
+    deadCreep.transform.SetPositionAndRotation(position, rotation);
     FramesTillConsumption = CreepsToConsume.Count > 0 ? FramesTillConsumption : FramesPerConsumption;
     CreepsToConsume.Enqueue(deadCreep);
   }

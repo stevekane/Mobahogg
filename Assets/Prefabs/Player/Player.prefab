@@ -1246,6 +1246,55 @@ MonoBehaviour:
   m_Spacing: {x: 12, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!1 &6052853719185696876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4768348059885750582}
+  - component: {fileID: 734669655601474722}
+  m_Layer: 0
+  m_Name: Creep Tether
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4768348059885750582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052853719185696876}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9139747016867494336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &734669655601474722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052853719185696876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff8c2e1a22ec38499ae3326c0e5f035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodeCount: 21
+  segmentLength: 0.5
+  stiffness: 0.25
+  damping: 0.8
+  leader: {fileID: 4768348059885750582}
 --- !u!1 &6628241591008221428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,6 +1538,7 @@ Transform:
   - {fileID: 3292955890552622805}
   - {fileID: 8962118446809299405}
   - {fileID: 6821628318837372643}
+  - {fileID: 4768348059885750582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &988945814378296752
@@ -1687,6 +1737,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c07bb1d50a5f8488a206e6c2aa7ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalClock: {fileID: 988945814378296752}
+  Tether: {fileID: 734669655601474722}
+  MoveSpeed: 10
+  TurnSpeed: 360
   Creeps: []
 --- !u!114 &306565525089974642
 MonoBehaviour:
