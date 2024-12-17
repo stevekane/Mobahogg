@@ -12,7 +12,7 @@ namespace AimAssist {
     }
 
     void OnDestroy() {
-      AimAssistManager.Instance.Targets.Remove(this);
+      AimAssistManager.Instance?.Targets.Remove(this);
     }
   }
 }

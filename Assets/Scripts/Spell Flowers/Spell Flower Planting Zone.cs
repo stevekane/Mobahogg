@@ -4,8 +4,8 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class SpellFlowerPlantingZone : MonoBehaviour {
-  public HashSet<SpellFlowerSprout> PlantedSprouts = new();
-  public HashSet<SpellFlower> PlantedFlowers = new();
+  public List<SpellFlowerSprout> PlantedSprouts = new();
+  public List<SpellFlower> PlantedFlowers = new();
 
   public bool Occupied(Vector3 p)
     => PlantedSprouts.Any(s => s.transform.position == p)

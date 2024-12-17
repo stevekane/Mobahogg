@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: a6382cc72df4152419fb68fae144f01b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - SpellDescriptions: {instanceID: 0}
+  - PollenPrefab: {fileID: 437143226844866735, guid: 42d884fc4ebed754ea81d76521eab909, type: 3}
+  - SproutPrefab: {fileID: 5706908931577266517, guid: e3243ebcaaa6a37468daaeca784f2942, type: 3}
+  - FlowerPrefab: {fileID: 357578967424604775, guid: 152fda37f8ad0be4c8f12e9fa8db18e9, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
