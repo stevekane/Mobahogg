@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Melee;
 using State;
 using UnityEngine;
 
 public class CreepDropZone : MonoBehaviour {
+  [SerializeField] Animator Animator;
   [SerializeField] Transform SacrificeTransformPrefab;
   [SerializeField] Team Team;
   [SerializeField] LocalClock LocalClock;
@@ -11,7 +13,10 @@ public class CreepDropZone : MonoBehaviour {
   [SerializeField] List<Transform> SacrificeTransforms;
   [SerializeField] float MoveSpeed = 10;
   [SerializeField] float TurnSpeed = 360;
+  [SerializeField] Timeval ClosedDuration = Timeval.FromSeconds(3);
 
+  bool Closed => ClosedFramesRemaining > 0;
+  int ClosedFramesRemaining;
   int Consumed;
   int FramesTillConsumption;
   List<DeadCreep> DeadCreeps = new(24);
@@ -32,6 +37,11 @@ public class CreepDropZone : MonoBehaviour {
       SacrificeTransforms.Add(sacrificeTransform);
     }
     MatchManager.Instance.SetRequiredResources(Team.TeamType, SacrificeTransforms.Count);
+  }
+
+  public void OnHurt(MeleeAttackEvent attackEvent) {
+    Debug.Log("OnHurt DropZone");
+    ClosedFramesRemaining = ClosedDuration.Ticks;
   }
 
   public bool TryAdd(DeadCreep deadCreep) {
@@ -55,7 +65,7 @@ public class CreepDropZone : MonoBehaviour {
       var rotation = Quaternion.RotateTowards(currentRotation, targetRotation, dt * TurnSpeed);
       DeadCreeps[i].transform.SetPositionAndRotation(position, rotation);
     }
-    if (FramesTillConsumption <= 0 && Consumed < DeadCreeps.Count) {
+    if (!Closed && FramesTillConsumption <= 0 && Consumed < DeadCreeps.Count) {
       var deadCreep = DeadCreeps[Consumed];
       WorldSpaceMessageManager.Instance.SpawnMessage(
         message: "DEVOURED",
@@ -67,8 +77,10 @@ public class CreepDropZone : MonoBehaviour {
       // TODO: Probably want to like... do something here like play a throwing animation or whatever
       // Destroy(deadCreep.gameObject);
     } else {
-      FramesTillConsumption = Mathf.Max(0, FramesTillConsumption-1);
+      FramesTillConsumption = Mathf.Max(0, FramesTillConsumption-LocalClock.DeltaFrames());
     }
+    ClosedFramesRemaining = Mathf.Max(0, ClosedFramesRemaining-LocalClock.DeltaFrames());
+    Animator.SetBool("Closed", Closed);
   }
 
   void OnDrawGizmos() {
