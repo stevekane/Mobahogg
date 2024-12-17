@@ -15,6 +15,8 @@ public class Combatant : MonoBehaviour {
   [SerializeField] UnityEvent<MeleeAttackEvent> OnHurt;
   [SerializeField] UnityEvent<MeleeAttackEvent> OnHit;
 
+  public Combatant LastAttacker { get; private set; }
+
   public void Hit(MeleeAttackEvent meleeAttackEvent) {
     if (Animator && HitFlinchName != "")
       Animator.SetTrigger(HitFlinchName);
@@ -28,6 +30,7 @@ public class Combatant : MonoBehaviour {
   }
 
   public void Hurt(MeleeAttackEvent meleeAttackEvent) {
+    LastAttacker = meleeAttackEvent.Attacker;
     if (Animator && HurtFlinchName != "")
       Animator.SetTrigger(HurtFlinchName);
     if (Health)

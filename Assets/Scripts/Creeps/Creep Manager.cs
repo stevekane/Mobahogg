@@ -18,15 +18,29 @@ public class CreepManager : MonoBehaviour {
     Active = this;
   }
 
+  // TODO: Better way to do this would be CreepOwner subscribes to Combatant.OnHurt
+  // And stores its own notion of last attacker which it uses here
+  public void OnOwnerDeath(CreepOwner creepOwner) {
+    var lastAttacker = creepOwner.GetComponent<Combatant>().LastAttacker;
+    if (lastAttacker) {
+      var newOwner = lastAttacker.GetComponent<CreepOwner>();
+      creepOwner.Creeps.ForEach(newOwner.Creeps.Add);
+      creepOwner.Creeps.ForEach(c => c.Owner = newOwner);
+    } else {
+      creepOwner.Creeps.ForEach(c => c.Owner = null);
+      creepOwner.Creeps.ForEach(c => Destroy(c.gameObject));
+    }
+    creepOwner.Creeps.Clear();
+  }
+
   public void OnCreepDeath(Creep creep, CreepOwner owner) {
-    Destroy(creep.gameObject);
     var position = creep.transform.position;
     var rotation = creep.transform.rotation;
     var deadCreep = Instantiate(DeadCreepPrefab, position, rotation, transform);
     deadCreep.CreepManager = this;
-    deadCreep.State = DeadCreepState.Owned;
     deadCreep.Owner = owner;
     owner.Creeps.Add(deadCreep);
+    Destroy(creep.gameObject);
   }
 
   public void SpawnCreep(Vector3 position) {

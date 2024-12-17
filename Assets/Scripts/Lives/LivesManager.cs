@@ -26,9 +26,6 @@ public class LivesManager : MonoBehaviour {
   // Called when player is fully dead after animations and such things
   public void OnPlayerDeath(Player victim) {
     var playerTeam = victim.GetComponent<Team>();
-    var playerCreepOwner = victim.GetComponent<CreepOwner>();
-    playerCreepOwner.Creeps.ForEach(c => c.State = DeadCreepState.Free);
-    playerCreepOwner.Creeps.ForEach(c => c.Owner = null);
     Destroy(victim.gameObject);
     TryStartRespawnFromPod(playerTeam.TeamType, RespawnFrameDelay, victim.PortIndex);
   }

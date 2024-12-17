@@ -25,10 +25,6 @@ public class Player : MonoBehaviour {
   public TurnAbility TurnAbility;
   public int PortIndex;
 
-  void OnHurt(Combatant attacker) {
-    Health.Change(-1);
-  }
-
   void Start() {
     LivesManager.Active.Players.AddFirst(this);
   }
@@ -38,7 +34,11 @@ public class Player : MonoBehaviour {
   }
 
   void FixedUpdate() {
+    // TODO: Handling falling death in this hardcoded way probably isn't that bright...
     if (!LocalClock.Frozen() && (Health.CurrentValue <= 0 || transform.position.y <= -10)) {
+      // TODO: This is probably not quite right. Seems like potentially this could be an
+      // event that goes on some bus where high level systems listen to react?
+      CreepManager.Active.OnOwnerDeath(GetComponent<CreepOwner>());
       LivesManager.Active.OnPlayerDeath(this);
     }
   }
