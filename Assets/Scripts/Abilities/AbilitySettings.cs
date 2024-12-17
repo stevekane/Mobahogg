@@ -15,7 +15,7 @@ public class AbilitySettings : ScriptableObject {
     Mathf.Exp(-AirSpeedDecayFactor*groundSpeed);
 
   [Header("Jump")]
-  float JumpHeight = 2;
+  public float JumpHeight = 2;
   public float InitialJumpSpeed(float gravity) =>
     Mathf.Sqrt(2 * Mathf.Abs(RisingGravityFactor * gravity) * JumpHeight);
 

@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ede8ce6ddd2a1f4d9953b969e4fc8d6, type: 3}
   m_Name: AbilitySettings (Default)
   m_EditorClassIdentifier: 
-  RisingGravityFactor: 4
-  FallingGravityFactor: 8
+  RisingGravityFactor: 12
+  FallingGravityFactor: 20
   GroundMoveSpeed: 10
   AirSpeedDecayFactor: 0.25
+  JumpHeight: 4
   DashTotalFrames: 6
   DashTotalDistance: 2
   WindupAttackFrames: 8
