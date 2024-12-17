@@ -13,12 +13,13 @@ public class Drag : MonoBehaviour {
   void FixedUpdate() {
     if (LocalClock.Frozen())
       return;
-    var currentSpeed = CharacterController.Velocity.magnitude;
+    var velocityXZ = CharacterController.Velocity.XZ();
+    var currentSpeed = velocityXZ.magnitude;
     var dragStrength = currentSpeed > MinSpeedToStop
       // Drag force
       ? DragScale * currentSpeed
       // Force to come to a stop
       : currentSpeed / LocalClock.DeltaTime();
-    CharacterController.Acceleration += dragStrength * -CharacterController.Velocity.normalized;
+    CharacterController.Acceleration += dragStrength * -velocityXZ.normalized;
   }
 }

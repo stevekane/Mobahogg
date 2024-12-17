@@ -1538,7 +1538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e077e1df248d731458c8704812fe222e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Query: {fileID: 11400000, guid: fc4c98f78e54b6d47b09faaa1629d504, type: 2}
 --- !u!114 &6859262562219351446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1926,7 +1925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6164078f7864feb4fa3ffa0b81ec5519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Base>k__BackingField: 6
+  <Base>k__BackingField: 10
 --- !u!114 &3019126180296927202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1992,6 +1991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d9403d08c5f8444a9c377a8c007989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxCount: 3
 --- !u!1001 &712466576642963969
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -31,10 +31,10 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     Motor.ForceUnground();
   }
 
-  public void Launch(Vector3 acceleration) {
+  public void Launch(Vector3 velocity) {
     Unground();
-    Velocity.y = 0;
-    Acceleration += acceleration;
+    Velocity += velocity;
+    Velocity.y = velocity.y;
   }
 
   public Vector3 Position {

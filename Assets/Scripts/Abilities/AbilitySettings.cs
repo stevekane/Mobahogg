@@ -6,7 +6,7 @@ public class AbilitySettings : ScriptableObject {
   public float RisingGravityFactor = 4;
   public float FallingGravityFactor = 8;
   public float GravityFactor(Vector3 velocity) =>
-    velocity.y <= 0 ? FallingGravityFactor : RisingGravityFactor;
+    velocity.y >= 0 ? RisingGravityFactor : FallingGravityFactor;
 
   [Header("Move")]
   public float GroundMoveSpeed = 5;

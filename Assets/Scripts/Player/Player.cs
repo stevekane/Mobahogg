@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
       DashCancelTokenSource?.Dispose();
       DashCancelTokenSource = null;
       DashFramesRemaining = 0;
-      CharacterController.Launch(Settings.InitialJumpSpeed(Physics.gravity.y) / Time.fixedDeltaTime * Vector3.up);
+      CharacterController.Launch(Settings.InitialJumpSpeed(Physics.gravity.y) * Vector3.up);
       return true;
     } else {
       return false;

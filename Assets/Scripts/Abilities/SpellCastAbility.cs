@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class SpellCastAbility : MonoBehaviour {
@@ -19,27 +18,21 @@ public class SpellCastAbility : MonoBehaviour {
   public bool IsRunning => Frame < Settings.TotalAttackFrames;
 
   public bool CanRun
-    => CharacterController.IsGrounded
-    && !IsRunning
-    && SpellHolder.SpellQueue.Count > 0
+    => !IsRunning
+    && CharacterController.IsGrounded
+    && SpellHolder.Count > 0
     && !Player.IsDashing()
     && !AttackAbility.IsRunning;
 
   public bool TryRun() {
     if (CanRun) {
-      // This dequeue operation is very suspect. Multiple readers would have
-      // order-dependence and it would matter what order these scripts ran in
-      // this feels odd?
-      // At the least, having to call ElementAt and ALSO Dequeue is quite strange
-      var spellPrefab = SpellHolder.SpellQueue.ElementAt(0);
+      var spellPrefab = SpellHolder.Dequeue();
       var position = transform.position + transform.forward + transform.up;
       var rotation = transform.rotation;
       var spell = Instantiate(spellPrefab);
       spell.Cast(position, rotation, Player);
-      SpellHolder.Dequeue();
       Animator.SetTrigger("Cast");
       Frame = 0;
-      Debug.Log($"Tried to cast a spell {spell.GetType().Name}");
       return true;
     } else {
       return false;

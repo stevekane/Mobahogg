@@ -9,7 +9,7 @@ public class SpellStaff : MonoBehaviour {
   Queue<GameObject> SpellCharges = new();
 
   void AddSpell(Spell spell) {
-    var index = SpellHolder.SpellQueue.Count-1;
+    var index = SpellHolder.Count-1;
     var owner = SpellChargeLocations[index];
     var staffCharge = Instantiate(spell.SpellStaffChargePrefab, owner);
     SpellCharges.Enqueue(staffCharge);
@@ -23,7 +23,7 @@ public class SpellStaff : MonoBehaviour {
     Destroy(spellCharge.gameObject);
   }
 
-  void Start() {
+  void Awake() {
     SpellHolder.OnAddSpell.Listen(AddSpell);
     SpellHolder.OnRemoveSpell.Listen(ShiftSpells);
   }

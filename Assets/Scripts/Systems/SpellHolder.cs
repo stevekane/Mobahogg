@@ -1,51 +1,41 @@
 using System.Collections.Generic;
+using UnityEngine;
 using State;
 
+/*
+I have opted to, for now, make this class non-deterministic and dumb.
+It simply enqueues the spell if it can otherwise it does not.
+This means that holder/charge interactions will be processed in a first
+-writer wins sort of way which is realistically probably fine for this game
+given that determinism is not a primary design goal.
+*/
 public class SpellHolder : AbstractState {
-  public static int MAX_SPELL_QUEUE_SIZE = 3;
-
   public readonly EventSource<Spell> OnAddSpell = new();
   public readonly EventSource<Spell> OnRemoveSpell = new();
 
-  Queue<Spell> NextSpellQueue = new();
-  Queue<Spell> CurrentSpellQueue = new();
-  int CurrentSpellQueueSize = 3;
-  int NextSpellQueueSize = 3;
-  int DequeueCount;
-  public Queue<Spell> SpellQueue => CurrentSpellQueue;
-  public int SpellQueueSize => CurrentSpellQueueSize;
-  public void Dequeue() => DequeueCount++;
-  public bool TryAdd(Spell spell) {
-    if (CurrentSpellQueue.Count < CurrentSpellQueueSize) {
-      NextSpellQueue.Enqueue(spell);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  public bool TrySetSize(int size) {
-    if (size < MAX_SPELL_QUEUE_SIZE) {
-      NextSpellQueueSize = size;
+  [SerializeField] int MaxCount = 3;
+
+  Queue<Spell> SpellQueue = new();
+
+  public int Count => SpellQueue.Count;
+
+  public bool TryEnqueue(Spell spell) {
+    if (SpellQueue.Count < MaxCount) {
+      SpellQueue.Enqueue(spell);
+      OnAddSpell.Fire(spell);
       return true;
     } else {
       return false;
     }
   }
 
-  // N.B. I wonder if this "collection event" should really be processed
-  // in the next frame's system pass?
-  // Seems inconsistent to process it here
-  void FixedUpdate() {
-    // IMPORTANT: SINGLE LOOP SO THAT CURRENTSPELL.COUNT is right for listeners
-    foreach (var spell in NextSpellQueue) {
-      CurrentSpellQueue.Enqueue(spell);
-      OnAddSpell.Fire(spell);
-    }
-    for (var i = 0; i < DequeueCount; i++) {
-      OnRemoveSpell.Fire(CurrentSpellQueue.Dequeue());
-    }
-    DequeueCount = 0;
-    NextSpellQueue.Clear();
-    CurrentSpellQueueSize = NextSpellQueueSize;
+  public void SetMax(int size) {
+    MaxCount = size;
+  }
+
+  public Spell Dequeue() {
+    var spell = SpellQueue.Dequeue();
+    OnRemoveSpell.Fire(spell);
+    return spell;
   }
 }
