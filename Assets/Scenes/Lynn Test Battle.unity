@@ -1637,68 +1637,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2595816520642639848, guid: be97e7cb154d51848a664c3640df3c34, type: 3}
   m_PrefabInstance: {fileID: 273357054}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &278255722
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1065322856}
-    m_Modifications:
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 21
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7847181523896852333, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-      propertyPath: m_Name
-      value: Golem Attractor Kill Turtles
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
---- !u!4 &278255723 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4529094273485500283, guid: 4cb769b67ad3deb428fdd1890bf00f14, type: 3}
-  m_PrefabInstance: {fileID: 278255722}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &294492686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3824,7 +3762,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Size.x
-      value: 15
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Size.y
@@ -3832,7 +3770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Size.z
-      value: 7.5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Center.x
@@ -3844,7 +3782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Center.z
-      value: -10.830671
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 5523345197834232177, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Name
@@ -5494,7 +5432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Size.z
-      value: 7.5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2794310050528534417, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
       propertyPath: m_Center.x
@@ -5750,8 +5688,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1915400530636022384}
-  - {fileID: 2053158106}
-  - {fileID: 278255723}
   m_Father: {fileID: 467934632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1065322857
@@ -9248,68 +9184,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9a8cd0d15e447da479c4a85b17323548, type: 3}
   m_PrefabInstance: {fileID: 1654562693}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &2053158105
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1065322856}
-    m_Modifications:
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -21
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7847181523896852333, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-      propertyPath: m_Name
-      value: Golem Attractor Kill Robots
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
---- !u!4 &2053158106 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4529094273485500283, guid: 6658d1edbe9561245a24857d850a7148, type: 3}
-  m_PrefabInstance: {fileID: 2053158105}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2074658046
 PrefabInstance:
