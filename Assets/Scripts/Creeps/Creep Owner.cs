@@ -7,23 +7,40 @@ public class CreepOwner : MonoBehaviour {
   [SerializeField] float MoveSpeed = 10;
   [SerializeField] float TurnSpeed = 360;
 
-  public List<DeadCreep> Creeps;
+  int MaxOwnable => Tether.nodeCount;
+
+  public List<DeadCreep> DeadCreeps;
+
   public void OnEnterCreepDropZone(CreepDropZone dropZone) {
-    Creeps.ForEach(dropZone.EnqueueToConsume);
-    Creeps.Clear();
+    // Transfer all you can to the drop zone
+    for (var i = DeadCreeps.Count-1; i >= 0; i--) {
+      var deadCreep = DeadCreeps[i];
+      if (dropZone.TryAdd(deadCreep)) {
+        DeadCreeps.RemoveAt(i);
+      }
+    }
+  }
+
+  public bool TryPossess(DeadCreep deadCreep) {
+    if (DeadCreeps.Count < MaxOwnable) {
+      DeadCreeps.Add(deadCreep);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void FixedUpdate() {
     var dt = LocalClock.DeltaTime();
     Tether.Simulate(dt);
-    for (var i = 0; i < Creeps.Count; i++) {
-      var currentPosition = Creeps[i].transform.position;
+    for (var i = 0; i < DeadCreeps.Count; i++) {
+      var currentPosition = DeadCreeps[i].transform.position;
       var targetPosition = Tether.GetNodePosition(i);
       var position = Vector3.MoveTowards(currentPosition, targetPosition, dt * MoveSpeed);
-      var currentRotation = Creeps[i].transform.rotation;
+      var currentRotation = DeadCreeps[i].transform.rotation;
       var targetRotation = Quaternion.LookRotation(Tether.GetNodeForward(i));
       var rotation = Quaternion.RotateTowards(currentRotation, targetRotation, dt * TurnSpeed);
-      Creeps[i].transform.SetPositionAndRotation(position, rotation);
+      DeadCreeps[i].transform.SetPositionAndRotation(position, rotation);
     }
   }
 }
