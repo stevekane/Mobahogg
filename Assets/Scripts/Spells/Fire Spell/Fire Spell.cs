@@ -42,6 +42,9 @@ public class FireSpell : Spell {
       }
       await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
     }
+    for (var i = 0; i < Count; i++) {
+      Fireballs[i].GetComponent<TrailRenderer>().enabled = true;
+    }
     for (var f = 0; f < TravelFrames; f += LocalClock.DeltaFrames()) {
       for (var i = 0; i < Count; i++) {
         var fireball = Fireballs[i];

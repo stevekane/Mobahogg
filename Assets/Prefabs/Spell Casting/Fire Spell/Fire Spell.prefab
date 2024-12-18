@@ -49,7 +49,7 @@ MonoBehaviour:
   LocalClock: {fileID: -4476191188063295560}
   FireballPrefab: {fileID: 70581433308528248, guid: fe1e6a560e342654db53a74a1aa91c69, type: 3}
   SpreadAngle: 145
-  FireballSpeed: 20
+  FireballSpeed: 15
   Count: 7
   FanoutFrames: 15
   TravelFrames: 300
