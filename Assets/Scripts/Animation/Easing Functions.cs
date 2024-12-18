@@ -1,7 +1,8 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-public static class EasingFunctions
-{
+public static class EasingFunctions {
     // Linear
     public static float Linear(float t) => t;
 
@@ -57,8 +58,7 @@ public static class EasingFunctions
     // Bounce
     public static float EaseInBounce(float t) => 1 - EaseOutBounce(1 - t);
 
-    public static float EaseOutBounce(float t)
-    {
+    public static float EaseOutBounce(float t) {
         if (t < 1 / 2.75f)
             return 7.5625f * t * t;
         if (t < 2 / 2.75f)
@@ -70,4 +70,62 @@ public static class EasingFunctions
 
     public static float EaseInOutBounce(float t) =>
         t < 0.5f ? EaseInBounce(t * 2) * 0.5f : EaseOutBounce(t * 2 - 1) * 0.5f + 0.5f;
+
+    // Enum for Easing Function Names
+    public enum EasingFunctionName {
+        Linear,
+        EaseInQuad, EaseOutQuad, EaseInOutQuad,
+        EaseInCubic, EaseOutCubic, EaseInOutCubic,
+        EaseInQuart, EaseOutQuart, EaseInOutQuart,
+        EaseInQuint, EaseOutQuint, EaseInOutQuint,
+        EaseInSine, EaseOutSine, EaseInOutSine,
+        EaseInExpo, EaseOutExpo, EaseInOutExpo,
+        EaseInCirc, EaseOutCirc, EaseInOutCirc,
+        EaseInElastic, EaseOutElastic, EaseInOutElastic,
+        EaseInBounce, EaseOutBounce, EaseInOutBounce
+    }
+
+    // Seems to require .NET 10.0?
+    // public static Func<float, float> Function(this EasingFunctionName name) => FromName(name);
+
+    // Mapping from Enum to Easing Function
+    private static readonly Dictionary<EasingFunctionName, Func<float, float>> FunctionMap =
+        new Dictionary<EasingFunctionName, Func<float, float>> {
+            { EasingFunctionName.Linear, Linear },
+            { EasingFunctionName.EaseInQuad, EaseInQuad },
+            { EasingFunctionName.EaseOutQuad, EaseOutQuad },
+            { EasingFunctionName.EaseInOutQuad, EaseInOutQuad },
+            { EasingFunctionName.EaseInCubic, EaseInCubic },
+            { EasingFunctionName.EaseOutCubic, EaseOutCubic },
+            { EasingFunctionName.EaseInOutCubic, EaseInOutCubic },
+            { EasingFunctionName.EaseInQuart, EaseInQuart },
+            { EasingFunctionName.EaseOutQuart, EaseOutQuart },
+            { EasingFunctionName.EaseInOutQuart, EaseInOutQuart },
+            { EasingFunctionName.EaseInQuint, EaseInQuint },
+            { EasingFunctionName.EaseOutQuint, EaseOutQuint },
+            { EasingFunctionName.EaseInOutQuint, EaseInOutQuint },
+            { EasingFunctionName.EaseInSine, EaseInSine },
+            { EasingFunctionName.EaseOutSine, EaseOutSine },
+            { EasingFunctionName.EaseInOutSine, EaseInOutSine },
+            { EasingFunctionName.EaseInExpo, EaseInExpo },
+            { EasingFunctionName.EaseOutExpo, EaseOutExpo },
+            { EasingFunctionName.EaseInOutExpo, EaseInOutExpo },
+            { EasingFunctionName.EaseInCirc, EaseInCirc },
+            { EasingFunctionName.EaseOutCirc, EaseOutCirc },
+            { EasingFunctionName.EaseInOutCirc, EaseInOutCirc },
+            { EasingFunctionName.EaseInElastic, EaseInElastic },
+            { EasingFunctionName.EaseOutElastic, EaseOutElastic },
+            { EasingFunctionName.EaseInOutElastic, EaseInOutElastic },
+            { EasingFunctionName.EaseInBounce, EaseInBounce },
+            { EasingFunctionName.EaseOutBounce, EaseOutBounce },
+            { EasingFunctionName.EaseInOutBounce, EaseInOutBounce }
+        };
+
+    // Retrieve Easing Function by Name
+    public static Func<float, float> FromName(EasingFunctionName name) {
+        if (FunctionMap.TryGetValue(name, out var function))
+            return function;
+
+        throw new ArgumentException($"Easing function '{name}' not found.");
+    }
 }

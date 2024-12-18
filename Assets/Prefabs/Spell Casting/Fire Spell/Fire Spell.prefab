@@ -46,15 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpellStaffChargePrefab: {fileID: 8308523887207664424, guid: 719f862b9ddb51d40aa98e136baada39, type: 3}
+  Settings: {fileID: 11400000, guid: b5572e2bebfa0f4479d8750f9358086b, type: 2}
   LocalClock: {fileID: -4476191188063295560}
-  FireballPrefab: {fileID: 70581433308528248, guid: fe1e6a560e342654db53a74a1aa91c69, type: 3}
-  ExplosionPrefab: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
-  SpreadAngle: 100
-  TravelSpeed: 60
-  FanoutSpeed: 30
-  Count: 5
-  FanoutFrames: 30
-  TravelFrames: 300
 --- !u!114 &-4476191188063295560
 MonoBehaviour:
   m_ObjectHideFlags: 0

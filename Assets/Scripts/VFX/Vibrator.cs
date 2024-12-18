@@ -13,9 +13,9 @@ public class Vibrator : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
 
   Vector3 LocalPosition;
-  Vector3 Axis;
-  float Frequency;
-  float Amplitude;
+  public Vector3 Axis;
+  public float Frequency;
+  public float Amplitude;
   float ElapsedTime;
   int FramesRemaining;
 
