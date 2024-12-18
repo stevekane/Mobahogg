@@ -5,6 +5,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class SpellFlower : MonoBehaviour {
+  [SerializeField] Collider HurtboxCollider;
   [SerializeField] AudioClip OpenAudioClip;
   [SerializeField] int OpenDuration = 60 * 5;
   [SerializeField] Animator Animator;
@@ -36,6 +37,7 @@ public class SpellFlower : MonoBehaviour {
 
   void FixedUpdate() {
     if (!Open && Health.CurrentValue <= 0) {
+      HurtboxCollider.enabled = false
       SpellFlowerManager.Active.OnFlowerOpen(this);
       OnOpen(this.destroyCancellationToken).Forget();
     }

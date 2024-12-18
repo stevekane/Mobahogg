@@ -2187,8 +2187,8 @@
     "m_ObjectId": "8128715c70194f83814e0c0d562eb01e",
     "m_Title": "WITHIN RADII",
     "m_Position": {
-        "x": -501.0000915527344,
-        "y": 19.999954223632814
+        "x": -501.0,
+        "y": 20.000003814697267
     }
 }
 
@@ -2219,7 +2219,7 @@
         "affectsEmission": true,
         "drawOrder": 0,
         "supportLodCrossFade": false,
-        "angleFade": false
+        "angleFade": true
     }
 }
 
@@ -2609,7 +2609,7 @@
     "m_Title": "RADIUS CALCULATION",
     "m_Position": {
         "x": -1119.0,
-        "y": -123.0
+        "y": -122.999755859375
     }
 }
 

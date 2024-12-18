@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec180c07d1cb4b45835dc85b239ba56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HurtboxCollider: {fileID: 738729566027829612}
   OpenAudioClip: {fileID: 0}
   OpenDuration: 300
   Animator: {fileID: 7199647156013182808}

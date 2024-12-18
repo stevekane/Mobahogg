@@ -875,14 +875,14 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 13b71064cb31eab439c3737c4985dc2b, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
+  m_StartAngleFade: 0
+  m_EndAngleFade: 26.640001
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 5}
-  m_Size: {x: 2, y: 2, z: 10}
+  m_Offset: {x: 0, y: 0, z: 50}
+  m_Size: {x: 2, y: 2, z: 100}
   m_FadeFactor: 1
 --- !u!1 &4964564220434983249
 GameObject:
@@ -931,14 +931,14 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: f2f3d6e1776f2594dac4930e5c2dca54, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
+  m_StartAngleFade: 0
+  m_EndAngleFade: 30.959991
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.5}
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Offset: {x: 0, y: 0, z: 50}
+  m_Size: {x: 1, y: 1, z: 100}
   m_FadeFactor: 1
 --- !u!1 &5060141045809987463
 GameObject:
@@ -1770,6 +1770,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 6821628318837372643}
   LocalClock: {fileID: 988945814378296752}
+  Axis: {x: 0, y: 0, z: 0}
+  Frequency: 0
+  Amplitude: 0
 --- !u!114 &8300348243121620764
 MonoBehaviour:
   m_ObjectHideFlags: 0
