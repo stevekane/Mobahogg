@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8017307e765c4ee4b9751c91d396ef36, type: 3}
+  m_Name: FireSpell Settings
+  m_EditorClassIdentifier: 
+  EggPrefab: {fileID: 5609764522377209215, guid: eeeeb68b6227bde44b46c8056760c87c, type: 3}
+  EggLocalTravelDelta: {x: 0, y: 0, z: 10}
+  EggTravelDuration:
+    Millis: 1000
+  MaxEggSpinSpeed: 2160
+  MaxEggVibration: 0.5
+  EggTravelEasingFunctionName: 11
+  EggSpinupEasingFunctionName: 4
+  EggVibrationEasingFunctionName: 7
+  ExplosionPrefab: {fileID: 7383180520579216824, guid: 235470d2127c8464f8d4fe5f8c1be1cd, type: 3}
+  ExplosionCameraShakeIntensity: 0.25
+  DragonPrefab: {fileID: 70581433308528248, guid: fe1e6a560e342654db53a74a1aa91c69, type: 3}
+  DragonTravelSpeed: 30
+  DragonSpreadAngle: 135
+  DragonCount: 5
+  FirePrefab: {fileID: 6542238739109351727, guid: 23e8eff0204d5f94395871389fd121a5, type: 3}
+  FireDropCooldown:
+    Millis: 50

@@ -1,61 +1,65 @@
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
 public class FireSpell : Spell {
+  [SerializeField] FireSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] GameObject FireballPrefab;
-    [SerializeField] GameObject ExplosionPrefab;
-  // TODO: Move to FireSpellSettings
-  [SerializeField] float SpreadAngle = 60;
-  [SerializeField] float TravelSpeed = 20;
-    [SerializeField] float FanoutSpeed = 20;
-  [SerializeField] int Count = 5;
-  [SerializeField] int FanoutFrames = 5;
-  [SerializeField] int TravelFrames = 60 * 5;
-
-  List<GameObject> Fireballs = new(5);
-  List<Quaternion> Orientations = new(5);
 
   public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
     Run(position, rotation, this.destroyCancellationToken).Forget();
   }
 
   async UniTask Run(Vector3 position, Quaternion rotation, CancellationToken token) {
-    var forward = rotation * Vector3.forward;
-    var left = Quaternion.LookRotation(Quaternion.Euler(0, -SpreadAngle / 2, 0) * forward);
-    var right = Quaternion.LookRotation(Quaternion.Euler(0, SpreadAngle / 2, 0) * forward);
-    for (var i = 0; i < Count; i++) {
-      var orientation = Quaternion.Slerp(left, right, (float)i/(Count-1));
-      var fireball = Instantiate(FireballPrefab, position, rotation, transform);
-      Fireballs.Add(fireball);
-      Orientations.Add(orientation);
+    var egg = Instantiate(Settings.EggPrefab, position, rotation, transform);
+    var travelEasingFn = EasingFunctions.FromName(Settings.EggTravelEasingFunctionName);
+    var travel = Tasks.MoveBy(
+      egg.transform,
+      Settings.EggLocalTravelDelta,
+      LocalClock,
+      Settings.EggTravelDuration.Ticks,
+      travelEasingFn,
+      travelEasingFn,
+      travelEasingFn,
+      token);
+    var spinEasingFn = EasingFunctions.FromName(Settings.EggSpinupEasingFunctionName);
+    var spinner = egg.GetComponentInChildren<LocalClockSpinner>();
+    var spin = Tasks.Tween(
+      0,
+      Settings.MaxEggSpinSpeed,
+      LocalClock,
+      Settings.EggTravelDuration.Ticks,
+      spinEasingFn,
+      f => spinner.DegreesPerSecond = f,
+      token);
+    var vibrationEasingFunction = EasingFunctions.FromName(Settings.EggVibrationEasingFunctionName);
+    var vibrator = egg.GetComponent<Vibrator>();
+    vibrator.Vibrate(Vector3.up, Settings.EggTravelDuration.Ticks, 0, 20);
+    var vibrate = Tasks.Tween(
+      0,
+      Settings.MaxEggVibration,
+      LocalClock,
+      Settings.EggTravelDuration.Ticks,
+      vibrationEasingFunction,
+      f => {
+        vibrator.Axis = Random.onUnitSphere;
+        vibrator.Amplitude = f;
+      },
+      token);
+    await UniTask.WhenAll(travel, spin, vibrate);
+    var halfSpread = Settings.DragonSpreadAngle / 2f;
+    for (var i = 0; i < Settings.DragonCount; i++) {
+      var angle = Mathf.Lerp(-halfSpread, halfSpread, (float)i / (Settings.DragonCount - 1));
+      var offsetRotation = Quaternion.Euler(0, angle, 0);
+      var direction = offsetRotation * (rotation * Vector3.forward);
+      var dragon = Instantiate(Settings.DragonPrefab, egg.transform.position, offsetRotation * rotation, transform);
+      var velocity = Settings.DragonTravelSpeed * direction;
+      dragon.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
+      dragon.GetComponent<FireDropper>().Settings = Settings;
     }
-    for (var f = 0; f < FanoutFrames; f += LocalClock.DeltaFrames()) {
-      for (var i = 0; i < Count; i++) {
-        var fireball = Fireballs[i];
-        var orientation = Orientations[i];
-        var interpolant = (float)f/(FanoutFrames-1);
-        var easedInterpolant = EasingFunctions.EaseInQuad(interpolant);
-        var nextRotation = Quaternion.Slerp(rotation, orientation, easedInterpolant);
-        var nextPosition = fireball.transform.position + LocalClock.DeltaTime() * FanoutSpeed * (nextRotation * Vector3.forward);
-        fireball.transform.SetPositionAndRotation(nextPosition, nextRotation);
-      }
-      await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-    }
-    for (var i = 0; i < Count; i++) {
-            Instantiate(ExplosionPrefab, Fireballs[i].transform.position, Fireballs[i].transform.rotation, transform);
-      Fireballs[i].GetComponent<TrailRenderer>().enabled = true;
-    }
-    for (var f = 0; f < TravelFrames; f += LocalClock.DeltaFrames()) {
-      for (var i = 0; i < Count; i++) {
-        var fireball = Fireballs[i];
-        fireball.transform.position = fireball.transform.position + LocalClock.DeltaTime() * TravelSpeed * fireball.transform.forward;
-      }
-      await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-    }
+    Instantiate(Settings.ExplosionPrefab, egg.transform.position, rotation, transform);
+    Destroy(egg.gameObject);
+    await Tasks.Delay(60 * 2, LocalClock, token);
     Destroy(gameObject);
   }
 }
