@@ -1,36 +1,54 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-// N.B. Owner reference is volatile. Don't forget to check
 public class FireSpell : Spell {
+  [SerializeField] LocalClock LocalClock;
   [SerializeField] GameObject FireballPrefab;
+  // TODO: Move to FireSpellSettings
   [SerializeField] float SpreadAngle = 60;
-  [SerializeField] float Speed = 10;
-  [SerializeField] float MinSpeedScale = 0.25f;
-  [SerializeField] float MaxSpeedScale = 1.0f;
+  [SerializeField] float FireballSpeed = 20;
   [SerializeField] int Count = 5;
+  [SerializeField] int FanoutFrames = 5;
+  [SerializeField] int TravelFrames = 60 * 5;
 
   List<GameObject> Fireballs = new(5);
+  List<Quaternion> Orientations = new(5);
 
   public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
+    Run(position, rotation, this.destroyCancellationToken).Forget();
+  }
+
+  async UniTask Run(Vector3 position, Quaternion rotation, CancellationToken token) {
     var forward = rotation * Vector3.forward;
     var left = Quaternion.LookRotation(Quaternion.Euler(0, -SpreadAngle / 2, 0) * forward);
     var right = Quaternion.LookRotation(Quaternion.Euler(0, SpreadAngle / 2, 0) * forward);
     for (var i = 0; i < Count; i++) {
-      var direction = Quaternion.Slerp(left, right, i / (float)(Count-1)) * Vector3.forward;
-      var angleFromForward = Vector3.Angle(forward, direction);
-      var angleAlignment = angleFromForward / (SpreadAngle / 2);
-      var speedScale = Mathf.Lerp(MaxSpeedScale, MinSpeedScale, angleAlignment);
-      var fireball = Instantiate(FireballPrefab, position, Quaternion.LookRotation(direction), transform);
-      fireball.GetComponent<Rigidbody>().AddForce(speedScale * Speed * direction, ForceMode.VelocityChange);
+      var orientation = Quaternion.Slerp(left, right, (float)i/(Count-1));
+      var fireball = Instantiate(FireballPrefab, position, orientation, transform);
       Fireballs.Add(fireball);
+      Orientations.Add(orientation);
     }
-  }
-
-  void FixedUpdate() {
-    if (Fireballs.All(f => f == null)) {
-      Destroy(gameObject);
+    for (var f = 0; f < FanoutFrames; f += LocalClock.DeltaFrames()) {
+      for (var i = 0; i < Count; i++) {
+        var fireball = Fireballs[i];
+        var orientation = Orientations[i];
+        var interpolant = (float)f/(FanoutFrames-1);
+        var easedInterpolant = EasingFunctions.EaseInQuint(interpolant);
+        var nextRotation = Quaternion.Slerp(orientation, rotation, easedInterpolant);
+        var nextPosition = fireball.transform.position + LocalClock.DeltaTime() * FireballSpeed * (nextRotation * Vector3.forward);
+        fireball.transform.SetPositionAndRotation(nextPosition, nextRotation);
+      }
+      await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
     }
+    for (var f = 0; f < TravelFrames; f += LocalClock.DeltaFrames()) {
+      for (var i = 0; i < Count; i++) {
+        var fireball = Fireballs[i];
+        fireball.transform.position = fireball.transform.position + LocalClock.DeltaTime() * 1.5f *FireballSpeed * fireball.transform.forward;
+      }
+      await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+    }
+    Destroy(gameObject);
   }
 }
