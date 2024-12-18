@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using System;
 
 public class AirSpell : Spell {
   [SerializeField] LocalClock LocalClock;

@@ -9,7 +9,7 @@ public class SpellDescription {
   public Spell Spell;
 }
 
-[CreateAssetMenu(fileName = "SpellDescriptions", menuName = "Scriptable Objects/SpellDescriptions")]
+[CreateAssetMenu(fileName = "Spell Descriptions", menuName = "Spells/Spell Descriptions")]
 public class SpellDescriptions : ScriptableObject {
   public List<SpellDescription> Value = new();
 }
