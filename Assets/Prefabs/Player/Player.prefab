@@ -1509,6 +1509,7 @@ GameObject:
   - component: {fileID: 978821676424060464}
   - component: {fileID: 8300348243121620764}
   - component: {fileID: 4075815647026140715}
+  - component: {fileID: 5889265469151095980}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1741,7 +1742,7 @@ MonoBehaviour:
   Tether: {fileID: 734669655601474722}
   MoveSpeed: 10
   TurnSpeed: 360
-  Creeps: []
+  DeadCreeps: []
 --- !u!114 &306565525089974642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1808,6 +1809,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5889265469151095980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda05f2fe9284474e8e65b5e4c1e3a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Controller: {fileID: 3542533184097295049}
+  MoveSpeed: {fileID: 4751482104723936499}
+  Health: {fileID: 94004394668583191}
 --- !u!1 &8044512733104495048
 GameObject:
   m_ObjectHideFlags: 0

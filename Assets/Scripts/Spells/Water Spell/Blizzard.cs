@@ -1,9 +1,11 @@
 using UnityEngine;
 
 public class Blizzard : MonoBehaviour {
+  [SerializeField] WaterSpellSettings Settings;
+
   void OnTriggerStay(Collider other) {
-    if (other.TryGetComponent(out SpellAffected spellAffected) && spellAffected.MoveSpeed) {
-      spellAffected.MoveSpeed.Mul(0.5f);
+    if (other.TryGetComponent(out SpellAffected spellAffected)) {
+      spellAffected.Slow(Settings.SlowFraction);
     }
   }
 }

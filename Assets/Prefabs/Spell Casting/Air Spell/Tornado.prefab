@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 658231437999384177}
   - component: {fileID: -6854886784415089349}
+  - component: {fileID: -8310700898615099644}
   - component: {fileID: 1194959884316354012}
   - component: {fileID: 2065777186201072045}
   m_Layer: 0
@@ -46,7 +47,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04a9bb83707b5745a8c75f7870deac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalClock: {fileID: -8310700898615099644}
   Settings: {fileID: 11400000, guid: bca8761df11eaed46839846f1535388f, type: 2}
+--- !u!114 &-8310700898615099644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540094429662545567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &1194959884316354012
 ParticleSystem:
   m_ObjectHideFlags: 0

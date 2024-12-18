@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc5cde59af4688e42bafdd2ca5b02c5b, type: 3}
-  m_Name: AirSpellSettings
+  m_Name: AirSpell Settings
   m_EditorClassIdentifier: 
   TornadoSuctionFalloff:
     serializedVersion: 2

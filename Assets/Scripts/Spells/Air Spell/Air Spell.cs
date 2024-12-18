@@ -36,7 +36,7 @@ public class AirSpell : Spell {
       f => airball.GetComponentInChildren<LocalClockSpinner>().DegreesPerSecond = f,
       token);
     await UniTask.WhenAll(launch, spinUp);
-    Instantiate(TornadoPrefab, airball.transform.position, Quaternion.identity, transform);
+    Instantiate(TornadoPrefab, airball.transform.position, Quaternion.identity, airball.transform);
     await Tasks.Delay(HoverFrames, LocalClock, token);
     Destroy(gameObject);
   }
