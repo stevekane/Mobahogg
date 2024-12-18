@@ -37,7 +37,7 @@ public class SpellFlower : MonoBehaviour {
 
   void FixedUpdate() {
     if (!Open && Health.CurrentValue <= 0) {
-      HurtboxCollider.enabled = false
+      HurtboxCollider.enabled = false;
       SpellFlowerManager.Active.OnFlowerOpen(this);
       OnOpen(this.destroyCancellationToken).Forget();
     }
