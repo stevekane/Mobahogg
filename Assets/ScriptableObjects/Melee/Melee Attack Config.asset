@@ -20,4 +20,4 @@ MonoBehaviour:
   KnockBackStrength: 400
   VibrationAmplitude: 0.05
   VibrationFrequency: 20
-  CameraShakeIntensity: 1
+  CameraShakeIntensity: 10
