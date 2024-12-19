@@ -15,6 +15,8 @@ public class FireSpellSettings : ScriptableObject {
   [Header("Explosion")]
   public GameObject ExplosionPrefab;
   public float ExplosionCameraShakeIntensity = 0.25f;
+  public float ExplosionKnockback = 50;
+  public float ExplosionRadius = 5;
 
   [Header("Dragons")]
   public GameObject DragonPrefab;

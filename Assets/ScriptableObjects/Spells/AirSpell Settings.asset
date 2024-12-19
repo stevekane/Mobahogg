@@ -36,6 +36,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  TornadoInnerRadius: 3
-  TornadoOuterRadius: 15
+  MaxTornadoSpeed: 5
+  MaxTornadoTurningSpeed: 45
+  TornadoDriftNoiseScale: 0.1
+  TornadoSpeedNoiseScale: 0.1
+  TornadoInnerRadius: 0.5
+  TornadoOuterRadius: 1
   TornadoMaxSuction: 600
