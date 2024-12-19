@@ -2,29 +2,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-/*
-Refactoring notes:
-
-This spell has two phases: Egg Alive and Dragons Alive.
-
-The process of each Egg can be self-contained such that the egg's
-death triggers the dragons to spawn, or not. There probably is not
-that much need to coordinate the behavior of the system from a bespoke
-script like this. Instead, it might be better to simply move the code
-around to the various actors that are involved in the spell's execution
-and let iteration happen there.
-
-This may just be true for nearly all the spells... hard to say for certain.
-
-FireSpell could simple run an animation when activated. This animation
-describes the behavior of the system.
-
-One advantage of handling things this way is that all the spell behavior is
-largely concetrated here.
-
-I think the minimal gameplay logic is what should live here. Visual effects
-that have no impact on gameplay should not live in the spell itself.
-*/
 public class FireSpell : Spell {
   [SerializeField] FireSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;

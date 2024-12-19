@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5677669221519320896}
   - component: {fileID: 7632696396069142375}
   - component: {fileID: 4137427518991473400}
-  - component: {fileID: -6144534052989654763}
   m_Layer: 13
   m_Name: Fire Spell Dragon
   m_TagString: Untagged
@@ -223,19 +222,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &-6144534052989654763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 70581433308528248}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0760aad735b98b46aa9283350aea26a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Settings: {fileID: 0}
 --- !u!1 &5020267423099517044
 GameObject:
   m_ObjectHideFlags: 0
