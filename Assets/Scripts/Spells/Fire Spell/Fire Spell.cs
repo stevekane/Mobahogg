@@ -39,7 +39,6 @@ public class FireSpell : Spell {
         var dragon = Instantiate(Settings.DragonPrefab, egg.transform.position, offsetRotation * rotation, transform);
         var velocity = Settings.DragonTravelSpeed * direction;
         dragon.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.VelocityChange);
-        dragon.GetComponent<FireDropper>().Settings = Settings;
       }
     }
     Instantiate(Settings.ExplosionPrefab, egg.transform.position, rotation, transform);
