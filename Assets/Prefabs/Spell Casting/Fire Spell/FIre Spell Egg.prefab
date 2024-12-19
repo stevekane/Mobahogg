@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4521697508258801026}
   - component: {fileID: 9352273348134628}
   - component: {fileID: 5265442502192107862}
+  - component: {fileID: 6120117313962438628}
   m_Layer: 13
   m_Name: FIre Spell Egg
   m_TagString: Untagged
@@ -49,6 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d510b6094a282434893584d0306c287d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  LocalClock: {fileID: 0}
+  Settings: {fileID: 0}
 --- !u!114 &1699136373059771927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +130,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!320 &6120117313962438628
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5609764522377209215}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 2f3ecbf8ea0a3e24a8f4ae8e107b0e19, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -1055502246938515087, guid: 2f3ecbf8ea0a3e24a8f4ae8e107b0e19, type: 2}
+    value: {fileID: 9166759104777509666}
+  - key: {fileID: -3617834210489504537, guid: 2f3ecbf8ea0a3e24a8f4ae8e107b0e19, type: 2}
+    value: {fileID: 1971318376579639683}
+  - key: {fileID: 87623171351919047, guid: 2f3ecbf8ea0a3e24a8f4ae8e107b0e19, type: 2}
+    value: {fileID: 1971318376579639683}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1001 &2076510048032902760
 PrefabInstance:
   m_ObjectHideFlags: 0

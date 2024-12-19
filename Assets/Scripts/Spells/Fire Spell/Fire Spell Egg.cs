@@ -1,7 +1,9 @@
 using UnityEngine;
 
 public class FireSpellEgg : MonoBehaviour {
+  public readonly EventSource OnDetonate = new();
   public readonly EventSource OnCollision = new();
+
   public GameObject Owner;
 
   bool ValidExplosionTarget(Collider c)

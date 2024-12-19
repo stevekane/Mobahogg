@@ -2,6 +2,29 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+/*
+Refactoring notes:
+
+This spell has two phases: Egg Alive and Dragons Alive.
+
+The process of each Egg can be self-contained such that the egg's
+death triggers the dragons to spawn, or not. There probably is not
+that much need to coordinate the behavior of the system from a bespoke
+script like this. Instead, it might be better to simply move the code
+around to the various actors that are involved in the spell's execution
+and let iteration happen there.
+
+This may just be true for nearly all the spells... hard to say for certain.
+
+FireSpell could simple run an animation when activated. This animation
+describes the behavior of the system.
+
+One advantage of handling things this way is that all the spell behavior is
+largely concetrated here.
+
+I think the minimal gameplay logic is what should live here. Visual effects
+that have no impact on gameplay should not live in the spell itself.
+*/
 public class FireSpell : Spell {
   [SerializeField] FireSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
@@ -16,7 +39,7 @@ public class FireSpell : Spell {
   async UniTask Run(Vector3 position, Quaternion rotation, Player owner, CancellationToken token) {
     var eggGO = Instantiate(Settings.EggPrefab, position, rotation, transform);
     var egg = eggGO.GetComponent<FireSpellEgg>();
-    egg.Owner = owner.gameObject;
+    egg.Owner = owner ? owner.gameObject : null;
     var eggCollision = Tasks.ListenFor(egg.OnCollision, token);
     var travelEasingFn = EasingFunctions.FromName(Settings.EggTravelEasingFunctionName);
     var travel = Tasks.MoveBy(
@@ -28,33 +51,7 @@ public class FireSpell : Spell {
       travelEasingFn,
       travelEasingFn,
       token);
-    var spinEasingFn = EasingFunctions.FromName(Settings.EggSpinupEasingFunctionName);
-    var spinner = egg.GetComponentInChildren<LocalClockSpinner>();
-    var spin = Tasks.Tween(
-      0,
-      Settings.MaxEggSpinSpeed,
-      LocalClock,
-      Settings.EggTravelDuration.Ticks,
-      spinEasingFn,
-      f => spinner.DegreesPerSecond = f,
-      token);
-    var vibrationEasingFunction = EasingFunctions.FromName(Settings.EggVibrationEasingFunctionName);
-    var vibrator = egg.GetComponent<Vibrator>();
-    vibrator.Vibrate(Vector3.up, Settings.EggTravelDuration.Ticks, 0, 20);
-    var vibrate = Tasks.Tween(
-      0,
-      Settings.MaxEggVibration,
-      LocalClock,
-      Settings.EggTravelDuration.Ticks,
-      vibrationEasingFunction,
-      f => {
-        vibrator.Axis = Random.onUnitSphere;
-        vibrator.Amplitude = f;
-      },
-      token);
-
-    var normalTravel = UniTask.WhenAll(travel, spin, vibrate);
-    var outcome = await UniTask.WhenAny(normalTravel, eggCollision);
+    var outcome = await UniTask.WhenAny(travel, eggCollision);
     // Normal Travel Occured
     if (outcome == 0) {
       var halfSpread = Settings.DragonSpreadAngle / 2f;
@@ -73,7 +70,6 @@ public class FireSpell : Spell {
     for (var i = 0; i < hitCount; i++) {
       var collider = Colliders[i];
       if (collider.TryGetComponent(out SpellAffected spellAffected)) {
-        Debug.Log($"Hit {collider.name}", collider.gameObject);
         var delta = collider.transform.position-egg.transform.position;
         var direction = delta.normalized;
         spellAffected.Push(Settings.ExplosionKnockback / LocalClock.DeltaTime() * direction);
