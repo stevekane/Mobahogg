@@ -41,5 +41,5 @@ MonoBehaviour:
   TornadoDriftNoiseScale: 0.1
   TornadoSpeedNoiseScale: 0.1
   TornadoInnerRadius: 0.5
-  TornadoOuterRadius: 1
+  TornadoOuterRadius: 15
   TornadoMaxSuction: 600
