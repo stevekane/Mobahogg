@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using State;
+using System.Linq;
 
 /*
 I have opted to, for now, make this class non-deterministic and dumb.
@@ -12,6 +13,7 @@ given that determinism is not a primary design goal.
 public class SpellHolder : AbstractState {
   public readonly EventSource<Spell> OnAddSpell = new();
   public readonly EventSource<Spell> OnRemoveSpell = new();
+  public readonly EventSource<Spell> OnHeadChange = new();
 
   [SerializeField] int MaxCount = 3;
 
@@ -23,6 +25,8 @@ public class SpellHolder : AbstractState {
     if (SpellQueue.Count < MaxCount) {
       SpellQueue.Enqueue(spell);
       OnAddSpell.Fire(spell);
+      if (SpellQueue.Count == 1)
+        OnHeadChange.Fire(SpellQueue.First());
       return true;
     } else {
       return false;
@@ -36,6 +40,7 @@ public class SpellHolder : AbstractState {
   public Spell Dequeue() {
     var spell = SpellQueue.Dequeue();
     OnRemoveSpell.Fire(spell);
+    OnHeadChange.Fire(SpellQueue.FirstOrDefault());
     return spell;
   }
 }

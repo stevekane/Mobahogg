@@ -17,4 +17,5 @@ public class AirSpellSettings : ScriptableObject {
     var interpolant = Mathf.InverseLerp(TornadoInnerRadius, TornadoOuterRadius, distance);
     return TornadoMaxSuction * TornadoSuctionFalloff.Evaluate(interpolant);
   }
+  public float PassiveMoveSpeedMultiplier = 1.5f;
 }

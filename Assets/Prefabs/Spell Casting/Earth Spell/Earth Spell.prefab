@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpellStaffChargePrefab: {fileID: 8739652137781157769, guid: 0834931a60a0cfe418e07e83df9076d8, type: 3}
+  SpellPassiveEffectPrefab: {fileID: 7450961799077719371, guid: 8476729d6a7aee0489e8a6908dc6eb53, type: 3}
   EarthBallPrefab: {fileID: 5361970549713510377, guid: 5bdba77b161bb9a4a85c2521e0ca2925, type: 3}
   RockPrefab: {fileID: 8951997924868042674, guid: e3c0b62371fc5774ebbc3e7b52b784b4, type: 3}
   SpikePrefab: {fileID: 4996498879357762785, guid: ff7d34eb33a47c846beb8b46741e746d, type: 3}
@@ -54,7 +55,6 @@ MonoBehaviour:
   TravelDistance: 30
   TravelFrames: 120
   LingerFrames: 120
-  Density: 0.5
 --- !u!114 &-564473775087849227
 MonoBehaviour:
   m_ObjectHideFlags: 0

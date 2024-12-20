@@ -3,8 +3,6 @@ using UnityEngine;
 namespace Melee {
   [CreateAssetMenu(menuName = "Melee/Attack Config")]
   public class MeleeAttackConfig : ScriptableObject {
-    [Header("Health")]
-    public int Damage = 1;
     [Header("HitStop")]
     public Timeval HitStopDuration = Timeval.FromMillis(100);
     [Header("Knockback")]

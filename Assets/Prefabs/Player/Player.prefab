@@ -111,6 +111,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8035973861317321837}
+  - {fileID: 4933029843833531061}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &302708408903729865
@@ -660,6 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ded7bd70ab91244db02bd687ccc26af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: {fileID: 2887056759439107999}
   Combatant: {fileID: 6859262562219351446}
   Collider: {fileID: 548442601719462120}
   MeleeAttackConfig: {fileID: 11400000, guid: aa42d51c6311d094491c3b690084fbcc, type: 2}
@@ -1827,6 +1829,8 @@ MonoBehaviour:
   Controller: {fileID: 3542533184097295049}
   MoveSpeed: {fileID: 4751482104723936499}
   Health: {fileID: 94004394668583191}
+  Damage: {fileID: 2887056759439107999}
+  Immune: 0
 --- !u!1 &8044512733104495048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,6 +1903,53 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &8517915162962848789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4933029843833531061}
+  - component: {fileID: 2531828552647307938}
+  m_Layer: 0
+  m_Name: Spell Passive Effect Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4933029843833531061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517915162962848789}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3252110086261474847}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2531828552647307938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517915162962848789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4228c7b5bc613084c87d30e90a9e8673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpellHolder: {fileID: 4106878518632410812}
+  SpellAffected: {fileID: 5889265469151095980}
+  LocalClock: {fileID: 988945814378296752}
 --- !u!1 &8600784956617400691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,6 +2002,7 @@ GameObject:
   - component: {fileID: 6233153455102195460}
   - component: {fileID: 94004394668583191}
   - component: {fileID: 4106878518632410812}
+  - component: {fileID: 2887056759439107999}
   m_Layer: 0
   m_Name: State
   m_TagString: Untagged
@@ -2065,6 +2117,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxCount: 3
+--- !u!114 &2887056759439107999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9154293866625994780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9379a995a5640744f9497e79c5593384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Base: 1
 --- !u!1001 &712466576642963969
 PrefabInstance:
   m_ObjectHideFlags: 0

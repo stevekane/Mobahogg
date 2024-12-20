@@ -5,7 +5,7 @@ public class Blizzard : MonoBehaviour {
 
   void OnTriggerStay(Collider other) {
     if (other.TryGetComponent(out SpellAffected spellAffected)) {
-      spellAffected.Slow(Settings.SlowFraction);
+      spellAffected.MultiplySpeed(Settings.SlowFraction);
     }
   }
 }

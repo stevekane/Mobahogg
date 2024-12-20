@@ -13,7 +13,6 @@ namespace Melee {
       Config.KnockBackStrength * (Victim.transform.position - Attacker.transform.position).normalized;
     public int KnockbackFrames =>
       Config.KnockbackDuration.Ticks;
-    public int Damage =>
-      Config.Damage;
+    public int Damage;
   }
 }

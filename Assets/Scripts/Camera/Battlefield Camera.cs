@@ -8,7 +8,6 @@ public class BattlefieldCamera : CinemachineExtension {
   public float Pitch = 30f;
   public float HorizontalFOV = 45;
 
-  // TODO: Add support to control the projection
   protected override void PostPipelineStageCallback(
   CinemachineVirtualCameraBase vcam,
   CinemachineCore.Stage stage,

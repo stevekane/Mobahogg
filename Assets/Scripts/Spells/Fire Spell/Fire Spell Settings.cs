@@ -21,4 +21,7 @@ public class FireSpellSettings : ScriptableObject {
   public float DragonTravelSpeed = 30;
   public float DragonSpreadAngle = 135;
   public int DragonCount = 5;
+
+  [Header("Passive Effect")]
+  public int PassiveExtraDamage = 1;
 }
