@@ -6,27 +6,30 @@ public class PlayerController : MonoBehaviour {
   public int PortIndex;
 
   void Start() {
-    InputRouter.Instance?.TryListen("Move", PortIndex, HandleMove);
-    InputRouter.Instance?.TryListen("Jump", PortIndex, HandleJump);
-    InputRouter.Instance?.TryListen("Dash", PortIndex, HandleDash);
-    InputRouter.Instance?.TryListen("Attack", PortIndex, HandleAttack);
-    InputRouter.Instance?.TryListen("Cast Spell", PortIndex, HandleCastSpell);
-    InputRouter.Instance?.TryListen("Spin", PortIndex, HandleSpin);
+    InputRouter.Instance?.TryListenValue("Move", PortIndex, HandleMove);
+    InputRouter.Instance?.TryListenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
+    InputRouter.Instance?.TryListenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
+    InputRouter.Instance?.TryListenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
+    InputRouter.Instance?.TryListenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
   }
 
   void OnDestroy() {
-    InputRouter.Instance?.TryUnlisten("Move", PortIndex, HandleMove);
-    InputRouter.Instance?.TryUnlisten("Jump", PortIndex, HandleJump);
-    InputRouter.Instance?.TryUnlisten("Dash", PortIndex, HandleDash);
-    InputRouter.Instance?.TryUnlisten("Attack", PortIndex, HandleAttack);
-    InputRouter.Instance?.TryUnlisten("Cast Spell", PortIndex, HandleCastSpell);
-    InputRouter.Instance?.TryUnlisten("Spin", PortIndex, HandleSpin);
+    InputRouter.Instance?.TryUnlistenValue("Move", PortIndex, HandleMove);
+    InputRouter.Instance?.TryUnlistenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
+    InputRouter.Instance?.TryUnlistenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
+    InputRouter.Instance?.TryUnlistenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
+    InputRouter.Instance?.TryUnlistenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
   }
 
   // TODO:
   // This is sort of a hack for now to send MoveEvents for any player controller
   // That does not have an active connected device
   // Think of this like a poor-man's AI
+  // This has to do with currently needing to invoke "move" whenever possible to sort of
+  // exert this character's desired motion. This def does not really feel correct though
+  // so maybe there ought to be a seperate system that simply establishes that the next
+  // desired velocity is always defaulting to 0 and that you must try to have another velocity
+  // explicitly through an effort to move
   void FixedUpdate() {
     if (InputRouter.Instance.HasConnectedDevice(PortIndex))
       return;
@@ -36,18 +39,38 @@ public class PlayerController : MonoBehaviour {
   IEnumerable<Player> PlayersOnPort =>
     LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
 
-  public void HandleMove(PortAction action) {
-    PlayersOnPort.ForEach(p => p.MoveAbility.TryRun(action.Value));
-    PlayersOnPort.ForEach(p => p.TurnAbility.TryRun(action.Value));
+  // TODO: Think we need to consume input if the ability is successfully fired
+
+  void HandleMove(PortValue action) {
+    var moveRan = PlayersOnPort.Any(p => p.MoveAbility.TryRun(action.Value));
+    var turnRan = PlayersOnPort.Any(p => p.TurnAbility.TryRun(action.Value));
   }
 
-  public void HandleJump(PortAction action) => PlayersOnPort.ForEach(p => p.TryJump());
+  public void HandleJump(PortButtonState action) {
+    var anyRan = PlayersOnPort.Any(p => p.TryJump());
+    if (anyRan) {
+      InputRouter.Instance.ConsumeButton("Jump", PortIndex);
+    }
+  }
 
-  public void HandleDash(PortAction action) => PlayersOnPort.ForEach(p => p.TryDash());
+  public void HandleDash(PortButtonState action) {
+    var anyRan = PlayersOnPort.Any(p => p.TryDash());
+    if (anyRan) {
+      InputRouter.Instance.ConsumeButton("Dash", PortIndex);
+    }
+  }
 
-  public void HandleAttack(PortAction action) => PlayersOnPort.ForEach(p => p.AttackAbility.TryRun());
+  public void HandleAttack(PortButtonState action) {
+    var anyRan = PlayersOnPort.Any(p => p.AttackAbility.TryRun());
+    if (anyRan) {
+      InputRouter.Instance.ConsumeButton("Attack", PortIndex);
+    }
+  }
 
-  public void HandleCastSpell(PortAction action) => PlayersOnPort.ForEach(p => p.SpellCastAbility.TryRun());
-
-  public void HandleSpin(PortAction action) => PlayersOnPort.ForEach(p => p.SpinAbility.TryRun());
+  public void HandleCastSpell(PortButtonState action) {
+    var anyRan = PlayersOnPort.Any(p => p.SpellCastAbility.TryRun());
+    if (anyRan) {
+      InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
+    }
+  }
 }

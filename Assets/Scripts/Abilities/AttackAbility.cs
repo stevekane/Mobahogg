@@ -3,7 +3,7 @@ using State;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class AttackAbility : MonoBehaviour {
+public class AttackAbility : MonoBehaviour, IAbility {
   [Header("Reads From")]
   [SerializeField] AimAssistTargeter AimAssistTargeter;
   [SerializeField] AbilitySettings Settings;
@@ -39,6 +39,7 @@ public class AttackAbility : MonoBehaviour {
     && !LocalClock.Frozen();
 
   public bool TryRun() {
+    Debug.Log($"Attack TryRun {TimeManager.Instance.FixedFrame()}");
     if (CanRun) {
       var bestTarget = AimAssistManager.Instance.BestTarget(AimAssistTargeter, AimAssistQuery);
       if (bestTarget) {

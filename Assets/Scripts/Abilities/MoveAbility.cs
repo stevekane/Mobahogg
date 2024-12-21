@@ -1,7 +1,7 @@
 using State;
 using UnityEngine;
 
-public class MoveAbility : MonoBehaviour {
+public class MoveAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
   [SerializeField] MoveSpeed MoveSpeed;
   [SerializeField] LocalClock LocalClock;
@@ -12,12 +12,12 @@ public class MoveAbility : MonoBehaviour {
   Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
     Mathf.Min(v.magnitude, maxMagnitude) * v.normalized;
 
-  public bool CanRun()
+  public bool CanRun
     => MoveSpeed.Value > 0
     && !LocalClock.Frozen();
 
   public bool TryRun(Vector2 value) {
-    if (CanRun()) {
+    if (CanRun) {
       var currentVelocity = CharacterController.Velocity.XZ();
       var desiredVelocity = MoveSpeed.Value * value.XZ().normalized;
       var maxMoveSpeed = MoveSpeed.Value;
