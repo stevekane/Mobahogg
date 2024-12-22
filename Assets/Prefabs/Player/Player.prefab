@@ -665,6 +665,7 @@ MonoBehaviour:
   Combatant: {fileID: 6859262562219351446}
   Collider: {fileID: 548442601719462120}
   MeleeAttackConfig: {fileID: 11400000, guid: aa42d51c6311d094491c3b690084fbcc, type: 2}
+  AttackAbility: {fileID: 5165232841971343211}
 --- !u!135 &548442601719462120
 SphereCollider:
   m_ObjectHideFlags: 0
