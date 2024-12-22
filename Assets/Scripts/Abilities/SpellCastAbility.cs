@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpellCastAbility : MonoBehaviour {
+public class SpellCastAbility : MonoBehaviour, IAbility {
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] Player Player;

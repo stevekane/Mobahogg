@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpellStaffChargePrefab: {fileID: 8308523887207664424, guid: 719f862b9ddb51d40aa98e136baada39, type: 3}
+  SpellPassiveEffectPrefab: {fileID: 8222796159185162792, guid: f26a513456376634fa9029638fdf5b19, type: 3}
   Settings: {fileID: 11400000, guid: b5572e2bebfa0f4479d8750f9358086b, type: 2}
   LocalClock: {fileID: -4476191188063295560}
 --- !u!114 &-4476191188063295560

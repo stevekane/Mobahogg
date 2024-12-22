@@ -47,10 +47,10 @@ public class MatchSetup : MonoBehaviour {
     InputRouter.Instance.DeviceConnected.Listen(AddDevice);
     InputRouter.Instance.DeviceConnected.Listen(RemoveDevice);
     for (var i = 0; i < InputRouter.MAX_PORT_COUNT; i++) {
-      InputRouter.Instance.TryListen("MatchSetup/ToggleJoin", i, HandleToggleJoin);
-      InputRouter.Instance.TryListen("MatchSetup/ToggleTeam", i, HandleToggleTeam);
-      InputRouter.Instance.TryListen("MatchSetup/ToggleReady", i, HandleToggleReady);
-      InputRouter.Instance.TryListen("MatchSetup/ChangeName", i, HandleChangeName);
+      InputRouter.Instance.TryListenButton("MatchSetup/ToggleJoin", ButtonState.JustDown, i, HandleToggleJoin);
+      InputRouter.Instance.TryListenButton("MatchSetup/ToggleTeam", ButtonState.JustDown, i, HandleToggleTeam);
+      InputRouter.Instance.TryListenButton("MatchSetup/ToggleReady", ButtonState.JustDown, i, HandleToggleReady);
+      InputRouter.Instance.TryListenButton("MatchSetup/ChangeName", ButtonState.JustDown, i, HandleChangeName);
     }
   }
 
@@ -58,26 +58,26 @@ public class MatchSetup : MonoBehaviour {
     InputRouter.Instance.DeviceConnected.Unlisten(AddDevice);
     InputRouter.Instance.DeviceDisconnected.Unlisten(RemoveDevice);
     for (var i = 0; i < InputRouter.MAX_PORT_COUNT; i++) {
-      InputRouter.Instance.TryUnlisten("MatchSetup/ToggleJoin", i, HandleToggleJoin);
-      InputRouter.Instance.TryUnlisten("MatchSetup/ToggleTeam", i, HandleToggleTeam);
-      InputRouter.Instance.TryUnlisten("MatchSetup/ToggleReady", i, HandleToggleReady);
-      InputRouter.Instance.TryUnlisten("MatchSetup/ChangeName", i, HandleChangeName);
+      InputRouter.Instance.TryUnlistenButton("MatchSetup/ToggleJoin", ButtonState.JustDown, i, HandleToggleJoin);
+      InputRouter.Instance.TryUnlistenButton("MatchSetup/ToggleTeam", ButtonState.JustDown, i, HandleToggleTeam);
+      InputRouter.Instance.TryUnlistenButton("MatchSetup/ToggleReady", ButtonState.JustDown, i, HandleToggleReady);
+      InputRouter.Instance.TryUnlistenButton("MatchSetup/ChangeName", ButtonState.JustDown, i, HandleChangeName);
     }
   }
 
-  void HandleToggleJoin(PortAction action) {
+  void HandleToggleJoin(PortButtonState action) {
     ToggleJoin(action.PortIndex);
   }
 
-  void HandleToggleTeam(PortAction action) {
+  void HandleToggleTeam(PortButtonState action) {
     ToggleTeam(action.PortIndex);
   }
 
-  void HandleChangeName(PortAction action) {
+  void HandleChangeName(PortButtonState action) {
     ChangeName(action.PortIndex);
   }
 
-  void HandleToggleReady(PortAction action) {
+  void HandleToggleReady(PortButtonState action) {
     ToggleReady(action.PortIndex);
   }
 

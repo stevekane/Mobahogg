@@ -1,5 +1,98 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3708010808080493702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4899915900358047653}
+  m_Layer: 0
+  m_Name: Location 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4899915900358047653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708010808080493702}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6774526037654257792}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5840799627330611906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6708275367317068255}
+  m_Layer: 0
+  m_Name: Location 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6708275367317068255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5840799627330611906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 0.10000002, y: 0.10000002, z: 0.09999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7021987156384583696}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8792959935503309489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4444550668348810890}
+  m_Layer: 0
+  m_Name: Location 0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4444550668348810890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8792959935503309489}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000059604638, y: 0.000000021073419, z: -0.000000021073431, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4221993033949064055}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2379151171788345811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -117,7 +210,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8632055958874330854, guid: e1c61666b953549439fed98d4549a051, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4444550668348810890}
+    - targetCorrespondingSourceObject: {fileID: 1395907985004231953, guid: e1c61666b953549439fed98d4549a051, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4899915900358047653}
+    - targetCorrespondingSourceObject: {fileID: -6039417817715823231, guid: e1c61666b953549439fed98d4549a051, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6708275367317068255}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1c61666b953549439fed98d4549a051, type: 3}
 --- !u!4 &4221993033949064055 stripped
@@ -207,15 +309,15 @@ PrefabInstance:
     - target: {fileID: 4317267126845283119, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: 'SpellChargeLocations.Array.data[0]'
       value: 
-      objectReference: {fileID: 4221993033949064055}
+      objectReference: {fileID: 4444550668348810890}
     - target: {fileID: 4317267126845283119, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: 'SpellChargeLocations.Array.data[1]'
       value: 
-      objectReference: {fileID: 6774526037654257792}
+      objectReference: {fileID: 4899915900358047653}
     - target: {fileID: 4317267126845283119, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: 'SpellChargeLocations.Array.data[2]'
       value: 
-      objectReference: {fileID: 7021987156384583696}
+      objectReference: {fileID: 6708275367317068255}
     - target: {fileID: 4792962541073121913, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -6,8 +6,6 @@ public class FireSpellSettings : ScriptableObject {
   public GameObject EggPrefab;
   public Vector3 EggLocalTravelDelta = new(0, 0, 10);
   public Timeval EggTravelDuration = Timeval.FromSeconds(1);
-  public float MaxEggSpinSpeed = 360 * 6;
-  public float MaxEggVibration = 1;
   public EasingFunctions.EasingFunctionName EggTravelEasingFunctionName;
   public EasingFunctions.EasingFunctionName EggSpinupEasingFunctionName;
   public EasingFunctions.EasingFunctionName EggVibrationEasingFunctionName;
@@ -15,6 +13,8 @@ public class FireSpellSettings : ScriptableObject {
   [Header("Explosion")]
   public GameObject ExplosionPrefab;
   public float ExplosionCameraShakeIntensity = 0.25f;
+  public float ExplosionKnockback = 50;
+  public float ExplosionRadius = 5;
 
   [Header("Dragons")]
   public GameObject DragonPrefab;
@@ -22,7 +22,6 @@ public class FireSpellSettings : ScriptableObject {
   public float DragonSpreadAngle = 135;
   public int DragonCount = 5;
 
-  [Header("Fire")]
-  public GameObject FirePrefab;
-  public Timeval FireDropCooldown = Timeval.FromMillis(500);
+  [Header("Passive Effect")]
+  public int PassiveExtraDamage = 1;
 }

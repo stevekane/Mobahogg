@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7466874812490785246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7507299, y: 18.038809, z: -34.529564}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpellStaffChargePrefab: {fileID: 7203396839882200148, guid: 421667dcdab82344a9575e816852eaf7, type: 3}
+  SpellPassiveEffectPrefab: {fileID: 4623498357790511131, guid: e26ecfdd3725b4d408da7f3656c805f5, type: 3}
   LocalClock: {fileID: 1794053104677379528}
   AirBallPrefab: {fileID: 8251809498724965876, guid: 9e1995b786921fc4c8f033ecc9bf71aa, type: 3}
   TornadoPrefab: {fileID: 540094429662545567, guid: 08c2cda0dd64bcb42b9f23950aa52739, type: 3}

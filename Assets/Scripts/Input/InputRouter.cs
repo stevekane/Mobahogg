@@ -1,43 +1,84 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public struct PortAction {
+public enum ButtonState {
+  Up,
+  JustDown,
+  Down,
+  JustUp
+}
+
+public struct PortValue {
+  public readonly string ActionName;
   public readonly int PortIndex;
   public readonly Vector2 Value;
-  public PortAction(int portIndex) {
-    PortIndex = portIndex;
-    Value = default;
-  }
-  public PortAction(int portIndex, Vector2 value) {
+  public PortValue(string actionName, int portIndex, Vector2 value) {
+    ActionName = actionName;
     PortIndex = portIndex;
     Value = value;
   }
 }
 
+public struct PortButtonState {
+  public readonly string ActionName;
+  public readonly int PortIndex;
+  public readonly ButtonState ButtonState;
+  public PortButtonState(string actionName, int portIndex, ButtonState buttonState) {
+    ActionName = actionName;
+    PortIndex = portIndex;
+    ButtonState = buttonState;
+  }
+}
+
 public class InputPort {
   readonly Inputs Inputs;
-  readonly Dictionary<InputAction, EventSource<PortAction>> Pushed;
-  readonly Dictionary<InputAction, Vector2> Values;
+  readonly Dictionary<InputAction, int> JustDownBuffer = new();
+  readonly Dictionary<InputAction, int> BufferFrameDurations = new();
+  readonly Dictionary<InputAction, EventSource<PortButtonState>> Up = new();
+  readonly Dictionary<InputAction, EventSource<PortButtonState>> JustDown = new();
+  readonly Dictionary<InputAction, EventSource<PortButtonState>> Down = new();
+  readonly Dictionary<InputAction, EventSource<PortButtonState>> JustUp = new();
+  readonly Dictionary<InputAction, EventSource<PortValue>> Value = new();
+  readonly Dictionary<InputAction, ButtonState> Buttons = new();
+  readonly Dictionary<InputAction, Vector2> Values = new();
   readonly int PortIndex;
 
   public InputPort(Inputs inputs, int portIndex) {
     Inputs = inputs;
-    Pushed = new();
-    Values = new();
     PortIndex = portIndex;
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
-        Pushed.Add(action, new());
-        Values.Add(action, new());
+        if (action.type == InputActionType.Value) {
+          Values.Add(action, new());
+          Value.Add(action, new());
+        } else if (action.type == InputActionType.Button) {
+          Buttons.Add(action, new());
+          Up.Add(action, new());
+          JustDown.Add(action, new());
+          Down.Add(action, new());
+          JustUp.Add(action, new());
+          BufferFrameDurations.Add(action, 6);
+        }
       }
     }
   }
 
-  public bool TryListen(string actionName, Action<PortAction> cb) {
-    if (Pushed.TryGetValue(Inputs.FindAction(actionName), out EventSource<PortAction> source)) {
+  Dictionary<InputAction, EventSource<PortButtonState>> MapForButtonState(ButtonState state) =>
+    state switch {
+      ButtonState.JustDown => JustDown,
+      ButtonState.Down => Down,
+      ButtonState.JustUp => JustUp,
+      _ => Up
+    };
+
+  public bool TryListenButtonState(string actionName, ButtonState state, Action<PortButtonState> cb) {
+    var action = Inputs.FindAction(actionName);
+    var map = MapForButtonState(state);
+    if (map.TryGetValue(action, out var source)) {
       source.Listen(cb);
       return true;
     } else {
@@ -45,8 +86,10 @@ public class InputPort {
     }
   }
 
-  public bool TryUnlisten(string actionName, Action<PortAction> cb) {
-    if (Pushed.TryGetValue(Inputs.FindAction(actionName), out EventSource<PortAction> source)) {
+  public bool TryUnlistenButtonState(string actionName, ButtonState state, Action<PortButtonState> cb) {
+    var action = Inputs.FindAction(actionName);
+    var map = MapForButtonState(state);
+    if (map.TryGetValue(action, out var source)) {
       source.Unlisten(cb);
       return true;
     } else {
@@ -54,10 +97,70 @@ public class InputPort {
     }
   }
 
-  public bool TrySetValue(string actionName, Vector2 value) {
+  public bool TryGetButtonState(string actionName, out ButtonState value) {
+    return Buttons.TryGetValue(Inputs.FindAction(actionName), out value);
+  }
+
+  public void SetButtonState(string actionName, bool pressed) {
     var action = Inputs.FindAction(actionName);
-    if (Values.ContainsKey(action)) {
-      Values[action] = value;
+    if (Buttons.TryGetValue(action, out var currentState)) {
+      var nextState = (pressed, currentState) switch {
+        (true, ButtonState.Up) => ButtonState.JustDown,
+        (true, ButtonState.JustUp) => ButtonState.JustDown,
+        (false, ButtonState.Down) => ButtonState.JustUp,
+        (false, ButtonState.JustDown) => ButtonState.JustUp,
+        _ => pressed ? ButtonState.Down : ButtonState.Up
+      };
+      Buttons[action] = nextState;
+      if (nextState == ButtonState.JustDown) {
+        JustDownBuffer[action] = TimeManager.Instance.FixedFrame();
+      }
+    } else {
+      Buttons[action] = pressed ? ButtonState.Down : ButtonState.Up;
+    }
+  }
+
+  public bool TrySendBufferedButtonState(string actionName) {
+    var action = Inputs.FindAction(actionName);
+    if (JustDown.TryGetValue(action, out var source) &&
+        JustDownBuffer.TryGetValue(action, out var bufferedFrame) &&
+        BufferFrameDurations.TryGetValue(action, out var bufferFrameDuration) &&
+        TimeManager.Instance.FixedFrame()-bufferedFrame <= bufferFrameDuration) {
+      source.Fire(new(actionName, PortIndex, ButtonState.JustDown));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public void ConsumeBufferedButtonState(string actionName) {
+    var action = Inputs.FindAction(actionName);
+    JustDownBuffer.Remove(action);
+  }
+
+  public bool TrySendButtonState(string actionName) {
+    var action = Inputs.FindAction(actionName);
+    if (Buttons.TryGetValue(action, out var state) &&
+        MapForButtonState(state).TryGetValue(action, out var source)) {
+      source.Fire(new(actionName, PortIndex, state));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public bool TryListenValue(string actionName, Action<PortValue> cb) {
+    if (Value.TryGetValue(Inputs.FindAction(actionName), out var source)) {
+      source.Listen(cb);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public bool TryUnlistenValue(string actionName, Action<PortValue> cb) {
+    if (Value.TryGetValue(Inputs.FindAction(actionName), out var source)) {
+      source.Unlisten(cb);
       return true;
     } else {
       return false;
@@ -65,21 +168,19 @@ public class InputPort {
   }
 
   public bool TryGetValue(string actionName, out Vector2 value) {
-    var action = Inputs.FindAction(actionName);
-    if (Values.ContainsKey(action)) {
-      value = Values[action];
-      return true;
-    } else {
-      value = default;
-      return false;
-    }
+    return Values.TryGetValue(Inputs.FindAction(actionName), out value);
   }
 
-  public bool TrySend(string actionName) {
+  public void SetValue(string actionName, Vector2 value) {
+    Values[Inputs.FindAction(actionName)] = value;
+  }
+
+  public bool TrySendValue(string actionName) {
     var action = Inputs.FindAction(actionName);
-    if (Pushed.TryGetValue(action, out EventSource<PortAction> source)) {
-      source.Fire(new(PortIndex, Values.GetValueOrDefault(action)));
-      return true;
+    if (Value.TryGetValue(action, out var source) &&
+        Values.TryGetValue(action, out var value)) {
+        source.Fire(new(actionName, PortIndex, value));
+        return true;
     } else {
       return false;
     }
@@ -105,11 +206,21 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   public bool HasConnectedDevice(int portIndex) =>
     DeviceToPortMap.Values.Contains(portIndex);
 
-  public bool TryListen(string actionName, int portIndex, Action<PortAction> cb) =>
-    InputPorts[portIndex].TryListen(actionName, cb);
+  public bool TryListenValue(string actionName, int portIndex, Action<PortValue> cb) =>
+    InputPorts[portIndex].TryListenValue(actionName, cb);
 
-  public bool TryUnlisten(string actionName, int portIndex, Action<PortAction> cb) =>
-    InputPorts[portIndex].TryUnlisten(actionName, cb);
+  public bool TryListenButton(string actionName, ButtonState buttonState, int portIndex, Action<PortButtonState> cb) =>
+    InputPorts[portIndex].TryListenButtonState(actionName, buttonState, cb);
+
+  public bool TryUnlistenValue(string actionName, int portIndex, Action<PortValue> cb) =>
+    InputPorts[portIndex].TryUnlistenValue(actionName, cb);
+
+  public bool TryUnlistenButton(string actionName, ButtonState buttonState, int portIndex, Action<PortButtonState> cb) =>
+    InputPorts[portIndex].TryUnlistenButtonState(actionName, buttonState, cb);
+
+  public void ConsumeButton(string actionName, int portIndex) {
+    InputPorts[portIndex].ConsumeBufferedButtonState(actionName);
+  }
 
   bool ValidDevice(InputDevice device) => device is Gamepad;
 
@@ -122,28 +233,25 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     for (var i = 0; i < InputPorts.Length; i++) {
       InputPorts[i] = new(Inputs, i);
     }
-    foreach (var actionMap in Inputs.asset.actionMaps) {
-      foreach (var action in actionMap.actions) {
-        var myAction = Inputs.FindAction(action.name);
-        if (myAction.type == InputActionType.Button) {
-          action.performed += OnButtonAction;
-        }
-      }
-    }
   }
 
-  // Send values once per frame... maybe?
   void FixedUpdate() {
     foreach (var actionMap in Inputs.asset.actionMaps) {
       foreach (var action in actionMap.actions) {
-        if (action.type == InputActionType.Value) {
-          foreach (var control in action.controls) {
-            if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
+        foreach (var control in action.controls) {
+          if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
+            if (action.type == InputActionType.Value) {
               // TODO: I believe this allocates. ReadIntoBuffer seems to avoid it
               var value = (Vector2)control.ReadValueAsObject();
               value = value.magnitude < StickDeadZone ? default : value;
-              InputPorts[portIndex].TrySetValue(action.name, value);
-              InputPorts[portIndex].TrySend(action.name);
+              InputPorts[portIndex].SetValue(action.name, value);
+              InputPorts[portIndex].TrySendValue(action.name);
+            }
+            if (action.type == InputActionType.Button) {
+              InputPorts[portIndex].SetButtonState(action.name, control.IsPressed());
+              if (!InputPorts[portIndex].TrySendBufferedButtonState(action.name)) {
+                InputPorts[portIndex].TrySendButtonState(action.name);
+              }
             }
           }
         }
@@ -153,7 +261,7 @@ public class InputRouter : SingletonBehavior<InputRouter> {
 
   void OnButtonAction(InputAction.CallbackContext ctx) {
     if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
-      InputPorts[portIndex].TrySend(ctx.action.name);
+      InputPorts[portIndex].TrySendButtonState(ctx.action.name);
     }
   }
 
@@ -198,15 +306,39 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   void OnGUI() {
     if (!ShowDebug)
       return;
+
     GUILayout.BeginVertical("box");
     GUILayout.Label("Device to Port Map:");
+
     foreach (var kvp in DeviceToPortMap) {
       var portIndex = kvp.Value;
-      GUILayout.Label($"Port {kvp.Value}: {kvp.Key.displayName} ({kvp.Key.deviceId})");
-      if (InputPorts[portIndex].TryGetValue("Move", out var value)) {
-        GUILayout.Label($"\tMove {value})");
+      GUILayout.Label($"Port {portIndex}: {kvp.Key.displayName} ({kvp.Key.deviceId})");
+
+      GUILayout.BeginHorizontal();
+      GUILayout.Label("Value Inputs:", GUILayout.Width(100));
+      GUILayout.EndHorizontal();
+
+      foreach (var actionMap in Inputs.asset.actionMaps) {
+        foreach (var action in actionMap.actions) {
+          if (action.type == InputActionType.Value && InputPorts[portIndex].TryGetValue(action.name, out var value)) {
+            GUILayout.Label($"  {action.name}: {value}");
+          }
+        }
+      }
+
+      GUILayout.BeginHorizontal();
+      GUILayout.Label("Button Inputs:", GUILayout.Width(100));
+      GUILayout.EndHorizontal();
+
+      foreach (var actionMap in Inputs.asset.actionMaps) {
+        foreach (var action in actionMap.actions) {
+          if (action.type == InputActionType.Button && InputPorts[portIndex].TryGetButtonState(action.name, out var buttonState)) {
+            GUILayout.Label($"  {action.name}: {buttonState}");
+          }
+        }
       }
     }
+
     GUILayout.EndVertical();
   }
 }

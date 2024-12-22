@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a875b06bffff4994292d2157735e327d, type: 3}
   m_Name: Melee Attack Config
   m_EditorClassIdentifier: 
-  Damage: -1
   HitStopDuration:
-    Millis: 250
+    Millis: 133.33334
   KnockbackDuration:
     Millis: 200
   KnockBackStrength: 400
   VibrationAmplitude: 0.05
   VibrationFrequency: 20
-  CameraShakeIntensity: 1
+  CameraShakeIntensity: 10

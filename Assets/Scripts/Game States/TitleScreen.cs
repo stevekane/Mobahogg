@@ -8,18 +8,18 @@ public class TitleScreen : MonoBehaviour {
   // listen on all ports for StartMatch
   void Awake() {
     for (var i = 0; i < InputRouter.MAX_PORT_COUNT; i++) {
-      InputRouter.Instance.TryListen("TitleScreen/StartMatch", i, StartMatch);
+      InputRouter.Instance.TryListenButton("TitleScreen/StartMatch", ButtonState.JustDown, i, StartMatch);
     }
   }
 
   void OnDestroy() {
     for (var i = 0; i < InputRouter.MAX_PORT_COUNT; i++) {
-      InputRouter.Instance.TryUnlisten("TitleScreen/StartMatch", i, StartMatch);
+      InputRouter.Instance.TryUnlistenButton("TitleScreen/StartMatch", ButtonState.JustDown, i, StartMatch);
     }
   }
 
-  void StartMatch(PortAction portAction) {
-    Debug.Log($"Match started from {portAction.PortIndex}");
+  void StartMatch(PortButtonState buttonState) {
+    Debug.Log($"Match started from {buttonState.PortIndex}");
     SceneManager.LoadScene(MatchSceneAsset.name);
   }
 }

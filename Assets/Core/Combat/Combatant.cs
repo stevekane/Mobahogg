@@ -34,7 +34,7 @@ public class Combatant : MonoBehaviour {
     if (Animator && HurtFlinchName != "")
       Animator.SetTrigger(HurtFlinchName);
     if (Health)
-      Health.Change(meleeAttackEvent.Damage);
+      Health.Change(-meleeAttackEvent.Damage);
     if (HitStop)
       HitStop.FramesRemaining = meleeAttackEvent.Config.HitStopDuration.Ticks;
     if (Knockback)

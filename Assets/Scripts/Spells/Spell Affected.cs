@@ -5,8 +5,11 @@ public class SpellAffected : MonoBehaviour {
   [SerializeField] KCharacterController Controller;
   [SerializeField] MoveSpeed MoveSpeed;
   [SerializeField] Health Health;
+  [SerializeField] Damage Damage;
 
-  public void Slow(float fraction) => MoveSpeed.Mul(fraction);
-  public void Push(Vector3 acceleration) => Controller.Acceleration += acceleration;
-  public void Damage(int amount) => Health.Change(amount);
+  public bool Immune;
+  public void MultiplySpeed(float fraction) => MoveSpeed.Mul(Immune ? 1 : fraction);
+  public void AddDamage(int damageDelta) => Damage.Add(Immune ? 0 : damageDelta);
+  public void Heal(int healthDelta) => Health.Change(Immune ? 0 : healthDelta);
+  public void Push(Vector3 acceleration) => Controller.Acceleration += Immune ? Vector3.zero : acceleration;
 }
