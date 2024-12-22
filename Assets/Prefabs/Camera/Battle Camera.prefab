@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pivot: {x: 0, y: 0, z: -2}
-  Distance: 66
+  Distance: 88
   Pitch: 60
   HorizontalFOV: 45
 --- !u!114 &8102364467798257494
