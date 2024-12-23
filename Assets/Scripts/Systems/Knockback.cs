@@ -1,51 +1,41 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-/*
-Knockback is a list of active forces being applied to this entity.
-Each active force has a duration.
-These active forces are applied to the Character Controller
-Additionally, some reduction in movespeed or something may
-also be applied resulting in some reduced ability to control your character.
-
-We may want to support overwriting existing knockback effects.
-
-Think about cases like being hit back and forth.
-*/
-[DefaultExecutionOrder((int)ExecutionGroups.Systems)]
+// TODO: COuld remove direct reference to CharacterController and use Event
+[DefaultExecutionOrder((int)ExecutionGroups.State)]
 public class Knockback : MonoBehaviour {
-  [Header("Reads From")]
+  static Vector3 Longer(Vector3 x, Vector3 y) =>
+    Vector3.SqrMagnitude(x) > Vector3.SqrMagnitude(y)
+      ? x
+      : y;
+
+  const float MIN_MAGNITUDE = 0.01f;
+
   [SerializeField] LocalClock LocalClock;
-
-  [Header("Writes To")]
   [SerializeField] KCharacterController CharacterController;
+  [SerializeField] float DecayRate = 2.0f;
 
-  List<Vector3> Forces = new(16);
-  List<int> Durations = new(16);
-  List<Vector3> NextForces = new(16);
-  List<int> NextDurations = new(16);
+  Vector3 Current;
+  Vector3? Next = null;
 
-  public void Add(Vector3 force, int frames) {
-    NextForces.Add(force);
-    NextDurations.Add(frames);
+  public void Set(Vector3 knockback) {
+    if (knockback.sqrMagnitude == 0)
+      return;
+    Next = Next.HasValue ? Longer(knockback, Next.Value) : knockback;
   }
 
   void FixedUpdate() {
-    var deltaFrames = LocalClock.DeltaFrames();
-    for (var i = 0; i < Forces.Count; i++) {
-      CharacterController.Acceleration.Add(Forces[i]);
-      Durations[i] = Durations[i]-deltaFrames;
+    float dt = LocalClock.DeltaTime();
+    if (Next.HasValue) {
+      Current = Next.Value;
+    } else {
+      Current *= Mathf.Pow(Mathf.Clamp01(1 - dt * DecayRate), DecayRate);
+      Current = Current.magnitude <= MIN_MAGNITUDE ? Vector3.zero : Current;
     }
-    for (var i = Forces.Count-1; i >= 0; i--) {
-      var duration = Durations[i];
-      if (duration <= 0) {
-        Forces.RemoveAt(i);
-        Durations.RemoveAt(i);
-      }
-    }
-    NextForces.ForEach(Forces.Add);
-    NextDurations.ForEach(Durations.Add);
-    NextForces.Clear();
-    NextDurations.Clear();
+    Next = null;
+    CharacterController.DirectVelocity.Add(Current);
+  }
+
+  void OnDrawGizmosSelected() {
+    Debug.Log(Current);
   }
 }

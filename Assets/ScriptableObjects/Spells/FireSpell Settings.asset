@@ -16,19 +16,15 @@ MonoBehaviour:
   EggLocalTravelDelta: {x: 0, y: 0, z: 15}
   EggTravelDuration:
     Millis: 1000
-  MaxEggSpinSpeed: 2160
-  MaxEggVibration: 0.5
   EggTravelEasingFunctionName: 11
   EggSpinupEasingFunctionName: 4
   EggVibrationEasingFunctionName: 7
   ExplosionPrefab: {fileID: 7383180520579216824, guid: 235470d2127c8464f8d4fe5f8c1be1cd, type: 3}
   ExplosionCameraShakeIntensity: 0.25
-  ExplosionKnockback: 200
+  ExplosionKnockback: 75
   ExplosionRadius: 5
   DragonPrefab: {fileID: 70581433308528248, guid: fe1e6a560e342654db53a74a1aa91c69, type: 3}
   DragonTravelSpeed: 30
   DragonSpreadAngle: 45
   DragonCount: 3
-  FirePrefab: {fileID: 6542238739109351727, guid: 23e8eff0204d5f94395871389fd121a5, type: 3}
-  FireDropCooldown:
-    Millis: 50
+  PassiveExtraDamage: 1

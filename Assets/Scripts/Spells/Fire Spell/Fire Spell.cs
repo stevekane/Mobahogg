@@ -48,7 +48,7 @@ public class FireSpell : Spell {
       if (collider.TryGetComponent(out SpellAffected spellAffected)) {
         var delta = collider.transform.position-egg.transform.position;
         var direction = delta.normalized;
-        spellAffected.Push(Settings.ExplosionKnockback / LocalClock.DeltaTime() * direction);
+        spellAffected.Knockback(Settings.ExplosionKnockback * direction);
       }
     }
     Destroy(egg.gameObject);

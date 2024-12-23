@@ -10,7 +10,7 @@ namespace Melee {
     public Vector3 ToVictim =>
       Attacker.transform.position - Victim.transform.position;
     public Vector3 Knockback =>
-      Config.KnockBackStrength * (Victim.transform.position - Attacker.transform.position).normalized;
+      Config.KnockBackStrength * (Victim.transform.position - Attacker.transform.position).XZ().normalized;
     public int KnockbackFrames =>
       Config.KnockbackDuration.Ticks;
     public int Damage;

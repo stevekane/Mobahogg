@@ -16,7 +16,7 @@ MonoBehaviour:
     Millis: 133.33334
   KnockbackDuration:
     Millis: 200
-  KnockBackStrength: 200
+  KnockBackStrength: 25
   VibrationAmplitude: 0.125
   VibrationFrequency: 20
   CameraShakeIntensity: 4

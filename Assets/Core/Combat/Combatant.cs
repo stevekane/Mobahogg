@@ -38,7 +38,7 @@ public class Combatant : MonoBehaviour {
     if (HitStop)
       HitStop.FramesRemaining = meleeAttackEvent.Config.HitStopDuration.Ticks;
     if (Knockback)
-      Knockback.Add(meleeAttackEvent.Knockback, meleeAttackEvent.KnockbackFrames);
+      Knockback.Set(meleeAttackEvent.Knockback);
     if (Flash)
       Flash.Set(meleeAttackEvent.Config.HitStopDuration.Ticks);
     if (Vibrator)

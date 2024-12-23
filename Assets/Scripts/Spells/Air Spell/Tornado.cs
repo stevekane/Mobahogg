@@ -30,7 +30,6 @@ public class Tornado : MonoBehaviour {
         targetRotation,
         Settings.MaxTornadoTurningSpeed * Time.fixedDeltaTime
     ) * Vector3.forward;
-
     currentSpeed = Mathf.Lerp(currentSpeed, Settings.MaxTornadoSpeed * Mathf.PerlinNoise(seed * Settings.TornadoSpeedNoiseScale, 1f), 0.1f);
     // TODO: We move the parent which is the AirBall for now... I know this is sort of jank but I'm tired
     transform.parent.position += driftDirection.normalized * currentSpeed * Time.fixedDeltaTime;
