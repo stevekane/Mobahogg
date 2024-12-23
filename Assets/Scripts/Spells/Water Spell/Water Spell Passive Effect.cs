@@ -12,7 +12,7 @@ public class WaterSpellPassiveEffect : SpellPassiveEffect {
   async UniTask Run(CancellationToken token) {
     while (true) {
       await Tasks.Delay(Settings.PassiveHealCooldown.Ticks, LocalClock, token);
-      SpellAffected.Heal(Settings.PassiveHealAmount);
+      SpellAffected.ChangeHealth(Settings.PassiveHealAmount);
     }
   }
 }

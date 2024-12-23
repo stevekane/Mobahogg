@@ -34,8 +34,4 @@ public class Knockback : MonoBehaviour {
     Next = null;
     CharacterController.DirectVelocity.Add(Current);
   }
-
-  void OnDrawGizmosSelected() {
-    Debug.Log(Current);
-  }
 }

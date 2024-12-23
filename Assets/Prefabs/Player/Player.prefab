@@ -1517,6 +1517,7 @@ GameObject:
   - component: {fileID: 8300348243121620764}
   - component: {fileID: 4075815647026140715}
   - component: {fileID: 5889265469151095980}
+  - component: {fileID: 3051964976537025274}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1738,8 +1739,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
   Tether: {fileID: 734669655601474722}
-  MoveSpeed: 10
-  TurnSpeed: 360
+  MoveSpeed: 25
+  TurnSpeed: 720
   DeadCreeps: []
 --- !u!114 &306565525089974642
 MonoBehaviour:
@@ -1828,6 +1829,18 @@ MonoBehaviour:
   DamageState: {fileID: 2887056759439107999}
   KnockbackState: {fileID: 527207892934507696}
   Immune: 0
+--- !u!114 &3051964976537025274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f10ca5115468fa47b56d1a84707043b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8044512733104495048
 GameObject:
   m_ObjectHideFlags: 0

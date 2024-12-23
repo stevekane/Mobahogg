@@ -9,18 +9,23 @@ public class LocalClock : MonoBehaviour, IClock {
   public void UnFreeze() => IsFrozen = false;
   public bool Frozen() => Parent().Frozen() || IsFrozen;
   public int FixedFrame() => TickCount;
-  public float DeltaTime() => Frozen() ? 0 : Parent().DeltaTime();
+  public float Time() => time;
   public int DeltaFrames() => Frozen() ? 0 : 1;
+  public float DeltaTime() => Frozen() ? 0 : Parent().DeltaTime();
 
   int TickCount = 0;
+  float time = 0;
   bool IsFrozen;
 
   void Start() {
     TickCount = 1;
+    time = 0;
   }
 
   void FixedUpdate() {
-    if (!Frozen())
+    if (!Frozen()) {
+      time += DeltaTime();
       TickCount++;
+    }
   }
 }
