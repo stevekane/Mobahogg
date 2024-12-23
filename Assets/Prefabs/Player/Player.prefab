@@ -1598,6 +1598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
   Motor: {fileID: 3726876089221691650}
+  ShowDebug: 1
 --- !u!114 &3726876089221691650
 MonoBehaviour:
   m_ObjectHideFlags: 0

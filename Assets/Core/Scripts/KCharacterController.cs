@@ -6,6 +6,7 @@ using KinematicCharacterController;
 public class KCharacterController : MonoBehaviour, ICharacterController {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] KinematicCharacterMotor Motor;
+  [SerializeField] bool ShowDebug;
 
   public readonly FloatMinAttribute PhysicsScale = new(1);
   public readonly BooleanAnyAttribute ForceUnground = new();
@@ -15,8 +16,8 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   public readonly QuaternionAttribute Rotation = new();
 
   public bool IsGrounded => Motor.GroundingStatus.FoundAnyGround;
-  public bool Falling => Velocity.Current.y < 0;
-  public bool Rising => Velocity.Current.y >= 0;
+  public bool Falling => Velocity.Current.y <= 0;
+  public bool Rising => Velocity.Current.y > 0;
 
   void Awake() {
     Rotation.Set(Quaternion.LookRotation(transform.forward));
@@ -36,37 +37,34 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float dt) {
-    if (LocalClock.Frozen())
-      return;
-
-    // Apply all frame modifiers
-    Velocity.Sync();
-    // add the last frame's velocity
-    Velocity.Add(Velocity.Current);
-    // add affect of accelerations
-    PhysicsScale.Sync();
-    Acceleration.Sync();
-    Velocity.Add(PhysicsScale.Current * LocalClock.DeltaTime() * Acceleration.Current);
     // Sync unground and run if needed
     ForceUnground.Sync();
+    // TODO: Should unground if frozen?
     if (ForceUnground.Current) {
       Motor.ForceUnground();
     }
+
+    // Apply all frame modifiers
+    Velocity.Sync(reset: false);
+    // Add affect of accelerations
+    PhysicsScale.Sync();
+    Acceleration.Sync();
+    Velocity.Add(PhysicsScale.Current * LocalClock.DeltaTime() * Acceleration.Current);
     // zero out y component if we're firmly on the ground
     if (IsGrounded && Falling) {
       Velocity.SetY(0);
     }
-    Velocity.Sync();
+    Velocity.Sync(reset: false);
+
     DirectVelocity.Sync();
-    currentVelocity = Velocity.Current;
-    currentVelocity += DirectVelocity.Current;
+    currentVelocity = LocalClock.Frozen()
+      ? Vector3.zero
+      : Velocity.Current + DirectVelocity.Current;
   }
 
   public void AfterCharacterUpdate(float deltaTime) {}
 
-  public bool IsColliderValidForCollisions(Collider coll) {
-    return true;
-  }
+  public bool IsColliderValidForCollisions(Collider coll) => true;
 
   public void OnDiscreteCollisionDetected(Collider hitCollider) {}
 
@@ -93,6 +91,8 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   ref HitStabilityReport hitStabilityReport) {}
 
   public void OnGUI() {
+    if (!ShowDebug)
+      return;
     GUILayout.BeginVertical("box");
     GUILayout.Label($"Grounded : {IsGrounded}");
     GUILayout.Label($"Force Unground : {ForceUnground.Current}");

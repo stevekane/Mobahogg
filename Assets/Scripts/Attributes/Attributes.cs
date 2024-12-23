@@ -11,12 +11,8 @@ recommended that you perform aggregation near the end of when all your systems r
 to rendering though that is your choice.
 */
 
-// TODO: Think should have per-channel overrides rather than total override.
-// you may want to conditionally override by channel. the 0s forced on you don't seem correct
 [Serializable]
 public class Vector3Attribute {
-  // commutative aggregation. not necesarily sensible
-  static Vector3 Longer(Vector3 u, Vector3 v) => u.magnitude > v.magnitude ? u : v;
   static float Longer(float x, float y) => Mathf.Abs(x) > Mathf.Abs(y) ? x : y;
 
   Vector3 Sum = Vector3.zero;
@@ -36,14 +32,14 @@ public class Vector3Attribute {
   }
   public void Add(Vector3 v) => Sum += v;
   public void Mul(float s) => Scalar += s;
-  public void Sync() {
+  public void Sync(bool reset = true) {
     var current = Scalar * Sum;
     current.x = X.HasValue ? X.Value : current.x;
     current.y = Y.HasValue ? Y.Value : current.y;
     current.z = Z.HasValue ? Z.Value : current.z;
     Current = current;
     Scalar = 1;
-    Sum = Vector3.zero;
+    Sum = reset ? Vector3.zero : Current;
     X = null;
     Y = null;
     Z = null;
