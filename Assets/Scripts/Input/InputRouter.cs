@@ -218,9 +218,14 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   public bool TryUnlistenButton(string actionName, ButtonState buttonState, int portIndex, Action<PortButtonState> cb) =>
     InputPorts[portIndex].TryUnlistenButtonState(actionName, buttonState, cb);
 
-  public void ConsumeButton(string actionName, int portIndex) {
+  public void ConsumeButton(string actionName, int portIndex) =>
     InputPorts[portIndex].ConsumeBufferedButtonState(actionName);
-  }
+
+  public bool TryGetValue(string actionName, int portIndex, out Vector2 value) =>
+    InputPorts[portIndex].TryGetValue(actionName, out value);
+
+  public bool TryGetButtonState(string actionName, int portIndex, out ButtonState buttonState) =>
+    InputPorts[portIndex].TryGetButtonState(actionName, out buttonState);
 
   bool ValidDevice(InputDevice device) => device is Gamepad;
 

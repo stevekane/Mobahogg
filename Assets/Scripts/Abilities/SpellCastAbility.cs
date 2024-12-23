@@ -21,7 +21,6 @@ public class SpellCastAbility : MonoBehaviour, IAbility {
     => !IsRunning
     && CharacterController.IsGrounded
     && SpellHolder.Count > 0
-    && !Player.IsDashing()
     && !AttackAbility.IsRunning;
 
   public bool TryRun() {

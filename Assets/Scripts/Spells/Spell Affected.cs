@@ -11,5 +11,5 @@ public class SpellAffected : MonoBehaviour {
   public void MultiplySpeed(float fraction) => MoveSpeed.Mul(Immune ? 1 : fraction);
   public void AddDamage(int damageDelta) => Damage.Add(Immune ? 0 : damageDelta);
   public void Heal(int healthDelta) => Health.Change(Immune ? 0 : healthDelta);
-  public void Push(Vector3 acceleration) => Controller.Acceleration += Immune ? Vector3.zero : acceleration;
+  public void Push(Vector3 acceleration) => Controller.Acceleration.Add(Immune ? Vector3.zero : acceleration);
 }

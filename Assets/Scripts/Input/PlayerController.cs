@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour {
   void Start() {
     InputRouter.Instance?.TryListenValue("Move", PortIndex, HandleMove);
     InputRouter.Instance?.TryListenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
-    InputRouter.Instance?.TryListenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
     InputRouter.Instance?.TryListenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
     InputRouter.Instance?.TryListenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
   }
@@ -16,7 +15,6 @@ public class PlayerController : MonoBehaviour {
   void OnDestroy() {
     InputRouter.Instance?.TryUnlistenValue("Move", PortIndex, HandleMove);
     InputRouter.Instance?.TryUnlistenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
-    InputRouter.Instance?.TryUnlistenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
     InputRouter.Instance?.TryUnlistenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
     InputRouter.Instance?.TryUnlistenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
   }
@@ -39,8 +37,6 @@ public class PlayerController : MonoBehaviour {
   IEnumerable<Player> PlayersOnPort =>
     LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
 
-  // TODO: Think we need to consume input if the ability is successfully fired
-
   void HandleMove(PortValue action) {
     var moveRan = PlayersOnPort.Any(p => p.MoveAbility.TryRun(action.Value));
     var turnRan = PlayersOnPort.Any(p => p.TurnAbility.TryRun(action.Value));
@@ -53,15 +49,9 @@ public class PlayerController : MonoBehaviour {
     }
   }
 
-  public void HandleDash(PortButtonState action) {
-    var anyRan = PlayersOnPort.Any(p => p.TryDash());
-    if (anyRan) {
-      InputRouter.Instance.ConsumeButton("Dash", PortIndex);
-    }
-  }
-
   public void HandleAttack(PortButtonState action) {
-    var anyRan = PlayersOnPort.Any(p => p.AttackAbility.TryRun());
+    InputRouter.Instance.TryGetValue("Move", PortIndex, out var direction);
+    var anyRan = PlayersOnPort.Any(p => p.AttackAbility.TryRun(direction));
     if (anyRan) {
       InputRouter.Instance.ConsumeButton("Attack", PortIndex);
     }

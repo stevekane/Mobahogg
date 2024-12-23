@@ -33,7 +33,7 @@ public class Knockback : MonoBehaviour {
   void FixedUpdate() {
     var deltaFrames = LocalClock.DeltaFrames();
     for (var i = 0; i < Forces.Count; i++) {
-      CharacterController.Acceleration += Forces[i];
+      CharacterController.Acceleration.Add(Forces[i]);
       Durations[i] = Durations[i]-deltaFrames;
     }
     for (var i = Forces.Count-1; i >= 0; i--) {

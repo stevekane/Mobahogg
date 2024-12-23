@@ -9,21 +9,11 @@ public class MoveAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Writes To")]
   [SerializeField] KCharacterController CharacterController;
 
-  Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
-    Mathf.Min(v.magnitude, maxMagnitude) * v.normalized;
-
-  public bool CanRun
-    => MoveSpeed.Value > 0
-    && !LocalClock.Frozen();
+  public bool CanRun => true;
 
   public bool TryRun(Vector2 value) {
     if (CanRun) {
-      var currentVelocity = CharacterController.Velocity.XZ();
-      var desiredVelocity = MoveSpeed.Value * value.XZ().normalized;
-      var maxMoveSpeed = MoveSpeed.Value;
-      var targetVelocity = (desiredVelocity-currentVelocity).XZ();
-      var steeringVelocity = TruncateByMagnitude(targetVelocity, maxMoveSpeed);
-      CharacterController.Acceleration += steeringVelocity / LocalClock.DeltaTime();
+      CharacterController.DirectVelocity.Add(MoveSpeed.Value * value.XZ());
       return true;
     } else {
       return false;

@@ -164,7 +164,6 @@ GameObject:
   - component: {fileID: 5196275824233463631}
   - component: {fileID: 1491441285579178383}
   - component: {fileID: 2581751459403209325}
-  - component: {fileID: 4232407570520086784}
   m_Layer: 0
   m_Name: Creep
   m_TagString: Untagged
@@ -217,12 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 1737775483512742949}
-  Acceleration: {x: 0, y: 0, z: 0}
-  Velocity: {x: 0, y: 0, z: 0}
   Motor: {fileID: 1415436390563285536}
-  DirectMove: 0
-  IsOnLedge: 0
-  LedgeDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &4867644372670552702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,22 +403,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 1390594251113599247}
   LocalClock: {fileID: 1737775483512742949}
---- !u!114 &4232407570520086784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4386271687128637325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7925420341438940a087d0750a55463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LocalClock: {fileID: 1737775483512742949}
-  DragScale: 0.5
-  MinSpeedToStop: 0.15
-  CharacterController: {fileID: 4255379430337605986}
+  Axis: {x: 0, y: 0, z: 0}
+  Frequency: 0
+  Amplitude: 0
 --- !u!1001 &241773528026206965
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,64 +1,26 @@
 using UnityEngine;
 using KinematicCharacterController;
-using System;
 
 [RequireComponent(typeof(KinematicCharacterMotor))]
-[DefaultExecutionOrder(-101)] // Runs right before PhysicsSystem
+[DefaultExecutionOrder((int)ExecutionGroups.State+1)]
 public class KCharacterController : MonoBehaviour, ICharacterController {
   [SerializeField] LocalClock LocalClock;
+  [SerializeField] KinematicCharacterMotor Motor;
 
+  public readonly FloatMinAttribute PhysicsScale = new(1);
+  public readonly BooleanAnyAttribute ForceUnground = new();
+  public readonly Vector3Attribute Acceleration = new();
+  public readonly Vector3Attribute Velocity = new();
+  public readonly Vector3Attribute DirectVelocity = new();
+  public readonly QuaternionAttribute Rotation = new();
 
-  public Vector3 Acceleration;
-  public Vector3 Velocity;
-
-  public Action<HitStabilityReport> OnCollision;
-  public Action<HitStabilityReport> OnLedge;
-
-  /*
-  I think just like other stateful systems, we want to control the update order here.
-  We also want to control the double-buffering of the writable values including
-  Forward
-  Position
-  Rotation
-  Velocity
-  Acceleration
-  UnGrounded
-  */
-
-  public KinematicCharacterMotor Motor;
-
-  public void Unground() {
-    Motor.ForceUnground();
-  }
-
-  public void Launch(Vector3 velocity) {
-    Unground();
-    Velocity += velocity;
-    Velocity.y = velocity.y;
-  }
-
-  public Vector3 Position {
-    get => transform.position;
-    set => Motor.SetPosition(value);
-  }
-
-  public Vector3 Forward {
-    get => transform.forward;
-    set => Motor.SetRotation(Quaternion.LookRotation(value, Vector3.up));
-  }
-
-  public Quaternion Rotation {
-    get => transform.rotation;
-    set => Motor.SetRotation(value);
-  }
-
-  public bool DirectMove;
-
-  public Collider GroundCollider => Motor.GroundingStatus.GroundCollider;
   public bool IsGrounded => Motor.GroundingStatus.FoundAnyGround;
-  public bool IsStableOnGround => Motor.GroundingStatus.IsStableOnGround;
+  public bool Falling => Velocity.Current.y < 0;
+  public bool Rising => Velocity.Current.y >= 0;
 
   void Awake() {
+    Rotation.Set(Quaternion.LookRotation(transform.forward));
+    Rotation.Sync();
     Motor.CharacterController = this;
   }
 
@@ -66,46 +28,78 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     Motor.CharacterController = null;
   }
 
-  public void BeforeCharacterUpdate(float deltaTime) {
-  }
+  public void BeforeCharacterUpdate(float deltaTime) {}
 
   public void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
+    Rotation.Sync();
+    currentRotation = Rotation.Current;
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float dt) {
-    var localDeltaTime = LocalClock.Frozen() ? 0 : dt;
-    Velocity += localDeltaTime * Acceleration;
-    Velocity.y = (IsGrounded && Velocity.y < 0) ? 0 : Velocity.y;
-    Acceleration = Vector3.zero;
-    currentVelocity = LocalClock.Frozen() ? Vector3.zero : Velocity;
+    if (LocalClock.Frozen())
+      return;
+
+    // Apply all frame modifiers
+    Velocity.Sync();
+    // add the last frame's velocity
+    Velocity.Add(Velocity.Current);
+    // add affect of accelerations
+    PhysicsScale.Sync();
+    Acceleration.Sync();
+    Velocity.Add(PhysicsScale.Current * LocalClock.DeltaTime() * Acceleration.Current);
+    // Sync unground and run if needed
+    ForceUnground.Sync();
+    if (ForceUnground.Current) {
+      Motor.ForceUnground();
+    }
+    // zero out y component if we're firmly on the ground
+    if (IsGrounded && Falling) {
+      Velocity.SetY(0);
+    }
+    Velocity.Sync();
+    DirectVelocity.Sync();
+    currentVelocity = Velocity.Current;
+    currentVelocity += DirectVelocity.Current;
   }
 
-  public void AfterCharacterUpdate(float deltaTime) {
-  }
+  public void AfterCharacterUpdate(float deltaTime) {}
 
   public bool IsColliderValidForCollisions(Collider coll) {
     return true;
   }
 
-  public void OnDiscreteCollisionDetected(Collider hitCollider) {
-  }
+  public void OnDiscreteCollisionDetected(Collider hitCollider) {}
 
-  public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) {
-  }
+  public void OnGroundHit(
+  Collider hitCollider,
+  Vector3 hitNormal,
+  Vector3 hitPoint,
+  ref HitStabilityReport hitStabilityReport) {}
 
-  public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) {
-    OnCollision?.Invoke(hitStabilityReport);
-  }
+  public void OnMovementHit(
+  Collider hitCollider,
+  Vector3 hitNormal,
+  Vector3 hitPoint,
+  ref HitStabilityReport hitStabilityReport) {}
 
-  public void PostGroundingUpdate(float deltaTime) {
-  }
+  public void PostGroundingUpdate(float deltaTime) {}
 
-  public bool IsOnLedge = false;
-  public Vector3 LedgeDirection;
-  public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport) {
-    IsOnLedge = hitStabilityReport.LedgeDetected;
-    LedgeDirection = hitStabilityReport.LedgeFacingDirection;
-    if (IsOnLedge)
-      OnLedge?.Invoke(hitStabilityReport);
+  public void ProcessHitStabilityReport(
+  Collider hitCollider,
+  Vector3 hitNormal,
+  Vector3 hitPoint,
+  Vector3 atCharacterPosition,
+  Quaternion atCharacterRotation,
+  ref HitStabilityReport hitStabilityReport) {}
+
+  public void OnGUI() {
+    GUILayout.BeginVertical("box");
+    GUILayout.Label($"Grounded : {IsGrounded}");
+    GUILayout.Label($"Force Unground : {ForceUnground.Current}");
+    GUILayout.Label($"PhysicsScale : {PhysicsScale.Current}");
+    GUILayout.Label($"Acceleration : {Acceleration.Current}");
+    GUILayout.Label($"Velocity : {Velocity.Current}");
+    GUILayout.Label($"Direct Velocity : {DirectVelocity.Current}");
+    GUILayout.EndVertical();
   }
 }

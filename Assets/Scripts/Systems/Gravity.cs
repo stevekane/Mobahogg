@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour {
   [Header("Read From")]
-  [SerializeField] FallSpeed FallSpeed;
+  [SerializeField] AbilitySettings Settings;
   [SerializeField] LocalGravity LocalGravity;
   [Header("Write To")]
   [SerializeField] KCharacterController CharacterController;
@@ -11,6 +11,7 @@ public class Gravity : MonoBehaviour {
   void FixedUpdate() {
     if (!LocalGravity.Value)
       return;
-    CharacterController.Acceleration.y += FallSpeed.Value;
+    var fallSpeed = Settings.GravityFactor(CharacterController.Velocity.Current) * Physics.gravity.y;
+    CharacterController.Acceleration.Add(new (0, fallSpeed, 0));
   }
 }

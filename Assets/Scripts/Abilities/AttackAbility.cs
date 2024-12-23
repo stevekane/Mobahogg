@@ -4,7 +4,30 @@ using State;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class AttackAbility : MonoBehaviour, IAbility {
+/*
+Combat system v2.
+
+State + Input is used to select an Attack Ability to fire.
+
+Dashing + Slash = Dash Slash
+Dashing + Stab = Dash Stab
+Jumping + Slash = Helicopter
+Jumping + Stab = Slam
+Slash plays 1 of 2 alternating attacks
+Stab plays 1 of 2 alternating attacks
+
+Inputs
+
+Actions react to inputs
+
+Update state
+
+Aggregate state
+
+Move
+
+*/
+public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
   [SerializeField] AimAssistTargeter AimAssistTargeter;
   [SerializeField] AbilitySettings Settings;
@@ -43,17 +66,17 @@ public class AttackAbility : MonoBehaviour, IAbility {
   public bool CanRun
     => CharacterController.IsGrounded
     && !LocalClock.Frozen()
-    && !Player.IsDashing()
     && (!IsRunning || (InRecovery && Struck.Count > 0));
 
-  public bool TryRun() {
+  public bool TryRun(Vector2 direction) {
     if (CanRun) {
       // TODO: Possibly use the previously struck list to inform the aim assist system further?
       var bestTarget = AimAssistManager.Instance.BestTarget(AimAssistTargeter, AimAssistQuery);
       if (bestTarget) {
         var delta = bestTarget.transform.position-transform.position;
-        var direction = delta.normalized;
-        CharacterController.Forward = direction;
+        CharacterController.Rotation.Set(Quaternion.LookRotation(delta.normalized));
+      } else if (direction.magnitude > 0) {
+        CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
       }
       Struck.Clear();
       Animator.SetTrigger("Attack");
@@ -77,9 +100,7 @@ public class AttackAbility : MonoBehaviour, IAbility {
     TurnSpeed.Set(0);
     if (InWindup) {
       var speed = ForwardMotion / (WindupFrames * LocalClock.DeltaTime());
-      CharacterController.Velocity = speed * CharacterController.Forward;
-    } else {
-      CharacterController.Velocity = Vector3.zero;
+      CharacterController.DirectVelocity.Add(speed * CharacterController.Rotation.Forward);
     }
     Frame = Mathf.Min(Settings.TotalAttackFrames, Frame+LocalClock.DeltaFrames());
   }

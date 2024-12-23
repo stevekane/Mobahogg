@@ -86,9 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3252110086261474847}
-  - component: {fileID: 302708408903729865}
   - component: {fileID: 6235700214717308645}
-  - component: {fileID: 4479934719106413037}
   - component: {fileID: 527207892934507696}
   m_Layer: 0
   m_Name: Systems
@@ -114,21 +112,6 @@ Transform:
   - {fileID: 4933029843833531061}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &302708408903729865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529338545694879980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 586215f460cbc804bacd1284b6ebd4cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
-  CharacterController: {fileID: 3542533184097295049}
-  FallSpeed: {fileID: 9118137953106980674}
 --- !u!114 &6235700214717308645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,24 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b86f95efd42d5e4fa0302987eabe223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FallSpeed: {fileID: 9118137953106980674}
+  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   LocalGravity: {fileID: 6233153455102195460}
-  CharacterController: {fileID: 3542533184097295049}
---- !u!114 &4479934719106413037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1529338545694879980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7925420341438940a087d0750a55463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LocalClock: {fileID: 988945814378296752}
-  DragScale: 0.5
-  MinSpeedToStop: 0.15
   CharacterController: {fileID: 3542533184097295049}
 --- !u!114 &527207892934507696
 MonoBehaviour:
@@ -219,7 +186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AbilitySettings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
-  Player: {fileID: 5297446814743032710}
   Animator: {fileID: 4075815647026140715}
   LocalClock: {fileID: 988945814378296752}
   AttackAbility: {fileID: 5165232841971343211}
@@ -1245,7 +1211,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 20, y: 40}
+  m_CellSize: {x: 10, y: 40}
   m_Spacing: {x: 12, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
@@ -1344,6 +1310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TurnSpeed: {fileID: 3019126180296927202}
   LocalClock: {fileID: 988945814378296752}
+  AttackAbility: {fileID: 5165232841971343211}
   CharacterController: {fileID: 3542533184097295049}
 --- !u!1 &6859564234914879637
 GameObject:
@@ -1572,7 +1539,6 @@ MonoBehaviour:
   Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   CharacterController: {fileID: 3542533184097295049}
   LocalClock: {fileID: 988945814378296752}
-  Animator: {fileID: 4075815647026140715}
   Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}
   SpinAbility: {fileID: 7493328923366163232}
@@ -1631,12 +1597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
-  Acceleration: {x: 0, y: 0, z: 0}
-  Velocity: {x: 0, y: 0, z: 0}
   Motor: {fileID: 3726876089221691650}
-  DirectMove: 0
-  IsOnLedge: 0
-  LedgeDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &3726876089221691650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2103,8 +2064,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22522bd23a0756e40b7684796dfd04c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Current: 3
-  Max: 3
+  Current: 9
+  Max: 9
 --- !u!114 &4106878518632410812
 MonoBehaviour:
   m_ObjectHideFlags: 0

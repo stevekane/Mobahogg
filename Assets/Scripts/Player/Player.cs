@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using KinematicCharacterController;
 using State;
 using UnityEngine;
 
@@ -13,7 +14,6 @@ public class Player : MonoBehaviour {
 
   [Header("Child References")]
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] Animator Animator;
   [SerializeField] Health Health;
 
   // TODO: Would it make sense to use the already-available "name" property Unity has?
@@ -47,64 +47,12 @@ public class Player : MonoBehaviour {
   public bool CanJump() => CharacterController.IsGrounded;
   public bool TryJump() {
     if (CanJump()) {
-      DashCancelTokenSource?.Cancel();
-      DashCancelTokenSource?.Dispose();
-      DashCancelTokenSource = null;
-      DashFramesRemaining = 0;
-      CharacterController.Launch(Settings.InitialJumpSpeed(Physics.gravity.y) * Vector3.up);
+      var jumpSpeed = Settings.InitialJumpSpeed(Physics.gravity.y);
+      CharacterController.ForceUnground.Set(true);
+      CharacterController.Velocity.SetY(jumpSpeed);
       return true;
     } else {
       return false;
-    }
-  }
-  #endregion
-
-  // TODO: Could move to library?
-  Vector3 TruncateByMagnitude(Vector3 v, float maxMagnitude) =>
-    Mathf.Min(v.magnitude, maxMagnitude) * v.normalized;
-  #region DASH
-  int DashFramesRemaining;
-  CancellationTokenSource DashCancelTokenSource;
-  public bool CanDash() => CharacterController.IsGrounded && !IsDashing() && !AttackAbility.IsRunning;
-  public bool IsDashing() => DashFramesRemaining > 0;
-  public bool TryDash() {
-    if (CanDash()) {
-      BeginDash();
-      return true;
-    } else {
-      return false;
-    }
-  }
-  void BeginDash() {
-    DashCancelTokenSource?.Cancel();
-    DashCancelTokenSource?.Dispose();
-    DashCancelTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
-    RunDash(DashCancelTokenSource.Token).ContinueWith(EndDash).Forget();
-  }
-  void CancelDash() {
-    DashCancelTokenSource?.Cancel();
-    DashCancelTokenSource?.Dispose();
-    DashCancelTokenSource = null;
-  }
-  void EndDash() {
-    CancelDash();
-  }
-  async UniTask RunDash(CancellationToken token) {
-    DashFramesRemaining = Settings.DashTotalFrames;
-    try {
-      var dt = Time.fixedDeltaTime;
-      var dashSpeed = Settings.DashSpeed(dt);
-      while (DashFramesRemaining-- > 0) {
-        var currentVelocity = CharacterController.Velocity;
-        var desiredVelocity = dashSpeed * CharacterController.Forward;
-        var targetVelocity = (desiredVelocity-currentVelocity).XZ();
-        var maxMoveSpeed = dashSpeed;
-        var nextVelocity = TruncateByMagnitude(targetVelocity, maxMoveSpeed);
-        CharacterController.Acceleration += 1/dt * nextVelocity;
-        await UniTask.NextFrame(token);
-      }
-    } finally {
-      DashFramesRemaining = 0;
     }
   }
   #endregion
