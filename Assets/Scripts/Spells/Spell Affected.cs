@@ -1,8 +1,7 @@
 using State;
 using UnityEngine;
 
-// TODO: Could refactor this to be more generic. Could just emit Events which
-// are wired up in the editor for looser coupling
+[DefaultExecutionOrder((int)ExecutionGroups.State)]
 public class SpellAffected : MonoBehaviour {
   [SerializeField] KCharacterController Controller;
   [SerializeField] MoveSpeed MoveSpeedState;
@@ -10,15 +9,19 @@ public class SpellAffected : MonoBehaviour {
   [SerializeField] Damage DamageState;
   [SerializeField] Knockback KnockbackState;
 
-  public bool Immune;
+  public BooleanAnyAttribute Immune;
   public void MultiplySpeed(float fraction) =>
-    MoveSpeedState.Mul(Immune ? 1 : fraction);
+    MoveSpeedState.Mul(Immune.Current ? 1 : fraction);
   public void ChangeDamage(int damageDelta) =>
-    DamageState.Add(Immune ? 0 : damageDelta);
+    DamageState.Add(Immune.Current ? 0 : damageDelta);
   public void ChangeHealth(int healthDelta) =>
-    HealthState.Change(Immune ? 0 : healthDelta);
+    HealthState.Change(Immune.Current ? 0 : healthDelta);
   public void Push(Vector3 directVelocity) =>
-    Controller.DirectVelocity.Add(Immune ? Vector3.zero : directVelocity);
+    Controller.DirectVelocity.Add(Immune.Current ? Vector3.zero : directVelocity);
   public void Knockback(Vector3 knockback) =>
-    KnockbackState.Set(Immune ? Vector3.zero : knockback);
+    KnockbackState.Set(Immune.Current ? Vector3.zero : knockback);
+
+  void FixedUpdate() {
+    Immune.Sync();
+  }
 }

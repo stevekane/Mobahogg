@@ -4,7 +4,6 @@ public class SpellCastAbility : MonoBehaviour, IAbility {
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] Player Player;
-  [SerializeField] AttackAbility AttackAbility;
   [SerializeField] AbilitySettings Settings;
   [SerializeField] Animator Animator;
   [SerializeField] LocalClock LocalClock;
@@ -18,10 +17,12 @@ public class SpellCastAbility : MonoBehaviour, IAbility {
   public bool IsRunning => Frame < Settings.TotalAttackFrames;
 
   public bool CanRun
-    => !IsRunning
+    => SpellHolder.Count > 0
     && CharacterController.IsGrounded
-    && SpellHolder.Count > 0
-    && !AttackAbility.IsRunning;
+    && !LocalClock.Frozen()
+    && !Player.AttackAbility.IsRunning
+    && !Player.DiveRollAbility.IsRunning
+    && !Player.SpellCastAbility.IsRunning;
 
   public bool TryRun() {
     if (CanRun) {

@@ -5,14 +5,15 @@ public class TurnAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
   [SerializeField] TurnSpeed TurnSpeed;
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] AttackAbility AttackAbility;
+  [SerializeField] Player Player;
 
   [Header("Writes To")]
   [SerializeField] KCharacterController CharacterController;
 
   public bool CanRun
     => !LocalClock.Frozen()
-    && !AttackAbility.IsRunning;
+    && !Player.AttackAbility.IsRunning
+    && !Player.SpellCastAbility.IsRunning;
 
   public bool TryRun(Vector2 value) {
     if (CanRun) {

@@ -1,6 +1,3 @@
-using System.Threading;
-using Cysharp.Threading.Tasks;
-using KinematicCharacterController;
 using State;
 using UnityEngine;
 
@@ -19,8 +16,8 @@ public class Player : MonoBehaviour {
   // TODO: Would it make sense to use the already-available "name" property Unity has?
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public AttackAbility AttackAbility;
-  public SpinAbility SpinAbility;
   public SpellCastAbility SpellCastAbility;
+  public DiveRollAbility DiveRollAbility;
   public MoveAbility MoveAbility;
   public TurnAbility TurnAbility;
   public int PortIndex;
@@ -44,7 +41,13 @@ public class Player : MonoBehaviour {
   }
 
   #region JUMP
-  public bool CanJump() => CharacterController.IsGrounded;
+  public bool CanJump()
+    => !LocalClock.Frozen()
+    && CharacterController.IsGrounded
+    && !AttackAbility.IsRunning
+    && !DiveRollAbility.IsRunning
+    && !SpellCastAbility.IsRunning;
+
   public bool TryJump() {
     if (CanJump()) {
       var jumpSpeed = Settings.InitialJumpSpeed(Physics.gravity.y);

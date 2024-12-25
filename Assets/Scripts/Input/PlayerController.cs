@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance?.TryListenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
     InputRouter.Instance?.TryListenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
     InputRouter.Instance?.TryListenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
+    InputRouter.Instance?.TryListenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
   }
 
   void OnDestroy() {
     InputRouter.Instance?.TryUnlistenValue("Move", PortIndex, HandleMove);
     InputRouter.Instance?.TryUnlistenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
     InputRouter.Instance?.TryUnlistenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
-    InputRouter.Instance?.TryUnlistenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
+    InputRouter.Instance?.TryUnlistenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
   }
 
   // TODO:
@@ -63,4 +64,13 @@ public class PlayerController : MonoBehaviour {
       InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
     }
   }
+
+  public void HandleDash(PortButtonState action) {
+    InputRouter.Instance.TryGetValue("Move", PortIndex, out var direction);
+    var anyRan = PlayersOnPort.Any(p => p.DiveRollAbility.TryRun(direction));
+    if (anyRan) {
+      InputRouter.Instance.ConsumeButton("Dash", PortIndex);
+    }
+  }
+
 }

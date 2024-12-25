@@ -1,9 +1,5 @@
 public class EarthSpellPassiveEffect : SpellPassiveEffect {
-  void Start() {
-    SpellAffected.Immune = true;
-  }
-
-  void OnDestroy() {
-    SpellAffected.Immune = false;
+  void FixedUpdatFixedUpdatFixedUpdateee() {
+    SpellAffected.Immune.Set(true);
   }
 }

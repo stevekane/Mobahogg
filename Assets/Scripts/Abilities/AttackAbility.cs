@@ -4,29 +4,6 @@ using State;
 using UnityEngine;
 using UnityEngine.VFX;
 
-/*
-Combat system v2.
-
-State + Input is used to select an Attack Ability to fire.
-
-Dashing + Slash = Dash Slash
-Dashing + Stab = Dash Stab
-Jumping + Slash = Helicopter
-Jumping + Stab = Slam
-Slash plays 1 of 2 alternating attacks
-Stab plays 1 of 2 alternating attacks
-
-Inputs
-
-Actions react to inputs
-
-Update state
-
-Aggregate state
-
-Move
-
-*/
 public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
   [SerializeField] AimAssistTargeter AimAssistTargeter;
@@ -66,7 +43,9 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   public bool CanRun
     => CharacterController.IsGrounded
     && !LocalClock.Frozen()
-    && (!IsRunning || (InRecovery && Struck.Count > 0));
+    && (!IsRunning || (InRecovery && Struck.Count > 0))
+    && !Player.DiveRollAbility.IsRunning
+    && !Player.SpellCastAbility.IsRunning;
 
   public bool TryRun(Vector2 direction) {
     if (CanRun) {
