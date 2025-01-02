@@ -10,6 +10,8 @@ public class CreepManager : MonoBehaviour {
   [SerializeField] DeadCreep DeadCreepPrefab;
   [SerializeField] int MAX_LIVING_CREEPS = 15;
   [SerializeField] int CREEP_SPAWN_FRAME_INTERVAL = 300;
+  [SerializeField] Vector2 SpawnMin = new(-20,-20);
+  [SerializeField] Vector2 SpawnMax = new(20,20);
 
   public List<Creep> LivingCreeps = new(128);
 
@@ -55,8 +57,11 @@ public class CreepManager : MonoBehaviour {
 
   void FixedUpdate() {
     if (FramesTillNextSpawn <= 0 && LivingCreeps.Count < MAX_LIVING_CREEPS) {
-      var location = new Vector3(Random.Range(-10,10), 0, Random.Range(-5,5));
-      SpawnCreep(location);
+      var location = new Vector3(Random.Range(SpawnMin.x,SpawnMax.x), 0, Random.Range(SpawnMin.y,SpawnMax.y));
+      var spawnLocation = TerrainManager.Instance.SamplePoint(location);
+      if (spawnLocation.HasValue) {
+        SpawnCreep(spawnLocation.Value.Point);
+      }
       FramesTillNextSpawn = CREEP_SPAWN_FRAME_INTERVAL;
     }
     FramesTillNextSpawn = Mathf.Max(0, FramesTillNextSpawn-LocalClock.DeltaFrames());

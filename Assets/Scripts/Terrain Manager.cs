@@ -21,18 +21,6 @@ public class TerrainManager : SingletonBehavior<TerrainManager> {
     }
     return null;
   }
-
-  void OnDrawGizmos() {
-    var start = new Vector3(-30, 10, 0);
-    var end = new Vector3(30, 10, 0);
-    for (var i = 0; i < 20; i++) {
-      var position = Vector3.Lerp(start, end, (float)i/19);
-      var sample = SamplePoint(position);
-      if (sample.HasValue) {
-        Debug.DrawRay(sample.Value.Point, 10 * Vector3.up);
-      }
-    }
-  }
 }
 
 [Serializable]
