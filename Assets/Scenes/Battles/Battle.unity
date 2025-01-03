@@ -2079,6 +2079,8 @@ MonoBehaviour:
   DeadCreepPrefab: {fileID: 8513358180541010708, guid: a6e50b3c8df31084fad132dae41160ac, type: 3}
   MAX_LIVING_CREEPS: 15
   CREEP_SPAWN_FRAME_INTERVAL: 60
+  SpawnMin: {x: -20, y: -20}
+  SpawnMax: {x: 20, y: 20}
   LivingCreeps: []
 --- !u!114 &1844339071
 MonoBehaviour:
@@ -2741,7 +2743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6913321382628952823, guid: 638288536e8f0c5438e9be006ff55483, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6913321382628952823, guid: 638288536e8f0c5438e9be006ff55483, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2749,7 +2751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6913321382628952823, guid: 638288536e8f0c5438e9be006ff55483, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6913321382628952823, guid: 638288536e8f0c5438e9be006ff55483, type: 3}
       propertyPath: m_LocalRotation.w
