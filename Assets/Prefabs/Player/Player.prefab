@@ -75,9 +75,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6821628318837372643}
   - {fileID: 6270076148862976298}
   - {fileID: 7909639373944858235}
-  - {fileID: 6821628318837372643}
   - {fileID: 4465860805182812487}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -231,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
   CharacterController: {fileID: 3542533184097295049}
-  DecayRate: 2
+  DecayRate: 4
 --- !u!1 &1944220488034976519
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +1048,11 @@ MonoBehaviour:
   Player: {fileID: 5297446814743032710}
   MoveSpeed: {fileID: 4751482104723936499}
   LocalClock: {fileID: 988945814378296752}
+  HandRotationEulerAngles: {x: 0, y: 0, z: 0}
+  UseConstraint: 1
   CharacterController: {fileID: 3542533184097295049}
+  AnimatorCallbackHandler: {fileID: 4525451367180658715}
+  Animator: {fileID: 4075815647026140715}
 --- !u!1 &5308709295670658322
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,7 +1889,6 @@ MonoBehaviour:
   HealthState: {fileID: 94004394668583191}
   DamageState: {fileID: 2887056759439107999}
   KnockbackState: {fileID: 527207892934507696}
-  Immune: 0
 --- !u!114 &3051964976537025274
 MonoBehaviour:
   m_ObjectHideFlags: 0
