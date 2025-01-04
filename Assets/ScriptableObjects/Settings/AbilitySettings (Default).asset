@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AbilitySettings (Default)
   m_EditorClassIdentifier: 
   RisingGravityFactor: 12
-  FallingGravityFactor: 20
+  FallingGravityFactor: 12
   GroundMoveSpeed: 10
   AirSpeedDecayFactor: 0.25
   JumpHeight: 4
