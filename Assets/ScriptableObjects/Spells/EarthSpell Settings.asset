@@ -19,8 +19,8 @@ MonoBehaviour:
   BallTravelDistance: 40
   TravelFrames: 60
   LingerFrames: 60
-  RockMinSize: 0.5
-  RockMaxSize: 0.75
+  RockMinSize: 0.35
+  RockMaxSize: 0.5
   RockMaxLateralOffset: 0.5
   RockJitterAmplitude: 0.25
   RockJitterFrequency: 10

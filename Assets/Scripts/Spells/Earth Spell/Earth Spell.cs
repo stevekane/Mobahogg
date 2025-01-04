@@ -49,6 +49,13 @@ public class EarthSpell : Spell {
     Rocks.ForEach(r => SpawnSpike(r.transform.position, r.transform.rotation, right));
     Rocks.ForEach(Destroy);
     CameraManager.Instance.Shake(Settings.CameraShakeIntensity);
+    foreach (var player in LivesManager.Active.Players) {
+      var distance = PhysicsUtils.DistanceFromLine(start.XZ(), end.XZ(), player.transform.position.XZ());
+      if (distance <= Settings.MaxDamageDistance && player.TryGetComponent(out SpellAffected spellAffected)) {
+        spellAffected.ChangeHealth(Settings.HealthDelta);
+        spellAffected.Knockback(Settings.KnockbackStrength * Vector3.up);
+      }
+    }
     await Tasks.Delay(Settings.LingerFrames, LocalClock, token);
     var frames = 30;
     for (var i = 0; i < frames; i++) {

@@ -18,11 +18,8 @@ public class SpellCastAbility : MonoBehaviour, IAbility {
 
   public bool CanRun
     => SpellHolder.Count > 0
-    && CharacterController.IsGrounded
     && !LocalClock.Frozen()
-    && !Player.AttackAbility.IsRunning
-    && !Player.DiveRollAbility.IsRunning
-    && !Player.SpellCastAbility.IsRunning;
+    && !Player.AbilityActive;
 
   public bool TryRun() {
     if (CanRun) {
