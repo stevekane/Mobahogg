@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a560a5a7a6840ac4cb617330fb6c512b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DegreesPerSecond: 720
+  DegreesPerSecond: 1080
   Clock: {fileID: 2937290841260213246}
 --- !u!1001 &4325496649183617654
 PrefabInstance:
@@ -199,15 +199,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5772261414058654825, guid: 55daa3e1d7b52d8488d57acbefa52fc4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5772261414058654825, guid: 55daa3e1d7b52d8488d57acbefa52fc4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5772261414058654825, guid: 55daa3e1d7b52d8488d57acbefa52fc4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5772261414058654825, guid: 55daa3e1d7b52d8488d57acbefa52fc4, type: 3}
       propertyPath: m_LocalPosition.x

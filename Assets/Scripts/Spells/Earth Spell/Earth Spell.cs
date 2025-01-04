@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EarthSpell : Spell {
   [SerializeField] EarthSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
 
   List<GameObject> Rocks = new(512);
+  List<GameObject> Spikes = new(512);
 
   // Assumes you hand it a "forward" vector. This code is dogshit
   public static Vector3 PerturbVector(Vector3 inputVector, float minAngle, float maxAngle) {
@@ -47,6 +50,13 @@ public class EarthSpell : Spell {
     Rocks.ForEach(Destroy);
     CameraManager.Instance.Shake(Settings.CameraShakeIntensity);
     await Tasks.Delay(Settings.LingerFrames, LocalClock, token);
+    var frames = 30;
+    for (var i = 0; i < frames; i++) {
+      foreach (var spike in Spikes) {
+        spike.transform.Translate(spike.transform.localScale.y / (float)frames * -spike.transform.up, Space.World);
+      }
+      await Tasks.Delay(1, LocalClock, token);
+    }
     Destroy(gameObject);
   }
 
@@ -57,6 +67,8 @@ public class EarthSpell : Spell {
     var sy = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
     var sz = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
     rock.transform.localScale = new Vector3(sx, sy, sz);
+    var vibrationAxis = Random.onUnitSphere;
+    rock.GetComponent<Vibrator>().Vibrate(vibrationAxis, 120, Settings.RockJitterAmplitude, Settings.RockJitterFrequency);
     Rocks.Add(rock);
   }
 
@@ -69,5 +81,6 @@ public class EarthSpell : Spell {
     spike.transform.localScale = new Vector3(sxz, sy, sxz);
     spike.transform.rotation = Quaternion.LookRotation(direction);
     Instantiate(Settings.RockSprayPrefab, position, rotation, transform);
+    Spikes.Add(spike);
   }
 }

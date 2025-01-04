@@ -22,8 +22,11 @@ MonoBehaviour:
   RockMinSize: 0.5
   RockMaxSize: 0.75
   RockMaxLateralOffset: 0.5
+  RockJitterAmplitude: 0.25
+  RockJitterFrequency: 10
   SpikeMinThickness: 0.25
   SpikeMaxThickness: 0.45
   SpikeMinLength: 2
   SpikeMaxLength: 3
   SpikeMaxTiltAngle: 35
+  CameraShakeIntensity: 1.5
