@@ -17,6 +17,9 @@ MonoBehaviour:
   SpikePrefab: {fileID: 4996498879357762785, guid: ff7d34eb33a47c846beb8b46741e746d, type: 3}
   RockSprayPrefab: {fileID: 8494183708781325791, guid: e3b953b5cf1a62a4093a4068f9f1a1a1, type: 3}
   BallTravelDistance: 40
+  HealthDelta: -4
+  KnockbackStrength: 150
+  MaxDamageDistance: 3
   TravelFrames: 60
   LingerFrames: 60
   RockMinSize: 0.35
