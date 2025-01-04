@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85561ad7a579dc41ad3e3dc70f49773, type: 3}
+  m_Name: EarthSpell Settings
+  m_EditorClassIdentifier: 
+  EarthBallPrefab: {fileID: 5361970549713510377, guid: 5bdba77b161bb9a4a85c2521e0ca2925, type: 3}
+  RockPrefab: {fileID: 8951997924868042674, guid: e3c0b62371fc5774ebbc3e7b52b784b4, type: 3}
+  SpikePrefab: {fileID: 4996498879357762785, guid: ff7d34eb33a47c846beb8b46741e746d, type: 3}
+  RockSprayPrefab: {fileID: 8494183708781325791, guid: e3b953b5cf1a62a4093a4068f9f1a1a1, type: 3}
+  BallTravelDistance: 40
+  TravelFrames: 60
+  LingerFrames: 60
+  RockMinSize: 0.5
+  RockMaxSize: 0.75
+  RockMaxLateralOffset: 0.5
+  SpikeMinThickness: 0.25
+  SpikeMaxThickness: 0.45
+  SpikeMinLength: 2
+  SpikeMaxLength: 3
+  SpikeMaxTiltAngle: 35

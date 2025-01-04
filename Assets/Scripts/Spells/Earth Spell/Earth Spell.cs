@@ -4,14 +4,8 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class EarthSpell : Spell {
-  [SerializeField] GameObject EarthBallPrefab;
-  [SerializeField] GameObject RockPrefab;
-  [SerializeField] GameObject SpikePrefab;
-  [SerializeField] GameObject RockSprayPrefab;
+  [SerializeField] EarthSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] float TravelDistance = 20f;
-  [SerializeField] int TravelFrames = 60;
-  [SerializeField] int LingerFrames = 60;
 
   List<GameObject> Rocks = new(512);
 
@@ -26,49 +20,54 @@ public class EarthSpell : Spell {
   public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
     var start = position;
     start.y -= 1;
-    var end = start + rotation * (TravelDistance * Vector3.forward);
+    var end = start + rotation * (Settings.BallTravelDistance * Vector3.forward);
     Run(start, end, this.destroyCancellationToken).Forget();
   }
 
   async UniTask Run(Vector3 start, Vector3 end, CancellationToken token) {
-    var earthBall = Instantiate(EarthBallPrefab, start, Quaternion.LookRotation(end-start), transform);
-    var travelFramesF = (float)TravelFrames;
-    var direction = (end-start).normalized;
-    var rotation = Quaternion.LookRotation(direction);
+    var earthBall = Instantiate(Settings.EarthBallPrefab, start, Quaternion.LookRotation(end-start), transform);
+    var travelFramesF = (float)Settings.TravelFrames;
+    var forward = (end-start).normalized;
+    var right = Vector3.Cross(forward, Vector3.up);
+    var rotation = Quaternion.LookRotation(forward);
     var position = start;
     var rb = earthBall.GetComponent<Rigidbody>();
-    for (var i = 0; i < TravelFrames; i+=LocalClock.DeltaFrames()) {
+    for (var i = 0; i < Settings.TravelFrames; i+=LocalClock.DeltaFrames()) {
       var p = Vector3.Lerp(start, end, (float)i / travelFramesF);
       var terrainSample = TerrainManager.Instance.SamplePoint(p);
       if (!terrainSample.HasValue)
         break;
       var terrainPoint = terrainSample.Value.Point;
-      SpawnRock(terrainPoint, rotation);
+      SpawnRock(terrainPoint, rotation, right);
       rb.MovePosition(terrainPoint);
       await Tasks.Delay(1, LocalClock, token);
     }
     Destroy(earthBall.gameObject);
-    Rocks.ForEach(SpawnSpike);
+    Rocks.ForEach(r => SpawnSpike(r.transform.position, r.transform.rotation, right));
     Rocks.ForEach(Destroy);
-    await Tasks.Delay(LingerFrames, LocalClock, token);
+    CameraManager.Instance.Shake(Settings.CameraShakeIntensity);
+    await Tasks.Delay(Settings.LingerFrames, LocalClock, token);
     Destroy(gameObject);
   }
 
-  void SpawnRock(Vector3 position, Quaternion rotation) {
-    var rock = Instantiate(RockPrefab, position, rotation, transform);
-    var sx = Random.Range(0.1f, 0.25f);
-    var sy = Random.Range(0.1f, 0.25f);
-    var sz = Random.Range(0.1f, 0.25f);
+  void SpawnRock(Vector3 position, Quaternion rotation, Vector3 right) {
+    var offset = Random.Range(-Settings.RockMaxLateralOffset, Settings.RockMaxLateralOffset) * right;
+    var rock = Instantiate(Settings.RockPrefab, offset+position, rotation, transform);
+    var sx = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
+    var sy = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
+    var sz = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
     rock.transform.localScale = new Vector3(sx, sy, sz);
     Rocks.Add(rock);
   }
 
-  void SpawnSpike(GameObject go) {
-    var spike = Instantiate(SpikePrefab, go.transform.position, go.transform.rotation, transform);
-    var sxz = Random.Range(0.15f, 0.25f);
-    var sy = Random.Range(0.75f, 1.5f);
+  void SpawnSpike(Vector3 position, Quaternion rotation, Vector3 right) {
+    var spike = Instantiate(Settings.SpikePrefab, position, rotation, transform);
+    var sxz = Random.Range(Settings.SpikeMinThickness, Settings.SpikeMaxThickness);
+    var sy = Random.Range(Settings.SpikeMinLength, Settings.SpikeMaxLength);
+    var direction = PerturbVector(Vector3.forward, -Settings.SpikeMaxTiltAngle, Settings.SpikeMaxTiltAngle);
+    direction = Quaternion.AngleAxis(25, right) * direction;
     spike.transform.localScale = new Vector3(sxz, sy, sxz);
-    spike.transform.rotation  = Quaternion.LookRotation(PerturbVector(Vector3.forward, -25, 25));
-    Instantiate(RockSprayPrefab, go.transform.position, go.transform.rotation, transform);
+    spike.transform.rotation = Quaternion.LookRotation(direction);
+    Instantiate(Settings.RockSprayPrefab, position, rotation, transform);
   }
 }
