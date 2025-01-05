@@ -309,10 +309,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5297446814743032710, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
-      propertyPath: Animator
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6894843120645610100, guid: 82dceaaeb3fb91d47befde966dcaa1a6, type: 3}
       propertyPath: m_Data.m_Mid
       value: 

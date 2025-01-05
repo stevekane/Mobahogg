@@ -164,7 +164,7 @@ MonoBehaviour:
   CharacterController: {fileID: 3542533184097295049}
   ResidualImageRenderer: {fileID: 3760800918604740528}
   FrameDuration: 30
-  RootMotionMultiplier: 2.5
+  RootMotionMultiplier: 1
 --- !u!1 &1529338545694879980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,11 +1048,57 @@ MonoBehaviour:
   Player: {fileID: 5297446814743032710}
   MoveSpeed: {fileID: 4751482104723936499}
   LocalClock: {fileID: 988945814378296752}
-  HandRotationEulerAngles: {x: 0, y: 0, z: 0}
-  UseConstraint: 1
   CharacterController: {fileID: 3542533184097295049}
-  AnimatorCallbackHandler: {fileID: 4525451367180658715}
   Animator: {fileID: 4075815647026140715}
+--- !u!1 &5299824625470687103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2913801731776420348}
+  - component: {fileID: 6752439352796882793}
+  m_Layer: 0
+  m_Name: Jump Ability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2913801731776420348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5299824625470687103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7340116597315303376}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6752439352796882793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5299824625470687103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57234132697d5e499c426626cc2cfa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
+  LocalClock: {fileID: 988945814378296752}
+  Player: {fileID: 5297446814743032710}
+  CharacterController: {fileID: 3542533184097295049}
+  <IsJumping>k__BackingField: 0
 --- !u!1 &5308709295670658322
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,6 +1293,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CreepOwner: {fileID: 8946980519217053265}
+--- !u!1 &5665369808510285758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 430345376940364476}
+  - component: {fileID: 6335777643419644639}
+  m_Layer: 0
+  m_Name: Air Attack Ability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &430345376940364476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5665369808510285758}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7340116597315303376}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6335777643419644639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5665369808510285758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b275191a784121a48806bb38f7ab1731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 5297446814743032710}
+  Animator: {fileID: 4075815647026140715}
+  LocalClock: {fileID: 988945814378296752}
+  MoveSpeed: {fileID: 4751482104723936499}
+  TurnSpeed: {fileID: 3019126180296927202}
 --- !u!1 &6036391182545714082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,16 +1726,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a178d748c0ae349bb68268131c46f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   CharacterController: {fileID: 3542533184097295049}
   LocalClock: {fileID: 988945814378296752}
   Health: {fileID: 94004394668583191}
+  AnimatorCallbackHandler: {fileID: 4525451367180658715}
+  PortIndex: 0
   AttackAbility: {fileID: 5165232841971343211}
+  JumpAbility: {fileID: 6752439352796882793}
+  AirAttackAbility: {fileID: 6335777643419644639}
   SpellCastAbility: {fileID: 8517117487763200628}
   DiveRollAbility: {fileID: 5521340178927407636}
   MoveAbility: {fileID: 9114625394588072198}
   TurnAbility: {fileID: 5531172736015971301}
-  PortIndex: 0
+  ArmIKWeightSpeed: 2
 --- !u!114 &4565681890973898736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2067,6 +2165,8 @@ Transform:
   - {fileID: 548796233636795912}
   - {fileID: 1006587715599870872}
   - {fileID: 2129326856527686013}
+  - {fileID: 430345376940364476}
+  - {fileID: 2913801731776420348}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9154293866625994780

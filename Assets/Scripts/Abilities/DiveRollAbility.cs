@@ -30,10 +30,8 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2> {
 
   public bool CanRun
     => !LocalClock.Frozen()
-    && CharacterController.IsGrounded
-    && !Player.AttackAbility.IsRunning
-    && !Player.DiveRollAbility.IsRunning
-    && !Player.SpellCastAbility.IsRunning;
+    && !Player.AbilityActive
+    && CharacterController.IsGrounded;
 
   public bool TryRun(Vector2 direction) {
     if (CanRun) {
@@ -55,6 +53,8 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2> {
   }
 
   void OnEvent(string name) {
+    if (!IsRunning)
+      return;
     if (name == "Image") {
       ResidualImageRenderer.RenderImage();
     }

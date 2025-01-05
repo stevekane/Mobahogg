@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11072610c854c4e4a91804e2b9c0358d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MinRange: 2
+  MaxRange: 20
   Targets: []

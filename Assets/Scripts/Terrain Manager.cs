@@ -12,14 +12,15 @@ public class TerrainManager : SingletonBehavior<TerrainManager> {
     var rayOrigin = p;
     rayOrigin.y = RayOriginHeight;
     var hitCount = Physics.RaycastNonAlloc(rayOrigin, Vector3.down, RaycastHits, RayMaxDistance);
+    TerrainQueryResult? result = null;
     for (var i = 0; i < hitCount; i++) {
       var hit = RaycastHits[i];
       var matchesTag = hit.transform.CompareTag(RequiredTag);
-      if (matchesTag) {
-        return new TerrainQueryResult { Point = hit.point };
+      if (matchesTag && (!result.HasValue || result.Value.Point.y < hit.point.y)) {
+        result = new TerrainQueryResult { Point = hit.point };
       }
     }
-    return null;
+    return result;
   }
 }
 
