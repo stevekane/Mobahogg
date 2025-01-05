@@ -27,10 +27,6 @@ public enum AvatarBone {
 }
 
 public class AvatarAttacher : MonoBehaviour {
-  [SerializeField] Animator Animator;
-  Dictionary<AvatarBone, Transform> BoneToTransform = new();
-
-  public Transform GetBoneTransform(AvatarBone bone) => BoneToTransform[bone];
   public static Transform FindBoneTransform(Animator animator, AvatarBone bone) {
     var boneName = bone.ToString();
     var hb = animator.avatar.humanDescription.human.FirstOrDefault(hb => hb.humanName == boneName);
@@ -39,7 +35,12 @@ public class AvatarAttacher : MonoBehaviour {
     return null;
   }
 
-  void Awake() {
+  [SerializeField] Animator Animator;
+  Dictionary<AvatarBone, Transform> BoneToTransform = new();
+
+  public Transform GetBoneTransform(AvatarBone bone) => BoneToTransform[bone];
+
+  public void Attach() {
     var boneEnums = (AvatarBone[])Enum.GetValues(typeof(AvatarBone));
     var boneNames = Enum.GetNames(typeof(AvatarBone));
     foreach (var humanBone in Animator.avatar.humanDescription.human) {
@@ -50,6 +51,8 @@ public class AvatarAttacher : MonoBehaviour {
     GetComponentsInChildren<AvatarAttachment>().ForEach(TryReparent);
     GetComponentsInChildren<AvatarTransform>().ForEach(TrySetTransformReference);
   }
+
+  void Awake() => Attach();
 
   void TryReparent(AvatarAttachment attachment) {
     Transform foundTransform = GetBoneTransform(attachment.Bone);

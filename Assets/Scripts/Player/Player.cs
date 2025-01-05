@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
   public MoveAbility MoveAbility;
   public TurnAbility TurnAbility;
   public float ArmIKWeightSpeed = 2;
+  public bool UseManualArmIK = false;
 
   public bool AbilityActive
     => AttackAbility.IsRunning
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour {
     var weight = 0f;
     var position = Vector3.zero;
     var rotation = Quaternion.identity;
-    if (Grounded && !AbilityActive) {
+    if (UseManualArmIK && Grounded && !AbilityActive) {
       weight = 1;
       rotation = Quaternion.LookRotation(transform.right);
       position = transform.position + Vector3.up + 2 * transform.right;

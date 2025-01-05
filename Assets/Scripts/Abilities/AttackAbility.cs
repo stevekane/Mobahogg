@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using AimAssist;
 using State;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public enum AttackState {
   Ready,
@@ -26,7 +25,7 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   [SerializeField] MoveSpeed MoveSpeed;
   [SerializeField] TurnSpeed TurnSpeed;
   [SerializeField] KCharacterController CharacterController;
-  [SerializeField] VisualEffect VisualEffect;
+  [SerializeField] int AttackComboLength = 3;
 
   int Index;
   AttackState State;
@@ -63,7 +62,6 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
       "Recovery" => AttackState.Recovery,
       _ => State
     };
-    Debug.Log($"{State} on {TimeManager.Instance.FixedFrame()}");
   }
 
   public bool IsRunning => State != AttackState.Ready;
@@ -77,7 +75,7 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   public bool CanRun
     => CharacterController.IsGrounded
     && !LocalClock.Frozen()
-    && !Player.AbilityActive;
+    && (State == AttackState.Recovery || !Player.AbilityActive);
 
   public bool TryRun(Vector2 direction) {
     if (CanRun) {
@@ -91,8 +89,7 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
       }
       Struck.Clear();
       Animator.SetTrigger($"Ground Attack {Index}");
-      // VisualEffect.Play();
-      Index = (Index + 1) % 3;
+      Index = (Index + 1) % AttackComboLength;
       return true;
     } else {
       return false;

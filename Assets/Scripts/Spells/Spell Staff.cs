@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpellStaff : MonoBehaviour {
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] List<Transform> SpellChargeLocations;
+  [SerializeField] float Scale = 1;
 
   Queue<GameObject> SpellCharges = new();
 
@@ -12,6 +13,7 @@ public class SpellStaff : MonoBehaviour {
     var index = SpellHolder.Count-1;
     var owner = SpellChargeLocations[index];
     var staffCharge = Instantiate(spell.SpellStaffChargePrefab, owner);
+    staffCharge.transform.localScale = Scale * Vector3.one;
     SpellCharges.Enqueue(staffCharge);
   }
 

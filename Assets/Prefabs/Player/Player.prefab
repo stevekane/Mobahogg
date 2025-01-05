@@ -599,18 +599,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d253cf55773ff0149b6c448511e14c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimatorCallbackHandler: {fileID: 4525451367180658715}
   AimAssistTargeter: {fileID: 4565681890973898736}
   Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
   AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
   Player: {fileID: 5297446814743032710}
   LocalClock: {fileID: 988945814378296752}
-  ForwardMotion: 1
+  RootMotionMultiplier: 3
   Hitbox: {fileID: 2235593046035439474}
   Animator: {fileID: 4075815647026140715}
   MoveSpeed: {fileID: 4751482104723936499}
   TurnSpeed: {fileID: 3019126180296927202}
   CharacterController: {fileID: 3542533184097295049}
-  VisualEffect: {fileID: 569379990139415220}
+  AttackComboLength: 1
 --- !u!114 &6317207105349146915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1739,6 +1740,7 @@ MonoBehaviour:
   MoveAbility: {fileID: 9114625394588072198}
   TurnAbility: {fileID: 5531172736015971301}
   ArmIKWeightSpeed: 2
+  UseManualArmIK: 0
 --- !u!114 &4565681890973898736
 MonoBehaviour:
   m_ObjectHideFlags: 0

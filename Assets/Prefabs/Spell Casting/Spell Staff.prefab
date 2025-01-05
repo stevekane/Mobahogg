@@ -49,6 +49,7 @@ MonoBehaviour:
   SpellHolder: {fileID: 0}
   SpellChargeLocations:
   - {fileID: 6427876398778644264}
+  Scale: 0.35
 --- !u!95 &3411220179734764099
 Animator:
   serializedVersion: 7
