@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[DefaultExecutionOrder(1000)]
+[DefaultExecutionOrder(-2)] // Right before Animator which supposedly runs at -1
 public class LocalClockAnimatorBrain : MonoBehaviour {
   [SerializeField] Animator Animator;
   [SerializeField] LocalClock LocalClock;
 
   void Start() {
-    Animator.enabled = false;
+    Animator.updateMode = AnimatorUpdateMode.Fixed;
   }
 
   void FixedUpdate() {
-    Animator.Update(LocalClock.DeltaTime());
+    Animator.enabled = !LocalClock.Frozen();
   }
 }

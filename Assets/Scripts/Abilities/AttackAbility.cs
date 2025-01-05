@@ -4,14 +4,21 @@ using State;
 using UnityEngine;
 using UnityEngine.VFX;
 
+public enum AttackState {
+  Ready,
+  Windup,
+  Active,
+  Recovery
+}
 public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
+  [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] AimAssistTargeter AimAssistTargeter;
   [SerializeField] AbilitySettings Settings;
   [SerializeField] AimAssistQuery AimAssistQuery;
   [SerializeField] Player Player;
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] float ForwardMotion = 1;
+  [SerializeField] float RootMotionMultiplier = 1;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
@@ -21,18 +28,45 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] VisualEffect VisualEffect;
 
-  int Frame;
+  int Index;
+  AttackState State;
   List<Combatant> Struck = new(16);
 
   void Awake() {
-    Frame = Settings.TotalAttackFrames;
     Hitbox.CollisionEnabled = false;
   }
 
-  public bool IsRunning => Frame < Settings.TotalAttackFrames;
-  public bool InWindup => Frame >= 0 && Frame < Settings.ActiveStartFrame;
-  public bool InActive => Frame >= Settings.ActiveStartFrame && Frame < Settings.ActiveEndFrame;
-  public bool InRecovery => Frame >= Settings.RecoveryStartFrame && Frame <= Settings.RecoveryEndFrame;
+  void Start() {
+    AnimatorCallbackHandler.OnEvent.Listen(OnEvent);
+    AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
+  }
+
+  void OnDestroy() {
+    AnimatorCallbackHandler.OnEvent.Unlisten(OnEvent);
+    AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
+  }
+
+  void OnAnimatorMove() {
+    if (!IsRunning)
+      return;
+    var forward = CharacterController.Rotation.Forward;
+    var dp = Vector3.Project(AnimatorCallbackHandler.Animator.deltaPosition, forward);
+    var v = dp / LocalClock.DeltaTime();
+    CharacterController.DirectVelocity.Add(RootMotionMultiplier * v);
+  }
+
+  void OnEvent(string name) {
+    State = name switch {
+      "Ready" => AttackState.Ready,
+      "Windup" => AttackState.Windup,
+      "Active" => AttackState.Active,
+      "Recovery" => AttackState.Recovery,
+      _ => State
+    };
+    Debug.Log($"{State} on {TimeManager.Instance.FixedFrame()}");
+  }
+
+  public bool IsRunning => State != AttackState.Ready;
   public int WindupFrames => Settings.ActiveStartFrame;
 
   // TODO: Currently, hitbox still sends messages to involved combatants. Maybe wrong?
@@ -43,9 +77,7 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   public bool CanRun
     => CharacterController.IsGrounded
     && !LocalClock.Frozen()
-    && (!IsRunning || (InRecovery && Struck.Count > 0))
-    && !Player.DiveRollAbility.IsRunning
-    && !Player.SpellCastAbility.IsRunning;
+    && !Player.AbilityActive;
 
   public bool TryRun(Vector2 direction) {
     if (CanRun) {
@@ -58,9 +90,9 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
         CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
       }
       Struck.Clear();
-      Animator.SetTrigger("Attack");
-      VisualEffect.Play();
-      Frame = 0;
+      Animator.SetTrigger($"Ground Attack {Index}");
+      // VisualEffect.Play();
+      Index = (Index + 1) % 3;
       return true;
     } else {
       return false;
@@ -68,19 +100,14 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2> {
   }
 
   public void Cancel() {
-    Frame = Settings.TotalAttackFrames;
+    State = AttackState.Ready;
   }
 
   void FixedUpdate() {
     if (!IsRunning)
       return;
-    Hitbox.CollisionEnabled = InActive;
+    Hitbox.CollisionEnabled = State == AttackState.Active;
     MoveSpeed.Set(0);
     TurnSpeed.Set(0);
-    if (InWindup) {
-      var speed = ForwardMotion / (WindupFrames * LocalClock.DeltaTime());
-      CharacterController.DirectVelocity.Add(speed * CharacterController.Rotation.Forward);
-    }
-    Frame = Mathf.Min(Settings.TotalAttackFrames, Frame+LocalClock.DeltaFrames());
   }
 }
