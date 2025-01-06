@@ -1675,6 +1675,7 @@ GameObject:
   - component: {fileID: 5889265469151095980}
   - component: {fileID: 3051964976537025274}
   - component: {fileID: 4525451367180658715}
+  - component: {fileID: 3599175182667338469}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2014,6 +2015,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 4075815647026140715}
+--- !u!114 &3599175182667338469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329d8ee2637c85e458c3bb07030a60d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnimatorCallbackHandler: {fileID: 4525451367180658715}
+  Weapon: {fileID: 1577097722156766584}
+  DefaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+  Direction: {x: 0, y: 0, z: 1}
+  TurnSpeed: 360
+  Enabled: 0
 --- !u!1 &8044512733104495048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,6 +2634,11 @@ PrefabInstance:
 --- !u!4 &895960136487685972 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6826726480740694936, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+  m_PrefabInstance: {fileID: 5967957181181424844}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1577097722156766584 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5129753263128977844, guid: 12f59ff14fd463743a72e116368defce, type: 3}
   m_PrefabInstance: {fileID: 5967957181181424844}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5121275726120384723 stripped

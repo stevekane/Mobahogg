@@ -247,6 +247,19 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-3335147466934645697
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4343a72b7a9792242ada88354c7beb2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackerDirection: {x: 0, y: 0, z: 1}
 --- !u!1107 &-3038525222621969279
 AnimatorStateMachine:
   serializedVersion: 6
@@ -477,7 +490,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: b627ea9cab2bd0c4d9fbee12bb712b09, type: 3}
+    m_Motion: {fileID: 7400000, guid: f616a2e271f109447b49d45d058a4084, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -529,6 +542,7 @@ AnimatorState:
   - {fileID: 4275890448092875067}
   m_StateMachineBehaviours:
   - {fileID: 4874199924180364363}
+  - {fileID: -3335147466934645697}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 1
   m_WriteDefaultValues: 1
