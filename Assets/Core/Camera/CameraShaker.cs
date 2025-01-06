@@ -5,6 +5,11 @@ public class CameraShaker : CinemachineExtension {
   [SerializeField] CameraConfig Config;
   [SerializeField] CinemachineBasicMultiChannelPerlin Noise;
 
+  protected override void OnDestroy() {
+    base.OnDestroy();
+    Noise.AmplitudeGain = 0;
+  }
+
   public void Shake(float targetIntensity) {
     Noise.AmplitudeGain = Mathf.Min(Noise.AmplitudeGain+targetIntensity, Config.MAX_SHAKE_INTENSITY);
   }
