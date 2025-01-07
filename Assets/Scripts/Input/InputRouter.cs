@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -265,10 +264,10 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   }
 
   unsafe Vector2 ReadValue(InputControl control) {
-    byte* buffer = stackalloc byte[sizeof(float) * 2]; // Allocate on the stack
-    control.ReadValueIntoBuffer(buffer, sizeof(float) * 2);
-    float x = *((float*)buffer);               // First float
-    float y = *((float*)(buffer + sizeof(float))); // Second float
+    byte* buffer = stackalloc byte[control.valueSizeInBytes];
+    control.ReadValueIntoBuffer(buffer, control.valueSizeInBytes);
+    float x = *((float*)buffer);
+    float y = *((float*)(buffer + sizeof(float)));
     return new Vector2(x, y);
   }
 
