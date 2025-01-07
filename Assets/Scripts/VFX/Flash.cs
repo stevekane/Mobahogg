@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class Flash : MonoBehaviour {
   [SerializeField] Transform[] RendererRoots;
   [SerializeField] LocalClock LocalClock;

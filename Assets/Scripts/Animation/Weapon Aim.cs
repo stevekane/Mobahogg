@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class WeaponAim : MonoBehaviour {
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;

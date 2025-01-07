@@ -1,13 +1,11 @@
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 /*
 TODO:
 Multiple things could try to write to this in a given frame so perhaps it should
 have the concurrent update structure that we've come to favor so heavily.
 */
+[DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class Vibrator : MonoBehaviour {
   [SerializeField] Transform Target;
   [SerializeField] LocalClock LocalClock;
@@ -18,11 +16,6 @@ public class Vibrator : MonoBehaviour {
   public float Amplitude;
   float ElapsedTime;
   int FramesRemaining;
-
-  #if UNITY_EDITOR
-  [ContextMenu("Vibrate")]
-  void Vibrate() => Vibrate(transform.forward, 120, 0.25f, 20);
-  #endif
 
   public void Vibrate(Vector3 axis, int frames, float amplitude, float frequency) {
     Axis = axis;

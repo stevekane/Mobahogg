@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AimAssist;
-using State;
 using Abilities;
 
 public enum AttackState {
@@ -23,8 +22,6 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellabl
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
   [SerializeField] Animator Animator;
-  [SerializeField] MoveSpeed MoveSpeed;
-  [SerializeField] TurnSpeed TurnSpeed;
   [SerializeField] KCharacterController CharacterController;
 
   int Index;
@@ -100,7 +97,5 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellabl
     if (!IsRunning)
       return;
     Hitbox.CollisionEnabled = State == AttackState.Active;
-    MoveSpeed.Set(0);
-    TurnSpeed.Set(0);
   }
 }

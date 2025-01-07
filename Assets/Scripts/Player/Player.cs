@@ -6,20 +6,18 @@ public class Player : MonoBehaviour {
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Health Health;
-  [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] AttackAbility AttackAbility;
   [SerializeField] SpellCastAbility SpellCastAbility;
   [SerializeField] DiveRollAbility DiveRollAbility;
   [SerializeField] JumpAbility JumpAbility;
   [SerializeField] MoveAbility MoveAbility;
-  [SerializeField] TurnAbility TurnAbility;
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
   bool InValidState
-    => !LocalClock.Frozen();
-    // Alive
+    => !LocalClock.Frozen()
+    && Health.CurrentValue > 0;
     // Not stunned
 
   bool AllNotRunningOrCancellable
@@ -54,8 +52,7 @@ public class Player : MonoBehaviour {
   public bool CanCastSpell
     => InValidState
     && AllNotRunningOrCancellable
-    && SpellCastAbility.CanRun
-    && CharacterController.IsGrounded;
+    && SpellCastAbility.CanRun;
 
   public bool CanMove
     => InValidState
@@ -64,11 +61,9 @@ public class Player : MonoBehaviour {
     && !SpellCastAbility.IsRunning
     && !DiveRollAbility.IsRunning;
 
-  public bool CanTurn
-    => InValidState
-    && TurnAbility.CanRun
-    && !AttackAbility.IsRunning
-    && !SpellCastAbility.IsRunning;
+  public bool CanSteer
+    => DiveRollAbility.IsRunning
+    && DiveRollAbility.CanSteer;
 
   public void Jump() {
     CancelRunning();
@@ -94,8 +89,8 @@ public class Player : MonoBehaviour {
     MoveAbility.Run(direction);
   }
 
-  public void Turn(Vector2 direction) {
-    TurnAbility.Run(direction);
+  public void Steer(Vector2 direction) {
+    DiveRollAbility.Steer(direction);
   }
 
   void Start() {
@@ -104,16 +99,5 @@ public class Player : MonoBehaviour {
 
   void OnDestroy() {
     LivesManager.Active.Players.Remove(this);
-  }
-
-  void FixedUpdate() {
-    // TODO: Handling falling death in this hardcoded way probably isn't that bright...
-    if (Health.CurrentValue <= 0 || transform.position.y <= -10) {
-      // TODO: This is probably not quite right. Seems like potentially this could be an
-      // event that goes on some bus where high level systems listen to react?
-      CreepManager.Active.OnOwnerDeath(GetComponent<CreepOwner>());
-      LivesManager.Active.OnPlayerDeath(this);
-    }
-    AnimatorCallbackHandler.Animator.SetBool("Grounded", CharacterController.IsGrounded);
   }
 }

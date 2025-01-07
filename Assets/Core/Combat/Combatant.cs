@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Combatant : MonoBehaviour {
-  [SerializeField] string HitFlinchName = "Hit Flinch";
   [SerializeField] string HurtFlinchName = "Hurt Flinch";
   [SerializeField] Animator Animator;
   [SerializeField] Health Health;
@@ -18,13 +17,8 @@ public class Combatant : MonoBehaviour {
   public Combatant LastAttacker { get; private set; }
 
   public void Hit(MeleeAttackEvent meleeAttackEvent) {
-    if (Animator && HitFlinchName != "")
-      Animator.SetTrigger(HitFlinchName);
     if (HitStop)
       HitStop.FramesRemaining = meleeAttackEvent.Config.HitStopDuration.Ticks;
-    // TODO: Have some kind of attacker knockback?
-    // if (Knockback)
-    //  Knockback.Add(meleeAttackEvent.KnockbackDirection, meleeAttackEvent.KnockbackFrames);
     CameraManager.Instance.Shake(meleeAttackEvent.Config.CameraShakeIntensity);
     OnHit?.Invoke(meleeAttackEvent);
   }
