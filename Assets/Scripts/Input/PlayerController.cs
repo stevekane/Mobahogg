@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
     InputRouter.Instance.TryGetButtonState("Cast Spell", PortIndex, out var spell);
 
     // Buttons
-    // Jump > Dash > Attack > Spell
+    // Jump > Dash > Attack > Spell > Hover
     if (player.CanJump && jump == ButtonState.JustDown) {
       player.Jump();
       InputRouter.Instance.ConsumeButton("Jump", PortIndex);
@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour {
     if (player.CanCastSpell && spell == ButtonState.JustDown) {
       player.CastSpell(move);
       InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
+    }
+    if (player.CanHover && jump == ButtonState.Down) {
+      player.Hover();
+      InputRouter.Instance.ConsumeButton("Jump", PortIndex); // does this make sense?
     }
 
     // Sticks

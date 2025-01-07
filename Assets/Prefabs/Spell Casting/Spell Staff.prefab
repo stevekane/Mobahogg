@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6826726480740694936}
   - component: {fileID: 7581936400192958435}
-  - component: {fileID: 3411220179734764099}
   m_Layer: 0
   m_Name: Spell Staff
   m_TagString: Untagged
@@ -50,28 +49,6 @@ MonoBehaviour:
   SpellChargeLocations:
   - {fileID: 6427876398778644264}
   Scale: 0.35
---- !u!95 &3411220179734764099
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567283784933641247}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ffeb581bbac459e4e95505677ee22c8c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1811139121262107095
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,6 +58,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5129753263128977844}
+  - component: {fileID: 8356550367200980640}
   m_Layer: 0
   m_Name: Weapon Container
   m_TagString: Untagged
@@ -104,6 +82,28 @@ Transform:
   - {fileID: 802203952562073806}
   m_Father: {fileID: 6826726480740694936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8356550367200980640
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811139121262107095}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ffeb581bbac459e4e95505677ee22c8c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &912182625771001637
 PrefabInstance:
   m_ObjectHideFlags: 0

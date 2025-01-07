@@ -25,4 +25,12 @@ public class SpellCharge : MonoBehaviour {
       }
     }
   }
+
+  void OnTriggerStay(Collider other) {
+    if (other.TryGetComponent(out SpellCollector collector)) {
+      if (collector.TryCollect(SpellPrefab)) {
+        Destroy(gameObject);
+      }
+    }
+  }
 }

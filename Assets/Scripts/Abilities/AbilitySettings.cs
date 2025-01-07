@@ -8,6 +8,9 @@ public class AbilitySettings : ScriptableObject {
   public float GravityFactor(Vector3 velocity) =>
     velocity.y <= 0 ? FallingGravityFactor : RisingGravityFactor;
 
+  [Header("Hover")]
+  public float HoverGravityFactor = 1;
+
   [Header("Move")]
   public float GroundMoveSpeed = 5;
   public float AirSpeedDecayFactor = 0.25f;
@@ -19,11 +22,6 @@ public class AbilitySettings : ScriptableObject {
   public float InitialJumpSpeed(float gravity) =>
     Mathf.Sqrt(2 * Mathf.Abs(RisingGravityFactor * gravity) * JumpHeight);
 
-  [Header("Dash")]
-  public int DashTotalFrames = 6;
-  public float DashTotalDistance = 2f;
-  public float DashSpeed(float secondsPerFrame) => DashTotalDistance / DashTotalFrames / secondsPerFrame;
-
   [Header("Attack")]
   public int WindupAttackFrames = 3;
   public int ActiveAttackFrames = 3;
@@ -33,7 +31,4 @@ public class AbilitySettings : ScriptableObject {
   public int ActiveEndFrame => WindupAttackFrames + ActiveAttackFrames;
   public int RecoveryStartFrame => ActiveEndFrame;
   public int RecoveryEndFrame => ActiveEndFrame + RecoveryAttackFrames;
-
-  [Header("Spin")]
-  public int TotalSpinFrames = 30;
 }

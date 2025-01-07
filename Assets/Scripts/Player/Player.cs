@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
   [SerializeField] DiveRollAbility DiveRollAbility;
   [SerializeField] JumpAbility JumpAbility;
   [SerializeField] MoveAbility MoveAbility;
+  [SerializeField] HoverAbility HoverAbility;
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
@@ -65,9 +66,19 @@ public class Player : MonoBehaviour {
     => DiveRollAbility.IsRunning
     && DiveRollAbility.CanSteer;
 
+  public bool CanHover
+    => InValidState
+    && !CharacterController.IsGrounded
+    && CharacterController.Falling
+    && !SpellCastAbility.IsRunning;
+
   public void Jump() {
     CancelRunning();
     JumpAbility.Run();
+  }
+
+  public void Hover() {
+    HoverAbility.Run();
   }
 
   public void Dash(Vector2 direction) {
