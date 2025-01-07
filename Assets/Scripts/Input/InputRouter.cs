@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -61,7 +62,7 @@ public class InputPort {
           JustDown.Add(action, new());
           Down.Add(action, new());
           JustUp.Add(action, new());
-          BufferFrameDurations.Add(action, 6);
+          BufferFrameDurations.Add(action, 12);
         }
       }
     }
@@ -246,8 +247,7 @@ public class InputRouter : SingletonBehavior<InputRouter> {
         foreach (var control in action.controls) {
           if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
             if (action.type == InputActionType.Value) {
-              // TODO: I believe this allocates. ReadIntoBuffer seems to avoid it
-              var value = (Vector2)control.ReadValueAsObject();
+              var value = ReadValue(control);
               value = value.magnitude < StickDeadZone ? default : value;
               InputPorts[portIndex].SetValue(action.name, value);
               InputPorts[portIndex].TrySendValue(action.name);
@@ -264,10 +264,12 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     }
   }
 
-  void OnButtonAction(InputAction.CallbackContext ctx) {
-    if (DeviceToPortMap.TryGetValue(ctx.control.device, out int portIndex)) {
-      InputPorts[portIndex].TrySendButtonState(ctx.action.name);
-    }
+  unsafe Vector2 ReadValue(InputControl control) {
+    byte* buffer = stackalloc byte[sizeof(float) * 2]; // Allocate on the stack
+    control.ReadValueIntoBuffer(buffer, sizeof(float) * 2);
+    float x = *((float*)buffer);               // First float
+    float y = *((float*)(buffer + sizeof(float))); // Second float
+    return new Vector2(x, y);
   }
 
   // scan the ports checking for the first that isn't occupied
