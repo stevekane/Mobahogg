@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 public enum ButtonState {
@@ -245,8 +246,8 @@ public class InputRouter : SingletonBehavior<InputRouter> {
       foreach (var action in actionMap.actions) {
         foreach (var control in action.controls) {
           if (DeviceToPortMap.TryGetValue(control.device, out var portIndex)) {
-            if (action.type == InputActionType.Value) {
-              var value = ReadValue(control);
+            if (action.type == InputActionType.Value && control.valueType == typeof(Vector2)) {
+              var value = ReadValue<Vector2>(control);
               value = value.magnitude < StickDeadZone ? default : value;
               InputPorts[portIndex].SetValue(action.name, value);
               InputPorts[portIndex].TrySendValue(action.name);
@@ -263,12 +264,15 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     }
   }
 
-  unsafe Vector2 ReadValue(InputControl control) {
-    byte* buffer = stackalloc byte[control.valueSizeInBytes];
-    control.ReadValueIntoBuffer(buffer, control.valueSizeInBytes);
-    float x = *((float*)buffer);
-    float y = *((float*)(buffer + sizeof(float)));
-    return new Vector2(x, y);
+  // N.B. You are responsible for checking T is control.valueType
+  unsafe T ReadValue<T>(InputControl control) where T : struct {
+    int valueSize = control.valueSizeInBytes;
+    int tSize = UnsafeUtility.SizeOf<T>();
+    Assert.AreEqual(typeof(T), control.valueType);
+    Assert.AreEqual(valueSize, tSize);
+    byte* buffer = stackalloc byte[valueSize];
+    control.ReadValueIntoBuffer(buffer, valueSize);
+    return UnsafeUtility.ReadArrayElementWithStride<T>(buffer, 0, tSize);
   }
 
   // scan the ports checking for the first that isn't occupied
