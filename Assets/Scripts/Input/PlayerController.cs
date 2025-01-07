@@ -1,65 +1,43 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Input+1)]
 public class PlayerController : MonoBehaviour {
   public int PortIndex;
 
-  void Start() {
-    InputRouter.Instance?.TryListenValue("Move", PortIndex, HandleMove);
-    InputRouter.Instance?.TryListenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
-    InputRouter.Instance?.TryListenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
-    InputRouter.Instance?.TryListenButton("Cast Spell", ButtonState.JustDown, PortIndex, HandleCastSpell);
-    InputRouter.Instance?.TryListenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
-  }
+  public Player Player => LivesManager.Active.Players.FirstOrDefault(p => p.PortIndex == PortIndex);
 
-  void OnDestroy() {
-    InputRouter.Instance?.TryUnlistenValue("Move", PortIndex, HandleMove);
-    InputRouter.Instance?.TryUnlistenButton("Jump", ButtonState.JustDown ,PortIndex, HandleJump);
-    InputRouter.Instance?.TryUnlistenButton("Attack", ButtonState.JustDown, PortIndex, HandleAttack);
-    InputRouter.Instance?.TryUnlistenButton("Dash", ButtonState.JustDown, PortIndex, HandleDash);
-  }
-
-  IEnumerable<Player> PlayersOnPort =>
-    LivesManager.Active.Players.Where(p => p.PortIndex == PortIndex);
-
-  void HandleMove(PortValue action) {
-    PlayersOnPort.ForEach(p => p.MoveAbility.TryRun(action.Value));
-    PlayersOnPort.ForEach(p => p.TurnAbility.TryRun(action.Value));
-  }
-
-  public void HandleJump(PortButtonState action) {
-    var anyRan = PlayersOnPort.Any(p => p.JumpAbility.TryRun());
-    if (anyRan) {
+  void FixedUpdate() {
+    var player = Player;
+    if (!player)
+      return;
+    InputRouter.Instance.TryGetValue("Move", PortIndex, out var move);
+    InputRouter.Instance.TryGetButtonState("Jump", PortIndex, out var jump);
+    InputRouter.Instance.TryGetButtonState("Attack", PortIndex, out var attack);
+    InputRouter.Instance.TryGetButtonState("Dash", PortIndex, out var dash);
+    InputRouter.Instance.TryGetButtonState("Cast Spell", PortIndex, out var spell);
+    // Jump > Dash > Attack > Spell > Move > Turn
+    if (player.CanJump && jump == ButtonState.JustDown) {
+      player.Jump();
       InputRouter.Instance.ConsumeButton("Jump", PortIndex);
     }
-  }
-
-  public void HandleAttack(PortButtonState action) {
-    InputRouter.Instance.TryGetValue("Move", PortIndex, out var direction);
-    var anyRan = PlayersOnPort.Any(p => {
-      return p.Grounded
-        ? p.AttackAbility.TryRun(direction)
-        : p.AirAttackAbility.TryRun(direction);
-    });
-
-    if (anyRan) {
+    if (player.CanDash && dash == ButtonState.JustDown) {
+      player.Dash(move);
+      InputRouter.Instance.ConsumeButton("Dash", PortIndex);
+    }
+    if (player.CanAttack && attack == ButtonState.JustDown) {
+      player.Attack(move);
       InputRouter.Instance.ConsumeButton("Attack", PortIndex);
     }
-  }
-
-  public void HandleCastSpell(PortButtonState action) {
-    var anyRan = PlayersOnPort.Any(p => p.SpellCastAbility.TryRun());
-    if (anyRan) {
+    if (player.CanCastSpell && spell == ButtonState.JustDown) {
+      player.CastSpell(move);
       InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
     }
-  }
-
-  public void HandleDash(PortButtonState action) {
-    InputRouter.Instance.TryGetValue("Move", PortIndex, out var direction);
-    var anyRan = PlayersOnPort.Any(p => p.DiveRollAbility.TryRun(direction));
-    if (anyRan) {
-      InputRouter.Instance.ConsumeButton("Dash", PortIndex);
+    if (player.CanMove) {
+      player.Move(move);
+    }
+    if (player.CanTurn) {
+      player.Turn(move);
     }
   }
 }

@@ -1,10 +1,9 @@
 using UnityEngine;
+using Abilities;
 
 public class JumpAbility : MonoBehaviour, IAbility {
   [Header("Reads From")]
   [SerializeField] AbilitySettings Settings;
-  [SerializeField] LocalClock LocalClock;
-  [SerializeField] Player Player;
 
   [Header("Writes To")]
   [SerializeField] KCharacterController CharacterController;
@@ -23,21 +22,12 @@ public class JumpAbility : MonoBehaviour, IAbility {
     IsJumping = false;
   }
 
-  public bool CanRun
-    => !LocalClock.Frozen()
-    && Player.Grounded
-    && !Player.AbilityActive;
+  public bool CanRun => true;
 
-  public bool TryRun() {
-    if (CanRun) {
-      var jumpSpeed = Settings.InitialJumpSpeed(Physics.gravity.y);
-      CharacterController.ForceUnground.Set(true);
-      CharacterController.Velocity.SetY(jumpSpeed);
-      IsJumping = true;
-      return true;
-    } else {
-      IsJumping = false;
-      return false;
-    }
+  public void Run() {
+    var jumpSpeed = Settings.InitialJumpSpeed(Physics.gravity.y);
+    CharacterController.ForceUnground.Set(true);
+    CharacterController.Velocity.SetY(jumpSpeed);
+    IsJumping = true;
   }
 }

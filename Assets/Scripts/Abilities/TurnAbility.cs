@@ -1,34 +1,26 @@
-using State;
 using UnityEngine;
+using State;
+using Abilities;
 
 public class TurnAbility : MonoBehaviour, IAbility<Vector2> {
   [Header("Reads From")]
   [SerializeField] TurnSpeed TurnSpeed;
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] Player Player;
 
   [Header("Writes To")]
   [SerializeField] KCharacterController CharacterController;
 
-  public bool CanRun
-    => !LocalClock.Frozen()
-    && !Player.AttackAbility.IsRunning
-    && !Player.SpellCastAbility.IsRunning;
+  public bool CanRun => true;
 
-  public bool TryRun(Vector2 value) {
-    if (CanRun) {
-      if (value.magnitude > 0) {
-        var currentForward = CharacterController.Rotation.Forward;
-        var currentRotation = Quaternion.LookRotation(currentForward);
-        var desiredForward = value.XZ().normalized;
-        var desiredRotation = Quaternion.LookRotation(desiredForward);
-        var turnSpeed = TurnSpeed.Value * LocalClock.DeltaTime();
-        var nextForward = Quaternion.RotateTowards(currentRotation, desiredRotation, turnSpeed);
-        CharacterController.Rotation.Set(nextForward);
-      }
-      return true;
-    } else {
-      return false;
+  public void Run(Vector2 value) {
+    if (value.magnitude > 0) {
+      var desiredForward = value.XZ().normalized;
+      var currentForward = CharacterController.Rotation.Forward.XZ();
+      var currentRotation = Quaternion.LookRotation(currentForward);
+      var desiredRotation = Quaternion.LookRotation(desiredForward);
+      var turnSpeed = TurnSpeed.Value * LocalClock.DeltaTime();
+      var nextForward = Quaternion.RotateTowards(currentRotation, desiredRotation, turnSpeed);
+      CharacterController.Rotation.Set(nextForward);
     }
   }
 }

@@ -7,36 +7,103 @@ public class Player : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Health Health;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
+  [SerializeField] AttackAbility AttackAbility;
+  [SerializeField] SpellCastAbility SpellCastAbility;
+  [SerializeField] DiveRollAbility DiveRollAbility;
+  [SerializeField] JumpAbility JumpAbility;
+  [SerializeField] MoveAbility MoveAbility;
+  [SerializeField] TurnAbility TurnAbility;
 
-  // TODO: Would it make sense to use the already-available "name" property Unity has?
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
-  public AttackAbility AttackAbility;
-  public JumpAbility JumpAbility;
-  public AirAttackAbility AirAttackAbility;
-  public SpellCastAbility SpellCastAbility;
-  public DiveRollAbility DiveRollAbility;
-  public MoveAbility MoveAbility;
-  public TurnAbility TurnAbility;
-  public float ArmIKWeightSpeed = 2;
-  public bool UseManualArmIK = false;
 
-  public bool AbilityActive
-    => AttackAbility.IsRunning
-    || AirAttackAbility.IsRunning
-    || DiveRollAbility.IsRunning
-    || SpellCastAbility.IsRunning;
+  bool InValidState
+    => !LocalClock.Frozen();
+    // Alive
+    // Not stunned
 
-  public bool Grounded => CharacterController.IsGrounded;
+  bool AllNotRunningOrCancellable
+    => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
+    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanCancel)
+    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel);
+
+  void CancelRunning() {
+    if (AttackAbility.CanCancel) AttackAbility.Cancel();
+    if (SpellCastAbility.CanCancel) SpellCastAbility.Cancel();
+    if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
+  }
+
+  public bool CanJump
+    => InValidState
+    && AllNotRunningOrCancellable
+    && JumpAbility.CanRun
+    && CharacterController.IsGrounded;
+
+  public bool CanAttack
+    => InValidState
+    && AllNotRunningOrCancellable
+    && AttackAbility.CanRun
+    && CharacterController.IsGrounded;
+
+  public bool CanDash
+    => InValidState
+    && AllNotRunningOrCancellable
+    && DiveRollAbility.CanRun
+    && CharacterController.IsGrounded;
+
+  public bool CanCastSpell
+    => InValidState
+    && AllNotRunningOrCancellable
+    && SpellCastAbility.CanRun
+    && CharacterController.IsGrounded;
+
+  public bool CanMove
+    => InValidState
+    && MoveAbility.CanRun
+    && !AttackAbility.IsRunning
+    && !SpellCastAbility.IsRunning
+    && !DiveRollAbility.IsRunning;
+
+  public bool CanTurn
+    => InValidState
+    && TurnAbility.CanRun
+    && !AttackAbility.IsRunning
+    && !SpellCastAbility.IsRunning;
+
+  public void Jump() {
+    CancelRunning();
+    JumpAbility.Run();
+  }
+
+  public void Dash(Vector2 direction) {
+    CancelRunning();
+    DiveRollAbility.Run(direction);
+  }
+
+  public void Attack(Vector2 direction) {
+    CancelRunning();
+    AttackAbility.Run(direction);
+  }
+
+  public void CastSpell(Vector2 direction) {
+    CancelRunning();
+    SpellCastAbility.Run(direction);
+  }
+
+  public void Move(Vector2 direction) {
+    MoveAbility.Run(direction);
+  }
+
+  public void Turn(Vector2 direction) {
+    TurnAbility.Run(direction);
+  }
 
   void Start() {
     LivesManager.Active.Players.AddFirst(this);
-    AnimatorCallbackHandler.OnIK.Listen(OnAnimatorIK);
   }
 
   void OnDestroy() {
     LivesManager.Active.Players.Remove(this);
-    AnimatorCallbackHandler.OnIK.Unlisten(OnAnimatorIK);
   }
 
   void FixedUpdate() {
@@ -48,22 +115,5 @@ public class Player : MonoBehaviour {
       LivesManager.Active.OnPlayerDeath(this);
     }
     AnimatorCallbackHandler.Animator.SetBool("Grounded", CharacterController.IsGrounded);
-  }
-
-  float ArmIKWeight = 0;
-  void OnAnimatorIK(int layer) {
-    var weight = 0f;
-    var position = Vector3.zero;
-    var rotation = Quaternion.identity;
-    if (UseManualArmIK && Grounded && !AbilityActive) {
-      weight = 1;
-      rotation = Quaternion.LookRotation(transform.right);
-      position = transform.position + Vector3.up + 2 * transform.right;
-    }
-    ArmIKWeight = Mathf.MoveTowards(ArmIKWeight, weight, LocalClock.DeltaTime() * ArmIKWeightSpeed);
-    AnimatorCallbackHandler.Animator.SetIKPosition(AvatarIKGoal.RightHand, position);
-    AnimatorCallbackHandler.Animator.SetIKRotation(AvatarIKGoal.RightHand, rotation);
-    AnimatorCallbackHandler.Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ArmIKWeight);
-    AnimatorCallbackHandler.Animator.SetIKRotationWeight(AvatarIKGoal.RightHand, ArmIKWeight);
   }
 }

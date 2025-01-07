@@ -1,46 +1,45 @@
 using State;
 using UnityEngine;
+using Abilities;
 
-public class DiveRollAbility : MonoBehaviour, IAbility<Vector2> {
+public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
+  [Header("Reads From")]
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] Player Player;
   [SerializeField] TurnSpeed TurnSpeed;
-  [SerializeField] SpellAffected SpellAffected;
+  [SerializeField] Animator Animator;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
-  [SerializeField] KCharacterController CharacterController;
-  [SerializeField] ResidualImageRenderer ResidualImageRenderer;
   [SerializeField] int FrameDuration = 60;
   [SerializeField] float RootMotionMultiplier = 2;
+  [Header("Writes To")]
+  [SerializeField] SpellAffected SpellAffected;
+  [SerializeField] KCharacterController CharacterController;
 
   int Frame;
 
   void Start() {
     Frame = FrameDuration;
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
-    AnimatorCallbackHandler.OnEvent.Listen(OnEvent);
   }
 
   void OnDestroy() {
     Frame = FrameDuration;
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
-    AnimatorCallbackHandler.OnEvent.Unlisten(OnEvent);
   }
 
   public bool IsRunning => Frame < FrameDuration;
 
-  public bool CanRun
-    => !LocalClock.Frozen()
-    && !Player.AbilityActive
-    && CharacterController.IsGrounded;
+  public bool CanRun => true;
 
-  public bool TryRun(Vector2 direction) {
-    if (CanRun) {
-      AnimatorCallbackHandler.Animator.SetTrigger("Dash");
-      Frame = 0;
-      return true;
-    } else {
-      return false;
-    }
+  public bool CanCancel => false;
+
+  public void Run(Vector2 direction) {
+    Animator.SetTrigger("Dash");
+    Frame = 0;
+  }
+
+  public void Cancel() {
+    Frame = FrameDuration;
+    Animator.SetTrigger("Cancel");
   }
 
   void OnAnimatorMove() {
@@ -50,14 +49,6 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2> {
     var dp = Vector3.Project(AnimatorCallbackHandler.Animator.deltaPosition, forward);
     var v = dp / LocalClock.DeltaTime();
     CharacterController.DirectVelocity.Add(RootMotionMultiplier * v);
-  }
-
-  void OnEvent(string name) {
-    if (!IsRunning)
-      return;
-    if (name == "Image") {
-      ResidualImageRenderer.RenderImage();
-    }
   }
 
   void FixedUpdate() {

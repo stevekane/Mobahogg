@@ -1,14 +1,5 @@
 using UnityEngine;
 
-/*
-This optional system will constrain the direction of the weapon
-to point in the desired direction. It is designed to run in the AnimatorIK
-callback though it probably does not do any actual IK.
-
-It could be implemented as a driving script for an AnimationRig
-such as an aim constraint which would allow it to exist alongside
-other animation tech in the standard Unity Setup.
-*/
 public class WeaponAim : MonoBehaviour {
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;
