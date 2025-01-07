@@ -67,8 +67,8 @@ public class MatchManager : SingletonBehavior<MatchManager> {
 
   // TODO: This throws an error when application shuts down. Not sure it matters
   // but perhaps it indicates a subtle issue in understanding.
-  protected override async void AwakeSingleton() {
-    await Messages(this.destroyCancellationToken);
+  protected override void AwakeSingleton() {
+    Messages(this.destroyCancellationToken).Forget();
   }
 
   async UniTask Messages(CancellationToken token) {
