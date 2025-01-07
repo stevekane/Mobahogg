@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class AnimatorCallbackHandler : MonoBehaviour {
   public Animator Animator;
   public readonly EventSource OnRootMotion = new();

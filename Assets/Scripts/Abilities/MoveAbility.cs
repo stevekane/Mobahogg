@@ -12,8 +12,13 @@ public class MoveAbility : MonoBehaviour, IAbility<Vector2> {
 
   public bool CanRun => true;
 
-  public void Run(Vector2 value) {
-    var velocity = MoveSpeed.Value * value.XZ();
+  public void Run(Vector2 input) {
+    var delta = input.XZ();
+    var direction = delta.normalized;
+    if (delta.sqrMagnitude > 0) {
+      CharacterController.Rotation.Set(Quaternion.LookRotation(direction));
+    }
+    var velocity = MoveSpeed.Value * delta;
     CharacterController.DirectVelocity.Add(velocity);
     Animator.SetFloat("Speed", velocity.magnitude);
   }
