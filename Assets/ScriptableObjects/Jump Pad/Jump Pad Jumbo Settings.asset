@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ede8ce6ddd2a1f4d9953b969e4fc8d6, type: 3}
-  m_Name: AbilitySettings (Default)
+  m_Script: {fileID: 11500000, guid: e296151a73c0b82469138fc2bac0498f, type: 3}
+  m_Name: Jump Pad Jumbo Settings
   m_EditorClassIdentifier: 
-  RisingGravityFactor: 12
-  FallingGravityFactor: 20
-  HoverVelocity: 5
-  GroundMoveSpeed: 10
-  JumpHeight: 5
+  JumpStrength: 75
