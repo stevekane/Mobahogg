@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4798451634008721614}
   - component: {fileID: -5284870349299799421}
   m_Layer: 0
-  m_Name: Cannon Ball
+  m_Name: Cannon Ball Bouncy Gravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
