@@ -2960,6 +2960,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terrain Size Guide
       objectReference: {fileID: 0}
+    - target: {fileID: 9072267326078393674, guid: bf8024a32e8dbd4418f802fec651d8b5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
