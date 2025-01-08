@@ -4,8 +4,6 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managers)]
 public class CannonManager : SingletonBehavior<CannonManager> {
-  public float MinRange = 2;
-  public float MaxRange = 30;
   public List<CannonTarget> Targets;
 
   public CannonTarget BestTarget(Cannon cannon) {
@@ -14,11 +12,13 @@ public class CannonManager : SingletonBehavior<CannonManager> {
     float bestDistance = float.MaxValue;
     foreach (var target in Targets) {
       var targetTeam = target.GetComponent<Team>();
-      var distance = Vector3.Distance(target.transform.position.XZ(), cannon.transform.position.XZ());
-      var validTeam = targetTeam.TeamType != cannonTeam.TeamType;
-      var validDistance = distance >= MinRange && distance <= MaxRange;
+      var toTarget = target.transform.position - cannon.transform.position;
+      var distance = toTarget.XZ().magnitude;
+      var validTeam = !cannonTeam || cannonTeam.TeamType != targetTeam.TeamType;
+      var validDistance = distance >= cannon.MinRange && distance <= cannon.MaxRange;
+      var validAngle = Vector3.Angle(cannon.transform.forward, toTarget.XZ()) <= cannon.FieldOfView/2;
       var lowerDistance = distance < bestDistance;
-      if (validTeam && validDistance && lowerDistance) {
+      if (validTeam && validDistance && validAngle && lowerDistance) {
         bestDistance = distance;
         bestTarget = target;
       }
