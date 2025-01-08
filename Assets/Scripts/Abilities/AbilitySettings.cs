@@ -5,30 +5,17 @@ public class AbilitySettings : ScriptableObject {
   [Header("Gravity")]
   public float RisingGravityFactor = 4;
   public float FallingGravityFactor = 8;
-  public float GravityFactor(Vector3 velocity) =>
-    velocity.y <= 0 ? FallingGravityFactor : RisingGravityFactor;
+  public Vector3 Gravity(Vector3 velocity) =>
+    (velocity.y <= 0 ? FallingGravityFactor : RisingGravityFactor) * Physics.gravity;
 
   [Header("Hover")]
-  public float HoverGravityFactor = 1;
+  public float HoverVelocity = -1;
 
   [Header("Move")]
   public float GroundMoveSpeed = 5;
-  public float AirSpeedDecayFactor = 0.25f;
-  public float AirMoveSpeed(float groundSpeed) =>
-    Mathf.Exp(-AirSpeedDecayFactor*groundSpeed);
 
   [Header("Jump")]
   public float JumpHeight = 2;
-  public float InitialJumpSpeed(float gravity) =>
-    Mathf.Sqrt(2 * Mathf.Abs(RisingGravityFactor * gravity) * JumpHeight);
-
-  [Header("Attack")]
-  public int WindupAttackFrames = 3;
-  public int ActiveAttackFrames = 3;
-  public int RecoveryAttackFrames = 6;
-  public int TotalAttackFrames => WindupAttackFrames + ActiveAttackFrames + RecoveryAttackFrames;
-  public int ActiveStartFrame => WindupAttackFrames;
-  public int ActiveEndFrame => WindupAttackFrames + ActiveAttackFrames;
-  public int RecoveryStartFrame => ActiveEndFrame;
-  public int RecoveryEndFrame => ActiveEndFrame + RecoveryAttackFrames;
+  public float InitialJumpSpeed =>
+    Mathf.Sqrt(2 * Mathf.Abs(RisingGravityFactor * Physics.gravity.y) * JumpHeight);
 }

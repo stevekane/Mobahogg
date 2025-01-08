@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour {
     }
     if (player.CanHover && jump == ButtonState.Down) {
       player.Hover();
-      InputRouter.Instance.ConsumeButton("Jump", PortIndex); // does this make sense?
+    } else {
+      player.EndHover();
     }
 
     // Sticks

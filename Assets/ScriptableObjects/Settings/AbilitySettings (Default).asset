@@ -14,10 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RisingGravityFactor: 12
   FallingGravityFactor: 20
-  HoverGravityFactor: 1
+  HoverVelocity: 1
   GroundMoveSpeed: 10
-  AirSpeedDecayFactor: 0.25
   JumpHeight: 5
-  WindupAttackFrames: 8
-  ActiveAttackFrames: 3
-  RecoveryAttackFrames: 20

@@ -4,12 +4,12 @@ using Abilities;
 public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
   [Header("Reads From")]
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] Animator Animator;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] int FrameDuration = 60;
   [SerializeField] float RootMotionMultiplier = 2;
   [SerializeField] float TurnSpeed = 180;
   [Header("Writes To")]
+  [SerializeField] Animator Animator;
   [SerializeField] SpellAffected SpellAffected;
   [SerializeField] KCharacterController CharacterController;
 
@@ -55,8 +55,8 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancella
   }
 
   public void Cancel() {
-    Frame = FrameDuration;
     Animator.SetTrigger("Cancel");
+    Frame = FrameDuration;
   }
 
   void OnAnimatorMove() {

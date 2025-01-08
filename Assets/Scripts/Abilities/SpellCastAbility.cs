@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class SpellCastAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
   [Header("Reads From")]
-  [SerializeField] AbilitySettings Settings;
   [SerializeField] LocalClock LocalClock;
   [Header("Writes To")]
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] Player Player;
   [SerializeField] Animator Animator;
+  [SerializeField] int TotalAttackFrames = 20;
 
   int Frame;
 
   void Awake() {
-    Frame = Settings.TotalAttackFrames;
+    Frame = TotalAttackFrames;
   }
 
-  public bool IsRunning => Frame < Settings.TotalAttackFrames;
+  public bool IsRunning => Frame < TotalAttackFrames;
 
   public bool CanRun => SpellHolder.Count > 0;
 
@@ -33,11 +33,11 @@ public class SpellCastAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancell
   }
 
   public void Cancel() {
-    Frame = Settings.TotalAttackFrames;
+    Frame = TotalAttackFrames;
     Animator.SetTrigger("Cancel");
   }
 
   void FixedUpdate() {
-    Frame = Mathf.Min(Settings.TotalAttackFrames, Frame+LocalClock.DeltaFrames());
+    Frame = Mathf.Min(TotalAttackFrames, Frame+LocalClock.DeltaFrames());
   }
 }

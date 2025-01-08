@@ -90,6 +90,7 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellabl
   }
 
   public void Cancel() {
+    Animator.SetTrigger("Cancel");
     State = AttackState.Ready;
   }
 

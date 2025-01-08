@@ -8,7 +8,6 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   [SerializeField] KinematicCharacterMotor Motor;
   [SerializeField] bool ShowDebug;
 
-  public readonly FloatMinAttribute PhysicsScale = new(1);
   public readonly BooleanAnyAttribute ForceUnground = new();
   public readonly Vector3Attribute Acceleration = new();
   public readonly Vector3Attribute Velocity = new();
@@ -34,7 +33,12 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     Motor.CharacterController = null;
   }
 
-  public void BeforeCharacterUpdate(float deltaTime) {}
+  public void BeforeCharacterUpdate(float deltaTime) {
+    ForceUnground.Sync();
+    if (ForceUnground.Current) {
+      Motor.ForceUnground();
+    }
+  }
 
   public void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
     Rotation.Sync();
@@ -42,28 +46,11 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   }
 
   public void UpdateVelocity(ref Vector3 currentVelocity, float dt) {
-    // Sync unground and run if needed
-    ForceUnground.Sync();
-    if (ForceUnground.Current) {
-      Motor.ForceUnground();
-    }
-
-    // Apply all frame modifiers
-    Velocity.Sync(reset: false);
-    // Add affect of accelerations
-    PhysicsScale.Sync();
     Acceleration.Sync();
-    Velocity.Add(PhysicsScale.Current * LocalClock.DeltaTime() * Acceleration.Current);
-    // zero out y component if we're firmly on the ground
-    if (IsGrounded && Falling) {
-      Velocity.SetY(0);
-    }
+    Velocity.Add(LocalClock.DeltaTime() * Acceleration.Current);
     Velocity.Sync(reset: false);
-
     DirectVelocity.Sync();
-    currentVelocity = LocalClock.Frozen()
-      ? Vector3.zero
-      : Velocity.Current + DirectVelocity.Current;
+    currentVelocity = LocalClock.DeltaFrames() * (Velocity.Current + DirectVelocity.Current);
   }
 
   public void AfterCharacterUpdate(float deltaTime) {
@@ -109,7 +96,6 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     GUILayout.BeginVertical("box");
     GUILayout.Label($"Grounded : {IsGrounded}");
     GUILayout.Label($"Force Unground : {ForceUnground.Current}");
-    GUILayout.Label($"PhysicsScale : {PhysicsScale.Current}");
     GUILayout.Label($"Acceleration : {Acceleration.Current}");
     GUILayout.Label($"Velocity : {Velocity.Current}");
     GUILayout.Label($"Direct Velocity : {DirectVelocity.Current}");

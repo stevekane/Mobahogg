@@ -7,6 +7,6 @@ public class BaseLocomotionAnimationDriver : MonoBehaviour {
 
   void FixedUpdate() {
     Animator.SetBool("Grounded", CharacterController.IsGrounded);
-    Animator.SetBool("Rising", CharacterController.Velocity.Current.y > 0);
+    Animator.SetBool("Rising", CharacterController.Rising);
   }
 }

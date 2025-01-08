@@ -49,6 +49,9 @@ MonoBehaviour:
   SpellChargeLocations:
   - {fileID: 6427876398778644264}
   Scale: 0.35
+  SpellCastAbility: {fileID: 0}
+  HoverAbility: {fileID: 0}
+  Animator: {fileID: 8356550367200980640}
 --- !u!1 &1811139121262107095
 GameObject:
   m_ObjectHideFlags: 0

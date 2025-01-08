@@ -6,6 +6,9 @@ public class SpellStaff : MonoBehaviour {
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] List<Transform> SpellChargeLocations;
   [SerializeField] float Scale = 1;
+  [SerializeField] SpellCastAbility SpellCastAbility;
+  [SerializeField] HoverAbility HoverAbility;
+  [SerializeField] Animator Animator;
 
   Queue<GameObject> SpellCharges = new();
 
@@ -33,5 +36,10 @@ public class SpellStaff : MonoBehaviour {
   void OnDestroy() {
     SpellHolder.OnAddSpell.Unlisten(AddSpell);
     SpellHolder.OnRemoveSpell.Unlisten(ShiftSpells);
+  }
+
+  void FixedUpdate() {
+    Animator.SetInteger("Head State", HoverAbility.IsRunning ? 2 : SpellCastAbility.IsRunning ? 1 : 0);
+    Animator.SetBool("Spinning", HoverAbility.IsRunning);
   }
 }

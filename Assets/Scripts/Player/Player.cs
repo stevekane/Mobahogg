@@ -3,6 +3,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Player : MonoBehaviour {
+  [SerializeField] AbilitySettings Settings;
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Health Health;
@@ -15,6 +16,8 @@ public class Player : MonoBehaviour {
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
+
+  bool Jumped;
 
   bool InValidState
     => !LocalClock.Frozen()
@@ -74,11 +77,16 @@ public class Player : MonoBehaviour {
 
   public void Jump() {
     CancelRunning();
+    Jumped = true;
     JumpAbility.Run();
   }
 
   public void Hover() {
-    HoverAbility.Run();
+    HoverAbility.IsRunning = true;
+  }
+
+  public void EndHover() {
+    HoverAbility.IsRunning = false;
   }
 
   public void Dash(Vector2 direction) {
@@ -110,5 +118,20 @@ public class Player : MonoBehaviour {
 
   void OnDestroy() {
     LivesManager.Active.Players.Remove(this);
+  }
+
+  void FixedUpdate() {
+    if (Jumped) {
+      var jumpSpeed = Settings.InitialJumpSpeed;
+      CharacterController.ForceUnground.Set(true);
+      CharacterController.Velocity.SetY(jumpSpeed);
+    } else if (HoverAbility.IsRunning) {
+      CharacterController.Velocity.SetY(-Mathf.Abs(Settings.HoverVelocity));
+    } else if (CharacterController.IsGrounded) {
+      CharacterController.Velocity.SetY(0);
+    } else {
+      CharacterController.Acceleration.Add(Settings.Gravity(CharacterController.Velocity.Current));
+    }
+    Jumped = false;
   }
 }

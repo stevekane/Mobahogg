@@ -2,13 +2,28 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class WeaponAim : MonoBehaviour {
+  [SerializeField] LocalClock LocalClock;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;
+  [SerializeField] AttackAbility AttackAbility;
+  [SerializeField] HoverAbility HoverAbility;
+  [SerializeField] float TurnSpeed = 720;
 
-  public Quaternion DefaultLocalRotation;
-  public Vector3 Direction = Vector3.forward;
-  public float TurnSpeed = 360;
-  public bool Enabled = true;
+  Quaternion DefaultLocalRotation;
+
+  Vector3? AimDirection {
+    get {
+      if (AttackAbility.IsRunning) return Vector3.forward;
+      if (HoverAbility.IsRunning) return Vector3.up;
+      else return null;
+    }
+  }
+
+  Quaternion WeaponLocalRotationFromWorldSpaceVector(Vector3 v) {
+    var worldDirection = transform.TransformDirection(v);
+    var weaponLocalDirection = Weapon.parent.InverseTransformDirection(worldDirection);
+    return Quaternion.LookRotation(weaponLocalDirection);
+  }
 
   void Start() {
     DefaultLocalRotation = Weapon.localRotation;
@@ -20,11 +35,11 @@ public class WeaponAim : MonoBehaviour {
   }
 
   void OnAnimatorIK(int layer) {
-    var worldDirection = transform.TransformDirection(Direction);
-    var weaponLocalDirection = Weapon.parent.InverseTransformDirection(worldDirection);
-    var weaponLocalRotation = Quaternion.LookRotation(weaponLocalDirection);
-    var target = Enabled ? weaponLocalRotation : DefaultLocalRotation;
-    var nextLocalRotation = target;
-    Weapon.localRotation = nextLocalRotation;
+    var aimDirection = AimDirection;
+    var targetLocalRotation = aimDirection.HasValue
+      ? WeaponLocalRotationFromWorldSpaceVector(aimDirection.Value)
+      : DefaultLocalRotation;
+    var maxDegrees = LocalClock.DeltaTime() * TurnSpeed;
+    Weapon.localRotation = Quaternion.RotateTowards(Weapon.localRotation, targetLocalRotation, maxDegrees);
   }
 }
