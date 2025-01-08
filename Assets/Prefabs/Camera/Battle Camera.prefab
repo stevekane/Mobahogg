@@ -65,7 +65,7 @@ Transform:
   m_GameObject: {fileID: 2853530996984864551}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 57.157677, z: -35}
+  m_LocalPosition: {x: 0, y: 76.210236, z: -46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -105,7 +105,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 26.229753
+  field of view: 26.228758
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -248,7 +248,7 @@ Transform:
   m_GameObject: {fileID: 3062047649416576241}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 57.157677, z: -35}
+  m_LocalPosition: {x: 0, y: 76.210236, z: -46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -309,8 +309,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1afc27907f5da498393bf3567ae742, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pivot: {x: 0, y: 0, z: -2}
-  Distance: 88
+  Pivot: {x: 0, y: 0, z: 0}
+  Distance: 90
   Pitch: 60
   HorizontalFOV: 45
 --- !u!114 &8102364467798257494
