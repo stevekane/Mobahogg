@@ -37,8 +37,8 @@ public class Cannon : MonoBehaviour {
       }
       var target = CannonManager.Instance.BestTarget(this);
       if (target) {
-        Destroy(Instantiate(CannonFireExplosionPrefab, LaunchSite.position, Barrel.rotation, transform), 3);
-        Destroy(Instantiate(CannonBallPrefab, LaunchSite.position, Barrel.rotation, transform), 5);
+        Destroy(Instantiate(CannonFireExplosionPrefab, LaunchSite.position, Barrel.rotation, null), 3);
+        Destroy(Instantiate(CannonBallPrefab, LaunchSite.position, Barrel.rotation, null), 5);
         CameraManager.Instance.Shake(CameraShakeIntensity);
       }
     }
