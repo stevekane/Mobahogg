@@ -99,6 +99,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     GUILayout.Label($"Acceleration : {Acceleration.Current}");
     GUILayout.Label($"Velocity : {Velocity.Current}");
     GUILayout.Label($"Direct Velocity : {DirectVelocity.Current}");
+    GUILayout.Label($"Stable Ground: {Motor.GroundingStatus.IsStableOnGround}");
     GUILayout.EndVertical();
   }
 }
