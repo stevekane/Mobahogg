@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class TriggerEvents : MonoBehaviour {
-  public UnityEvent TriggerEnter;
-  public UnityEvent TriggerStay;
-  public UnityEvent TriggerExit;
+  public UnityEvent<Collider> TriggerEnter;
+  public UnityEvent<Collider> TriggerStay;
+  public UnityEvent<Collider> TriggerExit;
   public LayerMask LayerMask;
 
   bool IsLayerInLayerMask(int layer, LayerMask layerMask) {
@@ -15,19 +15,19 @@ public class TriggerEvents : MonoBehaviour {
 
   void OnTriggerEnter(Collider c) {
     if (Satisfied(c)) {
-      TriggerEnter?.Invoke();
+      TriggerEnter?.Invoke(c);
     }
   }
 
   void OnTriggerStay(Collider c) {
     if (Satisfied(c)) {
-      TriggerStay?.Invoke();
+      TriggerStay?.Invoke(c);
     }
   }
 
   void OnTriggerExit(Collider c) {
     if (Satisfied(c)) {
-      TriggerExit?.Invoke();
+      TriggerExit?.Invoke(c);
     }
   }
 }

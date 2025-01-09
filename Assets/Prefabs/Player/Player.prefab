@@ -247,7 +247,6 @@ MonoBehaviour:
   Weapon: {fileID: 1577097722156766584}
   AttackAbility: {fileID: 5165232841971343211}
   HoverAbility: {fileID: 4027216296429641143}
-  DefaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
   TurnSpeed: 720
 --- !u!1 &1362762618311181353
 GameObject:
@@ -294,11 +293,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
-  Animator: {fileID: 689494837935415685}
   AnimatorCallbackHandler: {fileID: 4586432229471970141}
   FrameDuration: 24
   RootMotionMultiplier: 1
   TurnSpeed: 180
+  Animator: {fileID: 689494837935415685}
   SpellAffected: {fileID: 5889265469151095980}
   CharacterController: {fileID: 3542533184097295049}
 --- !u!1 &1529338545694879980
@@ -1662,7 +1661,7 @@ GameObject:
   - component: {fileID: 3051964976537025274}
   - component: {fileID: 1239242528449807422}
   - component: {fileID: 3160331076892843982}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1723,6 +1722,7 @@ MonoBehaviour:
   JumpAbility: {fileID: 6752439352796882793}
   MoveAbility: {fileID: 9114625394588072198}
   HoverAbility: {fileID: 4027216296429641143}
+  ShowDebug: 0
   PortIndex: 0
 --- !u!114 &4565681890973898736
 MonoBehaviour:
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   MaxStableSlopeAngle: 60
   StableGroundLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 513
   DiscreteCollisionEvents: 0
   StepHandling: 1
   MaxStepHeight: 0.5
