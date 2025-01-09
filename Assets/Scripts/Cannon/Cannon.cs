@@ -1,9 +1,13 @@
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Cannon : MonoBehaviour {
+  public static Quaternion InterpolateWithSine(float frequency, Quaternion start, Quaternion end, float time) {
+    float sineValue = 0.5f * (1 + Mathf.Sin(2 * Mathf.PI * frequency * time));
+    return Quaternion.Slerp(start, end, sineValue);
+  }
+
   [SerializeField] LocalClock LocalClock;
   [SerializeField] GameObject CannonBallPrefab;
   [SerializeField] GameObject CannonFireExplosionPrefab;
@@ -13,15 +17,13 @@ public class Cannon : MonoBehaviour {
   [SerializeField] float CameraShakeIntensity = 3;
   [SerializeField] float TurningSpeed = 360;
   [SerializeField] float SearchFrequency = 0.25f;
+  [SerializeField] float MaxAngleToFire = 15;
 
   public float FieldOfView = 90;
   public float MinRange = 2;
   public float MaxRange = 30;
-
-  public static Quaternion InterpolateWithSine(float frequency, Quaternion start, Quaternion end, float time) {
-    float sineValue = 0.5f * (1 + Mathf.Sin(2 * Mathf.PI * frequency * time));
-    return Quaternion.Slerp(start, end, sineValue);
-  }
+  bool ShouldFire(CannonTarget target) =>
+    Vector3.Angle((target.transform.position-transform.position).XZ().normalized, Barrel.forward.XZ().normalized) < MaxAngleToFire;
 
   IEnumerator Start() {
     var nextFixedUpdate = new WaitForFixedUpdate();
@@ -32,7 +34,7 @@ public class Cannon : MonoBehaviour {
       CannonTarget target;
       while (true) {
         target = CannonManager.Instance.BestTarget(this);
-        if (target) {
+        if (target && ShouldFire(target)) {
           Destroy(Instantiate(CannonFireExplosionPrefab, LaunchSite.position, Barrel.rotation, null), 3);
           Destroy(Instantiate(CannonBallPrefab, LaunchSite.position, Barrel.rotation, null), 5);
           CameraManager.Instance.Shake(CameraShakeIntensity);

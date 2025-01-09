@@ -230,6 +230,7 @@ MonoBehaviour:
   CameraShakeIntensity: 1
   TurningSpeed: 180
   SearchFrequency: 0.25
+  MaxAngleToFire: 5
   FieldOfView: 90
   MinRange: 2
   MaxRange: 30
