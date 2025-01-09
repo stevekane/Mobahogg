@@ -15,6 +15,7 @@ public class AbilitySettings : ScriptableObject {
   public float GroundMoveSpeed = 5;
 
   [Header("Jump")]
+  public int CoyoteFrameCount = 6;
   public float JumpHeight = 2;
   public float InitialJumpSpeed =>
     Mathf.Sqrt(2 * Mathf.Abs(RisingGravityFactor * Physics.gravity.y) * JumpHeight);

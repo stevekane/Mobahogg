@@ -22,6 +22,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
 
   public readonly EventSource OnLand = new();
   public readonly EventSource OnTakeOff = new();
+  public int LastGroundedFrame { get; private set; }
 
   void Awake() {
     Rotation.Set(Quaternion.LookRotation(transform.forward));
@@ -58,6 +59,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     IsGrounded = Motor.GroundingStatus.FoundAnyGround;
     JustTookOff = wasGrounded && !IsGrounded;
     JustLanded = !wasGrounded && IsGrounded;
+    LastGroundedFrame = IsGrounded ? LocalClock.FixedFrame() : LastGroundedFrame;
     if (JustTookOff)
       OnTakeOff.Fire();
     if (JustLanded)
@@ -90,7 +92,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   Quaternion atCharacterRotation,
   ref HitStabilityReport hitStabilityReport) {}
 
-  public void OnGUI() {
+  void OnGUI() {
     if (!ShowDebug)
       return;
     GUILayout.BeginVertical("box");

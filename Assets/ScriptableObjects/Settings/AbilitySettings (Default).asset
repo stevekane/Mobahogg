@@ -16,4 +16,5 @@ MonoBehaviour:
   FallingGravityFactor: 20
   HoverVelocity: 5
   GroundMoveSpeed: 10
+  CoyoteFrameCount: 12
   JumpHeight: 5

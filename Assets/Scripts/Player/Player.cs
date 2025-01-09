@@ -13,11 +13,17 @@ public class Player : MonoBehaviour {
   [SerializeField] JumpAbility JumpAbility;
   [SerializeField] MoveAbility MoveAbility;
   [SerializeField] HoverAbility HoverAbility;
+  [SerializeField] bool ShowDebug = false;
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
   bool Jumped;
+
+  bool InCoyoteWindow
+    => (LocalClock.FixedFrame() - CharacterController.LastGroundedFrame) < Settings.CoyoteFrameCount
+    && !CharacterController.IsGrounded
+    && CharacterController.Falling;
 
   bool InValidState
     => !LocalClock.Frozen()
@@ -39,7 +45,7 @@ public class Player : MonoBehaviour {
     => InValidState
     && AllNotRunningOrCancellable
     && JumpAbility.CanRun
-    && CharacterController.IsGrounded;
+    && (CharacterController.IsGrounded || InCoyoteWindow);
 
   public bool CanAttack
     => InValidState
@@ -133,5 +139,13 @@ public class Player : MonoBehaviour {
       CharacterController.Acceleration.Add(Settings.Gravity(CharacterController.Velocity.Current));
     }
     Jumped = false;
+  }
+
+  void OnGUI() {
+    if (!ShowDebug)
+      return;
+    GUILayout.BeginVertical("box");
+    GUILayout.Label($"Coyote : {InCoyoteWindow} Current: {LocalClock.FixedFrame()} LastGrounded: {CharacterController.LastGroundedFrame}");
+    GUILayout.EndVertical();
   }
 }
