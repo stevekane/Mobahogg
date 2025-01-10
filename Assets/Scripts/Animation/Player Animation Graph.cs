@@ -103,8 +103,9 @@ public class PlayerAnimationGraph : MonoBehaviour {
       InputRouter.Instance.ConsumeButton("Cast Spell", 0);
     }
 
-    if (move.sqrMagnitude > 0) {
+    if (move.sqrMagnitude > 0 && !Slot.GetBehaviour().IsRunning) {
       transform.rotation = Quaternion.LookRotation(move.XZ().normalized);
+      transform.position = transform.position + LocalClock.DeltaTime() * LocomotionSpeed * transform.forward;
     }
 
     LocomotionSpeed = 10 * move.magnitude;
