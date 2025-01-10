@@ -1,51 +1,62 @@
-using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using UnityEngine;
 
 namespace Animation {
-  [CreateAssetMenu(menuName = "AnimationGraph/Slot")]
-  public class SlotAsset : PlayableAsset {
-    public override Playable CreatePlayable(PlayableGraph graph, GameObject owner) {
-      return ScriptPlayable<SlotBehavior>.Create(graph, 1);
-    }
+  struct SlotClipConfig {
+    public double FadeOutStart;
+    public double FadeOutEnd;
   }
 
   public class SlotBehavior : PlayableBehaviour {
-    public bool IsRunning { get; private set; }
-    public AnimationClipPlayable? ActivePlayable { get; private set; }
+    public bool IsRunning => ActiveIndex > 0;
+    public Playable ActivePlayable => Mixer.GetInput(ActiveIndex);
+    public double FadeDuration = 0.25f;
 
     Playable Playable;
-    AnimationLayerMixerPlayable LayerMixer;
     AnimationMixerPlayable Mixer;
+    SlotClipConfig[] SlotClipConfigs = new SlotClipConfig[32];
+    int ActiveIndex;
 
-    // Called to establish the AnimationStream that comes into this slot
-    public void Connect(Playable playable) {
-      LayerMixer.ConnectInput(0, playable, 0, 1);
-    }
-
-    // Called to play an animation on this slot overriding whatever is Connected
-    public void Play(AnimationClipPlayable playable) {
-      Stop();
-      ActivePlayable = playable;
-      Mixer.AddInput(playable, 0, 1);
-    }
-
-    public void Stop() {
-      if (Mixer.GetInputCount() > 0) {
-        var existing = Mixer.GetInput(0);
-        Mixer.DisconnectInput(0);
-        Mixer.GetGraph().DestroySubgraph(existing);
-        Mixer.SetInputCount(0);
-        ActivePlayable = null;
+    int? OpenPort {
+      get {
+        var portCount = Mixer.GetInputCount();
+        for (var i = 1; i < portCount; i++) {
+          var input = Mixer.GetInput(i);
+          if (input.IsNull() || !input.IsValid()) {
+            return i;
+          }
+        }
+        return null;
       }
     }
 
+    public void Connect(Playable playable) {
+      Mixer.ConnectInput(0, playable, 0, 1);
+    }
+
+    public void Play(AnimationClipPlayable playable) {
+      if (IsRunning) {
+        SlotClipConfigs[ActiveIndex].FadeOutStart = Playable.GetTime();
+        SlotClipConfigs[ActiveIndex].FadeOutEnd = Playable.GetTime() + FadeDuration;
+      }
+      var openPort = OpenPort;
+      if (openPort.HasValue) {
+        Mixer.ConnectInput(openPort.Value, playable, 0, 0);
+        ActiveIndex = openPort.Value;
+      } else {
+        ActiveIndex = Mixer.GetInputCount();
+        Mixer.AddInput(playable, 0, 0);
+      }
+      SlotClipConfigs[ActiveIndex].FadeOutStart = playable.GetDuration()-FadeDuration;
+      SlotClipConfigs[ActiveIndex].FadeOutEnd = playable.GetDuration();
+    }
+
+    // TODO: Add Stop which is sort of like playing nothing new
     public override void OnPlayableCreate(Playable playable) {
-      LayerMixer = AnimationLayerMixerPlayable.Create(playable.GetGraph(), 2);
-      Mixer = AnimationMixerPlayable.Create(playable.GetGraph(), 0);
       Playable = playable;
-      LayerMixer.ConnectInput(1, Mixer, 0, 1);
-      Playable.ConnectInput(0, LayerMixer, 0, 1);
+      Mixer = AnimationMixerPlayable.Create(playable.GetGraph(), 1);
+      playable.ConnectInput(0, Mixer, 0, 1);
     }
 
     public override void OnPlayableDestroy(Playable playable) {
@@ -53,19 +64,37 @@ namespace Animation {
     }
 
     public override void PrepareFrame(Playable playable, FrameData info) {
-      IsRunning = false;
       var count = Mixer.GetInputCount();
+
+      // Check if we have reached fade start for the current active playable
+      if (IsRunning) {
+        var activePlayable = Mixer.GetInput(ActiveIndex);
+        var activeSlotClipConfig = SlotClipConfigs[ActiveIndex];
+        if (!activePlayable.IsNull() && activePlayable.GetTime() >= activeSlotClipConfig.FadeOutStart) {
+          ActiveIndex = 0;
+        }
+      }
+
+      // Update fade values
       for (var i = 0; i < count; i++) {
+        var currentWeight = Mixer.GetInputWeight(i);
+        var targetWeight = i == ActiveIndex ? 1 : 0;
+        var nextWeight = Mathf.MoveTowards(currentWeight, targetWeight, info.deltaTime / (float)FadeDuration);
+        Mixer.SetInputWeight(i, nextWeight);
+      }
+
+      // Remove any completed clips
+      for (var i = count-1; i > 0; i--) {
         var input = Mixer.GetInput(i);
-        var done = input.IsDone();
-        IsRunning = IsRunning || !done;
+        if (input.IsNull() || !input.IsValid())
+          continue;
+        var slotClipConfig = SlotClipConfigs[i];
+        var done = input.IsDone() || input.GetTime() >= slotClipConfig.FadeOutEnd;
         if (done) {
           Mixer.DisconnectInput(i);
-          Mixer.SetInputCount(0);
           Mixer.GetGraph().DestroySubgraph(input);
         }
       }
-      LayerMixer.SetInputWeight(1, IsRunning ? 1 : 0);
     }
   }
 }

@@ -212,11 +212,12 @@ MonoBehaviour:
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
   AttackAnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
   DiveRollAnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
-  AttackSpeed: 1.5
-  AttackRootMotionScalar: 2
+  AttackSpeed: 1
+  AttackRootMotionScalar: 1
   DiveRollRootMotionScalar: 1
-  DiveRollSpeed: 2
+  DiveRollSpeed: 1
   TransitionSpeed: 5
+  SlotCrossFadeDuration: 0.15
   SpeedChangeSpeed: 30
   Grounded: 1
   LocomotionSpeed: 0
