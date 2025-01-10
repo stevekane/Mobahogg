@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "f9fd769be7c634610f2a61aa914a1a55f34740e1"
     },
+    "com.greenbamboogames.playablegraphmonitor": {
+      "version": "2.6.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.5",
       "depth": 0,

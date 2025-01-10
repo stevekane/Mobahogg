@@ -25,18 +25,28 @@ namespace Animation {
     float Speed = DEFAULT_SPEED;
     int Index;
 
-    public void CrossFade(int index, float speed = DEFAULT_SPEED) {
+    public void CrossFade(int index, float speed = DEFAULT_SPEED) => CrossFade(index, false, speed);
+
+    public void CrossFade(int index, bool MatchNormalizedTime, float speed = DEFAULT_SPEED) {
       if (Index != index) {
-        var input = Mixer.GetInput(index);
-        input.SetTime(0);
-        input.Play();
+        var next = Mixer.GetInput(index);
+        if (MatchNormalizedTime) {
+          var current = Mixer.GetInput(Index);
+          var currentTime = current.GetTime();
+          var currentDuration = current.GetDuration();
+          var nextDuration = next.GetDuration();
+          next.SetTime(currentTime / currentDuration * nextDuration);
+        } else {
+          next.SetTime(0);
+        }
+        next.Play();
       }
       Index = index;
       Speed = speed;
     }
 
     public void Add(Playable playable) {
-      Mixer.AddInput(playable, sourceOutputIndex: 0, weight: 0);
+      Mixer.AddInput(playable, sourceOutputIndex: 0, weight: Mixer.GetInputCount() == 0 ? 1 : 0);
     }
 
     public override void OnPlayableCreate(Playable playable) {
