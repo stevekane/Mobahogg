@@ -24,6 +24,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [SerializeField] float DiveRollSpeed = 2;
   [Header("Transitions")]
   [SerializeField] float TransitionSpeed = 4;
+  [SerializeField] float SlotCrossFadeDuration = 0.15f;
   [SerializeField] float SpeedChangeSpeed = 0.25f;
 
   public bool Grounded;
@@ -62,6 +63,8 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().Add(AirborneSelect);
 
     Slot = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
+    // A test to confirm that weight affects the root motion of blending clips
+    // Slot.GetBehaviour().FadeDuration = 0;
     Slot.GetBehaviour().Connect(LocomotionSelect);
     var animationOutput = AnimationPlayableOutput.Create(Graph, $"{Animator.name}.Animator", Animator);
     animationOutput.SetSourcePlayable(Slot);
@@ -80,8 +83,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
     if (attackState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, AttackAnimationClip);
-      clipPlayable.SetApplyFootIK(true);
-      clipPlayable.SetApplyPlayableIK(true);
       clipPlayable.SetDuration(AttackAnimationClip.length);
       clipPlayable.SetSpeed(AttackSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
@@ -90,8 +91,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
     if (dashState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, DiveRollAnimationClip);
-      clipPlayable.SetApplyFootIK(true);
-      clipPlayable.SetApplyPlayableIK(true);
       clipPlayable.SetDuration(DiveRollAnimationClip.length);
       clipPlayable.SetSpeed(DiveRollSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
@@ -125,12 +124,30 @@ public class PlayerAnimationGraph : MonoBehaviour {
     Graph.Evaluate(LocalClock.DeltaTime());
   }
 
+  /*
+  The issue with this as it is setup here is that root motion coming from the slot system
+  is affected by the weights of the blended clips. As such, if you have blending, the total
+  motion for a diveroll will be lower than it should be.
+
+  Not exactly sure how to solve this.
+
+  It seems like you would want to take root motion only from the active clip but even if that works
+  I would need to distinguish between the active clip and the index that is trending back towards
+  0 (the case where the active animation is fading out which overloads the meaning of activeindex currently)
+
+  First thing to do though would be to determine if this root motion analysis is even possible...
+  */
   void OnAnimatorMove() {
     var slot = Slot.GetBehaviour();
-    if (slot.IsRunning && slot.ActivePlayable.HasValue) {
+    // if (slot.IsRunning && slot.ActivePlayable.HasValue) {
+    if (slot.IsRunning) {
       var speed = 1f;
-      if      (slot.ActivePlayable.Value.GetAnimationClip() == AttackAnimationClip) speed = AttackRootMotionScalar;
-      else if (slot.ActivePlayable.Value.GetAnimationClip() == DiveRollAnimationClip) speed = DiveRollRootMotionScalar;
+      if (slot.ActivePlayable.GetPlayableType() == typeof(AnimationClipPlayable)) {
+        var activePlayable = (AnimationClipPlayable)slot.ActivePlayable;
+        var activeClip = activePlayable.GetAnimationClip();
+        if      (activeClip == AttackAnimationClip) speed = AttackRootMotionScalar;
+        else if (activeClip == DiveRollAnimationClip) speed = DiveRollRootMotionScalar;
+      }
       transform.position += speed * Animator.deltaPosition;
     }
   }
