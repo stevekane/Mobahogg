@@ -83,8 +83,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
     if (attackState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, AttackAnimationClip);
-      clipPlayable.SetApplyFootIK(true);
-      clipPlayable.SetApplyPlayableIK(true);
       clipPlayable.SetDuration(AttackAnimationClip.length);
       clipPlayable.SetSpeed(AttackSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
@@ -93,8 +91,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
     if (dashState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, DiveRollAnimationClip);
-      clipPlayable.SetApplyFootIK(true);
-      clipPlayable.SetApplyPlayableIK(true);
       clipPlayable.SetDuration(DiveRollAnimationClip.length);
       clipPlayable.SetSpeed(DiveRollSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
