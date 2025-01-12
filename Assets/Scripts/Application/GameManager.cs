@@ -2,12 +2,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBehavior<GameManager> {
-  public static string TEST_BATTLE_FLAG_NAME = "Test_Battle";
-  public static string BOOT_SCENE_NAME = "Boot";
-  public static string TITLE_SCENE_NAME = "TitleScreen";
-  public static string MATCH_LAUNCHER_SCENE_NAME = "MatchLauncher";
+  static string BOOT_SCENE_NAME = "Boot";
   static public int FIXED_FPS = 60;
   static public int FPS = 60;
+
+  public static Scene? DirectlyLoaded;
 
   // Called right before whatever scene happens to be open in-editor is loaded
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
@@ -18,10 +17,10 @@ public class GameManager : SingletonBehavior<GameManager> {
     Application.targetFrameRate = FPS;
     Time.fixedDeltaTime = 1f/FIXED_FPS;
     #if UNITY_EDITOR
-    var openScene = SceneManager.GetActiveScene().name;
+    DirectlyLoaded = SceneManager.GetActiveScene();
     SceneManager.LoadScene(BOOT_SCENE_NAME, LoadSceneMode.Additive);
-    #else
-    SceneManager.LoadScene(FIRST_SCENE_NAME);
+    // TODO: Doesn't seem like unloading a scene can be done sync anymore?
+    // SceneManager.UnloadSceneAsync(BOOT_SCENE_NAME);
     #endif
   }
 }

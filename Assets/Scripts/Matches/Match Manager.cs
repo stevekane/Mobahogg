@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -123,7 +124,6 @@ public class MatchManager : SingletonBehavior<MatchManager> {
   async UniTask<BattleResult> RunBattle(CancellationToken token) {
     BattleResult battleResult = null;
     await PreBattle(token);
-    Teams = new() { new TeamState(TeamType.Turtles), new TeamState(TeamType.Robots) };
     do {
       await UniTask.NextFrame(cancellationToken: token);
       battleResult = CheckBattleWinningConditions();
@@ -134,7 +134,19 @@ public class MatchManager : SingletonBehavior<MatchManager> {
 
   async UniTask PreBattle(CancellationToken token) {
     try {
-      await SceneManager.LoadSceneAsync(CurrentBattleScreen);
+      /*
+      TODO: Ridiculously stupid kludge to load battle scene directly
+      */
+      if (GameManager.DirectlyLoaded.HasValue && GameManager.DirectlyLoaded.Value.name == CurrentBattleScreen) {
+        Debug.Log("Found that the current battle is already loaded");
+        GameManager.DirectlyLoaded = null;
+      } else {
+        Debug.Log("Loaded battle scene");
+        await SceneManager.LoadSceneAsync(CurrentBattleScreen);
+      }
+      GameManager.DirectlyLoaded = null;
+
+      Teams = new() { new TeamState(TeamType.Turtles), new TeamState(TeamType.Robots) };
       PreBattleOverlay.gameObject.SetActive(true);
       PreBattleOverlay.SetName(CurrentBattleScreen);
       PreBattleOverlay.SetBattleIndex(BattleIndex, max: MatchConfig.BattleCount / 2);
