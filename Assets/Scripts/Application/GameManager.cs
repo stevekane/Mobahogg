@@ -19,8 +19,7 @@ public class GameManager : SingletonBehavior<GameManager> {
     Time.fixedDeltaTime = 1f/FIXED_FPS;
     #if UNITY_EDITOR
     var openScene = SceneManager.GetActiveScene().name;
-    SceneManager.LoadScene(BOOT_SCENE_NAME);
-    SceneManager.LoadScene(openScene);
+    SceneManager.LoadScene(BOOT_SCENE_NAME, LoadSceneMode.Additive);
     #else
     SceneManager.LoadScene(FIRST_SCENE_NAME);
     #endif
