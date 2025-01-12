@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &221353841
 Transform:
   m_ObjectHideFlags: 0
@@ -274,10 +274,8 @@ MonoBehaviour:
   DiveRollSpeed: 1
   TransitionSpeed: 5
   SlotCrossFadeDuration: 0.15
-  SpeedChangeSpeed: 30
   Grounded: 1
   LocomotionSpeed: 0
-  SmoothLocomotionSpeed: 0
 --- !u!114 &588698472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -895,7 +893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1958429673
 Transform:
   m_ObjectHideFlags: 0
@@ -946,9 +944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d0f4b442abedc4e9b78b75149545cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Animator: {fileID: 1958429674}
   Clip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
-  UpdateMode: 3
-  UseFootIk: 1
 --- !u!1001 &2034640334
 PrefabInstance:
   m_ObjectHideFlags: 0

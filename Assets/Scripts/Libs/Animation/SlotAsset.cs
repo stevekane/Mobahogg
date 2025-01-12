@@ -163,14 +163,18 @@ namespace Animation {
   }
 
   public class SlotBehavior : PlayableBehaviour {
-    public bool IsRunning => ActiveIndex > 0;
+    // This check is extremely important.
+    // When a new clip is first loaded into the graph, it will be evaluated at time 0 and at its target time.
+    // This causes the root motion to come from whatever previous state the character is in to the state0 of the
+    // new clip. You do not want that motion at all so ignore it.
+    public bool IsRunning => ActiveIndex > 0 && Mixer.GetInput(ActiveIndex).GetTime() != 0;
     public Playable ActivePlayable => Mixer.GetInput(ActiveIndex);
     public double FadeDuration = 0.25f;
 
-    Playable Playable;
     AnimationScriptPlayable Mixer;
     NativeArray<TransformStreamHandle> Handles;
     SlotClipConfig[] SlotClipConfigs = new SlotClipConfig[32];
+    int FadeInIndex;
     int ActiveIndex;
 
     SlotMixerJob CurrentJob => new SlotMixerJob {
@@ -196,18 +200,21 @@ namespace Animation {
     }
 
     public void Play(AnimationClipPlayable playable) {
+      playable.SetTime(0);
       if (IsRunning) {
-        SlotClipConfigs[ActiveIndex].FadeOutStart = Playable.GetTime();
-        SlotClipConfigs[ActiveIndex].FadeOutEnd = Playable.GetTime() + FadeDuration;
+        var active = Mixer.GetInput(ActiveIndex);
+        SlotClipConfigs[ActiveIndex].FadeOutStart = active.GetTime();
+        SlotClipConfigs[ActiveIndex].FadeOutEnd = active.GetTime() + FadeDuration;
       }
       var openPort = OpenPort;
       if (openPort.HasValue) {
-        Mixer.ConnectInput(openPort.Value, playable, 0, 0);
         ActiveIndex = openPort.Value;
+        Mixer.ConnectInput(openPort.Value, playable, 0, 0);
       } else {
         ActiveIndex = Mixer.GetInputCount();
         Mixer.AddInput(playable, 0, 0);
       }
+      FadeInIndex = ActiveIndex;
       SlotClipConfigs[ActiveIndex].FadeOutStart = playable.GetDuration()-FadeDuration;
       SlotClipConfigs[ActiveIndex].FadeOutEnd = playable.GetDuration();
     }
@@ -226,7 +233,6 @@ namespace Animation {
 
     // TODO: Add Stop which is sort of like playing nothing new
     public override void OnPlayableCreate(Playable playable) {
-      Playable = playable;
       Mixer = AnimationScriptPlayable.Create(playable.GetGraph(), CurrentJob, 1);
       playable.ConnectInput(0, Mixer, 0, 1);
     }
@@ -244,14 +250,14 @@ namespace Animation {
         var activePlayable = Mixer.GetInput(ActiveIndex);
         var activeSlotClipConfig = SlotClipConfigs[ActiveIndex];
         if (!activePlayable.IsNull() && activePlayable.GetTime() >= activeSlotClipConfig.FadeOutStart) {
-          ActiveIndex = 0;
+          FadeInIndex = 0;
         }
       }
 
       // Update fade values
       for (var i = 0; i < count; i++) {
         var currentWeight = Mixer.GetInputWeight(i);
-        var targetWeight = i == ActiveIndex ? 1 : 0;
+        var targetWeight = i == FadeInIndex ? 1 : 0;
         var nextWeight = Mathf.MoveTowards(currentWeight, targetWeight, info.deltaTime / (float)FadeDuration);
         Mixer.SetInputWeight(i, nextWeight);
       }
@@ -264,6 +270,10 @@ namespace Animation {
         var slotClipConfig = SlotClipConfigs[i];
         var done = input.IsDone() || input.GetTime() >= slotClipConfig.FadeOutEnd;
         if (done) {
+          // This is the active clip completing so set ActiveIndex to 0
+          if (i == ActiveIndex) {
+            ActiveIndex = 0;
+          }
           Mixer.DisconnectInput(i);
           Mixer.GetGraph().DestroySubgraph(input);
         }
