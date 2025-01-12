@@ -16,16 +16,22 @@ public class AnimationBlendingTest : MonoBehaviour {
   void Start() {
     Graph = PlayableGraph.Create("Animation Blending");
     Slot = ScriptPlayable<SimpleSlot>.Create(Graph, 0);
-    var attack = AnimationClipPlayable.Create(Graph, AttackingClip);
-    attack.SetDuration(AttackingClip.length);
     var run = AnimationClipPlayable.Create(Graph, RunningClip);
-    Slot.GetBehaviour().Add(attack);
     Slot.GetBehaviour().Add(run);
     Slot.GetBehaviour().ActiveIndex = SlotActiveIndex;
+    Attack();
     var output = AnimationPlayableOutput.Create(Graph, "Animation Output", Animator);
     output.SetSourcePlayable(Slot);
     Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
     Graph.Play();
+  }
+
+  void Attack() {
+    var attack = AnimationClipPlayable.Create(Graph, AttackingClip);
+    attack.SetTime(0);
+    attack.SetDuration(AttackingClip.length);
+    Slot.GetBehaviour().Add(attack);
+    Graph.Evaluate(0);
   }
 
   void OnDestroy() {
@@ -39,6 +45,9 @@ public class AnimationBlendingTest : MonoBehaviour {
   }
 
   void OnAnimatorMove() {
+    if (Animator.deltaPosition.sqrMagnitude > 0) {
+      Debug.Log($"{Animator.deltaPosition.z:F5}");
+    }
     transform.position += Animator.deltaPosition;
     transform.rotation *= Animator.deltaRotation;
   }
@@ -66,7 +75,7 @@ class SimpleSlot : PlayableBehaviour {
 
   public override void OnPlayableDestroy(Playable playable) {
     Handles.Dispose();
-    AnimationScriptPlayable.Destroy();
+    playable.GetGraph().DestroySubgraph(AnimationScriptPlayable);
   }
 
   public override void OnGraphStart(Playable playable) {
