@@ -157,12 +157,12 @@ public class PlayerAnimationGraph : MonoBehaviour {
     // if (slot.IsRunning && slot.ActivePlayable.HasValue) {
     if (slot.IsRunning) {
       var speed = 1f;
-      if (slot.ActivePlayable.GetPlayableType() == typeof(AnimationClipPlayable)) {
-        var activePlayable = (AnimationClipPlayable)slot.ActivePlayable;
-        var activeClip = activePlayable.GetAnimationClip();
-        if      (activeClip == AttackAnimationClip) speed = AttackRootMotionScalar;
-        else if (activeClip == DiveRollAnimationClip) speed = DiveRollRootMotionScalar;
-      }
+      // if (slot.ActivePlayable.GetPlayableType() == typeof(AnimationClipPlayable)) {
+      //   var activePlayable = (AnimationClipPlayable)slot.ActivePlayable;
+      //   var activeClip = activePlayable.GetAnimationClip();
+      //   if      (activeClip == AttackAnimationClip) speed = AttackRootMotionScalar;
+      //   else if (activeClip == DiveRollAnimationClip) speed = DiveRollRootMotionScalar;
+      // }
       transform.position += speed * Animator.deltaPosition;
     }
   }

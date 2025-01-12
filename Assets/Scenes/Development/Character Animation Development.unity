@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &221353841
 Transform:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   Animator: {fileID: 221353844}
   RunningClip: {fileID: -203655887218126122, guid: b627ea9cab2bd0c4d9fbee12bb712b09, type: 3}
   AttackingClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
-  SlotActiveIndex: 0
+  SlotActiveIndex: 1
 --- !u!95 &221353844
 Animator:
   serializedVersion: 7
@@ -895,7 +895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1958429673
 Transform:
   m_ObjectHideFlags: 0
@@ -948,7 +948,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Clip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
   UpdateMode: 3
-  UseFootIk: 0
+  UseFootIk: 1
 --- !u!1001 &2034640334
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using Unity.Collections;
+using Animation;
 
 public class AnimationBlendingTest : MonoBehaviour {
   [SerializeField] Animator Animator;
@@ -49,7 +50,7 @@ class SimpleSlot : PlayableBehaviour {
 
   public int ActiveIndex;
 
-  TargetedMixerJob CurrentJob => new TargetedMixerJob {
+  SlotMixerJob CurrentJob => new SlotMixerJob {
     Handles = Handles,
     ActiveIndex = ActiveIndex
   };
@@ -82,142 +83,5 @@ class SimpleSlot : PlayableBehaviour {
 
   public override void PrepareFrame(Playable playable, FrameData info) {
     AnimationScriptPlayable.SetJobData(CurrentJob);
-  }
-}
-
-struct TargetedMixerJob : IAnimationJob {
-  public NativeArray<TransformStreamHandle> Handles;
-  public int ActiveIndex;
-
-  public void ProcessRootMotion(AnimationStream stream) {
-    stream.velocity = stream.GetInputStream(ActiveIndex).velocity;
-    stream.angularVelocity = stream.GetInputStream(ActiveIndex).angularVelocity;
-  }
-
-  public void ProcessAnimation(AnimationStream stream) {
-    var inputCount = stream.inputStreamCount;
-    var numHandles = Handles.Length;
-    var totalWeight = 0f;
-    for (var i = 0; i < inputCount; i++) {
-      totalWeight += stream.GetInputWeight(i);
-    }
-
-    if (Mathf.Approximately(totalWeight, 0))
-      return;
-
-    for (var i = 0; i < numHandles; i++) {
-      var handle = Handles[i];
-      var blendedPosition = Vector3.zero;
-      var blendedRotation = new Quaternion(0,0,0,0);
-      for (int j = 0; j < inputCount; j++) {
-        var inputStream = stream.GetInputStream(j);
-        var inputWeight = stream.GetInputWeight(j) / totalWeight;
-        var localPosition = handle.GetLocalPosition(inputStream);
-        var localRotation = handle.GetLocalRotation(inputStream);
-
-        if (Quaternion.Dot(blendedRotation, localRotation) < 0f) {
-          localRotation = new Quaternion(-localRotation.x, -localRotation.y, -localRotation.z, -localRotation.w);
-        }
-
-        blendedPosition += inputWeight * localPosition;
-        blendedRotation.x += inputWeight * localRotation.x;
-        blendedRotation.y += inputWeight * localRotation.y;
-        blendedRotation.z += inputWeight * localRotation.z;
-        blendedRotation.w += inputWeight * localRotation.w;
-      }
-
-      blendedRotation = blendedRotation.normalized;
-      handle.SetLocalPosition(stream, blendedPosition);
-      handle.SetLocalRotation(stream, blendedRotation);
-    }
-
-    bool outputHumanStream = stream.isHumanStream;
-    bool allHumanInputStreams = true;
-    for (var i = 0; i < inputCount; i++) {
-      allHumanInputStreams = allHumanInputStreams && stream.GetInputStream(i).isHumanStream;
-    }
-
-    if (!outputHumanStream || !allHumanInputStreams)
-      return;
-
-    var blendedLeftFoot = Vector3.zero;
-    var blendedLeftKnee = Vector3.zero;
-    var blendedRightFoot = Vector3.zero;
-    var blendedRightKnee = Vector3.zero;
-    var blendedLeftFootRotation = new Quaternion(0, 0, 0, 0);
-    var blendedRightFootRotation = new Quaternion(0, 0, 0, 0);
-    var blendedLeftFootWeight = 0f;
-    var blendedLeftKneeWeight = 0f;
-    var blendedRightFootWeight = 0f;
-    var blendedRightKneeWeight = 0f;
-    var blendedLeftFootRotationWeight = 0f;
-    var blendedRightFootRotationWeight = 0f;
-
-    for (var i = 0; i < inputCount; i++) {
-      var humanInputStream = stream.GetInputStream(i).AsHuman();
-      var inputWeight = stream.GetInputWeight(i) / totalWeight;
-
-      var leftFoot = humanInputStream.GetGoalLocalPosition(AvatarIKGoal.LeftFoot);
-      var rightFoot = humanInputStream.GetGoalLocalPosition(AvatarIKGoal.RightFoot);
-      var leftKnee = humanInputStream.GetHintPosition(AvatarIKHint.LeftKnee);
-      var rightKnee = humanInputStream.GetHintPosition(AvatarIKHint.RightKnee);
-
-      var leftFootRotation = humanInputStream.GetGoalLocalRotation(AvatarIKGoal.LeftFoot);
-      var rightFootRotation = humanInputStream.GetGoalLocalRotation(AvatarIKGoal.RightFoot);
-
-      var leftFootWeight = humanInputStream.GetGoalWeightPosition(AvatarIKGoal.LeftFoot);
-      var rightFootWeight = humanInputStream.GetGoalWeightPosition(AvatarIKGoal.RightFoot);
-      var leftFootRotationWeight = humanInputStream.GetGoalWeightRotation(AvatarIKGoal.LeftFoot);
-      var rightFootRotationWeight = humanInputStream.GetGoalWeightRotation(AvatarIKGoal.RightFoot);
-      var leftKneeWeight = humanInputStream.GetHintWeightPosition(AvatarIKHint.LeftKnee);
-      var rightKneeWeight = humanInputStream.GetHintWeightPosition(AvatarIKHint.RightKnee);
-
-      blendedLeftFoot += inputWeight * leftFoot;
-      blendedRightFoot += inputWeight * rightFoot;
-      blendedLeftKnee += inputWeight * leftKnee;
-      blendedRightKnee += inputWeight * rightKnee;
-
-      blendedLeftFootWeight += inputWeight * leftFootWeight;
-      blendedRightFootWeight += inputWeight * rightFootWeight;
-      blendedLeftKneeWeight += inputWeight * leftKneeWeight;
-      blendedRightKneeWeight += inputWeight * rightKneeWeight;
-
-      blendedLeftFootRotationWeight += inputWeight * leftFootRotationWeight;
-      blendedRightFootRotationWeight += inputWeight * rightFootRotationWeight;
-
-      if (Quaternion.Dot(blendedLeftFootRotation, leftFootRotation) < 0f) {
-        leftFootRotation = new Quaternion(-leftFootRotation.x, -leftFootRotation.y, -leftFootRotation.z, -leftFootRotation.w);
-      }
-      blendedLeftFootRotation.x += inputWeight * leftFootRotation.x;
-      blendedLeftFootRotation.y += inputWeight * leftFootRotation.y;
-      blendedLeftFootRotation.z += inputWeight * leftFootRotation.z;
-      blendedLeftFootRotation.w += inputWeight * leftFootRotation.w;
-
-      if (Quaternion.Dot(blendedRightFootRotation, rightFootRotation) < 0f) {
-        rightFootRotation = new Quaternion(-rightFootRotation.x, -rightFootRotation.y, -rightFootRotation.z, -rightFootRotation.w);
-      }
-      blendedRightFootRotation.x += inputWeight * rightFootRotation.x;
-      blendedRightFootRotation.y += inputWeight * rightFootRotation.y;
-      blendedRightFootRotation.z += inputWeight * rightFootRotation.z;
-      blendedRightFootRotation.w += inputWeight * rightFootRotation.w;
-    }
-
-    blendedLeftFootRotation = blendedLeftFootRotation.normalized;
-    blendedRightFootRotation = blendedRightFootRotation.normalized;
-
-    var humanOutputStream = stream.AsHuman();
-    humanOutputStream.SetGoalLocalPosition(AvatarIKGoal.LeftFoot, blendedLeftFoot);
-    humanOutputStream.SetGoalLocalPosition(AvatarIKGoal.RightFoot, blendedRightFoot);
-    humanOutputStream.SetGoalLocalRotation(AvatarIKGoal.LeftFoot, blendedLeftFootRotation);
-    humanOutputStream.SetGoalLocalRotation(AvatarIKGoal.RightFoot, blendedRightFootRotation);
-    humanOutputStream.SetHintPosition(AvatarIKHint.LeftKnee, blendedLeftKnee);
-    humanOutputStream.SetHintPosition(AvatarIKHint.RightKnee, blendedRightKnee);
-
-    humanOutputStream.SetGoalWeightPosition(AvatarIKGoal.LeftFoot, blendedLeftFootWeight);
-    humanOutputStream.SetGoalWeightPosition(AvatarIKGoal.RightFoot, blendedRightFootWeight);
-    humanOutputStream.SetGoalWeightRotation(AvatarIKGoal.LeftFoot, blendedLeftFootRotationWeight);
-    humanOutputStream.SetGoalWeightRotation(AvatarIKGoal.RightFoot, blendedRightFootRotationWeight);
-    humanOutputStream.SetHintWeightPosition(AvatarIKHint.LeftKnee, blendedLeftKneeWeight);
-    humanOutputStream.SetHintWeightPosition(AvatarIKHint.RightKnee, blendedRightKneeWeight);
   }
 }
