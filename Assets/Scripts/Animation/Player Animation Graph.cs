@@ -4,7 +4,9 @@ using Animation;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using UnityEngine.InputSystem.Interactions;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class PlayerAnimationGraph : MonoBehaviour {
@@ -13,6 +15,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [Header("Grounded Locomotion")]
   [SerializeField] AnimationClip GroundedIdleClip;
   [SerializeField] AnimationClip[] GroundMovingClips;
+  [SerializeField] float[] GroundMovingClipVelocities;
   [Header("Airborne Locomotion")]
   [SerializeField] AnimationClip AirborneHoverAnimationClip;
   [Header("Slot Animations")]
@@ -42,6 +45,16 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
   PlayableGraph Graph;
 
+  #if UNITY_EDITOR
+  [ContextMenu("Calculate Clip Velocities")]
+  void CalculateClipVelocities() {
+    GroundMovingClipVelocities = new float[GroundMovingClips.Length];
+    for (var i = 0; i < GroundMovingClips.Length; i++)  {
+      GroundMovingClipVelocities[i] = GroundMovingClips[i].apparentSpeed;
+    }
+  }
+  #endif
+
   void Awake() {
     Graph = PlayableGraph.Create($"{name}.PlayerAnimationGraph");
     // TODO: Probably want to configure these a bit more to activate IK and stuff
@@ -63,8 +76,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().Add(AirborneSelect);
 
     Slot = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
-    // A test to confirm that weight affects the root motion of blending clips
-    // Slot.GetBehaviour().FadeDuration = 0;
     Slot.GetBehaviour().Connect(LocomotionSelect);
     var animationOutput = AnimationPlayableOutput.Create(Graph, $"{Animator.name}.Animator", Animator);
     animationOutput.SetSourcePlayable(Slot);
@@ -116,8 +127,8 @@ public class PlayerAnimationGraph : MonoBehaviour {
     if (SmoothLocomotionSpeed > 0) {
       var bestFittingGroundClipIndex = IndexWithBestSpeedMatch(GroundMovingClipPlayables, SmoothLocomotionSpeed);
       var clipPlayable = GroundMovingClipPlayables[bestFittingGroundClipIndex];
-      var averageSpeed = clipPlayable.GetAnimationClip().averageSpeed.z;
-      clipPlayable.SetSpeed(SmoothLocomotionSpeed / averageSpeed);
+      var clipRootSpeed = GroundMovingClipVelocities[bestFittingGroundClipIndex];
+      clipPlayable.SetSpeed(SmoothLocomotionSpeed / clipRootSpeed);
       GroundedMovingSelect.GetBehaviour().CrossFade(bestFittingGroundClipIndex, true, TransitionSpeed);
     }
     AirborneSelect.GetBehaviour().CrossFade(0, 1);
@@ -158,8 +169,8 @@ public class PlayerAnimationGraph : MonoBehaviour {
     float lowestDistance = float.MaxValue;
     for (var i = 0; i < clipPlayables.Length; i++) {
       var clip = clipPlayables[i];
-      var clipAverageSpeed = clip.GetAnimationClip().averageSpeed.z;
-      var speedDistance = Mathf.Abs(clipAverageSpeed-speed);
+      var clipSpeed = GroundMovingClipVelocities[i];
+      var speedDistance = Mathf.Abs(clipSpeed-speed);
       if (speedDistance < lowestDistance) {
         bestIndex = i;
         lowestDistance = speedDistance;

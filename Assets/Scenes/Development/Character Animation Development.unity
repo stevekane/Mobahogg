@@ -942,6 +942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Clip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
   UpdateMode: 3
+  UseFootIk: 0
 --- !u!1001 &2034640334
 PrefabInstance:
   m_ObjectHideFlags: 0
