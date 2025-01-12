@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &221353841
 Transform:
   m_ObjectHideFlags: 0
@@ -254,11 +254,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 588698470}
   Animator: {fileID: 588698473}
-  GroundedIdleClip: {fileID: -203655887218126122, guid: b627ea9cab2bd0c4d9fbee12bb712b09, type: 3}
+  GroundedIdleClip: {fileID: 7400000, guid: 7e775a6118d554f47884d53a7012576f, type: 3}
   GroundMovingClips:
-  - {fileID: 7400000, guid: 3b44c6c7ebad2684595389a420f6f68f, type: 3}
-  - {fileID: 7400000, guid: 78820a31902d6d0498825b120012c445, type: 3}
-  - {fileID: -203655887218126122, guid: 25a8af12524c3934080e6ee70b0f8148, type: 3}
+  - {fileID: 7400000, guid: 894ff233926115f40a936cdf1b2824a0, type: 3}
+  - {fileID: 7400000, guid: 0b66cbf057bee7343bfa93b58d9a4675, type: 3}
+  - {fileID: 7400000, guid: 7e1d0424bcf539943b00308222f1a8cb, type: 3}
+  - {fileID: 7400000, guid: 22acdd2bdd2cdc54ea5094f0ff62aaf5, type: 3}
+  GroundMovingClipVelocities:
+  - 1.7227249
+  - 2.4058936
+  - 6.0299726
+  - 7.375348
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
   AttackAnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
   DiveRollAnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
@@ -889,7 +895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1958429673
 Transform:
   m_ObjectHideFlags: 0

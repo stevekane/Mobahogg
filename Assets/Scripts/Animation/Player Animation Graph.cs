@@ -53,6 +53,10 @@ public class PlayerAnimationGraph : MonoBehaviour {
       GroundMovingClipVelocities[i] = GroundMovingClips[i].apparentSpeed;
     }
   }
+
+  void OnValidate() {
+    CalculateClipVelocities();
+  }
   #endif
 
   void Awake() {
@@ -125,7 +129,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().CrossFade(Grounded ? 0 : 1, TransitionSpeed);
     GroundedSelect.GetBehaviour().CrossFade(SmoothLocomotionSpeed <= 0 ? 0 : 1, TransitionSpeed);
     if (SmoothLocomotionSpeed > 0) {
-      var bestFittingGroundClipIndex = IndexWithBestSpeedMatch(GroundMovingClipPlayables, SmoothLocomotionSpeed);
+      var bestFittingGroundClipIndex = IndexWithBestSpeedMatch(GroundMovingClipVelocities, SmoothLocomotionSpeed);
       var clipPlayable = GroundMovingClipPlayables[bestFittingGroundClipIndex];
       var clipRootSpeed = GroundMovingClipVelocities[bestFittingGroundClipIndex];
       clipPlayable.SetSpeed(SmoothLocomotionSpeed / clipRootSpeed);
@@ -164,12 +168,11 @@ public class PlayerAnimationGraph : MonoBehaviour {
   }
 
   // Do not pass empty array unless you want to cry or check for -1 at call-site
-  int IndexWithBestSpeedMatch(AnimationClipPlayable[] clipPlayables, float speed) {
+  int IndexWithBestSpeedMatch(float[] clipSpeeds, float speed) {
     int bestIndex = -1;
     float lowestDistance = float.MaxValue;
-    for (var i = 0; i < clipPlayables.Length; i++) {
-      var clip = clipPlayables[i];
-      var clipSpeed = GroundMovingClipVelocities[i];
+    for (var i = 0; i < clipSpeeds.Length; i++) {
+      var clipSpeed = clipSpeeds[i];
       var speedDistance = Mathf.Abs(clipSpeed-speed);
       if (speedDistance < lowestDistance) {
         bestIndex = i;
