@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d928475fd50464ab9231726773e9a2, type: 3}
+  m_Name: Test Montage
+  m_EditorClassIdentifier: 
+  Clips:
+  - AnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
+    StartFrame: 0
+  - AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
+    StartFrame: 64
+  Notifies:
+  - Name: Fart
+    StartFrame: 0
+    FrameDuration: 45
+  - Name: Frock
+    StartFrame: 12
+    FrameDuration: 86
+  - Name: Doink
+    StartFrame: 59
+    FrameDuration: 48
