@@ -4,7 +4,9 @@ using Animation;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
-using UnityEngine.InputSystem.Interactions;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class PlayerAnimationGraph : MonoBehaviour {
@@ -13,6 +15,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [Header("Grounded Locomotion")]
   [SerializeField] AnimationClip GroundedIdleClip;
   [SerializeField] AnimationClip[] GroundMovingClips;
+  [SerializeField] float[] GroundMovingClipVelocities;
   [Header("Airborne Locomotion")]
   [SerializeField] AnimationClip AirborneHoverAnimationClip;
   [Header("Slot Animations")]
@@ -25,12 +28,10 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [Header("Transitions")]
   [SerializeField] float TransitionSpeed = 4;
   [SerializeField] float SlotCrossFadeDuration = 0.15f;
-  [SerializeField] float SpeedChangeSpeed = 0.25f;
 
   public bool Grounded;
   [Range(0, 10)]
   public float LocomotionSpeed;
-  public float SmoothLocomotionSpeed;
 
   AnimationClipPlayable[] GroundMovingClipPlayables;
   ScriptPlayable<SelectBehavior> LocomotionSelect;
@@ -42,9 +43,22 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
   PlayableGraph Graph;
 
-  void Awake() {
+  #if UNITY_EDITOR
+  [ContextMenu("Calculate Clip Velocities")]
+  void CalculateClipVelocities() {
+    GroundMovingClipVelocities = new float[GroundMovingClips.Length];
+    for (var i = 0; i < GroundMovingClips.Length; i++)  {
+      GroundMovingClipVelocities[i] = GroundMovingClips[i].apparentSpeed;
+    }
+  }
+
+  void OnValidate() {
+    CalculateClipVelocities();
+  }
+  #endif
+
+  void Start() {
     Graph = PlayableGraph.Create($"{name}.PlayerAnimationGraph");
-    // TODO: Probably want to configure these a bit more to activate IK and stuff
     GroundMovingClipPlayables = GroundMovingClips.Select(clip => AnimationClipPlayable.Create(Graph, clip)).ToArray();
     GroundedMovingSelect = ScriptPlayable<SelectBehavior>.Create(Graph, 1);
     GroundMovingClipPlayables.ForEach(clipPlayable => GroundedMovingSelect.GetBehaviour().Add(clipPlayable));
@@ -63,11 +77,11 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().Add(AirborneSelect);
 
     Slot = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
-    // A test to confirm that weight affects the root motion of blending clips
-    // Slot.GetBehaviour().FadeDuration = 0;
     Slot.GetBehaviour().Connect(LocomotionSelect);
     var animationOutput = AnimationPlayableOutput.Create(Graph, $"{Animator.name}.Animator", Animator);
     animationOutput.SetSourcePlayable(Slot);
+    Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+    Graph.Evaluate(0);
   }
 
   void OnDestroy() {
@@ -83,17 +97,21 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
     if (attackState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, AttackAnimationClip);
+      clipPlayable.SetTime(0);
       clipPlayable.SetDuration(AttackAnimationClip.length);
       clipPlayable.SetSpeed(AttackSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
+      Graph.Evaluate(0);
       InputRouter.Instance.ConsumeButton("Attack", 0);
     }
 
     if (dashState == ButtonState.JustDown) {
       var clipPlayable = AnimationClipPlayable.Create(Graph, DiveRollAnimationClip);
+      clipPlayable.SetTime(0);
       clipPlayable.SetDuration(DiveRollAnimationClip.length);
       clipPlayable.SetSpeed(DiveRollSpeed);
       Slot.GetBehaviour().Play(clipPlayable);
+      Graph.Evaluate(0);
       InputRouter.Instance.ConsumeButton("Dash", 0);
     }
 
@@ -108,58 +126,37 @@ public class PlayerAnimationGraph : MonoBehaviour {
     }
 
     LocomotionSpeed = 10 * move.magnitude;
-    SmoothLocomotionSpeed = Mathf.MoveTowards(SmoothLocomotionSpeed, LocomotionSpeed, LocalClock.DeltaTime() * SpeedChangeSpeed);
 
     // We can read inputs here to simulate attacking
     LocomotionSelect.GetBehaviour().CrossFade(Grounded ? 0 : 1, TransitionSpeed);
-    GroundedSelect.GetBehaviour().CrossFade(SmoothLocomotionSpeed <= 0 ? 0 : 1, TransitionSpeed);
-    if (SmoothLocomotionSpeed > 0) {
-      var bestFittingGroundClipIndex = IndexWithBestSpeedMatch(GroundMovingClipPlayables, SmoothLocomotionSpeed);
+    GroundedSelect.GetBehaviour().CrossFade(LocomotionSpeed <= 0 ? 0 : 1, TransitionSpeed);
+    if (LocomotionSpeed > 0) {
+      var bestFittingGroundClipIndex = IndexWithBestSpeedMatch(GroundMovingClipVelocities, LocomotionSpeed);
       var clipPlayable = GroundMovingClipPlayables[bestFittingGroundClipIndex];
-      var averageSpeed = clipPlayable.GetAnimationClip().averageSpeed.z;
-      clipPlayable.SetSpeed(SmoothLocomotionSpeed / averageSpeed);
+      var clipRootSpeed = GroundMovingClipVelocities[bestFittingGroundClipIndex];
+      clipPlayable.SetSpeed(LocomotionSpeed / clipRootSpeed);
       GroundedMovingSelect.GetBehaviour().CrossFade(bestFittingGroundClipIndex, true, TransitionSpeed);
     }
+    Slot.GetBehaviour().FadeDuration = SlotCrossFadeDuration;
     AirborneSelect.GetBehaviour().CrossFade(0, 1);
     Graph.Evaluate(LocalClock.DeltaTime());
   }
 
-  /*
-  The issue with this as it is setup here is that root motion coming from the slot system
-  is affected by the weights of the blended clips. As such, if you have blending, the total
-  motion for a diveroll will be lower than it should be.
-
-  Not exactly sure how to solve this.
-
-  It seems like you would want to take root motion only from the active clip but even if that works
-  I would need to distinguish between the active clip and the index that is trending back towards
-  0 (the case where the active animation is fading out which overloads the meaning of activeindex currently)
-
-  First thing to do though would be to determine if this root motion analysis is even possible...
-  */
   void OnAnimatorMove() {
     var slot = Slot.GetBehaviour();
-    // if (slot.IsRunning && slot.ActivePlayable.HasValue) {
     if (slot.IsRunning) {
-      var speed = 1f;
-      if (slot.ActivePlayable.GetPlayableType() == typeof(AnimationClipPlayable)) {
-        var activePlayable = (AnimationClipPlayable)slot.ActivePlayable;
-        var activeClip = activePlayable.GetAnimationClip();
-        if      (activeClip == AttackAnimationClip) speed = AttackRootMotionScalar;
-        else if (activeClip == DiveRollAnimationClip) speed = DiveRollRootMotionScalar;
-      }
-      transform.position += speed * Animator.deltaPosition;
+      transform.position += Animator.deltaPosition;
+      transform.rotation *= Animator.deltaRotation;
     }
   }
 
   // Do not pass empty array unless you want to cry or check for -1 at call-site
-  int IndexWithBestSpeedMatch(AnimationClipPlayable[] clipPlayables, float speed) {
+  int IndexWithBestSpeedMatch(float[] clipSpeeds, float speed) {
     int bestIndex = -1;
     float lowestDistance = float.MaxValue;
-    for (var i = 0; i < clipPlayables.Length; i++) {
-      var clip = clipPlayables[i];
-      var clipAverageSpeed = clip.GetAnimationClip().averageSpeed.z;
-      var speedDistance = Mathf.Abs(clipAverageSpeed-speed);
+    for (var i = 0; i < clipSpeeds.Length; i++) {
+      var clipSpeed = clipSpeeds[i];
+      var speedDistance = Mathf.Abs(clipSpeed-speed);
       if (speedDistance < lowestDistance) {
         bestIndex = i;
         lowestDistance = speedDistance;

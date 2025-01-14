@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 
 [CustomEditor(typeof(AttackAnimationStateBehavior))]
 public class AttackAnimationStateBehaviorInspector : Editor {
