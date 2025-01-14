@@ -1,5 +1,7 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 [CustomEditor(typeof(AnimationMontage))]
 public class AnimationMontageInspector : Editor {
@@ -9,28 +11,47 @@ public class AnimationMontageInspector : Editor {
   const float PaddingRight = 20f;
 
   int VisibleFrames = 60;
-  int frameOffset = 0;
+  int FrameOffset = 0;
+  int CurrentFrame = 0;
 
-  // Playhead field
-  int currentFrame = 0;
+  PlayableGraph Graph;
+  AnimationPlayableOutput Output;
+  TurntablePreviewGUIElement PreviewRenderUtility;
+  Animator PreviewAnimatorInstance;
+  ScriptPlayable<AnimationMontagePlayableBehavior> AnimationMontagePlayable;
+
+  void OnDisable() {
+    if (Graph.IsValid()) {
+      Graph.Destroy();
+    }
+    if (PreviewRenderUtility != null) {
+      PreviewRenderUtility.Cleanup();
+      PreviewRenderUtility = null;
+    }
+  }
 
   public override void OnInspectorGUI() {
     AnimationMontage montage = (AnimationMontage)target;
     serializedObject.Update();
 
+    // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
+    if (!Graph.IsValid()) {
+      Graph = PlayableGraph.Create("Animation Montage Inspector");
+      Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+      Graph.Evaluate(0);
+      Output = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
+    }
+
+    if (PreviewRenderUtility == null) {
+      PreviewRenderUtility = new();
+      SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
+      SetupMontagePlayable(montage);
+    }
+
     GUILayout.Space(10);
 
-    // Draw preview area
-    Rect previewRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 100);
-    EditorGUI.DrawRect(previewRect, Color.grey);
-    GUI.Label(previewRect, "Preview", new GUIStyle(EditorStyles.whiteLabel) { alignment = TextAnchor.MiddleCenter });
-
-    GUILayout.Space(10);
-
-    // Current frame control (Playhead control)
     GUILayout.BeginHorizontal();
-    GUILayout.Label("Current Frame:", GUILayout.Width(100));
-    currentFrame = Mathf.Clamp(EditorGUILayout.IntField(currentFrame), 0, int.MaxValue);
+    CurrentFrame = EditorGUILayout.IntField("Frame", CurrentFrame);
     GUILayout.EndHorizontal();
 
     GUILayout.Space(10);
@@ -38,40 +59,87 @@ public class AnimationMontageInspector : Editor {
     // Draw timeline
     DrawTimeline(montage);
 
+    if (!AnimationMontagePlayable.IsNull() && AnimationMontagePlayable.IsValid()) {
+      Graph.Evaluate((float)-AnimationMontagePlayable.GetTime());
+      Graph.Evaluate(CurrentFrame * 1f/60);
+    }
+
     GUILayout.Space(10);
 
+    DrawPreview();
+
+    GUILayout.Space(10);
+
+    EditorGUI.BeginChangeCheck();
+    montage.AnimatorPrefab = (Animator)EditorGUILayout.ObjectField("AnimatorPrefab", montage.AnimatorPrefab, typeof(Animator), false);
+    if (EditorGUI.EndChangeCheck()) {
+      Debug.Log("Change of Animator detected");
+      SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
+      SetupMontagePlayable(montage);
+    }
+    EditorGUI.BeginChangeCheck();
     EditorGUILayout.PropertyField(serializedObject.FindProperty("Clips"), true);
     EditorGUILayout.PropertyField(serializedObject.FindProperty("Notifies"), true);
-
+    if (EditorGUI.EndChangeCheck()) {
+      Debug.Log("Change of Montage Data detected");
+      SetupMontagePlayable(montage);
+    }
     serializedObject.ApplyModifiedProperties();
+  }
+
+  void SetupPreviewAnimatorInstance(Animator animatorPrefab) {
+    if (PreviewAnimatorInstance) {
+      DestroyImmediate(PreviewAnimatorInstance.gameObject);
+    }
+    if (animatorPrefab) {
+      PreviewAnimatorInstance = Instantiate(animatorPrefab);
+      PreviewRenderUtility.SetSubject(PreviewAnimatorInstance.gameObject);
+      Output.SetTarget(PreviewAnimatorInstance);
+      PreviewAnimatorInstance.GetComponent<Animator>().applyRootMotion = false;
+      if (PreviewAnimatorInstance.TryGetComponent(out AvatarAttacher avatarAttacher)) {
+        avatarAttacher.Attach();
+      }
+    }
+  }
+
+  void SetupMontagePlayable(AnimationMontage montage) {
+    if (!AnimationMontagePlayable.IsNull()) {
+      AnimationMontagePlayable.Destroy();
+    }
+    AnimationMontagePlayable = montage.CreateScriptPlayable(Graph);
+    Output.SetSourcePlayable(AnimationMontagePlayable);
+  }
+
+  void DrawPreview() {
+    GUILayout.BeginVertical("box");
+    Rect previewRect = GUILayoutUtility.GetRect(512, 512, GUILayout.ExpandWidth(true));
+    PreviewRenderUtility.Update(previewRect, Event.current);
+    GUILayout.EndVertical();
   }
 
   void DrawTimeline(AnimationMontage montage) {
     Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, montage.Clips.Count * (TrackHeight + TrackSpacing) + montage.Notifies.Count * (TrackHeight + TrackSpacing) + 100);
     EditorGUI.DrawRect(rect, new Color(0.15f, 0.15f, 0.15f));
 
-    HandleTimelineScrolling();
+    HandleTimelineScrolling(rect);
     DrawFrames(rect);
-
-    // Draw playhead
-    DrawPlayhead(rect);
-
     float yOffset = rect.y + 50;
     foreach (var clip in montage.Clips) {
       DrawClipRow(rect, clip, yOffset);
       yOffset += TrackHeight + TrackSpacing;
     }
-
     yOffset += 20; // Space between clips and notifies
-
     foreach (var notify in montage.Notifies) {
       DrawNotifyRow(rect, notify, yOffset);
       yOffset += TrackHeight + TrackSpacing;
     }
+    DrawPlayhead(rect);
   }
 
-  void HandleTimelineScrolling() {
+  void HandleTimelineScrolling(Rect rect) {
     Event e = Event.current;
+    if (!rect.Contains(e.mousePosition))
+      return;
     if (e.type == EventType.ScrollWheel) {
       VisibleFrames += (int)e.delta.y * 2;
       VisibleFrames = Mathf.Clamp(VisibleFrames, 5, 240);
@@ -79,16 +147,16 @@ public class AnimationMontageInspector : Editor {
     }
 
     if (e.type == EventType.MouseDrag && e.button == 2) {
-      frameOffset = Mathf.Max(0, frameOffset - (int)(e.delta.x / 5));
+      FrameOffset = Mathf.Max(0, FrameOffset - (int)(e.delta.x / 5));
       e.Use();
     }
   }
 
   void DrawFrames(Rect rect) {
     var mod = VisibleFrames >= 120 ? 10 : 5;
-    for (int i = frameOffset; i <= frameOffset + VisibleFrames; i++) {
+    for (int i = FrameOffset; i <= FrameOffset + VisibleFrames; i++) {
       if (i % mod == 0) {
-        float x = rect.x + PaddingLeft + ((i - frameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
+        float x = rect.x + PaddingLeft + ((i - FrameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
         Rect lineRect = new Rect(x, rect.y + 30, 1, rect.height - 30);
         EditorGUI.DrawRect(lineRect, new Color(0.3f, 0.3f, 0.3f));
 
@@ -100,8 +168,8 @@ public class AnimationMontageInspector : Editor {
 
   // Playhead drawing
   void DrawPlayhead(Rect rect) {
-    if (currentFrame >= frameOffset && currentFrame <= frameOffset + VisibleFrames) {
-      float x = rect.x + PaddingLeft + ((currentFrame - frameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
+    if (CurrentFrame >= FrameOffset && CurrentFrame <= FrameOffset + VisibleFrames) {
+      float x = rect.x + PaddingLeft + ((CurrentFrame - FrameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
       Rect playheadRect = new Rect(x - 2, rect.y + 30, 4, rect.height - 30);
       EditorGUI.DrawRect(playheadRect, Color.red);
 
@@ -112,15 +180,15 @@ public class AnimationMontageInspector : Editor {
   // Playhead dragging logic
   void HandlePlayheadDragging(Rect rect, float playheadX) {
     Event e = Event.current;
-    if (e.type == EventType.MouseDown && Mathf.Abs(e.mousePosition.x - playheadX) < 5) {
+    if (rect.Contains(e.mousePosition) && e.type == EventType.MouseDown && Mathf.Abs(e.mousePosition.x - playheadX) < 5) {
       if (e.button == 0) {
         e.Use();
       }
     }
 
     if (e.type == EventType.MouseDrag && e.button == 0) {
-      float clickedFrame = frameOffset + Mathf.RoundToInt((e.mousePosition.x - rect.x - PaddingLeft) / (rect.width - PaddingLeft - PaddingRight) * VisibleFrames);
-      currentFrame = Mathf.Clamp((int)clickedFrame, 0, int.MaxValue);
+      float clickedFrame = FrameOffset + Mathf.RoundToInt((e.mousePosition.x - rect.x - PaddingLeft) / (rect.width - PaddingLeft - PaddingRight) * VisibleFrames);
+      CurrentFrame = Mathf.Clamp((int)clickedFrame, 0, int.MaxValue);
       e.Use();
     }
   }
@@ -129,8 +197,8 @@ public class AnimationMontageInspector : Editor {
     Rect rowRect = new Rect(rect.x + PaddingLeft, yOffset, rect.width - PaddingLeft - PaddingRight, TrackHeight);
     EditorGUI.DrawRect(rowRect, new Color(0.2f, 0.2f, 0.2f));
 
-    float x0 = Mathf.Clamp(clip.StartFrame - frameOffset, 0, frameOffset + VisibleFrames);
-    float x1 = Mathf.Clamp(clip.EndFrame - frameOffset, 0, frameOffset + VisibleFrames);
+    float x0 = Mathf.Clamp(clip.StartFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
+    float x1 = Mathf.Clamp(clip.EndFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
     float startX = rect.x + PaddingLeft + (x0 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     float endX = rect.x + PaddingLeft + (x1 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     Rect trackRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
@@ -144,8 +212,8 @@ public class AnimationMontageInspector : Editor {
     Rect rowRect = new Rect(rect.x + PaddingLeft, yOffset, rect.width - PaddingLeft - PaddingRight, TrackHeight);
     EditorGUI.DrawRect(rowRect, new Color(0.25f, 0.25f, 0.25f));
 
-    float x0 = Mathf.Clamp(notify.StartFrame - frameOffset, 0, frameOffset + VisibleFrames);
-    float x1 = Mathf.Clamp(notify.EndFrame - frameOffset, 0, frameOffset + VisibleFrames);
+    float x0 = Mathf.Clamp(notify.StartFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
+    float x1 = Mathf.Clamp(notify.EndFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
     float startX = rect.x + PaddingLeft + (x0 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     float endX = rect.x + PaddingLeft + (x1 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     Rect trackRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
@@ -160,7 +228,7 @@ public class AnimationMontageInspector : Editor {
     if (rowRect.Contains(e.mousePosition)) {
       if (e.type == EventType.MouseDown) {
         float clickedFrame = Mathf.Clamp(
-          frameOffset + Mathf.RoundToInt((e.mousePosition.x - rowRect.x) / rowRect.width * VisibleFrames),
+          FrameOffset + Mathf.RoundToInt((e.mousePosition.x - rowRect.x) / rowRect.width * VisibleFrames),
           0, int.MaxValue
         );
 

@@ -1,18 +1,39 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Animations;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "AnimationMontage", menuName = "Animation/Montage")]
-public class AnimationMontage : ScriptableObject {
+public class AnimationMontage : PlayableAsset {
+  #if UNITY_EDITOR
+  public Animator AnimatorPrefab;
+  #endif
   public List<AnimationMontageClip> Clips = new();
   public List<AnimationNotify> Notifies = new();
+
+  public override Playable CreatePlayable(PlayableGraph graph, GameObject owner) {
+    return CreateScriptPlayable(graph);
+  }
+
+  public ScriptPlayable<AnimationMontagePlayableBehavior> CreateScriptPlayable(PlayableGraph graph) {
+    var playable = ScriptPlayable<AnimationMontagePlayableBehavior>.Create(graph);
+    var behavior = playable.GetBehaviour();
+    Clips.ForEach(behavior.Add);
+    return playable;
+  }
 }
 
 [Serializable]
 public class AnimationMontageClip {
   public AnimationClip AnimationClip;
+  public bool FootIK;
   public int StartFrame;
-  public int Duration => Mathf.RoundToInt(AnimationClip.length * 60); // Derived from clip length at 60fps
+  public int Duration => AnimationClip ? Mathf.RoundToInt(AnimationClip.length * 60) : 0; // Derived from clip length at 60fps
   public int EndFrame => StartFrame + Duration;
 }
 
@@ -22,4 +43,46 @@ public class AnimationNotify {
   public int StartFrame = 0;
   public int EndFrame = 1;
   public int FrameDuration => EndFrame-StartFrame;
+}
+
+public class AnimationMontagePlayableBehavior : PlayableBehaviour {
+  AnimationMixerPlayable mixerPlayable;
+  PlayableGraph playableGraph;
+  List<AnimationClipPlayable> clipPlayables = new List<AnimationClipPlayable>();
+  List<AnimationMontageClip> montageClips = new List<AnimationMontageClip>();
+
+  public override void OnPlayableCreate(Playable playable) {
+    playableGraph = playable.GetGraph();
+    mixerPlayable = AnimationMixerPlayable.Create(playableGraph, 0);
+    playable.AddInput(mixerPlayable, 0, 1);
+  }
+
+  public override void OnPlayableDestroy(Playable playable) {
+    if (playableGraph.IsValid()) {
+      playableGraph.DestroySubgraph(mixerPlayable);
+    }
+  }
+
+  public override void PrepareFrame(Playable playable, FrameData info) {
+    var clipCount = clipPlayables.Count;
+    for (var i = 0; i < clipCount; i++) {
+      var clipPlayable = clipPlayables[i];
+      var montageClip = montageClips[i];
+      var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
+      var interpolant = Mathf.InverseLerp(montageClip.StartFrame, montageClip.EndFrame, frame);
+      clipPlayable.SetTime(interpolant * clipPlayable.GetDuration());
+      mixerPlayable.SetInputWeight(i, interpolant > 0 && interpolant < 1 ? 1 : 0);
+    }
+  }
+
+  public void Add(AnimationMontageClip montageClip) {
+    var clipPlayable = AnimationClipPlayable.Create(playableGraph, montageClip.AnimationClip);
+    clipPlayable.SetApplyFootIK(montageClip.FootIK);
+    clipPlayable.SetApplyPlayableIK(montageClip.FootIK);
+    clipPlayable.SetTime(0);
+    clipPlayable.SetDuration(montageClip.Duration / 60f);
+    mixerPlayable.AddInput(clipPlayable, 0, 0f);
+    clipPlayables.Add(clipPlayable);
+    montageClips.Add(montageClip);
+  }
 }

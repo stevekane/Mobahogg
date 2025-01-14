@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d928475fd50464ab9231726773e9a2, type: 3}
   m_Name: Test Montage
   m_EditorClassIdentifier: 
+  AnimatorPrefab: {fileID: 5866666021909216657, guid: 81285e26f0e3eb549bd158b4a6bb7e54, type: 3}
   Clips:
   - AnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
     StartFrame: 0
   - AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
-    StartFrame: 64
+    StartFrame: 61
   Notifies:
-  - Name: Fart
+  - Name: Hitbox
+    StartFrame: 37
+    EndFrame: 53
+  - Name: Weapon Trail
+    StartFrame: 10
+    EndFrame: 53
+  - Name: Root Motion
     StartFrame: 0
-    FrameDuration: 45
-  - Name: Frock
-    StartFrame: 12
-    FrameDuration: 86
-  - Name: Doink
-    StartFrame: 59
-    FrameDuration: 48
+    EndFrame: 37
