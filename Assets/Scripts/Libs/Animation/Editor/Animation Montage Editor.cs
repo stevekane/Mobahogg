@@ -9,10 +9,20 @@ public class AnimationMontageInspector : Editor {
   const float TrackSpacing = 10f;
   const float PaddingLeft = 60f;
   const float PaddingRight = 20f;
+  const int MinVisibleFrames = 60;
+  const int MaxVisibleFrames = 60*10;
+  const float FrameDuration = 1f/60;
+
+  double CurrentClockTime;
+  double PreviousClockTime;
+  double DeltaTime => CurrentClockTime-PreviousClockTime;
 
   int VisibleFrames = 60;
   int FrameOffset = 0;
   int CurrentFrame = 0;
+  double CurrentTime = 0;
+  bool IsPlaying;
+  bool SubscribedToEditorUpdate;
 
   PlayableGraph Graph;
   AnimationPlayableOutput Output;
@@ -28,13 +38,27 @@ public class AnimationMontageInspector : Editor {
       PreviewRenderUtility.Cleanup();
       PreviewRenderUtility = null;
     }
+    if (SubscribedToEditorUpdate) {
+      SubscribedToEditorUpdate = false;
+      EditorApplication.update -= Repaint;
+    }
   }
 
+  // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
   public override void OnInspectorGUI() {
     AnimationMontage montage = (AnimationMontage)target;
     serializedObject.Update();
 
-    // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
+    if (!SubscribedToEditorUpdate) {
+      PreviousClockTime = EditorApplication.timeSinceStartup;
+      CurrentClockTime = EditorApplication.timeSinceStartup;
+      SubscribedToEditorUpdate = true;
+      EditorApplication.update += Repaint;
+    } else {
+      PreviousClockTime = CurrentClockTime;
+      CurrentClockTime = EditorApplication.timeSinceStartup;
+    }
+
     if (!Graph.IsValid()) {
       Graph = PlayableGraph.Create("Animation Montage Inspector");
       Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
@@ -49,31 +73,41 @@ public class AnimationMontageInspector : Editor {
     }
 
     GUILayout.Space(10);
-
     GUILayout.BeginHorizontal();
-    CurrentFrame = EditorGUILayout.IntField("Frame", CurrentFrame);
+    if (IsPlaying) {
+      EditorGUILayout.LabelField("Frame", CurrentFrame.ToString());
+      if (GUILayout.Button("Pause")) {
+        IsPlaying = false;
+      }
+    } else {
+      CurrentFrame = EditorGUILayout.IntField("Frame", CurrentFrame);
+      if (GUILayout.Button("Play")) {
+        IsPlaying = true;
+      }
+    }
     GUILayout.EndHorizontal();
-
     GUILayout.Space(10);
+
+    if (IsPlaying) {
+      CurrentTime += DeltaTime;
+      CurrentFrame = Mathf.FloorToInt(((float)CurrentTime/FrameDuration))%montage.FrameDuration;
+    }
 
     // Draw timeline
     DrawTimeline(montage);
 
     if (!AnimationMontagePlayable.IsNull() && AnimationMontagePlayable.IsValid()) {
-      Graph.Evaluate((float)-AnimationMontagePlayable.GetTime());
-      Graph.Evaluate(CurrentFrame * 1f/60);
+      AnimationMontagePlayable.SetTime(CurrentFrame * FrameDuration);
     }
+    Graph.Evaluate(0);
 
     GUILayout.Space(10);
-
     DrawPreview();
-
     GUILayout.Space(10);
 
     EditorGUI.BeginChangeCheck();
     montage.AnimatorPrefab = (Animator)EditorGUILayout.ObjectField("AnimatorPrefab", montage.AnimatorPrefab, typeof(Animator), false);
     if (EditorGUI.EndChangeCheck()) {
-      Debug.Log("Change of Animator detected");
       SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
       SetupMontagePlayable(montage);
     }
@@ -81,7 +115,6 @@ public class AnimationMontageInspector : Editor {
     EditorGUILayout.PropertyField(serializedObject.FindProperty("Clips"), true);
     EditorGUILayout.PropertyField(serializedObject.FindProperty("Notifies"), true);
     if (EditorGUI.EndChangeCheck()) {
-      Debug.Log("Change of Montage Data detected");
       SetupMontagePlayable(montage);
     }
     serializedObject.ApplyModifiedProperties();
@@ -118,6 +151,8 @@ public class AnimationMontageInspector : Editor {
   }
 
   void DrawTimeline(AnimationMontage montage) {
+    Rect header = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 50);
+    EditorGUI.DrawRect(header, new Color(0.05f, 0.05f, 0.05f));
     Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, montage.Clips.Count * (TrackHeight + TrackSpacing) + montage.Notifies.Count * (TrackHeight + TrackSpacing) + 100);
     EditorGUI.DrawRect(rect, new Color(0.15f, 0.15f, 0.15f));
 
@@ -133,6 +168,9 @@ public class AnimationMontageInspector : Editor {
       DrawNotifyRow(rect, notify, yOffset);
       yOffset += TrackHeight + TrackSpacing;
     }
+    if (!IsPlaying) {
+      HandlePlayheadDragging(header);
+    }
     DrawPlayhead(rect);
   }
 
@@ -142,7 +180,7 @@ public class AnimationMontageInspector : Editor {
       return;
     if (e.type == EventType.ScrollWheel) {
       VisibleFrames += (int)e.delta.y * 2;
-      VisibleFrames = Mathf.Clamp(VisibleFrames, 5, 240);
+      VisibleFrames = Mathf.Clamp(VisibleFrames, MinVisibleFrames, MaxVisibleFrames);
       e.Use();
     }
 
@@ -153,7 +191,7 @@ public class AnimationMontageInspector : Editor {
   }
 
   void DrawFrames(Rect rect) {
-    var mod = VisibleFrames >= 120 ? 10 : 5;
+    var mod = VisibleFrames / MinVisibleFrames * 5;
     for (int i = FrameOffset; i <= FrameOffset + VisibleFrames; i++) {
       if (i % mod == 0) {
         float x = rect.x + PaddingLeft + ((i - FrameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
@@ -170,23 +208,19 @@ public class AnimationMontageInspector : Editor {
   void DrawPlayhead(Rect rect) {
     if (CurrentFrame >= FrameOffset && CurrentFrame <= FrameOffset + VisibleFrames) {
       float x = rect.x + PaddingLeft + ((CurrentFrame - FrameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
-      Rect playheadRect = new Rect(x - 2, rect.y + 30, 4, rect.height - 30);
-      EditorGUI.DrawRect(playheadRect, Color.red);
-
-      HandlePlayheadDragging(rect, x);
+      Rect playheadRect = new Rect(x - 2, rect.y + 30, 2, rect.height - 30);
+      EditorGUI.DrawRect(playheadRect, Color.white);
+      GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) {
+        fontSize = 16,
+      };
+      GUI.Label(new Rect(x - 10, rect.y - 20, 60, 40), CurrentFrame.ToString(), labelStyle);
     }
   }
 
   // Playhead dragging logic
-  void HandlePlayheadDragging(Rect rect, float playheadX) {
-    Event e = Event.current;
-    if (rect.Contains(e.mousePosition) && e.type == EventType.MouseDown && Mathf.Abs(e.mousePosition.x - playheadX) < 5) {
-      if (e.button == 0) {
-        e.Use();
-      }
-    }
-
-    if (e.type == EventType.MouseDrag && e.button == 0) {
+  void HandlePlayheadDragging(Rect rect) {
+    var e = Event.current;
+    if (rect.Contains(e.mousePosition) && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && (e.button == 0 || e.button == 1 || e.button == 2)) {
       float clickedFrame = FrameOffset + Mathf.RoundToInt((e.mousePosition.x - rect.x - PaddingLeft) / (rect.width - PaddingLeft - PaddingRight) * VisibleFrames);
       CurrentFrame = Mathf.Clamp((int)clickedFrame, 0, int.MaxValue);
       e.Use();

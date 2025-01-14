@@ -71,7 +71,8 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   public TurntablePreviewGUIElement(string shaderName = "Standard") : base() {
     PreviewMaterials = new List<Material> { new(Shader.Find(shaderName)) };
     GroundMaterials = new List<Material> { new(Shader.Find(shaderName)) };
-    GroundMaterials[0].color = Color.grey;
+    PreviewMaterials[0].color = Color.green;
+    GroundMaterials[0].color = Color.white;
     camera.nearClipPlane = 0.1f;
     camera.farClipPlane = 1000f;
     camera.fieldOfView = 45f;
@@ -81,6 +82,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     var fillLight = lights[1];
     var rimLight = new GameObject().AddComponent<Light>();
     var groundPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+    groundPlane.transform.localScale = 10 * Vector3.one;
     AddSingleGO(rimLight.gameObject);
     AddSingleGO(groundPlane);
     PositionLights(keyLight, fillLight, rimLight);
@@ -101,6 +103,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     }
     if (rect.Contains(e.mousePosition) && e.type == EventType.MouseDrag && e.button == 2) {
       CameraRotation += RotationScalar * new Vector2(e.delta.y, e.delta.x);
+      CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 90);
       e.Use();
     }
     camera.transform.position = CameraLookAtTarget + CameraOffset;

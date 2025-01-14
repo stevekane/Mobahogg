@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,6 +17,8 @@ public class AnimationMontage : PlayableAsset {
   #endif
   public List<AnimationMontageClip> Clips = new();
   public List<AnimationNotify> Notifies = new();
+  public int FrameDuration =>
+    Mathf.Max(Clips.Max(c => c.EndFrame), Notifies.Max(n => n.EndFrame));
 
   public override Playable CreatePlayable(PlayableGraph graph, GameObject owner) {
     return CreateScriptPlayable(graph);
@@ -71,7 +75,7 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
       var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
       var interpolant = Mathf.InverseLerp(montageClip.StartFrame, montageClip.EndFrame, frame);
       clipPlayable.SetTime(interpolant * clipPlayable.GetDuration());
-      mixerPlayable.SetInputWeight(i, interpolant > 0 && interpolant < 1 ? 1 : 0);
+      mixerPlayable.SetInputWeight(i, frame >= montageClip.StartFrame && frame <= montageClip.EndFrame ? 1 : 0);
     }
   }
 
