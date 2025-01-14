@@ -9,9 +9,9 @@ public class AnimationMontageInspector : Editor {
   const float TrackSpacing = 10f;
   const float PaddingLeft = 60f;
   const float PaddingRight = 20f;
+  const float FrameDuration = 1f/60;
   const int MinVisibleFrames = 60;
   const int MaxVisibleFrames = 60*10;
-  const float FrameDuration = 1f/60;
 
   double CurrentClockTime;
   double PreviousClockTime;
@@ -210,9 +210,7 @@ public class AnimationMontageInspector : Editor {
       float x = rect.x + PaddingLeft + ((CurrentFrame - FrameOffset) / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
       Rect playheadRect = new Rect(x - 2, rect.y + 30, 2, rect.height - 30);
       EditorGUI.DrawRect(playheadRect, Color.white);
-      GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) {
-        fontSize = 16,
-      };
+      GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { fontSize = 16 };
       GUI.Label(new Rect(x - 10, rect.y - 20, 60, 40), CurrentFrame.ToString(), labelStyle);
     }
   }
@@ -228,18 +226,43 @@ public class AnimationMontageInspector : Editor {
   }
 
   void DrawClipRow(Rect rect, AnimationMontageClip clip, float yOffset) {
-    Rect rowRect = new Rect(rect.x + PaddingLeft, yOffset, rect.width - PaddingLeft - PaddingRight, TrackHeight);
-    EditorGUI.DrawRect(rowRect, new Color(0.2f, 0.2f, 0.2f));
+    float PixelX(float frameX) => rect.x + PaddingLeft + (frameX / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
+    float TrackX(int frame) => Mathf.Clamp(frame - FrameOffset, 0, FrameOffset + VisibleFrames);
 
-    float x0 = Mathf.Clamp(clip.StartFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
-    float x1 = Mathf.Clamp(clip.EndFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
-    float startX = rect.x + PaddingLeft + (x0 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
-    float endX = rect.x + PaddingLeft + (x1 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
-    Rect trackRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
-    EditorGUI.DrawRect(trackRect, new Color(0.5f, 0.7f, 0.9f));
+    Rect trackRect;
+    Rect clipRect;
+    {
+      trackRect = new Rect(rect.x + PaddingLeft, yOffset, rect.width - PaddingLeft - PaddingRight, TrackHeight);
+      EditorGUI.DrawRect(trackRect, new Color(0.2f, 0.2f, 0.2f));
+    }
+    {
+      float x0 = TrackX(clip.StartFrame);
+      float x1 = TrackX(clip.EndFrame);
+      float startX = PixelX(x0);
+      float endX = PixelX(x1);
+      clipRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
+      EditorGUI.DrawRect(clipRect, new Color(0.5f, 0.7f, 0.9f));
+    }
+    if (clip.FadeInFrames > 0) {
+      float x0 = TrackX(clip.StartFrame);
+      float x1 = TrackX(clip.StartFrame+clip.FadeInFrames);
+      float startX = PixelX(x0);
+      float endX = PixelX(x1);
+      Rect fadeInRect = new Rect(startX, yOffset, Mathf.Max(2, endX-startX), 2);
+      EditorGUI.DrawRect(fadeInRect, Color.white);
+    }
+    if (clip.FadeOutFrames > 0) {
+      float x0 = TrackX(clip.EndFrame-clip.FadeOutFrames);
+      float x1 = TrackX(clip.EndFrame);
+      float startX = PixelX(x0);
+      float endX = PixelX(x1);
+      Rect fadeOutRect = new Rect(startX, yOffset, Mathf.Max(2, endX-startX), 2);
+      EditorGUI.DrawRect(fadeOutRect, Color.white);
+    }
 
-    GUI.Label(trackRect, clip.AnimationClip ? clip.AnimationClip.name : "No Clip", EditorStyles.whiteLabel);
-    HandleMouseInput(rowRect, trackRect, clip, false);
+    GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { normal = { textColor = Color.black } };
+    GUI.Label(clipRect, clip.AnimationClip ? clip.AnimationClip.name : "No Clip", labelStyle);
+    HandleMouseInput(trackRect, clip, false);
   }
 
   void DrawNotifyRow(Rect rect, AnimationNotify notify, float yOffset) {
@@ -253,16 +276,17 @@ public class AnimationMontageInspector : Editor {
     Rect trackRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
     EditorGUI.DrawRect(trackRect, new Color(0.8f, 0.5f, 0.5f));
 
-    GUI.Label(trackRect, notify.Name, EditorStyles.whiteLabel);
-    HandleMouseInput(rowRect, trackRect, notify, true);
+    GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { normal = { textColor = Color.black } };
+    GUI.Label(trackRect, notify.Name, labelStyle);
+    HandleMouseInput(rowRect, notify, true);
   }
 
-  void HandleMouseInput(Rect rowRect, Rect trackRect, object item, bool isNotify) {
+  void HandleMouseInput(Rect trackRect, object item, bool isNotify) {
     Event e = Event.current;
-    if (rowRect.Contains(e.mousePosition)) {
+    if (trackRect.Contains(e.mousePosition)) {
       if (e.type == EventType.MouseDown) {
         float clickedFrame = Mathf.Clamp(
-          FrameOffset + Mathf.RoundToInt((e.mousePosition.x - rowRect.x) / rowRect.width * VisibleFrames),
+          FrameOffset + Mathf.RoundToInt((e.mousePosition.x - trackRect.x) / trackRect.width * VisibleFrames),
           0, int.MaxValue
         );
 

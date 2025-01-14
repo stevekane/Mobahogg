@@ -9,7 +9,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   public float RotationScalar = 1;
   public float CameraFocusHeight = 1;
   public float CameraZoom = 5;
-  public Vector2 CameraRotation = new(45, 135);
+  public Vector2 CameraRotation = new(15, 90);
   public GameObject Subject;
 
   List<Material> PreviewMaterials;

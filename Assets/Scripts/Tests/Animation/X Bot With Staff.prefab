@@ -61,6 +61,9 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 81285e26f0e3eb549bd158b4a6bb7e54, type: 3}
       insertIndex: 0
+      addedObject: {fileID: 9200937142586780899}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 81285e26f0e3eb549bd158b4a6bb7e54, type: 3}
+      insertIndex: 1
       addedObject: {fileID: 3676769866418839942}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 81285e26f0e3eb549bd158b4a6bb7e54, type: 3}
@@ -190,3 +193,86 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bone: 14
+--- !u!1001 &8663503913026603784
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1369712159427508949}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.727
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      propertyPath: m_Name
+      value: Spell Flower
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3170891742861386792}
+  m_SourcePrefab: {fileID: 100100000, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+--- !u!1 &8429501799792473689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+  m_PrefabInstance: {fileID: 8663503913026603784}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3170891742861386792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8429501799792473689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf2d72049549d814e9d7e292cfea472c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bone: 10
+--- !u!4 &9200937142586780899 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cafcd34f2e8595e4dba62abb5fedf0d1, type: 3}
+  m_PrefabInstance: {fileID: 8663503913026603784}
+  m_PrefabAsset: {fileID: 0}

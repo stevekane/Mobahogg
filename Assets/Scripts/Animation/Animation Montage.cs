@@ -5,7 +5,6 @@ using UnityEngine.Playables;
 using UnityEngine.Animations;
 using System.Linq;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -34,11 +33,26 @@ public class AnimationMontage : PlayableAsset {
 
 [Serializable]
 public class AnimationMontageClip {
+  public string Name = "Animation Montage Clip";
   public AnimationClip AnimationClip;
   public bool FootIK;
   public int StartFrame;
   public int Duration => AnimationClip ? Mathf.RoundToInt(AnimationClip.length * 60) : 0; // Derived from clip length at 60fps
   public int EndFrame => StartFrame + Duration;
+  public int FadeInFrames;
+  public int FadeOutFrames;
+
+  public float Weight(int frame) {
+    if (FadeInFrames > 0 && frame >= StartFrame && frame <= StartFrame+FadeInFrames) {
+      return Mathf.InverseLerp(StartFrame, StartFrame+FadeInFrames, frame);
+    } else if (FadeOutFrames > 0 && frame >= EndFrame-FadeOutFrames && frame <= EndFrame) {
+      return 1-Mathf.InverseLerp(EndFrame-FadeOutFrames, EndFrame, frame);
+    } else if (frame >= StartFrame && frame <= EndFrame) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 }
 
 [Serializable]
@@ -68,14 +82,14 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
   }
 
   public override void PrepareFrame(Playable playable, FrameData info) {
+    var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
     var clipCount = clipPlayables.Count;
     for (var i = 0; i < clipCount; i++) {
       var clipPlayable = clipPlayables[i];
       var montageClip = montageClips[i];
-      var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
       var interpolant = Mathf.InverseLerp(montageClip.StartFrame, montageClip.EndFrame, frame);
       clipPlayable.SetTime(interpolant * clipPlayable.GetDuration());
-      mixerPlayable.SetInputWeight(i, frame >= montageClip.StartFrame && frame <= montageClip.EndFrame ? 1 : 0);
+      mixerPlayable.SetInputWeight(i, montageClip.Weight(frame));
     }
   }
 
