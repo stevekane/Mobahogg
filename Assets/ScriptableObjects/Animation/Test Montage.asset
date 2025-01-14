@@ -15,9 +15,11 @@ MonoBehaviour:
   AnimatorPrefab: {fileID: 5866666021909216657, guid: 81285e26f0e3eb549bd158b4a6bb7e54, type: 3}
   Clips:
   - AnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
+    FootIK: 1
     StartFrame: 0
   - AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
-    StartFrame: 61
+    FootIK: 1
+    StartFrame: 64
   Notifies:
   - Name: Hitbox
     StartFrame: 37
