@@ -71,12 +71,14 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   public TurntablePreviewGUIElement(string shaderName = "Standard") : base() {
     PreviewMaterials = new List<Material> { new(Shader.Find(shaderName)) };
     GroundMaterials = new List<Material> { new(Shader.Find(shaderName)) };
-    PreviewMaterials[0].color = Color.green;
+    PreviewMaterials[0].SetFloat("_Metallic", 1);
+    PreviewMaterials[0].SetFloat("_Glossiness", 1);
+    PreviewMaterials[0].color = Color.grey;
     GroundMaterials[0].color = Color.white;
     camera.nearClipPlane = 0.1f;
     camera.farClipPlane = 1000f;
     camera.fieldOfView = 45f;
-    camera.clearFlags = CameraClearFlags.SolidColor;
+    camera.clearFlags = CameraClearFlags.Skybox;
     camera.backgroundColor = Color.black;
     var keyLight = lights[0];
     var fillLight = lights[1];
