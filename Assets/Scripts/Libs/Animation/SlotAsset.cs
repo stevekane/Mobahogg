@@ -16,10 +16,10 @@ namespace Animation {
     // Custom Root Motion blending. Takes Root Motion only from Active Stream by Index
     public void ProcessRootMotion(AnimationStream stream) {
       var inputStream = stream.GetInputStream(ActiveIndex);
-      if (!inputStream.isValid)
-        return;
-      stream.velocity = inputStream.velocity;
-      stream.angularVelocity = inputStream.angularVelocity;
+      if (inputStream.isValid) {
+        stream.velocity = inputStream.velocity;
+        stream.angularVelocity = inputStream.angularVelocity;
+      }
     }
 
     // Bog standard animation and IK mixing... could be abstracted / extracted?
@@ -163,11 +163,8 @@ namespace Animation {
   }
 
   public class SlotBehavior : PlayableBehaviour {
-    // This check is extremely important.
-    // When a new clip is first loaded into the graph, it will be evaluated at time 0 and at its target time.
-    // This causes the root motion to come from whatever previous state the character is in to the state0 of the
-    // new clip. You do not want that motion at all so ignore it.
-    public bool IsRunning => ActiveIndex > 0 && Mixer.GetInput(ActiveIndex).GetTime() != 0;
+    public bool IsRunning => ActiveIndex > 0;
+    public bool ApplyRootMotion => IsRunning && ActivePlayable.GetTime() != 0;
     public Playable ActivePlayable => Mixer.GetInput(ActiveIndex);
     public double FadeDuration = 0.25f;
 
@@ -179,7 +176,7 @@ namespace Animation {
 
     SlotMixerJob CurrentJob => new SlotMixerJob {
       Handles = Handles,
-      ActiveIndex = ActiveIndex
+      ActiveIndex = ActiveIndex,
     };
 
     int? OpenPort {

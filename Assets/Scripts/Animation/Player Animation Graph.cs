@@ -20,12 +20,11 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [SerializeField] AnimationClip AirborneHoverAnimationClip;
   [Header("Slot Animations")]
   [SerializeField] AnimationMontage AttackMontage;
+  [SerializeField] AnimationMontage DashMontage;
   [SerializeField] AnimationClip AttackAnimationClip;
   [SerializeField] AnimationClip DiveRollAnimationClip;
-  [SerializeField] float AttackSpeed = 1.5f;
   [SerializeField] float AttackRootMotionScalar = 3;
   [SerializeField] float DiveRollRootMotionScalar = 3;
-  [SerializeField] float DiveRollSpeed = 2;
   [Header("Transitions")]
   [SerializeField] float TransitionSpeed = 4;
   [SerializeField] float SlotCrossFadeDuration = 0.15f;
@@ -41,6 +40,8 @@ public class PlayerAnimationGraph : MonoBehaviour {
   ScriptPlayable<SelectBehavior> GroundedMovingSelect;
   ScriptPlayable<SelectBehavior> AirborneSelect;
   ScriptPlayable<SlotBehavior> Slot;
+  Playable CurrentAttackMontagePlayable;
+  Playable CurrentDashMontagePlayable;
 
   PlayableGraph Graph;
 
@@ -101,18 +102,18 @@ public class PlayerAnimationGraph : MonoBehaviour {
     InputRouter.Instance.TryGetButtonState("Cast Spell", 0, out var castSpellState);
 
     if (attackState == ButtonState.JustDown) {
-      Slot.GetBehaviour().Play(AttackMontage.CreateScriptPlayable(Graph));
-      Graph.Evaluate(0);
+      if (move.sqrMagnitude > 0)
+        transform.rotation = Quaternion.LookRotation(move.XZ().normalized);
+      CurrentAttackMontagePlayable = AttackMontage.CreateScriptPlayable(Graph);
+      Slot.GetBehaviour().Play(CurrentAttackMontagePlayable);
       InputRouter.Instance.ConsumeButton("Attack", 0);
     }
 
     if (dashState == ButtonState.JustDown) {
-      var clipPlayable = AnimationClipPlayable.Create(Graph, DiveRollAnimationClip);
-      clipPlayable.SetTime(0);
-      clipPlayable.SetDuration(DiveRollAnimationClip.length);
-      clipPlayable.SetSpeed(DiveRollSpeed);
-      Slot.GetBehaviour().Play(clipPlayable);
-      Graph.Evaluate(0);
+      if (move.sqrMagnitude > 0)
+        transform.rotation = Quaternion.LookRotation(move.XZ().normalized);
+      CurrentDashMontagePlayable = DashMontage.CreateScriptPlayable(Graph);
+      Slot.GetBehaviour().Play(CurrentDashMontagePlayable);
       InputRouter.Instance.ConsumeButton("Dash", 0);
     }
 
@@ -153,9 +154,14 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
   void OnAnimatorMove() {
     var slot = Slot.GetBehaviour();
-    if (slot.IsRunning) {
-      transform.position += Animator.deltaPosition;
-      transform.rotation *= Animator.deltaRotation;
+    if (slot.ApplyRootMotion) {
+      var speed =
+        slot.ActivePlayable.Equals(CurrentAttackMontagePlayable)
+          ? AttackRootMotionScalar
+          : slot.ActivePlayable.Equals(CurrentDashMontagePlayable)
+            ? DiveRollRootMotionScalar
+            : 1;
+      transform.position += speed * Animator.deltaPosition;
     }
   }
 

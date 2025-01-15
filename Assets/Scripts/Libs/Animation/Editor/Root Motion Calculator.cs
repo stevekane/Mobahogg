@@ -74,7 +74,7 @@ public class RootMotionCalculator : EditorWindow {
 
     [MenuItem("Tools/Root Motion Calculator")]
     private static void ShowWindow() {
-        GetWindow<RootMotionCalculator>("Root Motion Calculator");
+      GetWindow<RootMotionCalculator>("Root Motion Calculator");
     }
 
     private void OnGUI() {
@@ -84,17 +84,19 @@ public class RootMotionCalculator : EditorWindow {
         animationClip = (AnimationClip)EditorGUILayout.ObjectField("Animation Clip", animationClip, typeof(AnimationClip), false);
         model = (GameObject)EditorGUILayout.ObjectField("Model", model, typeof(GameObject), false);
 
-        if (GUILayout.Button("Calculate Root Motion") && animationClip != null && model != null) {
-            CalculateRootMotion();
-        }
+        // if (GUILayout.Button("Calculate Root Motion") && animationClip != null && model != null) {
+        //     CalculateRootMotion();
+        // }
 
         if (animationClip != null) {
-            // InspectCurves(animationClip);
+            if (GUILayout.Button("Print Curves")) {
+              InspectCurves(animationClip);
+            }
             GUILayout.Space(10);
             GUILayout.Label($"Clip Length: {clipLength:F2} seconds", EditorStyles.label);
             GUILayout.Label($"Total Forward Distance: {distancePerCycle.z:F5} units", EditorStyles.label);
             GUILayout.Label($"Average Clip Forward Velocity: {animationClip.averageSpeed.z:F5} units/s", EditorStyles.label);
-            GUILayout.Label($"Calculated Forward Velocity: {IntegrateRootMotion(animationClip, 6400).z/animationClip.length:F5} units/s", EditorStyles.label);
+            // GUILayout.Label($"Calculated Forward Velocity: {IntegrateRootMotion(animationClip, 6400).z/animationClip.length:F5} units/s", EditorStyles.label);
             GUILayout.Label($"Expected Total Distance: {animationClip.averageSpeed.z * animationClip.length:F5} units", EditorStyles.label);
             GUILayout.Label($"Distance Per Cycle: {distancePerCycle.z:F5}", EditorStyles.label);
             GUILayout.Label($"Distance Per Second: {distancePerSecond.z:F5}", EditorStyles.label);
@@ -102,60 +104,60 @@ public class RootMotionCalculator : EditorWindow {
         }
     }
 
-    private void CalculateRootMotion() {
-        // Create a temporary GameObject to play the animation
-        GameObject tempModel = Instantiate(model);
-        tempModel.hideFlags = HideFlags.HideAndDontSave;
+    // private void CalculateRootMotion() {
+    //     // Create a temporary GameObject to play the animation
+    //     GameObject tempModel = Instantiate(model);
+    //     tempModel.hideFlags = HideFlags.HideAndDontSave;
 
-        Animator animator = tempModel.GetComponent<Animator>();
-        if (animator == null) {
-            Debug.LogError("The selected model does not have an Animator component.");
-            DestroyImmediate(tempModel);
-            return;
-        }
+    //     Animator animator = tempModel.GetComponent<Animator>();
+    //     if (animator == null) {
+    //         Debug.LogError("The selected model does not have an Animator component.");
+    //         DestroyImmediate(tempModel);
+    //         return;
+    //     }
 
-        // Set up the PlayableGraph
-        PlayableGraph graph = PlayableGraph.Create("RootMotionGraph");
-        AnimationPlayableOutput output = AnimationPlayableOutput.Create(graph, "Output", animator);
-        AnimationClipPlayable clipPlayable = AnimationClipPlayable.Create(graph, animationClip);
-        clipPlayable.SetDuration(animationClip.length);
-        output.SetSourcePlayable(clipPlayable);
+    //     // Set up the PlayableGraph
+    //     PlayableGraph graph = PlayableGraph.Create("RootMotionGraph");
+    //     AnimationPlayableOutput output = AnimationPlayableOutput.Create(graph, "Output", animator);
+    //     AnimationClipPlayable clipPlayable = AnimationClipPlayable.Create(graph, animationClip);
+    //     clipPlayable.SetDuration(animationClip.length);
+    //     output.SetSourcePlayable(clipPlayable);
 
-        graph.Play();
+    //     graph.Play();
 
-        // Measure root motion frame by frame
-        Vector3 totalRootMotion = Vector3.zero;
-        Vector3 previousPosition = tempModel.transform.position;
+    //     // Measure root motion frame by frame
+    //     Vector3 totalRootMotion = Vector3.zero;
+    //     Vector3 previousPosition = tempModel.transform.position;
 
-        clipLength = animationClip.length;
-        float timePerFrame = (float)((double)clipLength/(double)FPS);
-        float time = 0;
+    //     clipLength = animationClip.length;
+    //     float timePerFrame = (float)((double)clipLength/(double)FPS);
+    //     float time = 0;
 
-        clipPlayable.SetTime(0);
-        while (true) {
-          var timeRemaining = clipLength-time;
-          if (timeRemaining < timePerFrame) {
-            graph.Evaluate(timeRemaining);
-            Vector3 currentPosition = tempModel.transform.position;
-            totalRootMotion += currentPosition - previousPosition;
-            previousPosition = currentPosition;
-            break;
-          } else {
-            graph.Evaluate(timePerFrame);
-            time += timePerFrame;
-            Vector3 currentPosition = tempModel.transform.position;
-            totalRootMotion += currentPosition - previousPosition;
-            previousPosition = currentPosition;
-          }
-        }
+    //     clipPlayable.SetTime(0);
+    //     while (true) {
+    //       var timeRemaining = clipLength-time;
+    //       if (timeRemaining < timePerFrame) {
+    //         graph.Evaluate(timeRemaining);
+    //         Vector3 currentPosition = tempModel.transform.position;
+    //         totalRootMotion += currentPosition - previousPosition;
+    //         previousPosition = currentPosition;
+    //         break;
+    //       } else {
+    //         graph.Evaluate(timePerFrame);
+    //         time += timePerFrame;
+    //         Vector3 currentPosition = tempModel.transform.position;
+    //         totalRootMotion += currentPosition - previousPosition;
+    //         previousPosition = currentPosition;
+    //       }
+    //     }
 
-        // Calculate distances
-        distancePerCycle = totalRootMotion;
-        distancePerSecond = totalRootMotion / clipLength;
+    //     // Calculate distances
+    //     distancePerCycle = totalRootMotion;
+    //     distancePerSecond = totalRootMotion / clipLength;
 
-        // Cleanup
-        graph.Destroy();
-        DestroyImmediate(tempModel);
-    }
+    //     // Cleanup
+    //     graph.Destroy();
+    //     DestroyImmediate(tempModel);
+    // }
 }
 #endif

@@ -40,7 +40,8 @@ public class AnimationMontageClip {
   public AnimationClip AnimationClip;
   public bool FootIK;
   public int StartFrame;
-  public int Duration => AnimationClip ? Mathf.RoundToInt(AnimationClip.length * 60) : 0; // Derived from clip length at 60fps
+  public float Speed = 1;
+  public int Duration => AnimationClip ? Mathf.RoundToInt(AnimationClip.length / Speed * 60) : 0;
   public int EndFrame => StartFrame + Duration;
   public int FadeInFrames;
   public int FadeOutFrames;
@@ -75,6 +76,7 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
 
   public void Add(AnimationMontageClip montageClip) {
     var clipPlayable = AnimationClipPlayable.Create(playableGraph, montageClip.AnimationClip);
+    clipPlayable.SetSpeed(montageClip.Speed);
     clipPlayable.SetApplyFootIK(montageClip.FootIK);
     clipPlayable.SetApplyPlayableIK(montageClip.FootIK);
     clipPlayable.SetTime(0);
@@ -107,7 +109,7 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
       var clipPlayable = clipPlayables[i];
       var montageClip = montageClips[i];
       var interpolant = Mathf.InverseLerp(montageClip.StartFrame, montageClip.EndFrame, frame);
-      clipPlayable.SetTime(interpolant * clipPlayable.GetDuration());
+      clipPlayable.SetTime(interpolant * montageClip.Speed * clipPlayable.GetDuration());
       mixerPlayable.SetInputWeight(i, montageClip.Weight(frame));
     }
   }
