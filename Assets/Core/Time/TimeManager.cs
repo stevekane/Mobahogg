@@ -10,6 +10,7 @@ public class TimeManager : SingletonBehavior<TimeManager>, IClock {
   public bool Frozen() => IsFrozen;
   public int FixedFrame() => TickCount;
   public float DeltaTime() => Frozen() ? 0 : Time.fixedDeltaTime;
+  public void Log(string msg) => Debug.Log($"{FixedFrame()}: {msg}");
 
   int TickCount;
   bool IsFrozen;
