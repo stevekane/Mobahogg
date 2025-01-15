@@ -20,7 +20,6 @@ public class AnimationMontageInspector : Editor {
   int VisibleFrames = 60;
   int FrameOffset = 0;
   int CurrentFrame = 0;
-  double CurrentTime = 0;
   bool IsPlaying;
   bool SubscribedToEditorUpdate;
 
@@ -44,9 +43,24 @@ public class AnimationMontageInspector : Editor {
     }
   }
 
+  // Any time play mode is entered/exited tear this thing down to prevent garbage
+  // from occurring in the preview scene ( Unity does not understand what this scene is )
+  // TODO: Is it possible that using their Preview facility would circumvent this issue?
+  // It might and that might be preferable overall if so.
+  void OnPlayModeStateChange(PlayModeStateChange stateChange) {
+    OnDisable();
+  }
+
   // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
   public override void OnInspectorGUI() {
     AnimationMontage montage = (AnimationMontage)target;
+
+    // Early out with default editor
+    if (EditorApplication.isPlaying) {
+      DrawDefaultInspector();
+      return;
+    }
+
     serializedObject.Update();
 
     if (!SubscribedToEditorUpdate) {
@@ -54,6 +68,7 @@ public class AnimationMontageInspector : Editor {
       CurrentClockTime = EditorApplication.timeSinceStartup;
       SubscribedToEditorUpdate = true;
       EditorApplication.update += Repaint;
+      EditorApplication.playModeStateChanged += OnPlayModeStateChange;
     } else {
       PreviousClockTime = CurrentClockTime;
       CurrentClockTime = EditorApplication.timeSinceStartup;
@@ -62,6 +77,7 @@ public class AnimationMontageInspector : Editor {
     if (!Graph.IsValid()) {
       Graph = PlayableGraph.Create("Animation Montage Inspector");
       Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+      Graph.Play();
       Graph.Evaluate(0);
       Output = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
     }
@@ -72,7 +88,6 @@ public class AnimationMontageInspector : Editor {
       SetupMontagePlayable(montage);
     }
 
-    GUILayout.Space(10);
     GUILayout.BeginHorizontal();
     if (IsPlaying) {
       EditorGUILayout.LabelField("Frame", CurrentFrame.ToString());
@@ -82,26 +97,34 @@ public class AnimationMontageInspector : Editor {
     } else {
       CurrentFrame = EditorGUILayout.IntField("Frame", CurrentFrame);
       if (GUILayout.Button("Play")) {
+        CurrentFrame = 0;
+        AnimationMontagePlayable.SetTime(0);
         IsPlaying = true;
       }
     }
     GUILayout.EndHorizontal();
+
+    // Steve - Currently, we have to render timeline first because CurrentFrame potentially changes
+    // from its interactions. This is kinda weird though possibly?
+    // This should run before the graph is evaluated or you get jitter in the preview window
+    GUILayout.Space(10);
+    DrawTimeline(montage);
     GUILayout.Space(10);
 
     if (IsPlaying) {
-      CurrentTime += DeltaTime;
-      CurrentFrame = Mathf.FloorToInt(((float)CurrentTime/FrameDuration))%montage.FrameDuration;
-    }
-
-    // Draw timeline
-    DrawTimeline(montage);
-
-    if (!AnimationMontagePlayable.IsNull() && AnimationMontagePlayable.IsValid()) {
+      Graph.Evaluate((float)DeltaTime);
+      var currentMontageTime = (float)AnimationMontagePlayable.GetTime();
+      var duration = (float)AnimationMontagePlayable.GetDuration();
+      if (currentMontageTime >= duration) {
+        var loopingCurrentMontageTime = currentMontageTime % duration;
+        AnimationMontagePlayable.SetTime(0);
+      }
+      CurrentFrame = Mathf.FloorToInt((float)AnimationMontagePlayable.GetTime()/FrameDuration)%montage.FrameDuration;
+    } else {
       AnimationMontagePlayable.SetTime(CurrentFrame * FrameDuration);
+      Graph.Evaluate(0);
     }
-    Graph.Evaluate(0);
 
-    GUILayout.Space(10);
     DrawPreview();
     GUILayout.Space(10);
 

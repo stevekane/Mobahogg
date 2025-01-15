@@ -26,6 +26,8 @@ public class AnimationMontage : PlayableAsset {
   public ScriptPlayable<AnimationMontagePlayableBehavior> CreateScriptPlayable(PlayableGraph graph) {
     var playable = ScriptPlayable<AnimationMontagePlayableBehavior>.Create(graph);
     var behavior = playable.GetBehaviour();
+    playable.SetTime(0);
+    playable.SetDuration(FrameDuration / 60f);
     Clips.ForEach(behavior.Add);
     return playable;
   }
@@ -69,6 +71,17 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
   List<AnimationClipPlayable> clipPlayables = new List<AnimationClipPlayable>();
   List<AnimationMontageClip> montageClips = new List<AnimationMontageClip>();
 
+  public void Add(AnimationMontageClip montageClip) {
+    var clipPlayable = AnimationClipPlayable.Create(playableGraph, montageClip.AnimationClip);
+    clipPlayable.SetApplyFootIK(montageClip.FootIK);
+    clipPlayable.SetApplyPlayableIK(montageClip.FootIK);
+    clipPlayable.SetTime(0);
+    clipPlayable.SetDuration(montageClip.Duration / 60f);
+    mixerPlayable.AddInput(clipPlayable, 0, 0f);
+    clipPlayables.Add(clipPlayable);
+    montageClips.Add(montageClip);
+  }
+
   public override void OnPlayableCreate(Playable playable) {
     playableGraph = playable.GetGraph();
     mixerPlayable = AnimationMixerPlayable.Create(playableGraph, 0);
@@ -93,14 +106,16 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
     }
   }
 
-  public void Add(AnimationMontageClip montageClip) {
-    var clipPlayable = AnimationClipPlayable.Create(playableGraph, montageClip.AnimationClip);
-    clipPlayable.SetApplyFootIK(montageClip.FootIK);
-    clipPlayable.SetApplyPlayableIK(montageClip.FootIK);
-    clipPlayable.SetTime(0);
-    clipPlayable.SetDuration(montageClip.Duration / 60f);
-    mixerPlayable.AddInput(clipPlayable, 0, 0f);
-    clipPlayables.Add(clipPlayable);
-    montageClips.Add(montageClip);
+  public override void ProcessFrame(Playable playable, FrameData info, object playerData) {
+    var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
+
+    foreach (var montageClip in montageClips) {
+      if (montageClip.StartFrame == frame) {
+        Debug.Log($"{montageClip.AnimationClip.name} Started");
+      }
+      if (montageClip.EndFrame == frame) {
+        Debug.Log($"{montageClip.AnimationClip.name} Ended");
+      }
+    }
   }
 }
