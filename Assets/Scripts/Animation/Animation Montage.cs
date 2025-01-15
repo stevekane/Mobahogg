@@ -29,6 +29,7 @@ public class AnimationMontage : PlayableAsset {
     playable.SetTime(0);
     playable.SetDuration(FrameDuration / 60f);
     Clips.ForEach(behavior.Add);
+    Notifies.ForEach(behavior.Add);
     return playable;
   }
 }
@@ -70,6 +71,7 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
   PlayableGraph playableGraph;
   List<AnimationClipPlayable> clipPlayables = new List<AnimationClipPlayable>();
   List<AnimationMontageClip> montageClips = new List<AnimationMontageClip>();
+  List<AnimationNotify> notifies = new List<AnimationNotify>();
 
   public void Add(AnimationMontageClip montageClip) {
     var clipPlayable = AnimationClipPlayable.Create(playableGraph, montageClip.AnimationClip);
@@ -82,6 +84,10 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
     montageClips.Add(montageClip);
   }
 
+  public void Add(AnimationNotify notify) {
+    notifies.Add(notify);
+  }
+
   public override void OnPlayableCreate(Playable playable) {
     playableGraph = playable.GetGraph();
     mixerPlayable = AnimationMixerPlayable.Create(playableGraph, 0);
@@ -89,7 +95,7 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
   }
 
   public override void OnPlayableDestroy(Playable playable) {
-    if (playableGraph.IsValid()) {
+    if (playableGraph.IsValid() && mixerPlayable.IsValid()) {
       playableGraph.DestroySubgraph(mixerPlayable);
     }
   }
@@ -107,14 +113,28 @@ public class AnimationMontagePlayableBehavior : PlayableBehaviour {
   }
 
   public override void ProcessFrame(Playable playable, FrameData info, object playerData) {
-    var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
-
-    foreach (var montageClip in montageClips) {
-      if (montageClip.StartFrame == frame) {
-        Debug.Log($"{montageClip.AnimationClip.name} Started");
+    if (playerData is MonoBehaviour) {
+      var go = (MonoBehaviour)playerData;
+      var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
+      foreach (var notify in notifies) {
+        if (notify.StartFrame == frame) {
+          go.SendMessage("OnNotifyStart", notify, SendMessageOptions.DontRequireReceiver);
+        }
+        if (notify.EndFrame == frame) {
+          go.SendMessage("OnNotifyEnd", notify, SendMessageOptions.DontRequireReceiver);
+        }
       }
-      if (montageClip.EndFrame == frame) {
-        Debug.Log($"{montageClip.AnimationClip.name} Ended");
+    }
+    if (playerData is GameObject) {
+      var go = (GameObject)playerData;
+      var frame = Mathf.RoundToInt((float)playable.GetTime() * 60);
+      foreach (var notify in notifies) {
+        if (notify.StartFrame == frame) {
+          go.SendMessage("OnNotifyStart", notify, SendMessageOptions.DontRequireReceiver);
+        }
+        if (notify.EndFrame == frame) {
+          go.SendMessage("OnNotifyEnd", notify, SendMessageOptions.DontRequireReceiver);
+        }
       }
     }
   }

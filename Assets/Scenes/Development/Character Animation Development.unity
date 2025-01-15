@@ -266,6 +266,7 @@ MonoBehaviour:
   - 6.0299726
   - 7.375348
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
+  AttackMontage: {fileID: 11400000, guid: 610230a126334c64ba2b2ec415ce0929, type: 2}
   AttackAnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
   DiveRollAnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
   AttackSpeed: 1

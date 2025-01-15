@@ -199,7 +199,7 @@ namespace Animation {
       Mixer.ConnectInput(0, playable, 0, 1);
     }
 
-    public void Play(AnimationClipPlayable playable) {
+    public void Play(Playable playable) {
       playable.SetTime(0);
       if (IsRunning) {
         var active = Mixer.GetInput(ActiveIndex);

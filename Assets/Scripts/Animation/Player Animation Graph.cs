@@ -19,6 +19,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
   [Header("Airborne Locomotion")]
   [SerializeField] AnimationClip AirborneHoverAnimationClip;
   [Header("Slot Animations")]
+  [SerializeField] AnimationMontage AttackMontage;
   [SerializeField] AnimationClip AttackAnimationClip;
   [SerializeField] AnimationClip DiveRollAnimationClip;
   [SerializeField] float AttackSpeed = 1.5f;
@@ -77,9 +78,13 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().Add(AirborneSelect);
 
     Slot = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
+    Slot.SetOutputCount(2);
     Slot.GetBehaviour().Connect(LocomotionSelect);
-    var animationOutput = AnimationPlayableOutput.Create(Graph, $"{Animator.name}.Animator", Animator);
-    animationOutput.SetSourcePlayable(Slot);
+    var animationOutput = AnimationPlayableOutput.Create(Graph, $"AnimationOutput({Animator.name})", Animator);
+    animationOutput.SetSourcePlayable(Slot, 0);
+    var scriptOutput = ScriptPlayableOutput.Create(Graph, $"ScriptOutput({name})");
+    scriptOutput.SetUserData(this);
+    scriptOutput.SetSourcePlayable(Slot, 1);
     Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
     Graph.Evaluate(0);
   }
@@ -96,11 +101,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
     InputRouter.Instance.TryGetButtonState("Cast Spell", 0, out var castSpellState);
 
     if (attackState == ButtonState.JustDown) {
-      var clipPlayable = AnimationClipPlayable.Create(Graph, AttackAnimationClip);
-      clipPlayable.SetTime(0);
-      clipPlayable.SetDuration(AttackAnimationClip.length);
-      clipPlayable.SetSpeed(AttackSpeed);
-      Slot.GetBehaviour().Play(clipPlayable);
+      Slot.GetBehaviour().Play(AttackMontage.CreateScriptPlayable(Graph));
       Graph.Evaluate(0);
       InputRouter.Instance.ConsumeButton("Attack", 0);
     }
@@ -140,6 +141,14 @@ public class PlayerAnimationGraph : MonoBehaviour {
     Slot.GetBehaviour().FadeDuration = SlotCrossFadeDuration;
     AirborneSelect.GetBehaviour().CrossFade(0, 1);
     Graph.Evaluate(LocalClock.DeltaTime());
+  }
+
+  void OnNotifyStart(AnimationNotify notify) {
+    Debug.Log($"{notify.Name}.Start {TimeManager.Instance.FixedFrame()}");
+  }
+
+  void OnNotifyEnd(AnimationNotify notify) {
+    Debug.Log($"{notify.Name}.End {TimeManager.Instance.FixedFrame()}");
   }
 
   void OnAnimatorMove() {

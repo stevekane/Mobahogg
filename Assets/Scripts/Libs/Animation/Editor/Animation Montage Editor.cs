@@ -24,7 +24,8 @@ public class AnimationMontageInspector : Editor {
   bool SubscribedToEditorUpdate;
 
   PlayableGraph Graph;
-  AnimationPlayableOutput Output;
+  ScriptPlayableOutput ScriptPlayableOutput;
+  AnimationPlayableOutput AnimationPlayableOutput;
   TurntablePreviewGUIElement PreviewRenderUtility;
   Animator PreviewAnimatorInstance;
   ScriptPlayable<AnimationMontagePlayableBehavior> AnimationMontagePlayable;
@@ -79,7 +80,8 @@ public class AnimationMontageInspector : Editor {
       Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
       Graph.Play();
       Graph.Evaluate(0);
-      Output = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
+      ScriptPlayableOutput = ScriptPlayableOutput.Create(Graph, "Script Output");
+      AnimationPlayableOutput = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
     }
 
     if (PreviewRenderUtility == null) {
@@ -150,7 +152,9 @@ public class AnimationMontageInspector : Editor {
     if (animatorPrefab) {
       PreviewAnimatorInstance = Instantiate(animatorPrefab);
       PreviewRenderUtility.SetSubject(PreviewAnimatorInstance.gameObject);
-      Output.SetTarget(PreviewAnimatorInstance);
+      // TODO: Maybe some other object?
+      ScriptPlayableOutput.SetUserData(PreviewAnimatorInstance.gameObject);
+      AnimationPlayableOutput.SetTarget(PreviewAnimatorInstance);
       PreviewAnimatorInstance.GetComponent<Animator>().applyRootMotion = false;
       if (PreviewAnimatorInstance.TryGetComponent(out AvatarAttacher avatarAttacher)) {
         avatarAttacher.Attach();
@@ -163,7 +167,9 @@ public class AnimationMontageInspector : Editor {
       AnimationMontagePlayable.Destroy();
     }
     AnimationMontagePlayable = montage.CreateScriptPlayable(Graph);
-    Output.SetSourcePlayable(AnimationMontagePlayable);
+    AnimationMontagePlayable.SetOutputCount(2);
+    AnimationPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 0);
+    ScriptPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 1);
   }
 
   void DrawPreview() {
