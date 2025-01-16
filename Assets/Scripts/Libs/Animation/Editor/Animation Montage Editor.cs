@@ -325,6 +325,11 @@ public class AnimationMontageInspector : Editor {
 
   void HandleMouseInput(Rect trackRect, SerializedProperty property, bool isNotify) {
     var startFrame = property.FindPropertyRelative("StartFrame");
+    // Technically, this is dubious.
+    // EndFrame is only a property on notifies and is a getter on clips ( and therefore not serialized )
+    // Duration is a getter on clips only and therefore is not serialized
+    // It happens to be the case that this isn't used here in a way that throws errors but it could
+    // lead to unexpected behavior or confusion to a future reader
     var endFrame = property.FindPropertyRelative("EndFrame");
     var duration = property.FindPropertyRelative("Duration");
     Event e = Event.current;
