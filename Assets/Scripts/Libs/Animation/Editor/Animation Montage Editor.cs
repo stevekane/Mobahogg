@@ -62,6 +62,7 @@ public class AnimationMontageInspector : Editor {
       return;
     }
 
+    // Ensure you have the most recent values in the serialized representation
     serializedObject.Update();
 
     if (!SubscribedToEditorUpdate) {
@@ -180,21 +181,25 @@ public class AnimationMontageInspector : Editor {
   }
 
   void DrawTimeline(AnimationMontage montage) {
+    var clips = serializedObject.FindProperty("Clips");
+    var notifies = serializedObject.FindProperty("Notifies");
+    var clipCount = clips.arraySize;
+    var notifyCount = notifies.arraySize;
     Rect header = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 50);
     EditorGUI.DrawRect(header, new Color(0.05f, 0.05f, 0.05f));
-    Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, montage.Clips.Count * (TrackHeight + TrackSpacing) + montage.Notifies.Count * (TrackHeight + TrackSpacing) + 100);
+    Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, clipCount * (TrackHeight + TrackSpacing) + notifyCount * (TrackHeight + TrackSpacing) + 100);
     EditorGUI.DrawRect(rect, new Color(0.15f, 0.15f, 0.15f));
 
     HandleTimelineScrolling(rect);
     DrawFrames(rect);
     float yOffset = rect.y + 50;
-    foreach (var clip in montage.Clips) {
-      DrawClipRow(rect, clip, yOffset);
+    for (var i = 0; i < clipCount; i++) {
+      DrawClipRow(rect, montage.Clips[i], clips.GetArrayElementAtIndex(i), yOffset);
       yOffset += TrackHeight + TrackSpacing;
     }
     yOffset += 20; // Space between clips and notifies
-    foreach (var notify in montage.Notifies) {
-      DrawNotifyRow(rect, notify, yOffset);
+    for (var i = 0; i < notifyCount; i++) {
+      DrawNotifyRow(rect, montage.Notifies[i], notifies.GetArrayElementAtIndex(i), yOffset);
       yOffset += TrackHeight + TrackSpacing;
     }
     if (!IsPlaying) {
@@ -254,9 +259,14 @@ public class AnimationMontageInspector : Editor {
     }
   }
 
-  void DrawClipRow(Rect rect, AnimationMontageClip clip, float yOffset) {
+  void DrawClipRow(Rect rect, AnimationMontageClip montageClip, SerializedProperty serializedProperty, float yOffset) {
     float PixelX(float frameX) => rect.x + PaddingLeft + (frameX / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     float TrackX(int frame) => Mathf.Clamp(frame - FrameOffset, 0, FrameOffset + VisibleFrames);
+    int startFrame = serializedProperty.FindPropertyRelative("StartFrame").intValue;
+    int fadeInFrames = serializedProperty.FindPropertyRelative("FadeInFrames").intValue;
+    int fadeOutFrames = serializedProperty.FindPropertyRelative("FadeOutFrames").intValue;
+    int endFrame = montageClip.EndFrame;
+    AnimationClip animationClip = montageClip.AnimationClip;
 
     Rect trackRect;
     Rect clipRect;
@@ -265,24 +275,24 @@ public class AnimationMontageInspector : Editor {
       EditorGUI.DrawRect(trackRect, new Color(0.2f, 0.2f, 0.2f));
     }
     {
-      float x0 = TrackX(clip.StartFrame);
-      float x1 = TrackX(clip.EndFrame);
+      float x0 = TrackX(startFrame);
+      float x1 = TrackX(endFrame);
       float startX = PixelX(x0);
       float endX = PixelX(x1);
       clipRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
       EditorGUI.DrawRect(clipRect, new Color(0.5f, 0.7f, 0.9f));
     }
-    if (clip.FadeInFrames > 0) {
-      float x0 = TrackX(clip.StartFrame);
-      float x1 = TrackX(clip.StartFrame+clip.FadeInFrames);
+    if (fadeInFrames > 0) {
+      float x0 = TrackX(startFrame);
+      float x1 = TrackX(startFrame+fadeInFrames);
       float startX = PixelX(x0);
       float endX = PixelX(x1);
       Rect fadeInRect = new Rect(startX, yOffset, Mathf.Max(2, endX-startX), 2);
       EditorGUI.DrawRect(fadeInRect, Color.white);
     }
-    if (clip.FadeOutFrames > 0) {
-      float x0 = TrackX(clip.EndFrame-clip.FadeOutFrames);
-      float x1 = TrackX(clip.EndFrame);
+    if (fadeOutFrames > 0) {
+      float x0 = TrackX(endFrame-fadeOutFrames);
+      float x1 = TrackX(endFrame);
       float startX = PixelX(x0);
       float endX = PixelX(x1);
       Rect fadeOutRect = new Rect(startX, yOffset, Mathf.Max(2, endX-startX), 2);
@@ -290,27 +300,33 @@ public class AnimationMontageInspector : Editor {
     }
 
     GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { normal = { textColor = Color.black } };
-    GUI.Label(clipRect, clip.AnimationClip ? clip.AnimationClip.name : "No Clip", labelStyle);
-    HandleMouseInput(trackRect, clip, false);
+    GUI.Label(clipRect, animationClip ? $"{animationClip.name}({montageClip.Speed}x)": "No Clip", labelStyle);
+    HandleMouseInput(trackRect, serializedProperty, false);
   }
 
-  void DrawNotifyRow(Rect rect, AnimationNotify notify, float yOffset) {
+  void DrawNotifyRow(Rect rect, AnimationNotify notify, SerializedProperty serializedProperty, float yOffset) {
+    string name = serializedProperty.FindPropertyRelative("Name").stringValue;
+    int startFrame = serializedProperty.FindPropertyRelative("StartFrame").intValue;
+    int endFrame = notify.EndFrame;
     Rect rowRect = new Rect(rect.x + PaddingLeft, yOffset, rect.width - PaddingLeft - PaddingRight, TrackHeight);
     EditorGUI.DrawRect(rowRect, new Color(0.25f, 0.25f, 0.25f));
 
-    float x0 = Mathf.Clamp(notify.StartFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
-    float x1 = Mathf.Clamp(notify.EndFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
+    float x0 = Mathf.Clamp(startFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
+    float x1 = Mathf.Clamp(endFrame - FrameOffset, 0, FrameOffset + VisibleFrames);
     float startX = rect.x + PaddingLeft + (x0 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     float endX = rect.x + PaddingLeft + (x1 / (float)VisibleFrames) * (rect.width - PaddingLeft - PaddingRight);
     Rect trackRect = new Rect(startX, yOffset, Mathf.Max(2, endX - startX), TrackHeight);
     EditorGUI.DrawRect(trackRect, new Color(0.8f, 0.5f, 0.5f));
 
     GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { normal = { textColor = Color.black } };
-    GUI.Label(trackRect, notify.Name, labelStyle);
-    HandleMouseInput(rowRect, notify, true);
+    GUI.Label(trackRect, name, labelStyle);
+    HandleMouseInput(rowRect, serializedProperty, true);
   }
 
-  void HandleMouseInput(Rect trackRect, object item, bool isNotify) {
+  void HandleMouseInput(Rect trackRect, SerializedProperty property, bool isNotify) {
+    var startFrame = property.FindPropertyRelative("StartFrame");
+    var endFrame = property.FindPropertyRelative("EndFrame");
+    var duration = property.FindPropertyRelative("Duration");
     Event e = Event.current;
     if (trackRect.Contains(e.mousePosition)) {
       if (e.type == EventType.MouseDown) {
@@ -319,17 +335,21 @@ public class AnimationMontageInspector : Editor {
           0, int.MaxValue
         );
 
-        if (item is AnimationMontageClip clip) {
-          if (e.button == 0) clip.StartFrame = (int)clickedFrame;
-          if (e.button == 1) clip.StartFrame = Mathf.Max(0, (int)clickedFrame - clip.Duration);
-        } else if (item is AnimationNotify notify) {
+        if (!isNotify) {
           if (e.button == 0) {
-            notify.StartFrame = (int)clickedFrame;
-            notify.EndFrame = Mathf.Max(notify.StartFrame + 1, notify.EndFrame);
+            startFrame.intValue = (int)clickedFrame;
           }
           if (e.button == 1) {
-            notify.EndFrame = (int)clickedFrame;
-            notify.StartFrame = Mathf.Min(notify.EndFrame - 1, notify.StartFrame);
+            startFrame.intValue = Mathf.Max(0, (int)clickedFrame - duration.intValue);
+          }
+        } else {
+          if (e.button == 0) {
+            startFrame.intValue = (int)clickedFrame;
+            endFrame.intValue = Mathf.Max(startFrame.intValue + 1, endFrame.intValue);
+          }
+          if (e.button == 1) {
+            endFrame.intValue = (int)clickedFrame;
+            startFrame.intValue = Mathf.Min(endFrame.intValue - 1, startFrame.intValue);
           }
         }
 

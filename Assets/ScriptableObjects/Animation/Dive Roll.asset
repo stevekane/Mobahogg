@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimatorPrefab: {fileID: 5035619387605278895, guid: ec5216c9005ebec498f51547e618f28f, type: 3}
   Clips:
-  - Name: Leaping Dive Roll
-    AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
+  - AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
     FootIK: 1
     StartFrame: 0
     Speed: 2
@@ -24,4 +23,4 @@ MonoBehaviour:
   Notifies:
   - Name: Root Motion
     StartFrame: 0
-    EndFrame: 68
+    EndFrame: 34

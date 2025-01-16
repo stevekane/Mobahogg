@@ -36,7 +36,6 @@ public class AnimationMontage : PlayableAsset {
 
 [Serializable]
 public class AnimationMontageClip {
-  public string Name = "Animation Montage Clip";
   public AnimationClip AnimationClip;
   public bool FootIK;
   public int StartFrame;
