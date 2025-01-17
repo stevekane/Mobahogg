@@ -40,6 +40,7 @@ public class PlayerAnimationGraph : MonoBehaviour {
   ScriptPlayable<SelectBehavior> GroundedMovingSelect;
   ScriptPlayable<SelectBehavior> AirborneSelect;
   ScriptPlayable<SlotBehavior> Slot;
+  AnimationScriptPlayable RootMotionScaler;
   Playable CurrentAttackMontagePlayable;
   Playable CurrentDashMontagePlayable;
 
@@ -79,13 +80,18 @@ public class PlayerAnimationGraph : MonoBehaviour {
     LocomotionSelect.GetBehaviour().Add(AirborneSelect);
 
     Slot = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
-    Slot.SetOutputCount(2);
     Slot.GetBehaviour().Connect(LocomotionSelect);
+
+    RootMotionScaler = AnimationScriptPlayable.Create(Graph, new RootMotionScaleJob(1));
+    RootMotionScaler.AddInput(Slot, 0, 1);
+
+    var rootPlayable = Graph.GetRootPlayable(0);
+    rootPlayable.SetOutputCount(2);
     var animationOutput = AnimationPlayableOutput.Create(Graph, $"AnimationOutput({Animator.name})", Animator);
-    animationOutput.SetSourcePlayable(Slot, 0);
+    animationOutput.SetSourcePlayable(rootPlayable, 0);
     var scriptOutput = ScriptPlayableOutput.Create(Graph, $"ScriptOutput({name})");
     scriptOutput.SetUserData(this);
-    scriptOutput.SetSourcePlayable(Slot, 1);
+    scriptOutput.SetSourcePlayable(rootPlayable, 1);
     Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
     Graph.Evaluate(0);
   }
@@ -139,9 +145,23 @@ public class PlayerAnimationGraph : MonoBehaviour {
       clipPlayable.SetSpeed(LocomotionSpeed / clipRootSpeed);
       GroundedMovingSelect.GetBehaviour().CrossFade(bestFittingGroundClipIndex, true, TransitionSpeed);
     }
+    var slot = Slot.GetBehaviour();
+    var rootMotionScale =
+      slot.ActivePlayable.Equals(CurrentAttackMontagePlayable)
+        ? AttackRootMotionScalar
+        : slot.ActivePlayable.Equals(CurrentDashMontagePlayable)
+          ? DiveRollRootMotionScalar
+          : 0;
+    Debug.Log(rootMotionScale);
+    RootMotionScaler.SetJobData(new RootMotionScaleJob(rootMotionScale));
     Slot.GetBehaviour().FadeDuration = SlotCrossFadeDuration;
     AirborneSelect.GetBehaviour().CrossFade(0, 1);
     Graph.Evaluate(LocalClock.DeltaTime());
+  }
+
+  void OnAnimatorMove() {
+    transform.position += Animator.deltaPosition;
+    transform.rotation *= Animator.deltaRotation;
   }
 
   void OnNotifyStart(AnimationNotify notify) {
@@ -150,19 +170,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
 
   void OnNotifyEnd(AnimationNotify notify) {
     Debug.Log($"{notify.Name}.End {TimeManager.Instance.FixedFrame()}");
-  }
-
-  void OnAnimatorMove() {
-    var slot = Slot.GetBehaviour();
-    if (slot.ApplyRootMotion) {
-      var speed =
-        slot.ActivePlayable.Equals(CurrentAttackMontagePlayable)
-          ? AttackRootMotionScalar
-          : slot.ActivePlayable.Equals(CurrentDashMontagePlayable)
-            ? DiveRollRootMotionScalar
-            : 1;
-      transform.position += speed * Animator.deltaPosition;
-    }
   }
 
   // Do not pass empty array unless you want to cry or check for -1 at call-site

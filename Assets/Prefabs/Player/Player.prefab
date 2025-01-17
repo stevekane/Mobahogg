@@ -295,7 +295,7 @@ MonoBehaviour:
   LocalClock: {fileID: 988945814378296752}
   AnimatorCallbackHandler: {fileID: 4586432229471970141}
   FrameDuration: 24
-  RootMotionMultiplier: 1
+  RootMotionMultiplier: 3
   TurnSpeed: 180
   Animator: {fileID: 689494837935415685}
   SpellAffected: {fileID: 5889265469151095980}

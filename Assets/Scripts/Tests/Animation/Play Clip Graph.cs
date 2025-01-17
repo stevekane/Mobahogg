@@ -1,50 +1,42 @@
+using System.Collections.Generic;
+using Animation;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 public class PlayClipGraph : MonoBehaviour {
   [SerializeField] Animator Animator;
-  [SerializeField] AnimationClip Clip;
+  [SerializeField] List<AnimationClip> Clips;
+  [SerializeField] int ActiveIndex;
+  [SerializeField] float RootMotionScale = 1;
 
   PlayableGraph Graph;
-  AnimationMixerPlayable Mixer;
+  ScriptPlayable<SelectBehavior> SelectPlayable;
+  AnimationScriptPlayable RootMotionScalePlayable;
+  SelectBehavior SelectBehavior;
   AnimationPlayableOutput Output;
-  bool Active
-    => !Mixer.GetInput(0).IsNull()
-    && Mixer.GetInput(0).IsValid()
-    && !Mixer.GetInput(0).IsDone()
-    && Mixer.GetInput(0).GetTime() != 0;
+
+  void OnValidate() {
+    ActiveIndex = Mathf.Clamp(ActiveIndex, 0, Clips.Count);
+  }
 
   void Start() {
+    var clipPlayable = AnimationClipPlayable.Create(Graph, Clips[0]);
     Graph = PlayableGraph.Create("Play Clip Graph");
-    Mixer = AnimationMixerPlayable.Create(Graph, 1);
+    SelectPlayable = ScriptPlayable<SelectBehavior>.Create(Graph, Clips.Count);
+    SelectBehavior = SelectPlayable.GetBehaviour();
+    Clips.ForEach(c => SelectBehavior.Add(AnimationClipPlayable.Create(Graph, c)));
+    RootMotionScalePlayable = AnimationScriptPlayable.Create(Graph, new RootMotionScaleJob(RootMotionScale), 0);
+    RootMotionScalePlayable.AddInput(SelectPlayable, 0, 1);
     Output = AnimationPlayableOutput.Create(Graph, "Output", Animator);
-    Output.SetSourcePlayable(Mixer);
+    Output.SetSourcePlayable(Graph.GetRootPlayable(0));
     Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
     Graph.Evaluate(0);
   }
 
   void FixedUpdate() {
-    InputRouter.Instance.TryGetButtonState("Attack", 1, out var state);
-    if (state == ButtonState.JustDown) {
-      transform.position = Vector3.zero;
-      var current = Mixer.GetInput(0);
-      if (!current.IsNull()) {
-        Graph.DestroySubgraph(current);
-      }
-      var clipPlayable = AnimationClipPlayable.Create(Graph, Clip);
-      clipPlayable.SetTime(0);
-      clipPlayable.SetDuration(Clip.length);
-      Mixer.ConnectInput(0, clipPlayable, 0, 1);
-      InputRouter.Instance.ConsumeButton("Attack", 1);
-    }
+    SelectBehavior.CrossFade(ActiveIndex, 100);
+    RootMotionScalePlayable.SetJobData(new RootMotionScaleJob(RootMotionScale));
     Graph.Evaluate(Time.deltaTime);
-  }
-
-  void OnAnimatorMove() {
-    if (Active) {
-      transform.position += Animator.deltaPosition;
-      transform.rotation *= Animator.deltaRotation;
-    }
   }
 }

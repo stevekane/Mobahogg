@@ -177,7 +177,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
+  m_Motion: {fileID: 7400000, guid: 76fa88f585471b746abdd8796b82870a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -392,7 +392,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 3b44c6c7ebad2684595389a420f6f68f, type: 3}
+    m_Motion: {fileID: 7400000, guid: 894ff233926115f40a936cdf1b2824a0, type: 3}
     m_Threshold: 5
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -400,7 +400,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 78820a31902d6d0498825b120012c445, type: 3}
+    m_Motion: {fileID: 7400000, guid: 0b66cbf057bee7343bfa93b58d9a4675, type: 3}
     m_Threshold: 10
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1.5
@@ -408,7 +408,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 25a8af12524c3934080e6ee70b0f8148, type: 3}
+    m_Motion: {fileID: 7400000, guid: 7e1d0424bcf539943b00308222f1a8cb, type: 3}
     m_Threshold: 15
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -444,7 +444,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -998496362607748373, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
+  m_Motion: {fileID: 7400000, guid: 086673051c1eb594fab8fb64f84d3a9a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a858fcb7360854ea20a0cf29fea2d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: -998496362607748373, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
+  Clip: {fileID: 7400000, guid: 086673051c1eb594fab8fb64f84d3a9a, type: 2}
   ActiveFrame: 3
   RecoveryFrame: 9
 --- !u!1102 &5194486480124794755
