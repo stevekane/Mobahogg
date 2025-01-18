@@ -1,17 +1,13 @@
 using UnityEngine;
 using Abilities;
 
-public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
+public class DiveRollAbility : Ability {
   [Header("Reads From")]
-  [SerializeField] LocalClock LocalClock;
-  [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] int FrameDuration = 60;
   [SerializeField] float RootMotionMultiplier = 2;
   [SerializeField] float TurnSpeed = 180;
   [Header("Writes To")]
-  [SerializeField] Animator Animator;
   [SerializeField] SpellAffected SpellAffected;
-  [SerializeField] KCharacterController CharacterController;
 
   int Frame;
 
@@ -25,20 +21,24 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancella
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
 
-  public bool IsRunning => Frame < FrameDuration;
+  public override bool IsRunning => Frame < FrameDuration;
 
-  public bool CanRun => true;
+  public override bool CanRun => true;
 
-  public bool CanCancel => false;
+  public override bool CanStop => false;
 
   public bool CanSteer => Frame > 0 && IsRunning;
 
-  public void Run(Vector2 input) {
+  public override void Run() {
+    Animator.SetTrigger("Dash");
+    Frame = 0;
+  }
+
+  // Available only on first frame to set your initial heading
+  public void Launch(Vector2 input) {
     if (input.sqrMagnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(input.XZ().normalized));
     }
-    Animator.SetTrigger("Dash");
-    Frame = 0;
   }
 
   // Does not happen on first frame of the ability but happens on all subsequent
@@ -54,7 +54,7 @@ public class DiveRollAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancella
     }
   }
 
-  public void Cancel() {
+  public override void Stop() {
     Animator.SetTrigger("Cancel");
     Frame = FrameDuration;
   }

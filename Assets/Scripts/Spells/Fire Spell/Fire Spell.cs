@@ -9,11 +9,11 @@ public class FireSpell : Spell {
   // TODO: Could get rid of this list here and pre-allocate on some global physics manager
   Collider[] Colliders = new Collider[32];
 
-  public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
+  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
     Run(position, rotation, owner, this.destroyCancellationToken).Forget();
   }
 
-  async UniTask Run(Vector3 position, Quaternion rotation, Player owner, CancellationToken token) {
+  async UniTask Run(Vector3 position, Quaternion rotation, MonoBehaviour owner, CancellationToken token) {
     var eggGO = Instantiate(Settings.EggPrefab, position, rotation, transform);
     var egg = eggGO.GetComponent<FireSpellEgg>();
     egg.Owner = owner ? owner.gameObject : null;

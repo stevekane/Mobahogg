@@ -1,13 +1,9 @@
 using Abilities;
 using UnityEngine;
 
-public class SpellCastAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
-  [Header("Reads From")]
-  [SerializeField] LocalClock LocalClock;
+public class SpellCastAbility : Ability {
   [Header("Writes To")]
   [SerializeField] SpellHolder SpellHolder;
-  [SerializeField] Player Player;
-  [SerializeField] Animator Animator;
   [SerializeField] int TotalAttackFrames = 20;
 
   int Frame;
@@ -16,25 +12,34 @@ public class SpellCastAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancell
     Frame = TotalAttackFrames;
   }
 
-  public bool IsRunning => Frame < TotalAttackFrames;
+  void OnDestroy() {
+    Frame = TotalAttackFrames;
+  }
 
-  public bool CanRun => SpellHolder.Count > 0;
+  public override bool IsRunning => Frame < TotalAttackFrames;
 
-  public bool CanCancel => false;
+  public override bool CanRun => SpellHolder.Count > 0;
 
-  public void Run(Vector2 direction) {
+  public override bool CanStop => false;
+
+  public void Aim(Vector2 input) {
     var spellPrefab = SpellHolder.Dequeue();
-    var position = transform.position + transform.forward + transform.up;
-    var rotation = transform.rotation;
+    var delta = input.XZ();
+    var rotation = delta.sqrMagnitude > 0
+      ? Quaternion.LookRotation(delta.normalized)
+      : transform.rotation;
+    CharacterController.Rotation.Set(rotation);
+    var position = transform.position + rotation * Vector3.forward + transform.up;
     var spell = Instantiate(spellPrefab);
-    spell.Cast(position, rotation, Player);
-    Animator.SetTrigger("Cast");
+    spell.Cast(position, rotation, AbilityManager);
+  }
+
+  public override void Run() {
     Frame = 0;
   }
 
-  public void Cancel() {
+  public override void Stop() {
     Frame = TotalAttackFrames;
-    Animator.SetTrigger("Cancel");
   }
 
   void FixedUpdate() {

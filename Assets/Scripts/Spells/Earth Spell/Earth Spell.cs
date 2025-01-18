@@ -18,7 +18,7 @@ public class EarthSpell : Spell {
     return Quaternion.AngleAxis(randomAngle, randomAxis) * normalizedVector;
   }
 
-  public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
+  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
     var start = position;
     start.y -= 1;
     var end = start + rotation * (Settings.BallTravelDistance * Vector3.forward);

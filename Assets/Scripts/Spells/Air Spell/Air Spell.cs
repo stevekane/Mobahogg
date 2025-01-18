@@ -12,7 +12,7 @@ public class AirSpell : Spell {
   [SerializeField] int MinSpinSpeed = 360;
   [SerializeField] int MaxSpinSpeed = 360 * 8;
 
-  public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
+  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
     Run(position, rotation, this.destroyCancellationToken).Forget();
   }
 

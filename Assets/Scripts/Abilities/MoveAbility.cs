@@ -2,17 +2,21 @@ using State;
 using Abilities;
 using UnityEngine;
 
-public class MoveAbility : MonoBehaviour, IAbility<Vector2> {
+public class MoveAbility : Ability {
   [Header("Reads From")]
   [SerializeField] MoveSpeed MoveSpeed;
 
-  [Header("Writes To")]
-  [SerializeField] KCharacterController CharacterController;
-  [SerializeField] Animator Animator;
+  public override bool CanRun => true;
 
-  public bool CanRun => true;
+  public override bool CanStop => false;
 
-  public void Run(Vector2 input) {
+  public override bool IsRunning { get; }
+
+  public override void Run() {}
+
+  public override void Stop() {}
+
+  public void Steer(Vector2 input) {
     var delta = input.XZ();
     var direction = delta.normalized;
     if (delta.sqrMagnitude > 0) {

@@ -12,7 +12,7 @@ public class WaterSpell : Spell {
   [SerializeField] int TravelFrames = 60;
   [SerializeField] int BlizzardFrames = 60 * 5;
 
-  public override void Cast(Vector3 position, Quaternion rotation, Player owner) {
+  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
     var start = position;
     var end = position + rotation * Delta;
     Run(start, end, this.destroyCancellationToken).Forget();

@@ -10,19 +10,14 @@ public enum AttackState {
   Recovery
 }
 
-public class AttackAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellable {
+public class AttackAbility : Ability {
   [Header("Reads From")]
-  [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
-  [SerializeField] AimAssistTargeter AimAssistTargeter;
   [SerializeField] AimAssistQuery AimAssistQuery;
-  [SerializeField] LocalClock LocalClock;
   [SerializeField] float RootMotionMultiplier = 1;
   [SerializeField] int AttackComboLength = 3;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
-  [SerializeField] Animator Animator;
-  [SerializeField] KCharacterController CharacterController;
 
   int Index;
   AttackState State;
@@ -65,31 +60,35 @@ public class AttackAbility : MonoBehaviour, IAbility<Vector2>, Async, Cancellabl
 
   public void Hit(Combatant combatant) => Struck.Add(combatant);
 
-  public bool IsRunning
+  public override bool IsRunning
     => State != AttackState.Ready;
 
-  public bool CanRun
+  public override bool CanRun
     => State == AttackState.Recovery
     || State == AttackState.Ready;
 
-  public bool CanCancel
+  public override bool CanStop
     => State == AttackState.Recovery;
 
-  public void Run(Vector2 direction) {
+  public override void Run() {
+    Struck.Clear();
+    Animator.SetTrigger($"Ground Attack {Index}");
+    Index = (Index + 1) % AttackComboLength;
+  }
+
+  // Available on first frame to direct the attack
+  public void Aim(Vector2 direction) {
     // TODO: Possibly use the previously struck list to inform the aim assist system further?
-    var bestTarget = AimAssistManager.Instance.BestTarget(AimAssistTargeter, AimAssistQuery);
+    var bestTarget = AimAssistManager.Instance.BestTarget(AbilityManager.transform, AimAssistQuery);
     if (bestTarget) {
       var delta = bestTarget.transform.position-transform.position;
       CharacterController.Rotation.Set(Quaternion.LookRotation(delta.normalized));
     } else if (direction.magnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
     }
-    Struck.Clear();
-    Animator.SetTrigger($"Ground Attack {Index}");
-    Index = (Index + 1) % AttackComboLength;
   }
 
-  public void Cancel() {
+  public override void Stop() {
     Animator.SetTrigger("Cancel");
     State = AttackState.Ready;
   }

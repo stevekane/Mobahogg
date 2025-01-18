@@ -18,7 +18,9 @@ public class Player : MonoBehaviour {
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
-  bool Jumped;
+  // These kind of a stop-gap while I figure out how to properly handle these instant-like abilities
+  public bool Jumped;
+  public bool Hover;
 
   bool InCoyoteWindow
     => (LocalClock.FixedFrame() - CharacterController.LastGroundedFrame) < Settings.CoyoteFrameCount
@@ -30,38 +32,38 @@ public class Player : MonoBehaviour {
     && Health.CurrentValue > 0;
     // Not stunned
 
-  bool AllNotRunningOrCancellable
-    => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
-    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanCancel)
-    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel);
+  bool AllNotRunningOrStoppable
+    => (!AttackAbility.IsRunning || AttackAbility.CanStop)
+    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanStop)
+    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanStop);
 
-  void CancelRunning() {
-    if (AttackAbility.CanCancel) AttackAbility.Cancel();
-    if (SpellCastAbility.CanCancel) SpellCastAbility.Cancel();
-    if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
+  void StopRunning() {
+    if (AttackAbility.CanStop) AttackAbility.Stop();
+    if (SpellCastAbility.CanStop) SpellCastAbility.Stop();
+    if (DiveRollAbility.CanStop) DiveRollAbility.Stop();
   }
 
   public bool CanJump
     => InValidState
-    && AllNotRunningOrCancellable
+    && AllNotRunningOrStoppable
     && JumpAbility.CanRun
     && (CharacterController.IsGrounded || InCoyoteWindow);
 
   public bool CanAttack
     => InValidState
-    && AllNotRunningOrCancellable
+    && AllNotRunningOrStoppable
     && AttackAbility.CanRun
     && CharacterController.IsGrounded;
 
   public bool CanDash
     => InValidState
-    && AllNotRunningOrCancellable
+    && AllNotRunningOrStoppable
     && DiveRollAbility.CanRun
     && CharacterController.IsGrounded;
 
   public bool CanCastSpell
     => InValidState
-    && AllNotRunningOrCancellable
+    && AllNotRunningOrStoppable
     && SpellCastAbility.CanRun;
 
   public bool CanMove
@@ -82,36 +84,40 @@ public class Player : MonoBehaviour {
     && !SpellCastAbility.IsRunning;
 
   public void Jump() {
-    CancelRunning();
+    StopRunning();
     Jumped = true;
     JumpAbility.Run();
   }
 
-  public void Hover() {
-    HoverAbility.IsRunning = true;
+  public void StartHover() {
+    Hover = true;
   }
 
   public void EndHover() {
-    HoverAbility.IsRunning = false;
+    Hover = false;
   }
 
   public void Dash(Vector2 direction) {
-    CancelRunning();
-    DiveRollAbility.Run(direction);
+    StopRunning();
+    DiveRollAbility.Run();
+    DiveRollAbility.Launch(direction);
   }
 
   public void Attack(Vector2 direction) {
-    CancelRunning();
-    AttackAbility.Run(direction);
+    StopRunning();
+    AttackAbility.Run();
+    AttackAbility.Aim(direction);
   }
 
   public void CastSpell(Vector2 direction) {
-    CancelRunning();
-    SpellCastAbility.Run(direction);
+    StopRunning();
+    SpellCastAbility.Run();
+    SpellCastAbility.Aim(direction);
   }
 
   public void Move(Vector2 direction) {
-    MoveAbility.Run(direction);
+    MoveAbility.Run();
+    MoveAbility.Steer(direction);
   }
 
   public void Steer(Vector2 direction) {
@@ -131,7 +137,7 @@ public class Player : MonoBehaviour {
       var jumpSpeed = Settings.InitialJumpSpeed;
       CharacterController.ForceUnground.Set(true);
       CharacterController.Velocity.SetY(jumpSpeed);
-    } else if (HoverAbility.IsRunning) {
+    } else if (Hover) {
       CharacterController.Velocity.SetY(-Mathf.Abs(Settings.HoverVelocity));
     } else if (CharacterController.IsGrounded) {
       CharacterController.Velocity.SetY(0);
@@ -139,13 +145,5 @@ public class Player : MonoBehaviour {
       CharacterController.Acceleration.Add(Settings.Gravity(CharacterController.Velocity.Current));
     }
     Jumped = false;
-  }
-
-  void OnGUI() {
-    if (!ShowDebug)
-      return;
-    GUILayout.BeginVertical("box");
-    GUILayout.Label($"Coyote : {InCoyoteWindow} Current: {LocalClock.FixedFrame()} LastGrounded: {CharacterController.LastGroundedFrame}");
-    GUILayout.EndVertical();
   }
 }

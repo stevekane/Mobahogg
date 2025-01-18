@@ -246,7 +246,7 @@ MonoBehaviour:
   AnimatorCallbackHandler: {fileID: 4586432229471970141}
   Weapon: {fileID: 1577097722156766584}
   AttackAbility: {fileID: 5165232841971343211}
-  HoverAbility: {fileID: 4027216296429641143}
+  Player: {fileID: 5297446814743032710}
   TurnSpeed: 720
 --- !u!1 &1362762618311181353
 GameObject:
@@ -258,6 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2129326856527686013}
   - component: {fileID: 5521340178927407636}
+  - component: {fileID: 159906669489711470}
   m_Layer: 0
   m_Name: Dive Roll Ability
   m_TagString: Untagged
@@ -292,14 +293,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7d26a13c7cec54080aa8cb72b094da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalClock: {fileID: 988945814378296752}
-  AnimatorCallbackHandler: {fileID: 4586432229471970141}
   FrameDuration: 24
   RootMotionMultiplier: 3
   TurnSpeed: 180
-  Animator: {fileID: 689494837935415685}
   SpellAffected: {fileID: 5889265469151095980}
-  CharacterController: {fileID: 3542533184097295049}
+--- !u!114 &159906669489711470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362762618311181353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  BlockAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+  CancelAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
 --- !u!1 &1529338545694879980
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,6 +684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8286050532191162084}
   - component: {fileID: 5165232841971343211}
+  - component: {fileID: 1178469524206981660}
   - component: {fileID: 4976621135791344551}
   - component: {fileID: 6665645738327028371}
   m_Layer: 6
@@ -701,15 +721,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d253cf55773ff0149b6c448511e14c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimatorCallbackHandler: {fileID: 4586432229471970141}
-  AimAssistTargeter: {fileID: 4565681890973898736}
   AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
-  LocalClock: {fileID: 988945814378296752}
   RootMotionMultiplier: 3
   AttackComboLength: 1
   Hitbox: {fileID: 4976621135791344551}
-  Animator: {fileID: 689494837935415685}
-  CharacterController: {fileID: 3542533184097295049}
+--- !u!114 &1178469524206981660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2877990208326969698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  BlockAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+  CancelAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
 --- !u!114 &4976621135791344551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,6 +888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7105776654639325804}
   - component: {fileID: 8517117487763200628}
+  - component: {fileID: 9166348394361976778}
   m_Layer: 0
   m_Name: Spell Cast Ability
   m_TagString: Untagged
@@ -884,11 +923,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21b9a64cb9c89842808b848bbb64d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalClock: {fileID: 988945814378296752}
   SpellHolder: {fileID: 4106878518632410812}
-  Player: {fileID: 5297446814743032710}
-  Animator: {fileID: 689494837935415685}
   TotalAttackFrames: 20
+--- !u!114 &9166348394361976778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3683463593941235901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  BlockAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+  CancelAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
 --- !u!1 &3942386700621099394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 548796233636795912}
   - component: {fileID: 9114625394588072198}
+  - component: {fileID: 7294960273198380755}
   m_Layer: 0
   m_Name: Move Ability
   m_TagString: Untagged
@@ -1097,8 +1156,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: {fileID: 4751482104723936499}
-  CharacterController: {fileID: 3542533184097295049}
-  Animator: {fileID: 689494837935415685}
+--- !u!114 &7294960273198380755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5060141045809987463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+  BlockAbilitiesWith:
+    Tags: []
+  CancelAbilitiesWith:
+    Tags: []
 --- !u!1 &5299824625470687103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1109,6 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2913801731776420348}
   - component: {fileID: 6752439352796882793}
+  - component: {fileID: 5342727671095622907}
   m_Layer: 0
   m_Name: Jump Ability
   m_TagString: Untagged
@@ -1143,6 +1220,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57234132697d5e499c426626cc2cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5342727671095622907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5299824625470687103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  BlockAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
+  CancelAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
 --- !u!1 &5308709295670658322
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,6 +1704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3197239692994175224}
   - component: {fileID: 4027216296429641143}
+  - component: {fileID: 5000469399022551223}
   m_Layer: 0
   m_Name: Hover Ability
   m_TagString: Untagged
@@ -1639,6 +1739,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e38ef91589124545908f8f0d3d4cc53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5000469399022551223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7691134030499323945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20bbeb78b21641409b481b28f1ac09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tags:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  BlockAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
+  CancelAbilitiesWith:
+    Tags:
+    - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
 --- !u!1 &7760936782829562045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1648,10 +1769,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9139747016867494336}
-  - component: {fileID: 988945814378296752}
-  - component: {fileID: 5297446814743032710}
   - component: {fileID: 4565681890973898736}
   - component: {fileID: 6859262562219351446}
+  - component: {fileID: 5297446814743032710}
+  - component: {fileID: 988945814378296752}
+  - component: {fileID: 946447732338073073}
   - component: {fileID: 3542533184097295049}
   - component: {fileID: 3726876089221691650}
   - component: {fileID: 7352679195760697840}
@@ -1688,42 +1810,6 @@ Transform:
   - {fileID: 6820856013763512239}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &988945814378296752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7760936782829562045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5297446814743032710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7760936782829562045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a178d748c0ae349bb68268131c46f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
-  CharacterController: {fileID: 3542533184097295049}
-  LocalClock: {fileID: 988945814378296752}
-  Health: {fileID: 94004394668583191}
-  AttackAbility: {fileID: 5165232841971343211}
-  SpellCastAbility: {fileID: 8517117487763200628}
-  DiveRollAbility: {fileID: 5521340178927407636}
-  JumpAbility: {fileID: 6752439352796882793}
-  MoveAbility: {fileID: 9114625394588072198}
-  HoverAbility: {fileID: 4027216296429641143}
-  ShowDebug: 0
-  PortIndex: 0
 --- !u!114 &4565681890973898736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1761,6 +1847,61 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5297446814743032710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a178d748c0ae349bb68268131c46f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
+  CharacterController: {fileID: 3542533184097295049}
+  LocalClock: {fileID: 988945814378296752}
+  Health: {fileID: 94004394668583191}
+  AttackAbility: {fileID: 5165232841971343211}
+  SpellCastAbility: {fileID: 8517117487763200628}
+  DiveRollAbility: {fileID: 5521340178927407636}
+  JumpAbility: {fileID: 6752439352796882793}
+  MoveAbility: {fileID: 9114625394588072198}
+  HoverAbility: {fileID: 4027216296429641143}
+  ShowDebug: 0
+  PortIndex: 0
+  Jumped: 0
+  Hover: 0
+--- !u!114 &988945814378296752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &946447732338073073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94685ec8f36bc04d85777a3c51c2b3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RegisteredAbilities: []
+  LocalClock: {fileID: 988945814378296752}
+  Animator: {fileID: 689494837935415685}
+  AnimatorCallbackHandler: {fileID: 4586432229471970141}
+  CharacterController: {fileID: 3542533184097295049}
 --- !u!114 &3542533184097295049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2354,6 +2495,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 5297446814743032710}
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: SpellHolder
       value: 

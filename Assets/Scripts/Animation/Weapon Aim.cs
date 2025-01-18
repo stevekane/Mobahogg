@@ -6,7 +6,7 @@ public class WeaponAim : MonoBehaviour {
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;
   [SerializeField] AttackAbility AttackAbility;
-  [SerializeField] HoverAbility HoverAbility;
+  [SerializeField] Player Player;
   [SerializeField] float TurnSpeed = 720;
 
   Quaternion DefaultLocalRotation;
@@ -14,8 +14,8 @@ public class WeaponAim : MonoBehaviour {
   Vector3? AimDirection {
     get {
       if (AttackAbility.IsRunning) return Vector3.forward;
-      if (HoverAbility.IsRunning) return Vector3.up;
-      else return null;
+      if (Player.Hover)            return Vector3.up;
+      else                         return null;
     }
   }
 

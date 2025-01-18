@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
       InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
     }
     if (player.CanHover && jump == ButtonState.Down) {
-      player.Hover();
+      player.StartHover();
     } else {
       player.EndHover();
     }
