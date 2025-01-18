@@ -38,7 +38,7 @@ namespace Abilities {
         if (registeredAbility.Ability.IsRunning) {
           var doesBlock = TagSet.Overlap(registeredAbility.AbilityTags.BlockAbilitiesWith, matchingAbility.AbilityTags.Tags);
           var shouldCancel = TagSet.Overlap(registeredAbility.AbilityTags.Tags, matchingAbility.AbilityTags.CancelAbilitiesWith);
-          var canCancel = registeredAbility.Ability.CanStop;
+          var canCancel = registeredAbility.Ability.CanCancel;
           shouldRun = !doesBlock || (shouldCancel && canCancel);
         }
       }
@@ -61,9 +61,9 @@ namespace Abilities {
 
       foreach (var registeredAbility in RegisteredAbilities) {
         var shouldCancel = TagSet.Overlap(registeredAbility.AbilityTags.Tags, matchingAbility.AbilityTags.CancelAbilitiesWith);
-        var canCancel = registeredAbility.Ability.CanStop;
+        var canCancel = registeredAbility.Ability.CanCancel;
         if (shouldCancel && canCancel) {
-          registeredAbility.Ability.Stop();
+          registeredAbility.Ability.Cancel();
         }
       }
       ability.Run();

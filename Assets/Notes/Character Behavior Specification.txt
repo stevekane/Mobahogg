@@ -1,0 +1,82 @@
+AliveAndActive WHEN
+  && IsAlive
+  && NotDisabled
+
+AbleToAct WHEN
+  && Hover.NotRunning   || Hover.Cancel.Active
+  && Attack.NotRunning  || Attack.Cancel.Active
+  && Dash.NotRunning    || Dash.Cancel.Active
+  && Spell.NotRunning   || Spell.Cancel.Active
+
+MOVE
+  Move(Vector3) WHEN
+    && AliveAndActive
+    && AbleToAct
+
+JUMP
+  Jump.Launch WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Grounded || InCoyoteWindow
+
+HOVER
+  Hover.Begin WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Airborne
+    && Falling
+
+  Hover.Interupt WHEN
+    Hover.IsRunning
+
+  Hover.Cancel WHEN
+    && AliveAndActive
+    && Hover.IsRunning
+
+ATTACK
+  Attack.Launch(Vector3) WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Grounded
+
+  Attack.Interupt WHEN
+    && Attack.IsRunning
+
+  Attack.Cancel WHEN
+    && AliveAndActive
+    && Attack.IsRunning
+    && Attack.InRecovery
+    && Attack.DidHitSomething
+
+DASH
+  Dash.Launch(Vector3) WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Grounded
+
+  Dash.Steer(Vector3) WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Dash.IsRunning
+
+  Dash.Interupt WHEN
+    && Dash.IsRunning
+
+  Dash.Cancel WHEN
+    && AliveAndActive
+    && Dash.IsRunning
+    && Dash.InRecovery
+
+SPELL
+  Spell.Cast(Vector3) WHEN
+    && AliveAndActive
+    && AbleToAct
+    && Spell.HasCharge
+
+  Spell.Interupt WHEN
+    && Spell.IsRunning
+
+  Spell.Cancel WHEN
+    && AliveAndActive
+    && Spell.IsRunning
+    && Spell.InRecovery

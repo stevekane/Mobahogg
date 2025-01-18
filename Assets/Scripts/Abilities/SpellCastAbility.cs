@@ -18,10 +18,7 @@ public class SpellCastAbility : Ability {
 
   public override bool IsRunning => Frame < TotalAttackFrames;
 
-  public override bool CanRun => SpellHolder.Count > 0;
-
-  public override bool CanStop => false;
-
+  public bool CanAim => Frame == 0;
   public void Aim(Vector2 input) {
     var spellPrefab = SpellHolder.Dequeue();
     var delta = input.XZ();
@@ -34,11 +31,13 @@ public class SpellCastAbility : Ability {
     spell.Cast(position, rotation, AbilityManager);
   }
 
+  public override bool CanRun => SpellHolder.Count > 0;
   public override void Run() {
     Frame = 0;
   }
 
-  public override void Stop() {
+  public override bool CanCancel => false;
+  public override void Cancel() {
     Frame = TotalAttackFrames;
   }
 

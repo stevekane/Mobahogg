@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Abilities {
-  public abstract class Ability : MonoBehaviour, IAbility {
+  public abstract class Ability : MonoBehaviour {
     protected AbilityManager AbilityManager;
     protected LocalClock LocalClock => AbilityManager.LocalClock;
     protected Animator Animator => AbilityManager.Animator;
@@ -11,27 +11,11 @@ namespace Abilities {
     public void Register(AbilityManager abilityManager) {
       AbilityManager = abilityManager;
     }
-    public virtual bool CanRun { get; }
-    public virtual bool CanStop { get; }
-    public virtual bool IsRunning { get; }
-    public virtual void Run() {}
-    public virtual void Stop() {}
-  }
-
-  public interface IAbility {
-    public bool CanRun { get; }
-    public bool CanStop { get; }
-    public bool IsRunning { get; }
-    public void Run();
-    public void Stop();
-  }
-
-  public interface IAbility<T> {
-    public bool CanRun { get; }
-    public bool CanStop { get; }
-    public bool IsRunning { get; }
-    public void Run(T t);
-    public void Stop();
+    public abstract bool CanRun { get; }
+    public abstract bool CanCancel { get; }
+    public abstract bool IsRunning { get; }
+    public abstract void Run();
+    public abstract void Cancel();
   }
 
   public interface IAbilityStartCondition {

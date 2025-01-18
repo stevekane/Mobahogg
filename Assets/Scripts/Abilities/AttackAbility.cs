@@ -19,7 +19,6 @@ public class AttackAbility : Ability {
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
 
-  int Index;
   AttackState State;
   List<Combatant> Struck = new(16);
 
@@ -60,25 +59,15 @@ public class AttackAbility : Ability {
 
   public void Hit(Combatant combatant) => Struck.Add(combatant);
 
-  public override bool IsRunning
-    => State != AttackState.Ready;
-
-  public override bool CanRun
-    => State == AttackState.Recovery
-    || State == AttackState.Ready;
-
-  public override bool CanStop
-    => State == AttackState.Recovery;
-
+  public override bool IsRunning => State != AttackState.Ready;
+  public override bool CanRun => true;
   public override void Run() {
     Struck.Clear();
-    Animator.SetTrigger($"Ground Attack {Index}");
-    Index = (Index + 1) % AttackComboLength;
+    Animator.SetTrigger($"Ground Attack {0}");
   }
 
-  // Available on first frame to direct the attack
+  public bool CanAim => State == AttackState.Ready;
   public void Aim(Vector2 direction) {
-    // TODO: Possibly use the previously struck list to inform the aim assist system further?
     var bestTarget = AimAssistManager.Instance.BestTarget(AbilityManager.transform, AimAssistQuery);
     if (bestTarget) {
       var delta = bestTarget.transform.position-transform.position;
@@ -88,14 +77,13 @@ public class AttackAbility : Ability {
     }
   }
 
-  public override void Stop() {
+  public override bool CanCancel => State == AttackState.Recovery && Struck.Count > 0;
+  public override void Cancel() {
     Animator.SetTrigger("Cancel");
     State = AttackState.Ready;
   }
 
   void FixedUpdate() {
-    if (!IsRunning)
-      return;
     Hitbox.CollisionEnabled = State == AttackState.Active;
   }
 }

@@ -6,16 +6,20 @@ public class MoveAbility : Ability {
   [Header("Reads From")]
   [SerializeField] MoveSpeed MoveSpeed;
 
+  public bool Moving;
+
+  public override bool IsRunning => false;
   public override bool CanRun => true;
+  public override void Run() {
+    Moving = true;
+  }
 
-  public override bool CanStop => false;
+  public override bool CanCancel => false;
+  public override void Cancel() {
+    Moving = false;
+  }
 
-  public override bool IsRunning { get; }
-
-  public override void Run() {}
-
-  public override void Stop() {}
-
+  public bool CanSteer => Moving;
   public void Steer(Vector2 input) {
     var delta = input.XZ();
     var direction = delta.normalized;

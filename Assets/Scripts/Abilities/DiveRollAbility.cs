@@ -4,6 +4,7 @@ using Abilities;
 public class DiveRollAbility : Ability {
   [Header("Reads From")]
   [SerializeField] int FrameDuration = 60;
+  [SerializeField] int CancelFrames = 10;
   [SerializeField] float RootMotionMultiplier = 2;
   [SerializeField] float TurnSpeed = 180;
   [Header("Writes To")]
@@ -21,27 +22,23 @@ public class DiveRollAbility : Ability {
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
 
+  // TODO: Could include Groundedness here as an internal requirement?
   public override bool IsRunning => Frame < FrameDuration;
-
   public override bool CanRun => true;
-
-  public override bool CanStop => false;
-
-  public bool CanSteer => Frame > 0 && IsRunning;
-
   public override void Run() {
     Animator.SetTrigger("Dash");
     Frame = 0;
   }
 
   // Available only on first frame to set your initial heading
+  public bool CanLaunch => IsRunning && Frame == 0;
   public void Launch(Vector2 input) {
     if (input.sqrMagnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(input.XZ().normalized));
     }
   }
 
-  // Does not happen on first frame of the ability but happens on all subsequent
+  public bool CanSteer => IsRunning && Frame > 0;
   public void Steer(Vector2 input) {
     if (input.magnitude > 0) {
       var desiredForward = input.XZ().normalized;
@@ -54,7 +51,8 @@ public class DiveRollAbility : Ability {
     }
   }
 
-  public override void Stop() {
+  public override bool CanCancel => IsRunning && Frame > (FrameDuration-CancelFrames);
+  public override void Cancel() {
     Animator.SetTrigger("Cancel");
     Frame = FrameDuration;
   }

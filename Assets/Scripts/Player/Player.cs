@@ -27,47 +27,47 @@ public class Player : MonoBehaviour {
     && !CharacterController.IsGrounded
     && CharacterController.Falling;
 
-  bool InValidState
+  bool AliveAndActive
     => !LocalClock.Frozen()
     && Health.CurrentValue > 0;
     // Not stunned
 
-  bool AllNotRunningOrStoppable
-    => (!AttackAbility.IsRunning || AttackAbility.CanStop)
-    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanStop)
-    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanStop);
+  bool AbleToAct
+    => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
+    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanCancel)
+    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel);
 
   void StopRunning() {
-    if (AttackAbility.CanStop) AttackAbility.Stop();
-    if (SpellCastAbility.CanStop) SpellCastAbility.Stop();
-    if (DiveRollAbility.CanStop) DiveRollAbility.Stop();
+    if (AttackAbility.CanCancel) AttackAbility.Cancel();
+    if (SpellCastAbility.CanCancel) SpellCastAbility.Cancel();
+    if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
   }
 
   public bool CanJump
-    => InValidState
-    && AllNotRunningOrStoppable
+    => AliveAndActive
+    && AbleToAct
     && JumpAbility.CanRun
     && (CharacterController.IsGrounded || InCoyoteWindow);
 
   public bool CanAttack
-    => InValidState
-    && AllNotRunningOrStoppable
+    => AliveAndActive
+    && AbleToAct
     && AttackAbility.CanRun
     && CharacterController.IsGrounded;
 
   public bool CanDash
-    => InValidState
-    && AllNotRunningOrStoppable
+    => AliveAndActive
+    && AbleToAct
     && DiveRollAbility.CanRun
     && CharacterController.IsGrounded;
 
   public bool CanCastSpell
-    => InValidState
-    && AllNotRunningOrStoppable
+    => AliveAndActive
+    && AbleToAct
     && SpellCastAbility.CanRun;
 
   public bool CanMove
-    => InValidState
+    => AliveAndActive
     && MoveAbility.CanRun
     && !AttackAbility.IsRunning
     && !SpellCastAbility.IsRunning
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour {
     && DiveRollAbility.CanSteer;
 
   public bool CanHover
-    => InValidState
+    => AliveAndActive
     && !CharacterController.IsGrounded
     && CharacterController.Falling
     && !SpellCastAbility.IsRunning;
