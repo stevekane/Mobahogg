@@ -25,7 +25,7 @@ public class AttackAnimationStateBehavior : StateMachineBehaviour  {
   public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
     var duration = Clip.length;
     var frameRate = Clip.frameRate;
-    var frame = Mathf.FloorToInt(stateInfo.normalizedTime * duration * frameRate);
+    var frame = Mathf.RoundToInt(stateInfo.normalizedTime * duration * frameRate);
     if (frame >= ActiveFrame && !ActiveFired) {
       ActiveFired = true;
       AnimatorCallbackHandler.SendMessage("AnimationEvent", "Active");
