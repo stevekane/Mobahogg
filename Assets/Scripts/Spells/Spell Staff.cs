@@ -12,6 +12,16 @@ public class SpellStaff : MonoBehaviour {
 
   Queue<GameObject> SpellCharges = new();
 
+  public void Open() {
+    Animator.SetInteger("Head State", 2);
+    Animator.SetBool("Spinning", true);
+  }
+
+  public void Close() {
+    Animator.SetInteger("Head State", 0);
+    Animator.SetBool("Spinning", false);
+  }
+
   void AddSpell(Spell spell) {
     var index = SpellHolder.Count-1;
     var owner = SpellChargeLocations[index];
@@ -36,10 +46,5 @@ public class SpellStaff : MonoBehaviour {
   void OnDestroy() {
     SpellHolder.OnAddSpell.Unlisten(AddSpell);
     SpellHolder.OnRemoveSpell.Unlisten(ShiftSpells);
-  }
-
-  void FixedUpdate() {
-    Animator.SetInteger("Head State", Player.Hover ? 2 : SpellCastAbility.IsRunning ? 1 : 0);
-    Animator.SetBool("Spinning", Player.Hover);
   }
 }

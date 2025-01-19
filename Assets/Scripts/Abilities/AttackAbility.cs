@@ -14,10 +14,10 @@ public class AttackAbility : Ability {
   [Header("Reads From")]
   [SerializeField] AimAssistQuery AimAssistQuery;
   [SerializeField] float RootMotionMultiplier = 1;
-  [SerializeField] int AttackComboLength = 3;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
+  [SerializeField] WeaponAim WeaponAim;
 
   AttackState State;
   List<Combatant> Struck = new(16);
@@ -63,6 +63,8 @@ public class AttackAbility : Ability {
   public override bool CanRun => true;
   public override void Run() {
     Struck.Clear();
+    WeaponAim.AimDirection = Vector3.forward;
+    State = AttackState.Ready;
     Animator.SetTrigger($"Ground Attack {0}");
   }
 
@@ -79,8 +81,10 @@ public class AttackAbility : Ability {
 
   public override bool CanCancel => State == AttackState.Recovery && Struck.Count > 0;
   public override void Cancel() {
-    Animator.SetTrigger("Cancel");
+    Struck.Clear();
+    WeaponAim.AimDirection = null;
     State = AttackState.Ready;
+    Animator.SetTrigger("Cancel");
   }
 
   void FixedUpdate() {

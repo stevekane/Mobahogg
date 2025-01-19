@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
     }
     if (player.CanHover && jump == ButtonState.Down) {
       player.StartHover();
-    } else {
+    } else if (player.CanEndHover) {
       player.EndHover();
     }
 

@@ -5,6 +5,9 @@ using UnityEngine;
 public class HoverAbility : Ability {
   public bool Hovering;
 
+  [SerializeField] SpellStaff SpellStaff;
+  [SerializeField] WeaponAim WeaponAim;
+
   void Start() {
     CharacterController.OnLand.Listen(Cancel);
   }
@@ -16,11 +19,14 @@ public class HoverAbility : Ability {
   public override bool IsRunning => Hovering;
   public override bool CanRun => !CharacterController.IsGrounded && CharacterController.Falling;
   public override void Run() {
+    WeaponAim.AimDirection = Vector3.up;
+    SpellStaff.Open();
     Hovering = true;
   }
   public override bool CanCancel => true;
   public override void Cancel() {
-    Debug.Log("Cancel presumably from landing");
+    WeaponAim.AimDirection = null;
+    SpellStaff.Close();
     Hovering = false;
   }
 }

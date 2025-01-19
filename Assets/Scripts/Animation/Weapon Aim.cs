@@ -5,19 +5,11 @@ public class WeaponAim : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;
-  [SerializeField] AttackAbility AttackAbility;
-  [SerializeField] Player Player;
   [SerializeField] float TurnSpeed = 720;
 
   Quaternion DefaultLocalRotation;
 
-  Vector3? AimDirection {
-    get {
-      if (AttackAbility.IsRunning) return Vector3.forward;
-      if (Player.Hover)            return Vector3.up;
-      else                         return null;
-    }
-  }
+  public Vector3? AimDirection = null;
 
   Quaternion WeaponLocalRotationFromWorldSpaceVector(Vector3 v) {
     var worldDirection = transform.TransformDirection(v);

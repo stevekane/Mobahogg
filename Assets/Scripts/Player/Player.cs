@@ -18,9 +18,8 @@ public class Player : MonoBehaviour {
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
-  // These kind of a stop-gap while I figure out how to properly handle these instant-like abilities
+  // stop-gap while I figure out how to properly handle these instant-like abilities
   public bool Jumped;
-  public bool Hover;
 
   bool InCoyoteWindow
     => (LocalClock.FixedFrame() - CharacterController.LastGroundedFrame) < Settings.CoyoteFrameCount
@@ -35,12 +34,14 @@ public class Player : MonoBehaviour {
   bool AbleToAct
     => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
     && (!SpellCastAbility.IsRunning || SpellCastAbility.CanCancel)
-    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel);
+    && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel)
+    && (!HoverAbility.IsRunning || HoverAbility.CanCancel);
 
   void StopRunning() {
     if (AttackAbility.CanCancel) AttackAbility.Cancel();
     if (SpellCastAbility.CanCancel) SpellCastAbility.Cancel();
     if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
+    if (HoverAbility.CanCancel) HoverAbility.Cancel();
   }
 
   public bool CanJump
@@ -83,6 +84,10 @@ public class Player : MonoBehaviour {
     && CharacterController.Falling
     && !SpellCastAbility.IsRunning;
 
+  public bool CanEndHover
+    => AliveAndActive
+    && HoverAbility.IsRunning;
+
   public void Jump() {
     StopRunning();
     Jumped = true;
@@ -90,11 +95,11 @@ public class Player : MonoBehaviour {
   }
 
   public void StartHover() {
-    Hover = true;
+    HoverAbility.Run();
   }
 
   public void EndHover() {
-    Hover = false;
+    HoverAbility.Cancel();
   }
 
   public void Dash(Vector2 direction) {
@@ -137,7 +142,7 @@ public class Player : MonoBehaviour {
       var jumpSpeed = Settings.InitialJumpSpeed;
       CharacterController.ForceUnground.Set(true);
       CharacterController.Velocity.SetY(jumpSpeed);
-    } else if (Hover) {
+    } else if (HoverAbility.IsRunning) {
       CharacterController.Velocity.SetY(-Mathf.Abs(Settings.HoverVelocity));
     } else if (CharacterController.IsGrounded) {
       CharacterController.Velocity.SetY(0);
