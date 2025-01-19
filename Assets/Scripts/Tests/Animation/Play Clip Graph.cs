@@ -21,7 +21,6 @@ public class PlayClipGraph : MonoBehaviour {
   }
 
   void Start() {
-    var clipPlayable = AnimationClipPlayable.Create(Graph, Clips[0]);
     Graph = PlayableGraph.Create("Play Clip Graph");
     SelectPlayable = ScriptPlayable<SelectBehavior>.Create(Graph, Clips.Count);
     SelectBehavior = SelectPlayable.GetBehaviour();
@@ -31,12 +30,18 @@ public class PlayClipGraph : MonoBehaviour {
     Output = AnimationPlayableOutput.Create(Graph, "Output", Animator);
     Output.SetSourcePlayable(Graph.GetRootPlayable(0));
     Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+    Graph.Play();
     Graph.Evaluate(0);
   }
 
-  void FixedUpdate() {
-    SelectBehavior.CrossFade(ActiveIndex, 100);
-    RootMotionScalePlayable.SetJobData(new RootMotionScaleJob(RootMotionScale));
-    Graph.Evaluate(Time.deltaTime);
+    void OnDestroy() {
+      if (Graph.IsValid())
+        Graph.Destroy();
+    }
+
+    void FixedUpdate() {
+      SelectBehavior.CrossFade(ActiveIndex, 100);
+      RootMotionScalePlayable.SetJobData(new RootMotionScaleJob(RootMotionScale));
+      Graph.Evaluate(Time.deltaTime);
   }
 }
