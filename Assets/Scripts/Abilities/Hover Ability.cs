@@ -3,10 +3,10 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Systems)]
 public class HoverAbility : Ability {
-  public bool Hovering;
-
   [SerializeField] SpellStaff SpellStaff;
   [SerializeField] WeaponAim WeaponAim;
+
+  bool Hovering;
 
   void Start() {
     CharacterController.OnLand.Listen(Cancel);

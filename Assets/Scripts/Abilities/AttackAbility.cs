@@ -53,6 +53,7 @@ public class AttackAbility : Ability {
       "Recovery" => AttackState.Recovery,
       _ => State
     };
+    Hitbox.CollisionEnabled = State == AttackState.Active;
   }
 
   public bool ShouldHit(Combatant combatant) => !Struck.Contains(combatant);
@@ -60,7 +61,7 @@ public class AttackAbility : Ability {
   public void Hit(Combatant combatant) => Struck.Add(combatant);
 
   public override bool IsRunning => State != AttackState.Ready;
-  public override bool CanRun => true;
+  public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     Struck.Clear();
     WeaponAim.AimDirection = Vector3.forward;
@@ -85,9 +86,5 @@ public class AttackAbility : Ability {
     WeaponAim.AimDirection = null;
     State = AttackState.Ready;
     Animator.SetTrigger("Cancel");
-  }
-
-  void FixedUpdate() {
-    Hitbox.CollisionEnabled = State == AttackState.Active;
   }
 }

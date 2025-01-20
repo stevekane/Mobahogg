@@ -24,7 +24,7 @@ public class DiveRollAbility : Ability {
 
   // TODO: Could include Groundedness here as an internal requirement?
   public override bool IsRunning => Frame < FrameDuration;
-  public override bool CanRun => true;
+  public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     Animator.SetTrigger("Dash");
     Frame = 0;

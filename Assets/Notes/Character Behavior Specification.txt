@@ -80,3 +80,29 @@ SPELL
     && AliveAndActive
     && Spell.IsRunning
     && Spell.InRecovery
+
+
+REVISED / COMPRESSED
+
+Starting all abilities depends on Alive and Active
+Interupting all abilities depends on them being Running
+Some abilities represent states, others just actions
+
+Move / Jump are simply actions
+Hover / Attack / Dash / Spell are all states with
+  actions to Run
+  action to Interupt
+  subactions
+
+AbleToAct WHEN
+  Abilities All Ability.NoTRunning or Ability.CanCancel
+
+Ability.Start WHEN
+  AliveAndActive
+  AbleToAct
+  Ability.CanStart ( Polymorphic )
+
+Ability.Interupt WHEN
+  Ability.IsRunning
+
+Ability.Cancel

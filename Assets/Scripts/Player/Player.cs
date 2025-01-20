@@ -13,18 +13,12 @@ public class Player : MonoBehaviour {
   [SerializeField] JumpAbility JumpAbility;
   [SerializeField] MoveAbility MoveAbility;
   [SerializeField] HoverAbility HoverAbility;
-  [SerializeField] bool ShowDebug = false;
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
   // stop-gap while I figure out how to properly handle these instant-like abilities
   public bool Jumped;
-
-  bool InCoyoteWindow
-    => (LocalClock.FixedFrame() - CharacterController.LastGroundedFrame) < Settings.CoyoteFrameCount
-    && !CharacterController.IsGrounded
-    && CharacterController.Falling;
 
   bool AliveAndActive
     => !LocalClock.Frozen()
@@ -47,20 +41,17 @@ public class Player : MonoBehaviour {
   public bool CanJump
     => AliveAndActive
     && AbleToAct
-    && JumpAbility.CanRun
-    && (CharacterController.IsGrounded || InCoyoteWindow);
+    && JumpAbility.CanRun;
 
   public bool CanAttack
     => AliveAndActive
     && AbleToAct
-    && AttackAbility.CanRun
-    && CharacterController.IsGrounded;
+    && AttackAbility.CanRun;
 
   public bool CanDash
     => AliveAndActive
     && AbleToAct
-    && DiveRollAbility.CanRun
-    && CharacterController.IsGrounded;
+    && DiveRollAbility.CanRun;
 
   public bool CanCastSpell
     => AliveAndActive
@@ -80,13 +71,13 @@ public class Player : MonoBehaviour {
 
   public bool CanHover
     => AliveAndActive
-    && !CharacterController.IsGrounded
-    && CharacterController.Falling
-    && !SpellCastAbility.IsRunning;
+    && AbleToAct
+    && HoverAbility.CanRun;
 
   public bool CanEndHover
     => AliveAndActive
-    && HoverAbility.IsRunning;
+    && HoverAbility.IsRunning
+    && HoverAbility.CanCancel;
 
   public void Jump() {
     StopRunning();
@@ -95,6 +86,7 @@ public class Player : MonoBehaviour {
   }
 
   public void StartHover() {
+    StopRunning();
     HoverAbility.Run();
   }
 

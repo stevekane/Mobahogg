@@ -722,7 +722,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
   RootMotionMultiplier: 3
-  AttackComboLength: 1
   Hitbox: {fileID: 4976621135791344551}
   WeaponAim: {fileID: 2517820396137454006}
 --- !u!114 &1178469524206981660
@@ -1221,6 +1220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f57234132697d5e499c426626cc2cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
 --- !u!114 &5342727671095622907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1876,7 +1876,6 @@ MonoBehaviour:
   ShowDebug: 0
   PortIndex: 0
   Jumped: 0
-  Hover: 0
 --- !u!114 &988945814378296752
 MonoBehaviour:
   m_ObjectHideFlags: 0
