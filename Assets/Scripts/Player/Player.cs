@@ -17,9 +17,6 @@ public class Player : MonoBehaviour {
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
-  // stop-gap while I figure out how to properly handle these instant-like abilities
-  public bool Jumped;
-
   bool AliveAndActive
     => !LocalClock.Frozen()
     && Health.CurrentValue > 0;
@@ -81,7 +78,6 @@ public class Player : MonoBehaviour {
 
   public void Jump() {
     StopRunning();
-    Jumped = true;
     JumpAbility.Run();
   }
 
@@ -127,20 +123,5 @@ public class Player : MonoBehaviour {
 
   void OnDestroy() {
     LivesManager.Active.Players.Remove(this);
-  }
-
-  void FixedUpdate() {
-    if (Jumped) {
-      var jumpSpeed = Settings.InitialJumpSpeed;
-      CharacterController.ForceUnground.Set(true);
-      CharacterController.Velocity.SetY(jumpSpeed);
-    } else if (HoverAbility.IsRunning) {
-      CharacterController.Velocity.SetY(-Mathf.Abs(Settings.HoverVelocity));
-    } else if (CharacterController.IsGrounded) {
-      CharacterController.Velocity.SetY(0);
-    } else {
-      CharacterController.Acceleration.Add(Settings.Gravity(CharacterController.Velocity.Current));
-    }
-    Jumped = false;
   }
 }

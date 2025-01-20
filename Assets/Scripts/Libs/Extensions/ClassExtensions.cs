@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -42,6 +43,13 @@ public static class VectorExtensions {
     v.z = a.z;
   }
   public static Vector3 XZ(this Vector2 v) => new(v.x, 0, v.y);
+
+  public static Vector3 ComponentMultiply(this Vector3 v, Vector3 u) {
+    return new(
+      v.x * u.x,
+      v.y * u.y,
+      v.z * u.z);
+  }
 
   public static Vector3? TryGetDirection(this Vector3 origin, Vector3 target) {
     var direction = (target-origin).normalized;

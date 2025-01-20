@@ -5,7 +5,6 @@ using Abilities;
 public class JumpAbility : Ability {
   [SerializeField] AbilitySettings Settings;
 
-  // This chould possibly be moved outside this ability to a peer-start condition
   bool InCoyoteWindow
     => (LocalClock.FixedFrame() - CharacterController.LastGroundedFrame) < Settings.CoyoteFrameCount
     && !CharacterController.IsGrounded
@@ -14,6 +13,9 @@ public class JumpAbility : Ability {
   public override bool CanRun => CharacterController.IsGrounded || InCoyoteWindow;
   public override bool CanCancel => false;
   public override bool IsRunning { get; }
-  public override void Run() {}
+  public override void Run() {
+    CharacterController.ForceUnground.Set(true);
+    CharacterController.Velocity.SetY(Settings.InitialJumpSpeed);
+  }
   public override void Cancel() {}
 }

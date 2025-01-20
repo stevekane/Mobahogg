@@ -15,11 +15,20 @@ to rendering though that is your choice.
 public class Vector3Attribute {
   static float Longer(float x, float y) => Mathf.Abs(x) > Mathf.Abs(y) ? x : y;
 
+  Vector3 DefaultValue;
   Vector3 Sum = Vector3.zero;
   float Scalar = 1;
   float? X;
   float? Y;
   float? Z;
+
+  public Vector3Attribute(float x = 0, float y = 0, float z = 0) {
+    DefaultValue = new Vector3(x, y, z);
+  }
+
+  public static Vector3Attribute WithDefault(Vector3 v) {
+    return new Vector3Attribute(v.x, v.y, v.z);
+  }
 
   public Vector3 Current { get; private set; }
   public void SetX(float f) => X = X.HasValue ? Longer(X.Value, f) : f;
