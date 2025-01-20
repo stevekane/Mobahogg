@@ -21,6 +21,7 @@ public class PlayClipGraph : MonoBehaviour {
   }
 
   void Start() {
+        Debug.Log($"{Animator.name} has humanScale:{Animator.humanScale}");
     Graph = PlayableGraph.Create("Play Clip Graph");
     SelectPlayable = ScriptPlayable<SelectBehavior>.Create(Graph, Clips.Count);
     SelectBehavior = SelectPlayable.GetBehaviour();
@@ -44,4 +45,9 @@ public class PlayClipGraph : MonoBehaviour {
       RootMotionScalePlayable.SetJobData(new RootMotionScaleJob(RootMotionScale));
       Graph.Evaluate(Time.deltaTime);
   }
+
+    private void OnAnimatorMove() {
+        transform.position += 1f/Animator.humanScale * Animator.deltaPosition;
+        // transform.rotation *= Animator.humanScale * Animator.deltaRotation;
+    }
 }
