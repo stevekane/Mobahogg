@@ -8,7 +8,6 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   [SerializeField] KinematicCharacterMotor Motor;
   [SerializeField] bool ShowDebug;
 
-  public readonly BooleanAnyAttribute ForceUnground = new();
   // use this to control how much acceleration is applied
   public readonly Vector3Attribute AccelerationScale = Vector3Attribute.WithDefault(Vector3.one);
   public readonly Vector3Attribute VelocityScale = Vector3Attribute.WithDefault(Vector3.one);
@@ -16,6 +15,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
   public readonly Vector3Attribute Velocity = new();
   public readonly Vector3Attribute DirectVelocity = new();
   public readonly QuaternionAttribute Rotation = new();
+  public readonly BooleanAnyAttribute ForceUnground = new();
 
   public bool JustLanded { get; private set; }
   public bool JustTookOff { get; private set; }

@@ -38,7 +38,6 @@ public struct PortButtonState {
 public class InputPort {
   readonly Inputs Inputs;
   readonly Dictionary<InputAction, int> JustDownBuffer = new();
-  readonly Dictionary<InputAction, int> BufferFrameDurations = new();
   readonly Dictionary<InputAction, EventSource<PortButtonState>> Up = new();
   readonly Dictionary<InputAction, EventSource<PortButtonState>> JustDown = new();
   readonly Dictionary<InputAction, EventSource<PortButtonState>> Down = new();
@@ -62,7 +61,6 @@ public class InputPort {
           JustDown.Add(action, new());
           Down.Add(action, new());
           JustUp.Add(action, new());
-          BufferFrameDurations.Add(action, 12);
         }
       }
     }
@@ -98,6 +96,16 @@ public class InputPort {
     }
   }
 
+  public bool JustDownWithin(string actionName, int frameWindow = 0) {
+    var action = Inputs.FindAction(actionName);
+    var currentFrame = TimeManager.Instance.FixedFrame();
+    if (JustDownBuffer.TryGetValue(action, out var mostRecentFrameJustDown)) {
+      return mostRecentFrameJustDown+frameWindow >= currentFrame;
+    } else {
+      return false;
+    }
+  }
+
   public bool TryGetButtonState(string actionName, out ButtonState value) {
     return Buttons.TryGetValue(Inputs.FindAction(actionName), out value);
   }
@@ -121,12 +129,11 @@ public class InputPort {
     }
   }
 
-  public bool TrySendBufferedButtonState(string actionName) {
+  public bool TrySendBufferedButtonState(string actionName, int frameWindow = 0) {
     var action = Inputs.FindAction(actionName);
     if (JustDown.TryGetValue(action, out var source) &&
         JustDownBuffer.TryGetValue(action, out var bufferedFrame) &&
-        BufferFrameDurations.TryGetValue(action, out var bufferFrameDuration) &&
-        TimeManager.Instance.FixedFrame()-bufferedFrame <= bufferFrameDuration) {
+        TimeManager.Instance.FixedFrame()-bufferedFrame <= frameWindow) {
       source.Fire(new(actionName, PortIndex, ButtonState.JustDown));
       return true;
     } else {
@@ -227,6 +234,9 @@ public class InputRouter : SingletonBehavior<InputRouter> {
 
   public bool TryGetButtonState(string actionName, int portIndex, out ButtonState buttonState) =>
     InputPorts[portIndex].TryGetButtonState(actionName, out buttonState);
+
+  public bool JustDownWithin(string actionName, int portIndex, int frameWindow = 0) =>
+    InputPorts[portIndex].JustDownWithin(actionName, frameWindow);
 
   bool ValidDevice(InputDevice device) => device is Gamepad;
 
