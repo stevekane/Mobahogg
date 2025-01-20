@@ -8,11 +8,11 @@ public class SpellPassiveEffectManager : MonoBehaviour {
   SpellPassiveEffect CurrentEffect;
 
   void Awake() {
-    SpellHolder.OnHeadChange.Listen(UpdatePassiveEffect);
+    SpellHolder.OnChange.Listen(UpdatePassiveEffect);
   }
 
   void OnDestroy() {
-    SpellHolder.OnHeadChange.Unlisten(UpdatePassiveEffect);
+    SpellHolder.OnChange.Unlisten(UpdatePassiveEffect);
   }
 
   void UpdatePassiveEffect(Spell spell) {

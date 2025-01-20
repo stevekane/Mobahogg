@@ -1740,7 +1740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e38ef91589124545908f8f0d3d4cc53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hovering: 0
   SpellStaff: {fileID: 4317267126845283119}
   WeaponAim: {fileID: 2517820396137454006}
 --- !u!114 &5000469399022551223
@@ -1873,7 +1872,6 @@ MonoBehaviour:
   JumpAbility: {fileID: 6752439352796882793}
   MoveAbility: {fileID: 9114625394588072198}
   HoverAbility: {fileID: 4027216296429641143}
-  ShowDebug: 0
   PortIndex: 0
   Jumped: 0
 --- !u!114 &988945814378296752
@@ -2315,7 +2313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d9403d08c5f8444a9c377a8c007989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxCount: 1
 --- !u!114 &2887056759439107999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,6 +2511,18 @@ PrefabInstance:
       propertyPath: SpellCastAbility
       value: 
       objectReference: {fileID: 8517117487763200628}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: OnOpen.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: OnOpen.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5471877947762371867}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: OnOpen.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

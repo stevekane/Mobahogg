@@ -20,7 +20,7 @@ public class SpellCastAbility : Ability {
 
   public bool CanAim => Frame == 0;
   public void Aim(Vector2 input) {
-    var spellPrefab = SpellHolder.Dequeue();
+    var spellPrefab = SpellHolder.Remove();
     var delta = input.XZ();
     var rotation = delta.sqrMagnitude > 0
       ? Quaternion.LookRotation(delta.normalized)
@@ -31,7 +31,7 @@ public class SpellCastAbility : Ability {
     spell.Cast(position, rotation, AbilityManager);
   }
 
-  public override bool CanRun => SpellHolder.Count > 0;
+  public override bool CanRun => SpellHolder.Spell != null;
   public override void Run() {
     Frame = 0;
   }
