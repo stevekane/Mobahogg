@@ -18,6 +18,16 @@ namespace Abilities {
     public abstract void Cancel();
   }
 
+  public interface IAimed {
+    public bool CanAim { get; }
+    public void Aim(Vector2 direction);
+  }
+
+  public interface ISteered {
+    public bool CanSteer { get; }
+    public void Steer(Vector2 direction);
+  }
+
   public interface IAbilityStartCondition {
     public bool Satisfied(AbilityManager abilityManager);
   }

@@ -1,26 +1,26 @@
 using State;
 
 public class SpellHolder : AbstractState {
-  public readonly EventSource<Spell> OnChange = new();
+  public readonly EventSource<Power> OnChange = new();
 
-  Spell Current;
+  Power Current;
 
-  public Spell Spell => Current;
+  public Power Power => Current;
 
-  public bool TryAdd(Spell spell) {
+  public bool TryAdd(Power power) {
     if (Current == null) {
-      Current = spell;
-      OnChange.Fire(spell);
+      Current = power;
+      OnChange.Fire(power);
       return true;
     } else {
       return false;
     }
   }
 
-  public Spell Remove() {
-    var spell = Current;
+  public Power Remove() {
+    var power = Current;
     Current = null;
     OnChange.Fire(null);
-    return spell;
+    return power;
   }
 }

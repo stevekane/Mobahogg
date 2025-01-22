@@ -1,3 +1,4 @@
+using Abilities;
 using State;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class Player : MonoBehaviour {
   [SerializeField] MoveAbility MoveAbility;
   [SerializeField] HoverAbility HoverAbility;
 
+  public Ability ActiveAbility;
+  public Ability UltimateAbility;
+
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
 
@@ -24,16 +28,30 @@ public class Player : MonoBehaviour {
 
   bool AbleToAct
     => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
-    && (!SpellCastAbility.IsRunning || SpellCastAbility.CanCancel)
     && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel)
-    && (!HoverAbility.IsRunning || HoverAbility.CanCancel);
+    && (!HoverAbility.IsRunning || HoverAbility.CanCancel)
+    && (!ActiveAbility || !ActiveAbility.IsRunning || ActiveAbility.CanCancel)
+    && (!UltimateAbility || !UltimateAbility.IsRunning || UltimateAbility.CanCancel);
 
   void StopRunning() {
     if (AttackAbility.CanCancel) AttackAbility.Cancel();
-    if (SpellCastAbility.CanCancel) SpellCastAbility.Cancel();
     if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
     if (HoverAbility.CanCancel) HoverAbility.Cancel();
+    if (ActiveAbility && ActiveAbility.CanCancel) ActiveAbility.Cancel();
+    if (UltimateAbility && UltimateAbility.CanCancel) UltimateAbility.Cancel();
   }
+
+  public bool CanUseActiveAbility
+    => AliveAndActive
+    && AbleToAct
+    && ActiveAbility
+    && ActiveAbility.CanRun;
+
+  public bool CanUseUltimateAbility
+    => AliveAndActive
+    && AbleToAct
+    && UltimateAbility
+    && UltimateAbility.CanRun;
 
   public bool CanJump
     => AliveAndActive
@@ -50,16 +68,10 @@ public class Player : MonoBehaviour {
     && AbleToAct
     && DiveRollAbility.CanRun;
 
-  public bool CanCastSpell
-    => AliveAndActive
-    && AbleToAct
-    && SpellCastAbility.CanRun;
-
   public bool CanMove
     => AliveAndActive
     && MoveAbility.CanRun
     && !AttackAbility.IsRunning
-    && !SpellCastAbility.IsRunning
     && !DiveRollAbility.IsRunning;
 
   public bool CanSteer
@@ -102,15 +114,23 @@ public class Player : MonoBehaviour {
     AttackAbility.Aim(direction);
   }
 
-  public void CastSpell(Vector2 direction) {
+  public void UseActiveAbility(Vector2 direction) {
     StopRunning();
-    SpellCastAbility.Run();
-    SpellCastAbility.Aim(direction);
+    ActiveAbility.Run();
+    if (ActiveAbility is IAimed aimed && aimed.CanAim)
+      aimed.Aim(direction);
+  }
+
+  public void UseUltimateAbility(Vector2 direction) {
+    StopRunning();
+    UltimateAbility.Run();
+    if (UltimateAbility is IAimed aimed && aimed.CanAim)
+      aimed.Aim(direction);
   }
 
   public void Move(Vector2 direction) {
-    // MoveAbility.Run();
-    MoveAbility.Steer(direction);
+    MoveAbility.Run();
+    MoveAbility.Aim(direction);
   }
 
   public void Steer(Vector2 direction) {

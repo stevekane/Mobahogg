@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public class AirSpell : Spell {
+public class AirSpell : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] GameObject AirBallPrefab;
   [SerializeField] GameObject TornadoPrefab;
@@ -12,8 +12,8 @@ public class AirSpell : Spell {
   [SerializeField] int MinSpinSpeed = 360;
   [SerializeField] int MaxSpinSpeed = 360 * 8;
 
-  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
-    Run(position, rotation, this.destroyCancellationToken).Forget();
+  void Start() {
+    Run(transform.position, transform.rotation, this.destroyCancellationToken).Forget();
   }
 
   async UniTask Run(Vector3 start, Quaternion rotation, CancellationToken token) {

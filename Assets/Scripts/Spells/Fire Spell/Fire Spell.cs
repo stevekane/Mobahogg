@@ -2,21 +2,20 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class FireSpell : Spell {
+public class FireSpell : MonoBehaviour {
   [SerializeField] FireSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
 
   // TODO: Could get rid of this list here and pre-allocate on some global physics manager
   Collider[] Colliders = new Collider[32];
 
-  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
-    Run(position, rotation, owner, this.destroyCancellationToken).Forget();
+  void Start() {
+    Run(transform.position, transform.rotation, this.destroyCancellationToken).Forget();
   }
 
-  async UniTask Run(Vector3 position, Quaternion rotation, MonoBehaviour owner, CancellationToken token) {
+  async UniTask Run(Vector3 position, Quaternion rotation, CancellationToken token) {
     var eggGO = Instantiate(Settings.EggPrefab, position, rotation, transform);
     var egg = eggGO.GetComponent<FireSpellEgg>();
-    egg.Owner = owner ? owner.gameObject : null;
     var eggCollision = Tasks.ListenFor(egg.OnCollision, token);
     var travelEasingFn = EasingFunctions.FromName(Settings.EggTravelEasingFunctionName);
     var travel = Tasks.MoveBy(

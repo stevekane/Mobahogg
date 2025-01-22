@@ -2,7 +2,7 @@ using State;
 using Abilities;
 using UnityEngine;
 
-public class MoveAbility : Ability {
+public class MoveAbility : Ability, IAimed {
   [Header("Reads From")]
   [SerializeField] MoveSpeed MoveSpeed;
 
@@ -13,8 +13,8 @@ public class MoveAbility : Ability {
   public override bool CanCancel => false;
   public override void Cancel() {}
 
-  public bool CanSteer => CanRun;
-  public void Steer(Vector2 input) {
+  public bool CanAim => CanRun;
+  public void Aim(Vector2 input) {
     var delta = input.XZ();
     var direction = delta.normalized;
     if (delta.sqrMagnitude > 0) {

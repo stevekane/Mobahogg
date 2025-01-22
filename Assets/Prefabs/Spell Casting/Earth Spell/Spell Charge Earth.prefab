@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 3476870386574036591, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
       propertyPath: SpellPrefab
       value: 
-      objectReference: {fileID: -2955001587593867658, guid: 2ace10821c1d96146ad421e25d50caae, type: 3}
+      objectReference: {fileID: 11400000, guid: aa71a514795d146479aee2697cab68a6, type: 2}
     - target: {fileID: 5149575510461939773, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
       propertyPath: m_Name
       value: Spell Charge Earth

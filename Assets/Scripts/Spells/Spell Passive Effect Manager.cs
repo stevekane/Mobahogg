@@ -5,7 +5,7 @@ public class SpellPassiveEffectManager : MonoBehaviour {
   [SerializeField] SpellAffected SpellAffected;
   [SerializeField] LocalClock LocalClock;
 
-  SpellPassiveEffect CurrentEffect;
+  Effect CurrentEffect;
 
   void Awake() {
     SpellHolder.OnChange.Listen(UpdatePassiveEffect);
@@ -15,7 +15,7 @@ public class SpellPassiveEffectManager : MonoBehaviour {
     SpellHolder.OnChange.Unlisten(UpdatePassiveEffect);
   }
 
-  void UpdatePassiveEffect(Spell spell) {
+  void UpdatePassiveEffect(Power spell) {
     if (CurrentEffect)
       Destroy(CurrentEffect);
     if (spell) {

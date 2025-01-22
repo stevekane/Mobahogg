@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AirSpellPassiveEffect : SpellPassiveEffect {
+public class AirSpellPassiveEffect : Effect {
   [SerializeField] AirSpellSettings Settings;
 
   void FixedUpdate() {

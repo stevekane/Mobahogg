@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class WaterSpellPassiveEffect : SpellPassiveEffect {
+public class WaterSpellPassiveEffect : Effect {
   [SerializeField] WaterSpellSettings Settings;
 
   void Start() {

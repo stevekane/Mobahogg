@@ -3,25 +3,17 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class EarthSpell : Spell {
+public class EarthSpell : MonoBehaviour {
   [SerializeField] EarthSpellSettings Settings;
   [SerializeField] LocalClock LocalClock;
 
   List<GameObject> Rocks = new(512);
   List<GameObject> Spikes = new(512);
 
-  // Assumes you hand it a "forward" vector. This code is dogshit
-  public static Vector3 PerturbVector(Vector3 inputVector, float minAngle, float maxAngle) {
-    Vector3 normalizedVector = inputVector.normalized;
-    Vector3 randomAxis = Vector3.right;
-    float randomAngle = Random.Range(minAngle, maxAngle);
-    return Quaternion.AngleAxis(randomAngle, randomAxis) * normalizedVector;
-  }
-
-  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
-    var start = position;
+  void Start() {
+    var start = transform.position;
     start.y -= 1;
-    var end = start + rotation * (Settings.BallTravelDistance * Vector3.forward);
+    var end = start + transform.rotation * (Settings.BallTravelDistance * Vector3.forward);
     Run(start, end, this.destroyCancellationToken).Forget();
   }
 
@@ -81,7 +73,7 @@ public class EarthSpell : Spell {
     var spike = Instantiate(Settings.SpikePrefab, position, rotation, transform);
     var sxz = Random.Range(Settings.SpikeMinThickness, Settings.SpikeMaxThickness);
     var sy = Random.Range(Settings.SpikeMinLength, Settings.SpikeMaxLength);
-    var direction = PerturbVector(Vector3.forward, -Settings.SpikeMaxTiltAngle, Settings.SpikeMaxTiltAngle);
+    var direction = Vector3.forward.Perturb(-Settings.SpikeMaxTiltAngle, Settings.SpikeMaxTiltAngle);
     direction = Quaternion.AngleAxis(25, right) * direction;
     spike.transform.localScale = new Vector3(sxz, sy, sxz);
     spike.transform.rotation = Quaternion.LookRotation(direction);

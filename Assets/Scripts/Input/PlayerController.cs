@@ -15,12 +15,13 @@ public class PlayerController : MonoBehaviour {
     var jumpJustDown = InputRouter.Instance.JustDownWithin("Jump", PortIndex, frameBufferDuration);
     var attackJustDown = InputRouter.Instance.JustDownWithin("Attack", PortIndex, frameBufferDuration);
     var dashJustDown = InputRouter.Instance.JustDownWithin("Dash", PortIndex, frameBufferDuration);
-    var castSpellJustDown = InputRouter.Instance.JustDownWithin("Cast Spell", PortIndex, frameBufferDuration);
+    var activeSpellJustDown = InputRouter.Instance.JustDownWithin("Active", PortIndex, frameBufferDuration);
+    var ultimateSpellJustDown = InputRouter.Instance.JustDownWithin("Ultimate", PortIndex, frameBufferDuration);
     InputRouter.Instance.TryGetValue("Move", PortIndex, out var move);
     InputRouter.Instance.TryGetButtonState("Jump", PortIndex, out var jumpButtonState);
 
     // Buttons
-    // Jump > Dash > Attack > Spell > Hover
+    // Jump > Dash > Attack > Ultimate > Active > Hover
     if (jumpJustDown && player.CanJump) {
       player.Jump();
       InputRouter.Instance.ConsumeButton("Jump", PortIndex);
@@ -33,9 +34,13 @@ public class PlayerController : MonoBehaviour {
       player.Attack(move);
       InputRouter.Instance.ConsumeButton("Attack", PortIndex);
     }
-    if (castSpellJustDown && player.CanCastSpell) {
-      player.CastSpell(move);
-      InputRouter.Instance.ConsumeButton("Cast Spell", PortIndex);
+    if (ultimateSpellJustDown && player.CanUseUltimateAbility) {
+      player.UseUltimateAbility(move);
+      InputRouter.Instance.ConsumeButton("Ultimate", PortIndex);
+    }
+    if (activeSpellJustDown && player.CanUseActiveAbility) {
+      player.UseUltimateAbility(move);
+      InputRouter.Instance.ConsumeButton("Active", PortIndex);
     }
     if (player.CanHover && jumpButtonState == ButtonState.Down) {
       player.StartHover();

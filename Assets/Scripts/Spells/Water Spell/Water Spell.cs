@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class WaterSpell : Spell {
+public class WaterSpell : MonoBehaviour {
   [SerializeField] GameObject WaterBallPrefab;
   [SerializeField] GameObject WaterBallExplosionPrefab;
   [SerializeField] GameObject BlizzardPrefab;
@@ -12,9 +12,9 @@ public class WaterSpell : Spell {
   [SerializeField] int TravelFrames = 60;
   [SerializeField] int BlizzardFrames = 60 * 5;
 
-  public override void Cast(Vector3 position, Quaternion rotation, MonoBehaviour owner) {
-    var start = position;
-    var end = position + rotation * Delta;
+  void Start() {
+    var start = transform.position;
+    var end = transform.position + transform.rotation * Delta;
     Run(start, end, this.destroyCancellationToken).Forget();
   }
 

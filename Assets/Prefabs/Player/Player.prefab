@@ -972,8 +972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21b9a64cb9c89842808b848bbb64d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpellHolder: {fileID: 4106878518632410812}
   TotalAttackFrames: 20
+  SpellPrefab: {fileID: 0}
 --- !u!114 &9166348394361976778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,7 +1338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846d0722adbe7574fa417a1729533265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpellHolder: {fileID: 4106878518632410812}
+  SpellHolder: {fileID: 3179910684771348283}
 --- !u!136 &7580270482056015233
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1836,6 +1836,7 @@ GameObject:
   - component: {fileID: 3051964976537025274}
   - component: {fileID: 1239242528449807422}
   - component: {fileID: 3160331076892843982}
+  - component: {fileID: 3179910684771348283}
   m_Layer: 17
   m_Name: Player
   m_TagString: Untagged
@@ -1922,6 +1923,8 @@ MonoBehaviour:
   JumpAbility: {fileID: 6752439352796882793}
   MoveAbility: {fileID: 9114625394588072198}
   HoverAbility: {fileID: 4027216296429641143}
+  ActiveAbility: {fileID: 0}
+  UltimateAbility: {fileID: 0}
   PortIndex: 0
 --- !u!114 &988945814378296752
 MonoBehaviour:
@@ -1947,6 +1950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c94685ec8f36bc04d85777a3c51c2b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilityContainer: {fileID: 7340116597315303376}
   RegisteredAbilities: []
   LocalClock: {fileID: 988945814378296752}
   Animator: {fileID: 689494837935415685}
@@ -2117,6 +2121,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: {fileID: 94004394668583191}
+--- !u!114 &3179910684771348283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d9403d08c5f8444a9c377a8c007989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8044512733104495048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2233,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4228c7b5bc613084c87d30e90a9e8673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpellHolder: {fileID: 4106878518632410812}
+  SpellHolder: {fileID: 3179910684771348283}
   SpellAffected: {fileID: 5889265469151095980}
   LocalClock: {fileID: 988945814378296752}
 --- !u!1 &8600784956617400691
@@ -2285,7 +2301,6 @@ GameObject:
   - component: {fileID: 7551776237143256265}
   - component: {fileID: 4751482104723936499}
   - component: {fileID: 94004394668583191}
-  - component: {fileID: 4106878518632410812}
   - component: {fileID: 2887056759439107999}
   - component: {fileID: 7875168543698579960}
   m_Layer: 0
@@ -2350,18 +2365,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Current: 9
   Max: 9
---- !u!114 &4106878518632410812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9154293866625994780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4d9403d08c5f8444a9c377a8c007989, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2887056759439107999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2551,11 +2554,15 @@ PrefabInstance:
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: SpellHolder
       value: 
-      objectReference: {fileID: 4106878518632410812}
+      objectReference: {fileID: 3179910684771348283}
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: HoverAbility
       value: 
       objectReference: {fileID: 4027216296429641143}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: AbilityManager
+      value: 
+      objectReference: {fileID: 946447732338073073}
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: SpellCastAbility
       value: 

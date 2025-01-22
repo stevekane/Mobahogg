@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpellDescription {
   public string Name = "Spell";
   public SpellCharge SpellCharge;
-  public Spell Spell;
+  public Power Spell;
 }
 
 [CreateAssetMenu(fileName = "Spell Descriptions", menuName = "Spells/Spell Descriptions")]

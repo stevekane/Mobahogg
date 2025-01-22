@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -68,6 +67,15 @@ public static class VectorExtensions {
   public static float SqrDistance(this Vector3 a, Vector3 b) {
     return (a-b).sqrMagnitude;
   }
+
+  // Assumes you hand it a "forward" vector. This code is dogshit
+  public static Vector3 Perturb(this Vector3 inputVector, float minAngle, float maxAngle) {
+    Vector3 normalizedVector = inputVector.normalized;
+    Vector3 randomAxis = Vector3.right;
+    float randomAngle = UnityEngine.Random.Range(minAngle, maxAngle);
+    return Quaternion.AngleAxis(randomAngle, randomAxis) * normalizedVector;
+  }
+
 }
 
 public static class NullableExtensions {

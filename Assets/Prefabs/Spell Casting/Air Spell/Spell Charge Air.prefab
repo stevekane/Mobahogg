@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 3476870386574036591, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
       propertyPath: SpellPrefab
       value: 
-      objectReference: {fileID: 9097532508160591467, guid: 69715a3b71c15224d91d941417f5b6c2, type: 3}
+      objectReference: {fileID: 11400000, guid: f86e675fecfaf814b9292fdefabadce8, type: 2}
     - target: {fileID: 5149575510461939773, guid: a032cd7455abb6c4cbfba1e025a7c134, type: 3}
       propertyPath: m_Name
       value: Spell Charge Air

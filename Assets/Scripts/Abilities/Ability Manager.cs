@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Abilities {
   public class AbilityManager : MonoBehaviour {
+    public Transform AbilityContainer;
     public List<RegisteredAbility> RegisteredAbilities;
     public LocalClock LocalClock;
     public Animator Animator;
@@ -15,7 +16,11 @@ namespace Abilities {
     public EventSource<Ability> OnUnregisterAbility = new();
 
     void Start() {
-      GetComponentsInChildren<Ability>().ForEach(Register);
+      AbilityContainer.GetComponentsInChildren<Ability>().ForEach(Register);
+    }
+
+    void OnDestroy() {
+      AbilityContainer.GetComponentsInChildren<Ability>().ForEach(Unregister);
     }
 
     public void Register(Ability ability) {
@@ -23,12 +28,19 @@ namespace Abilities {
       registeredAbility.Ability.Register(this);
       RegisteredAbilities.Add(registeredAbility);
       OnRegisterAbility.Fire(ability);
+      ability.transform.SetParent(AbilityContainer, false);
     }
 
     public void Unregister(Ability ability) {
+      Unregister(ability, true);
+    }
+
+    public void Unregister(Ability ability, bool destroy) {
       var registeredAbility = RegisteredAbilities.First(ra => ra.Ability == ability);
       RegisteredAbilities.Remove(registeredAbility);
       OnUnregisterAbility.Fire(ability);
+      if (destroy)
+        Destroy(ability.gameObject);
     }
 
     public bool CanRun(Ability ability) {

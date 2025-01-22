@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154b6913551b3f84e93c27cb605d188c, type: 3}
+  m_Name: Fire Power
+  m_EditorClassIdentifier: 
+  SurfaceMaterial: {fileID: 2100000, guid: 65b6e8cc5cf7ab541b2ea5ca7627f1ea, type: 2}
+  SpellPassiveEffectPrefab: {fileID: 8222796159185162792, guid: f26a513456376634fa9029638fdf5b19, type: 3}
+  ActiveAbilityPrefab: {fileID: 0}
+  UltimateAbilityPrefab: {fileID: 473076166476152705, guid: aa63d066636ebfd4aae6aa58cbda501e, type: 3}

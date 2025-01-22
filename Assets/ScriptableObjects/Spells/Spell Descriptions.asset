@@ -15,13 +15,13 @@ MonoBehaviour:
   Value:
   - Name: Fire
     SpellCharge: {fileID: 2868913086379064865, guid: 773035fcc6776c14486e36adada3cd20, type: 3}
-    Spell: {fileID: 8324747613132822145, guid: 18329c1ab84a90b44a287fb1014ce363, type: 3}
+    Spell: {fileID: 11400000, guid: 735985068b3be9d4ba8c976d41885976, type: 2}
   - Name: Water
     SpellCharge: {fileID: 7851703023513120423, guid: 9ac78d58a0da5cc4bac23ee1a47a9175, type: 3}
-    Spell: {fileID: -4930965651544694728, guid: 854980af7176e244296c99a662845a50, type: 3}
+    Spell: {fileID: 11400000, guid: 34da2ef7b2a8409459f29e5febf66627, type: 2}
   - Name: Air
     SpellCharge: {fileID: 8277271286104375216, guid: 81e8c9f79222adf4d8a9ebee25425ae3, type: 3}
-    Spell: {fileID: 9097532508160591467, guid: 69715a3b71c15224d91d941417f5b6c2, type: 3}
+    Spell: {fileID: 11400000, guid: f86e675fecfaf814b9292fdefabadce8, type: 2}
   - Name: Earth
     SpellCharge: {fileID: 7568291527608228171, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
-    Spell: {fileID: -2955001587593867658, guid: 2ace10821c1d96146ad421e25d50caae, type: 3}
+    Spell: {fileID: 11400000, guid: aa71a514795d146479aee2697cab68a6, type: 2}

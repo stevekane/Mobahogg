@@ -2,7 +2,7 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class SpellCharge : MonoBehaviour {
-  public Spell SpellPrefab;
+  public Power SpellPrefab;
 
   void Start() {
     SpellFlowerManager.Active.SpellCharges.Add(this);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class SpellPassiveEffect : MonoBehaviour {
+public abstract class Effect : MonoBehaviour {
   protected SpellAffected SpellAffected;
   protected LocalClock LocalClock;
 

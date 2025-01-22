@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FireSpellPassiveEffect : SpellPassiveEffect {
+public class FireSpellPassiveEffect : Effect {
   [SerializeField] FireSpellSettings Settings;
 
   void FixedUpdate() {
