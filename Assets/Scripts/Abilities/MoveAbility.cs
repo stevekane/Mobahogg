@@ -10,16 +10,12 @@ public class MoveAbility : Ability {
 
   public override bool IsRunning => false;
   public override bool CanRun => true;
-  public override void Run() {
-    Moving = true;
-  }
+  public override void Run() {}
 
   public override bool CanCancel => false;
-  public override void Cancel() {
-    Moving = false;
-  }
+  public override void Cancel() {}
 
-  public bool CanSteer => Moving;
+  public bool CanSteer => CanRun;
   public void Steer(Vector2 input) {
     var delta = input.XZ();
     var direction = delta.normalized;

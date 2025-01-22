@@ -12,12 +12,12 @@ public class PlayerController : MonoBehaviour {
     if (!player)
       return;
     var frameBufferDuration = SettingsManager.Instance.InputSettings.InputBufferFrameWindow;
-    InputRouter.Instance.TryGetValue("Move", PortIndex, out var move);
-    InputRouter.Instance.TryGetButtonState("Jump", PortIndex, out var jumpButtonState);
     var jumpJustDown = InputRouter.Instance.JustDownWithin("Jump", PortIndex, frameBufferDuration);
     var attackJustDown = InputRouter.Instance.JustDownWithin("Attack", PortIndex, frameBufferDuration);
     var dashJustDown = InputRouter.Instance.JustDownWithin("Dash", PortIndex, frameBufferDuration);
     var castSpellJustDown = InputRouter.Instance.JustDownWithin("Cast Spell", PortIndex, frameBufferDuration);
+    InputRouter.Instance.TryGetValue("Move", PortIndex, out var move);
+    InputRouter.Instance.TryGetButtonState("Jump", PortIndex, out var jumpButtonState);
 
     // Buttons
     // Jump > Dash > Attack > Spell > Hover
