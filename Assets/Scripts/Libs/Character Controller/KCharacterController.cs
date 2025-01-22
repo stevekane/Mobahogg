@@ -59,7 +59,7 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
     Velocity.Add(LocalClock.DeltaTime() * Acceleration.Current.ComponentMultiply(AccelerationScale.Current));
     Velocity.Sync(reset: false);
     if (IsGrounded && Falling) {
-      Velocity.SetY(-1);
+      Velocity.SetY(0);
       Velocity.Sync(reset: false);
     }
     DirectVelocity.Sync();
@@ -109,13 +109,13 @@ public class KCharacterController : MonoBehaviour, ICharacterController {
       return;
     GUILayout.BeginVertical("box");
     GUILayout.Label($"Grounded : {IsGrounded}");
-    GUILayout.Label($"Force Unground : {ForceUnground.Current}");
-    GUILayout.Label($"AccelerationScale : {AccelerationScale.Current}");
-    GUILayout.Label($"Acceleration : {Acceleration.Current}");
-    GUILayout.Label($"VelocityScale : {VelocityScale.Current}");
-    GUILayout.Label($"Velocity : {Velocity.Current}");
-    GUILayout.Label($"Direct Velocity : {DirectVelocity.Current}");
-    GUILayout.Label($"Stable Ground: {Motor.GroundingStatus.IsStableOnGround}");
+    GUILayout.Label($"Force Unground : {ForceUnground.Current:F5}");
+    GUILayout.Label($"AccelerationScale : {AccelerationScale.Current:F5}");
+    GUILayout.Label($"Acceleration : {Acceleration.Current:F5}");
+    GUILayout.Label($"VelocityScale : {VelocityScale.Current:F5}");
+    GUILayout.Label($"Velocity : {Velocity.Current:F5}");
+    GUILayout.Label($"Direct Velocity : {DirectVelocity.Current:F5}");
+    GUILayout.Label($"Stable Ground: {Motor.GroundingStatus.IsStableOnGround:F5}");
     GUILayout.EndVertical();
   }
 }
