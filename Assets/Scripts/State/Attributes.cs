@@ -48,7 +48,7 @@ public class Vector3Attribute {
     current.z = Z.HasValue ? Z.Value : current.z;
     Current = current;
     Scalar = 1;
-    Sum = reset ? Vector3.zero : Current;
+    Sum = reset ? DefaultValue : Current;
     X = null;
     Y = null;
     Z = null;
