@@ -768,7 +768,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
-  RootMotionMultiplier: 3
+  RootMotionMultiplier: 5
+  StartActiveFrame: 6
+  StartRecoveryFrame: 10
+  LastFrame: 28
   Hitbox: {fileID: 4976621135791344551}
   WeaponAim: {fileID: 2517820396137454006}
 --- !u!114 &1178469524206981660
@@ -1202,7 +1205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: {fileID: 4751482104723936499}
-  Moving: 0
 --- !u!114 &7294960273198380755
 MonoBehaviour:
   m_ObjectHideFlags: 0

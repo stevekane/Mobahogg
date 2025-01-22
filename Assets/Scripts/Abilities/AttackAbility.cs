@@ -14,25 +14,35 @@ public class AttackAbility : Ability {
   [Header("Reads From")]
   [SerializeField] AimAssistQuery AimAssistQuery;
   [SerializeField] float RootMotionMultiplier = 1;
+  [SerializeField] int StartActiveFrame = 9;
+  [SerializeField] int StartRecoveryFrame = 12;
+  [SerializeField] int LastFrame = 24;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
   [SerializeField] WeaponAim WeaponAim;
 
-  AttackState State;
+  int Frame;
+  AttackState State {
+    get {
+      if (Frame < StartActiveFrame) return AttackState.Windup;
+      if (Frame < StartRecoveryFrame) return AttackState.Active;
+      if (Frame < LastFrame) return AttackState.Recovery;
+      return AttackState.Ready;
+    }
+  }
   List<Combatant> Struck = new(16);
 
   void Awake() {
+    Frame = LastFrame;
     Hitbox.CollisionEnabled = false;
   }
 
   void Start() {
-    AnimatorCallbackHandler.OnEvent.Listen(OnEvent);
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
   }
 
   void OnDestroy() {
-    AnimatorCallbackHandler.OnEvent.Unlisten(OnEvent);
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
 
@@ -45,17 +55,6 @@ public class AttackAbility : Ability {
     CharacterController.DirectVelocity.Add(RootMotionMultiplier * v);
   }
 
-  void OnEvent(string name) {
-    State = name switch {
-      "Ready" => AttackState.Ready,
-      "Windup" => AttackState.Windup,
-      "Active" => AttackState.Active,
-      "Recovery" => AttackState.Recovery,
-      _ => State
-    };
-    Hitbox.CollisionEnabled = State == AttackState.Active;
-  }
-
   public bool ShouldHit(Combatant combatant) => !Struck.Contains(combatant);
 
   public void Hit(Combatant combatant) => Struck.Add(combatant);
@@ -64,8 +63,8 @@ public class AttackAbility : Ability {
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     Struck.Clear();
+    Frame = 0;
     WeaponAim.AimDirection = Vector3.forward;
-    State = AttackState.Ready;
     Animator.SetTrigger($"Ground Attack {0}");
   }
 
@@ -84,7 +83,15 @@ public class AttackAbility : Ability {
   public override void Cancel() {
     Struck.Clear();
     WeaponAim.AimDirection = null;
-    State = AttackState.Ready;
+    Frame = LastFrame;
     Animator.SetTrigger("Cancel");
+    Hitbox.CollisionEnabled = false;
+  }
+
+  void FixedUpdate() {
+    if (!IsRunning)
+      return;
+    Hitbox.CollisionEnabled = State == AttackState.Active;
+    Frame = Mathf.Min(Frame+1, LastFrame);
   }
 }

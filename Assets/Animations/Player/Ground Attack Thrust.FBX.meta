@@ -996,7 +996,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
-    motionNodeName: root
+    motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -1044,7 +1044,7 @@ ModelImporter:
       name: Quick Thrust
       takeName: Take 001
       internalID: -998496362607748373
-      firstFrame: 16
+      firstFrame: 15
       lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0

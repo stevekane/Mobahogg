@@ -6,8 +6,6 @@ public class MoveAbility : Ability {
   [Header("Reads From")]
   [SerializeField] MoveSpeed MoveSpeed;
 
-  public bool Moving;
-
   public override bool IsRunning => false;
   public override bool CanRun => true;
   public override void Run() {}
