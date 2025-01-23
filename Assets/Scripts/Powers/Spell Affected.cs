@@ -10,6 +10,9 @@ public class SpellAffected : MonoBehaviour {
   [SerializeField] Knockback KnockbackState;
 
   public BooleanAnyAttribute Immune;
+
+  public void AddSpeed(float delta) =>
+    MoveSpeedState.Add(Immune.Current ? 0 : delta);
   public void MultiplySpeed(float fraction) =>
     MoveSpeedState.Mul(Immune.Current ? 1 : fraction);
   public void ChangeDamage(int damageDelta) =>

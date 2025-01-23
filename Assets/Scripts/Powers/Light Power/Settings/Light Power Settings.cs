@@ -8,5 +8,6 @@ public class LightPowerSettings : ScriptableObject {
   public float ChimeMinSpawnRadius = 5;
   public float ChimeMaxSpawnRadius = 10;
   public float ChimeSpeedSurgeAmount = 3;
-  public int ChimeSpeedSurgeDuration = 1;
+  public Timeval ChimeSpeedSurgeDuration = Timeval.FromSeconds(2);
+  public AnimationCurve ChimeSpeedCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 }

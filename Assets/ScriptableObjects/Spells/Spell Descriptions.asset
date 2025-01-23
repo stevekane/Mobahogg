@@ -25,3 +25,6 @@ MonoBehaviour:
   - Name: Earth
     SpellCharge: {fileID: 7568291527608228171, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
     Spell: {fileID: 11400000, guid: aa71a514795d146479aee2697cab68a6, type: 2}
+  - Name: Light
+    SpellCharge: {fileID: 4271344200674854205, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+    Spell: {fileID: 11400000, guid: ee330fbebd1a3024d905fe700954e46a, type: 2}
