@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -97,7 +98,7 @@ public static class GameObjectExtensions {
   }
 }
 
-public static class MonoExtensions {
+public static class MonobehaviorExtensions {
   // Returns the (first matching) requested component on this object, creating it first if necessary.
   public static T GetOrCreateComponent<T>(this MonoBehaviour self) where T : Component {
     if (self.TryGetComponent(out T t)) {
@@ -120,6 +121,15 @@ public static class MonoExtensions {
     component = self.GetComponentInChildren<T>();
     if (!optional)
       Debug.Assert(component, $"{self} is missing required component {typeof(T).Name}");
+  }
+
+  public static bool TryGetComponentInParent<T>(this Component c, out T t) {
+    if (c.transform.parent && c.transform.parent.TryGetComponent(out t)) {
+      return true;
+    } else {
+      t = default;
+      return false;
+    }
   }
 
   public static Transform FindDescendant(this Transform t, string name) {

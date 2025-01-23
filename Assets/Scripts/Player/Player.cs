@@ -4,8 +4,6 @@ using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Player : MonoBehaviour {
-  [SerializeField] AbilitySettings Settings;
-  [SerializeField] KCharacterController CharacterController;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Health Health;
   [SerializeField] AttackAbility AttackAbility;
@@ -15,8 +13,9 @@ public class Player : MonoBehaviour {
   [SerializeField] MoveAbility MoveAbility;
   [SerializeField] HoverAbility HoverAbility;
 
-  public Ability ActiveAbility;
-  public Ability UltimateAbility;
+  public Ability PowerActiveAbility;
+  public Ability PowerUltimateAbility;
+  public Effect PowerPassiveEffect;
 
   public string Name => MatchManager.Instance.Players[PortIndex].Name;
   public int PortIndex;
@@ -30,28 +29,28 @@ public class Player : MonoBehaviour {
     => (!AttackAbility.IsRunning || AttackAbility.CanCancel)
     && (!DiveRollAbility.IsRunning || DiveRollAbility.CanCancel)
     && (!HoverAbility.IsRunning || HoverAbility.CanCancel)
-    && (!ActiveAbility || !ActiveAbility.IsRunning || ActiveAbility.CanCancel)
-    && (!UltimateAbility || !UltimateAbility.IsRunning || UltimateAbility.CanCancel);
+    && (!PowerActiveAbility || !PowerActiveAbility.IsRunning || PowerActiveAbility.CanCancel)
+    && (!PowerUltimateAbility || !PowerUltimateAbility.IsRunning || PowerUltimateAbility.CanCancel);
 
   void StopRunning() {
     if (AttackAbility.CanCancel) AttackAbility.Cancel();
     if (DiveRollAbility.CanCancel) DiveRollAbility.Cancel();
     if (HoverAbility.CanCancel) HoverAbility.Cancel();
-    if (ActiveAbility && ActiveAbility.CanCancel) ActiveAbility.Cancel();
-    if (UltimateAbility && UltimateAbility.CanCancel) UltimateAbility.Cancel();
+    if (PowerActiveAbility && PowerActiveAbility.CanCancel) PowerActiveAbility.Cancel();
+    if (PowerUltimateAbility && PowerUltimateAbility.CanCancel) PowerUltimateAbility.Cancel();
   }
 
   public bool CanUseActiveAbility
     => AliveAndActive
     && AbleToAct
-    && ActiveAbility
-    && ActiveAbility.CanRun;
+    && PowerActiveAbility
+    && PowerActiveAbility.CanRun;
 
   public bool CanUseUltimateAbility
     => AliveAndActive
     && AbleToAct
-    && UltimateAbility
-    && UltimateAbility.CanRun;
+    && PowerUltimateAbility
+    && PowerUltimateAbility.CanRun;
 
   public bool CanJump
     => AliveAndActive
@@ -116,15 +115,15 @@ public class Player : MonoBehaviour {
 
   public void UseActiveAbility(Vector2 direction) {
     StopRunning();
-    ActiveAbility.Run();
-    if (ActiveAbility is IAimed aimed && aimed.CanAim)
+    PowerActiveAbility.Run();
+    if (PowerActiveAbility is IAimed aimed && aimed.CanAim)
       aimed.Aim(direction);
   }
 
   public void UseUltimateAbility(Vector2 direction) {
     StopRunning();
-    UltimateAbility.Run();
-    if (UltimateAbility is IAimed aimed && aimed.CanAim)
+    PowerUltimateAbility.Run();
+    if (PowerUltimateAbility is IAimed aimed && aimed.CanAim)
       aimed.Aim(direction);
   }
 

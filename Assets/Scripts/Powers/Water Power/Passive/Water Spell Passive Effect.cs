@@ -2,10 +2,15 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class WaterSpellPassiveEffect : Effect {
+public class WaterSpellPassiveEffect : PowerEffect {
   [SerializeField] WaterSpellSettings Settings;
 
+  LocalClock LocalClock;
+  SpellAffected SpellAffected;
+
   void Start() {
+    LocalClock = EffectManager.GetComponent<LocalClock>();
+    SpellAffected = EffectManager.GetComponent<SpellAffected>();
     Run(this.destroyCancellationToken).Forget();
   }
 

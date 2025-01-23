@@ -350,7 +350,6 @@ Transform:
   - {fileID: 8962118446809299405}
   - {fileID: 4768348059885750582}
   - {fileID: 8035973861317321837}
-  - {fileID: 4933029843833531061}
   - {fileID: 1846360084209648830}
   m_Father: {fileID: 9139747016867494336}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -835,6 +834,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 1, z: 2}
+--- !u!1 &3503750783160887750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2992554588885989320}
+  m_Layer: 17
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2992554588885989320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3503750783160887750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9139747016867494336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3650841436896553021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1305,7 +1335,7 @@ GameObject:
   - component: {fileID: 7580270482056015233}
   - component: {fileID: 8148593968670587957}
   m_Layer: 12
-  m_Name: Spell Collector
+  m_Name: Collector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1338,7 +1368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846d0722adbe7574fa417a1729533265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpellHolder: {fileID: 3179910684771348283}
+  Owner: {fileID: 7760936782829562045}
 --- !u!136 &7580270482056015233
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1827,6 +1857,7 @@ GameObject:
   - component: {fileID: 5297446814743032710}
   - component: {fileID: 988945814378296752}
   - component: {fileID: 946447732338073073}
+  - component: {fileID: 2681228181615276424}
   - component: {fileID: 3542533184097295049}
   - component: {fileID: 3726876089221691650}
   - component: {fileID: 7352679195760697840}
@@ -1860,6 +1891,7 @@ Transform:
   - {fileID: 3172299189487386706}
   - {fileID: 3252110086261474847}
   - {fileID: 7340116597315303376}
+  - {fileID: 2992554588885989320}
   - {fileID: 3292955890552622805}
   - {fileID: 6820856013763512239}
   m_Father: {fileID: 0}
@@ -1913,8 +1945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a178d748c0ae349bb68268131c46f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Settings: {fileID: 11400000, guid: 89afed80b41bf4f4ebbe5fa0ee10c11c, type: 2}
-  CharacterController: {fileID: 3542533184097295049}
   LocalClock: {fileID: 988945814378296752}
   Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}
@@ -1923,8 +1953,9 @@ MonoBehaviour:
   JumpAbility: {fileID: 6752439352796882793}
   MoveAbility: {fileID: 9114625394588072198}
   HoverAbility: {fileID: 4027216296429641143}
-  ActiveAbility: {fileID: 0}
-  UltimateAbility: {fileID: 0}
+  PowerActiveAbility: {fileID: 0}
+  PowerUltimateAbility: {fileID: 0}
+  PowerPassiveEffect: {fileID: 0}
   PortIndex: 0
 --- !u!114 &988945814378296752
 MonoBehaviour:
@@ -1956,6 +1987,19 @@ MonoBehaviour:
   Animator: {fileID: 689494837935415685}
   AnimatorCallbackHandler: {fileID: 4586432229471970141}
   CharacterController: {fileID: 3542533184097295049}
+--- !u!114 &2681228181615276424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b5d9c37046f7e45bf0adab20544fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectsContainer: {fileID: 2992554588885989320}
 --- !u!114 &3542533184097295049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2205,53 +2249,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!1 &8517915162962848789
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4933029843833531061}
-  - component: {fileID: 2531828552647307938}
-  m_Layer: 0
-  m_Name: Spell Passive Effect Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4933029843833531061
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8517915162962848789}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3252110086261474847}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2531828552647307938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8517915162962848789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4228c7b5bc613084c87d30e90a9e8673, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpellHolder: {fileID: 3179910684771348283}
-  SpellAffected: {fileID: 5889265469151095980}
-  LocalClock: {fileID: 988945814378296752}
 --- !u!1 &8600784956617400691
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2556,10 @@ PrefabInstance:
       propertyPath: HoverAbility
       value: 
       objectReference: {fileID: 4027216296429641143}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: EffectManager
+      value: 
+      objectReference: {fileID: 2681228181615276424}
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: AbilityManager
       value: 

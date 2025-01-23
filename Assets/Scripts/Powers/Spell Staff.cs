@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SpellStaff : MonoBehaviour {
   [SerializeField] AbilityManager AbilityManager;
+  [SerializeField] EffectManager EffectManager;
   [SerializeField] Player Player;
   [SerializeField] SpellHolder SpellHolder;
   [SerializeField] Transform SpellChargeContainer;
@@ -33,13 +34,17 @@ public class SpellStaff : MonoBehaviour {
       // Active/Ultimate Ability INSTANCES then we'll need to be sure we store
       // them elsewhere or at least have some way to unregister the current ones
       // from AbilityManager directly
-      if (Player.ActiveAbility) {
-        AbilityManager.Unregister(Player.ActiveAbility);
-        Player.ActiveAbility = null;
+      if (Player.PowerActiveAbility) {
+        AbilityManager.Unregister(Player.PowerActiveAbility);
+        Player.PowerActiveAbility = null;
       }
-      if (Player.UltimateAbility) {
-        AbilityManager.Unregister(Player.UltimateAbility);
-        Player.UltimateAbility = null;
+      if (Player.PowerUltimateAbility) {
+        AbilityManager.Unregister(Player.PowerUltimateAbility);
+        Player.PowerUltimateAbility = null;
+      }
+      if (Player.PowerPassiveEffect) {
+        EffectManager.Unregister(Player.PowerPassiveEffect);
+        Player.PowerPassiveEffect = null;
       }
     }
     if (power) {
@@ -53,12 +58,16 @@ public class SpellStaff : MonoBehaviour {
         meshRenderer.sharedMaterial = SpellHolder.Power.SurfaceMaterial;
       }
       if (power.ActiveAbilityPrefab) {
-        Player.ActiveAbility = Instantiate(power.ActiveAbilityPrefab);
-        AbilityManager.Register(Player.ActiveAbility);
+        Player.PowerActiveAbility = Instantiate(power.ActiveAbilityPrefab);
+        AbilityManager.Register(Player.PowerActiveAbility);
       }
       if (power.UltimateAbilityPrefab) {
-        Player.UltimateAbility = Instantiate(power.UltimateAbilityPrefab);
-        AbilityManager.Register(Player.UltimateAbility);
+        Player.PowerUltimateAbility = Instantiate(power.UltimateAbilityPrefab);
+        AbilityManager.Register(Player.PowerUltimateAbility);
+      }
+      if (power.SpellPassiveEffectPrefab) {
+        Player.PowerPassiveEffect = Instantiate(power.SpellPassiveEffectPrefab);
+        EffectManager.Register(Player.PowerPassiveEffect);
       }
     }
   }
