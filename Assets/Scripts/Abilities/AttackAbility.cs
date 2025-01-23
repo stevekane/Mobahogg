@@ -81,17 +81,20 @@ public class AttackAbility : Ability {
 
   public override bool CanCancel => State == AttackState.Recovery && Struck.Count > 0;
   public override void Cancel() {
-    Struck.Clear();
-    WeaponAim.AimDirection = null;
     Frame = LastFrame;
-    Animator.SetTrigger("Cancel");
     Hitbox.CollisionEnabled = false;
+    WeaponAim.AimDirection = null;
+    Animator.SetTrigger("Cancel");
   }
 
   void FixedUpdate() {
-    if (!IsRunning)
-      return;
-    Hitbox.CollisionEnabled = State == AttackState.Active;
-    Frame = Mathf.Min(Frame+1, LastFrame);
+    if (IsRunning) {
+      Hitbox.CollisionEnabled = State == AttackState.Active;
+      Frame = Mathf.Min(Frame+1, LastFrame);
+      if (Frame == LastFrame) {
+        Hitbox.CollisionEnabled = false;
+        WeaponAim.AimDirection = null;
+      }
+    }
   }
 }
