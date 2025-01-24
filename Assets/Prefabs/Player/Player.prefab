@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7d26a13c7cec54080aa8cb72b094da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FrameDuration: 24
+  FrameDuration: 32
   CancelFrames: 10
   RootMotionMultiplier: 3
   TurnSpeed: 180
@@ -794,7 +794,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
   CancelAbilitiesWith:
     Tags:
-    - {fileID: 11400000, guid: 248aee4a2c209904687275e21514eb54, type: 2}
     - {fileID: 11400000, guid: 059d44f12bac4ed4c90950b2bf402b7e, type: 2}
 --- !u!114 &4976621135791344551
 MonoBehaviour:
@@ -1945,6 +1944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a178d748c0ae349bb68268131c46f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AbilityManager: {fileID: 946447732338073073}
   LocalClock: {fileID: 988945814378296752}
   Health: {fileID: 94004394668583191}
   AttackAbility: {fileID: 5165232841971343211}

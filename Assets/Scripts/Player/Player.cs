@@ -1,9 +1,12 @@
+using System.Linq;
+using System.Security.Cryptography;
 using Abilities;
 using State;
 using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Managed)]
 public class Player : MonoBehaviour {
+  [SerializeField] AbilityManager AbilityManager;
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Health Health;
   [SerializeField] AttackAbility AttackAbility;
@@ -69,13 +72,15 @@ public class Player : MonoBehaviour {
 
   public bool CanMove
     => AliveAndActive
-    && MoveAbility.CanRun
-    && !AttackAbility.IsRunning
-    && !DiveRollAbility.IsRunning;
+    && AbilityManager.CanRun(MoveAbility);
+    // && MoveAbility.CanRun
+    // && !AttackAbility.IsRunning
+    // && !DiveRollAbility.IsRunning;
 
+  bool Steerable(RegisteredAbility ra) =>
+    ra.Ability.IsRunning && ra.Ability is ISteered steered && steered.CanSteer;
   public bool CanSteer
-    => DiveRollAbility.IsRunning
-    && DiveRollAbility.CanSteer;
+    => AbilityManager.RegisteredAbilities.Any(Steerable);
 
   public bool CanHover
     => AliveAndActive
@@ -104,7 +109,7 @@ public class Player : MonoBehaviour {
   public void Dash(Vector2 direction) {
     StopRunning();
     DiveRollAbility.Run();
-    DiveRollAbility.Launch(direction);
+    DiveRollAbility.Aim(direction);
   }
 
   public void Attack(Vector2 direction) {
@@ -133,7 +138,11 @@ public class Player : MonoBehaviour {
   }
 
   public void Steer(Vector2 direction) {
-    DiveRollAbility.Steer(direction);
+    AbilityManager.RegisteredAbilities.ForEach(ra => {
+      if (ra.Ability.IsRunning && ra.Ability is ISteered steered && steered.CanSteer) {
+        steered.Steer(direction);
+      }
+    });
   }
 
   void Start() {

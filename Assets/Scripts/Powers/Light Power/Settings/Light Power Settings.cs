@@ -10,4 +10,11 @@ public class LightPowerSettings : ScriptableObject {
   public float ChimeSpeedSurgeAmount = 3;
   public Timeval ChimeSpeedSurgeDuration = Timeval.FromSeconds(2);
   public AnimationCurve ChimeSpeedCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+
+  [Header("Ultimate")]
+  public Timeval UltimateChargeDuration = Timeval.FromSeconds(1);
+  public Timeval UltimateChannelDuration = Timeval.FromSeconds(3);
+  public float UltimateTurnSpeed = 30;
+  public Material ChargeSphereMaterial;
+  public GameObject UltimateChargeBeamPrefab;
 }
