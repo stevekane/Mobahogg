@@ -294,6 +294,120 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 145744443}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &163054718
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+--- !u!1001 &168138659
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &248313322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -556,6 +670,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+--- !u!1001 &314519718
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &351379342
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -693,6 +864,120 @@ MonoBehaviour:
   PlayerPrefabs:
   - {fileID: 1755957375676946006, guid: b821bde5060df9045a60719e50dab455, type: 3}
   - {fileID: 6474306668191412698, guid: b970fd48885cf8942a455d6f7311e556, type: 3}
+--- !u!1001 &394880155
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+--- !u!1001 &409854452
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &427444256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,6 +1075,63 @@ Transform:
   - {fileID: 1181073219}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &495474744
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1 &511581046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,6 +2081,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &767817297
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1 &830113838
 GameObject:
   m_ObjectHideFlags: 0
@@ -2603,6 +3002,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8000710587882087634, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
   m_PrefabInstance: {fileID: 1207872895}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1302979409
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &1305173820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2665,6 +3121,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2595816520642639848, guid: be97e7cb154d51848a664c3640df3c34, type: 3}
   m_PrefabInstance: {fileID: 1305173820}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1321154860
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1 &1390202583
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,6 +3223,120 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PortIndex: 3
+--- !u!1001 &1415200057
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+--- !u!1001 &1422469899
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &1435377358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2775,6 +3402,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+--- !u!1001 &1441443620
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &1475149144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3450,6 +4134,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2595816520642639848, guid: ef1154dc4f8d815498613ace9d461ae9, type: 3}
   m_PrefabInstance: {fileID: 1607742996}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1609592776
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1 &1616562925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,6 +4511,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1730788590
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &1795471704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3836,6 +4634,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6763942633684154603, guid: 1eb943beba5e1ea4c827507c50eabe1e, type: 3}
   m_PrefabInstance: {fileID: 1795471704}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1807211976
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1 &1823690512
 GameObject:
   m_ObjectHideFlags: 0
@@ -4558,6 +5413,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6763942633684154603, guid: 1eb943beba5e1ea4c827507c50eabe1e, type: 3}
   m_PrefabInstance: {fileID: 2085926227}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2125281020
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5508034823183584111, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Light (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 26.821194
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920236606875175964, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
 --- !u!1001 &247456272331287808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4857,6 +5769,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
+--- !u!1001 &3447568591515754898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 401928251637056780, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223258884449188215, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+      propertyPath: m_Name
+      value: Light Ultimate Channeled Beam
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
 --- !u!1001 &4719282044970934786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4867,7 +5836,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107332014362920586, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: field of view
-      value: 26.231289
+      value: 26.229233
       objectReference: {fileID: 0}
     - target: {fileID: 441921929137087940, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5225,3 +6194,20 @@ SceneRoots:
   - {fileID: 1578040839}
   - {fileID: 628768095}
   - {fileID: 761695183}
+  - {fileID: 1321154860}
+  - {fileID: 1807211976}
+  - {fileID: 1302979409}
+  - {fileID: 314519718}
+  - {fileID: 394880155}
+  - {fileID: 168138659}
+  - {fileID: 495474744}
+  - {fileID: 1415200057}
+  - {fileID: 1422469899}
+  - {fileID: 2125281020}
+  - {fileID: 163054718}
+  - {fileID: 1441443620}
+  - {fileID: 1730788590}
+  - {fileID: 409854452}
+  - {fileID: 1609592776}
+  - {fileID: 767817297}
+  - {fileID: 3447568591515754898}

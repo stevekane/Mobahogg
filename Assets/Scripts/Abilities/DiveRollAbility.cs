@@ -1,7 +1,7 @@
 using UnityEngine;
 using Abilities;
 
-public class DiveRollAbility : Ability {
+public class DiveRollAbility : Ability, IAimed, ISteered {
   [Header("Reads From")]
   [SerializeField] int FrameDuration = 60;
   [SerializeField] int CancelFrames = 10;
@@ -31,8 +31,8 @@ public class DiveRollAbility : Ability {
   }
 
   // Available only on first frame to set your initial heading
-  public bool CanLaunch => IsRunning && Frame == 0;
-  public void Launch(Vector2 input) {
+  public bool CanAim => IsRunning && Frame == 0;
+  public void Aim(Vector2 input) {
     if (input.sqrMagnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(input.XZ().normalized));
     }

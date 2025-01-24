@@ -44,3 +44,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  UltimateChargeDuration:
+    Millis: 1000
+  UltimateChannelDuration:
+    Millis: 3000
+  UltimateTurnSpeed: 30
+  ChargeSphereMaterial: {fileID: 2100000, guid: 9551cb12d59cbce44bd09aded0902931, type: 2}
+  UltimateChargeBeamPrefab: {fileID: 1223258884449188215, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
