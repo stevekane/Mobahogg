@@ -2569,6 +2569,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8517117487763200628}
     - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      propertyPath: SpellChargeContainer
+      value: 
+      objectReference: {fileID: 8615150816423020334}
+    - target: {fileID: 7581936400192958435, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: OnOpen.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -2654,3 +2658,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 2389756806577773164}
   LocalClock: {fileID: 988945814378296752}
+--- !u!4 &8615150816423020334 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2692408663200560098, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+  m_PrefabInstance: {fileID: 5967957181181424844}
+  m_PrefabAsset: {fileID: 0}
