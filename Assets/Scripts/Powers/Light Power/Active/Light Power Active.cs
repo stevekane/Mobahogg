@@ -38,9 +38,12 @@ public class LightPowerActive : UniTaskAbility {
         token);
       await RunHealing(token);
     } finally {
-      Animator.SetTrigger("Stop Hold");
-      WeaponAim.AimDirection = null;
-      SpellStaff.Close();
+      if (Animator)
+        Animator.SetTrigger("Stop Hold");
+      if (WeaponAim)
+        WeaponAim.AimDirection = null;
+      if (SpellStaff)
+        SpellStaff.Close();
       emissionBeam.Destroy();
       foreach (var beamInstance in PlayerToBeamMap.Values) {
         beamInstance.Destroy();
@@ -70,7 +73,7 @@ public class LightPowerActive : UniTaskAbility {
   }
 
   void AddBeamForTeamate(Player p) {
-    if (Team.SameTeam(AbilityManager, p)) {
+    if (Team.SameTeam(AbilityManager, p) && p.gameObject != AbilityManager.gameObject) {
       PlayerToBeamMap.Add(p, Instantiate(Settings.ActiveHealingLight, p.transform));
     }
   }

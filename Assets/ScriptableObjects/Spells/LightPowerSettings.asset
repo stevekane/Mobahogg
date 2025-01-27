@@ -44,6 +44,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  ActiveChargeDuration:
+    Millis: 1000
+  ActiveDownBeamsDelay:
+    Millis: 500
+  ActiveProcCooldown:
+    Millis: 500
+  ActiveProcHealthChange: 1
+  ActiveChargeBeam: {fileID: 3220463275106039277, guid: 12fc0f540b626bd43b5b0a591259e7b7, type: 3}
+  ActiveHealingLight: {fileID: 3220463275106039277, guid: 12fc0f540b626bd43b5b0a591259e7b7, type: 3}
   UltimateChargeDuration:
     Millis: 1000
   UltimateChannelDuration:
