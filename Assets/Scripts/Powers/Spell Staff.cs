@@ -6,11 +6,12 @@ public class SpellStaff : MonoBehaviour {
   [SerializeField] EffectManager EffectManager;
   [SerializeField] Player Player;
   [SerializeField] SpellHolder SpellHolder;
-  [SerializeField] Transform SpellChargeContainer;
   [SerializeField] Animator Animator;
   [SerializeField] float Scale = 1;
 
   Transform SpellCharge;
+
+  public Transform SpellChargeContainer;
 
   public void Open() {
     Animator.SetInteger("Head State", 2);

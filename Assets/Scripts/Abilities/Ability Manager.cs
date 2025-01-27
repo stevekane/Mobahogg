@@ -23,6 +23,10 @@ namespace Abilities {
       AbilityContainer.GetComponentsInChildren<Ability>().ForEach(Unregister);
     }
 
+    public T LocateComponent <T>() {
+      return GetComponentInChildren<T>();
+    }
+
     public void Register(Ability ability) {
       var registeredAbility = RegisteredAbility.From(ability);
       registeredAbility.Ability.Register(this);

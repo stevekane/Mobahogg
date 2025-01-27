@@ -13,6 +13,8 @@ public class LivesManager : MonoBehaviour {
 
   public LinkedList<RespawnPod> RespawnPods = new();
   public LinkedList<Player> Players = new();
+  public readonly EventSource<Player> OnAdd = new();
+  public readonly EventSource<Player> OnRemove = new();
 
   bool OnTeam(TeamType teamType, MonoBehaviour m) =>
     m.TryGetComponent(out Team team) && team.TeamType == teamType;
@@ -22,6 +24,16 @@ public class LivesManager : MonoBehaviour {
     RespawnPods.FirstOrDefault(p => p.Usable(teamType));
   Player PlayerPrefabForTeam(TeamType teamType) =>
     PlayerPrefabs.FirstOrDefault(p => OnTeam(teamType, p));
+
+  public void AddPlayer(Player player) {
+    Players.AddFirst(player);
+    OnAdd.Fire(player);
+  }
+
+  public void RemovePlayer(Player player) {
+    Players.Remove(player);
+    OnRemove.Fire(player);
+  }
 
   // Called when player is fully dead after animations and such things
   public void OnPlayerDeath(Player victim) {

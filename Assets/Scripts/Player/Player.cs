@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Security.Cryptography;
 using Abilities;
 using State;
 using UnityEngine;
@@ -73,9 +72,6 @@ public class Player : MonoBehaviour {
   public bool CanMove
     => AliveAndActive
     && AbilityManager.CanRun(MoveAbility);
-    // && MoveAbility.CanRun
-    // && !AttackAbility.IsRunning
-    // && !DiveRollAbility.IsRunning;
 
   bool Steerable(RegisteredAbility ra) =>
     ra.Ability.IsRunning && ra.Ability is ISteered steered && steered.CanSteer;
@@ -146,10 +142,10 @@ public class Player : MonoBehaviour {
   }
 
   void Start() {
-    LivesManager.Active.Players.AddFirst(this);
+    LivesManager.Active.AddPlayer(this);
   }
 
   void OnDestroy() {
-    LivesManager.Active.Players.Remove(this);
+    LivesManager.Active.RemovePlayer(this);
   }
 }

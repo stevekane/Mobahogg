@@ -20,9 +20,9 @@ public class AttackAbility : Ability {
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
-  [SerializeField] WeaponAim WeaponAim;
 
   int Frame;
+  WeaponAim WeaponAim;
   AttackState State {
     get {
       if (Frame < StartActiveFrame) return AttackState.Windup;
@@ -40,6 +40,7 @@ public class AttackAbility : Ability {
 
   void Start() {
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
+    WeaponAim = AbilityManager.LocateComponent<WeaponAim>();
   }
 
   void OnDestroy() {

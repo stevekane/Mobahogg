@@ -1,30 +1,21 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Abilities;
 using Cysharp.Threading.Tasks;
+using State;
 using UnityEngine;
 
-public class LightPowerUltimate : Ability, IAimed, ISteered {
+public class LightPowerUltimate : UniTaskAbility, IAimed, ISteered {
   [SerializeField] LightPowerSettings Settings;
-  [SerializeField] float TurnSpeed = 30;
 
-  CancellationTokenSource CancellationTokenSource;
+  RaycastHit[] RaycastHits = new RaycastHit[64];
+  Dictionary<SpellAffected, int> BeamProcTargetToFrameCooldown = new();
 
   public override bool CanRun => true;
-  public override void Run() {
-    CancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
-    AbilityTask(CancellationTokenSource.Token).Forget();
-  }
-
-  bool IsActive;
-  public override bool IsRunning => IsActive;
   public override bool CanCancel => false;
-  public override void Cancel() {
-    if (CancellationTokenSource != null && !CancellationTokenSource.IsCancellationRequested) {
-      CancellationTokenSource.Cancel();
-      CancellationTokenSource.Dispose();
-    }
-  }
+
   public bool CanAim => CanRun;
   public void Aim(Vector2 direction) {
     var forward = direction.XZ();
@@ -41,18 +32,18 @@ public class LightPowerUltimate : Ability, IAimed, ISteered {
       var currentForward = CharacterController.Rotation.Forward.XZ();
       var currentRotation = Quaternion.LookRotation(currentForward);
       var desiredRotation = Quaternion.LookRotation(desiredForward);
-      var maxDegrees = TurnSpeed * LocalClock.DeltaTime();
+      var maxDegrees = Settings.UltimateTurnSpeed * LocalClock.DeltaTime();
       var nextRotation = Quaternion.RotateTowards(currentRotation, desiredRotation, maxDegrees);
       CharacterController.Rotation.Set(nextRotation);
     }
   }
 
-  async UniTask AbilityTask(CancellationToken token) {
+  protected override async UniTask Task(CancellationToken token) {
     GameObject sphere = null;
     GameObject chargeBeam = null;
+    BeamProcTargetToFrameCooldown.Clear();
     try {
       var spellAffected = AbilityManager.GetComponent<SpellAffected>();
-      IsActive = true;
       Animator.SetTrigger("Light Ultimate");
       sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
       sphere.transform.SetPositionAndRotation(
@@ -69,12 +60,41 @@ public class LightPowerUltimate : Ability, IAimed, ISteered {
 
       Steering = true;
       chargeBeam = Instantiate(Settings.UltimateChargeBeamPrefab);
-      var lineRenderer = chargeBeam.GetComponent<LineRenderer>();
       chargeBeam.transform.SetParent(transform);
+      var lineRenderer = chargeBeam.GetComponent<LineRenderer>();
       await Tasks.EveryFrame(Settings.UltimateChannelDuration.Ticks, LocalClock, f => {
+        var maxDistance = 100;
+        var ray = new Ray(sphere.transform.position, AbilityManager.transform.forward);
+        var count = Physics.RaycastNonAlloc(ray, RaycastHits, maxDistance, Settings.UltimateLayerMask);
+        var rayStopPosition = ray.origin + maxDistance * ray.direction;
+        for (var i = 0; i < count; i++) {
+          if (RaycastHits[i].collider.TryGetComponent(out SpellAffected targetAffected)) {
+            BeamProcTargetToFrameCooldown.TryAdd(targetAffected, 0);
+          } else {
+            rayStopPosition = RaycastHits[i].point;
+            break;
+          }
+        }
+
+        // TODO: Fucking crazy stupid allocation... jesus christ
+        var keys = BeamProcTargetToFrameCooldown.Keys.ToArray();
+        foreach (var affected in keys) {
+          // volatile references... gotta check they are not null
+          if (affected) {
+            if (BeamProcTargetToFrameCooldown[affected] <= 0) {
+              var healthChangeSign = Team.SameTeam(AbilityManager, affected) ? 1 : -1;
+              affected.ChangeHealth(healthChangeSign * Settings.UltimateProcHealthChange);
+              BeamProcTargetToFrameCooldown[affected] = Settings.UltimateProcCooldown.Ticks;
+            } else {
+              BeamProcTargetToFrameCooldown[affected]--;
+            }
+          } else {
+            BeamProcTargetToFrameCooldown.Remove(affected);
+          }
+        }
+        lineRenderer.SetPosition(0, ray.origin);
+        lineRenderer.SetPosition(1, rayStopPosition);
         spellAffected.MultiplySpeed(0);
-        lineRenderer.SetPosition(0, sphere.transform.position);
-        lineRenderer.SetPosition(1, sphere.transform.position + 100*AbilityManager.transform.forward);
       }, token);
       Steering = false;
 
@@ -84,8 +104,8 @@ public class LightPowerUltimate : Ability, IAimed, ISteered {
       sphere.Destroy();
       chargeBeam.Destroy();
       Animator.SetTrigger("Stop Hold");
+      BeamProcTargetToFrameCooldown.Clear();
       Steering = false;
-      IsActive = false;
       // N.B. THIS IS IMPORTANT LOL. Once you remove this, the ability itself is removed and this task is canceled
       AbilityManager.GetComponent<SpellHolder>().Remove();
     }

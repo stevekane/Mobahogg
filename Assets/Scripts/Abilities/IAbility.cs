@@ -1,4 +1,6 @@
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace Abilities {
   public abstract class Ability : MonoBehaviour {
@@ -16,6 +18,31 @@ namespace Abilities {
     public abstract bool IsRunning { get; }
     public abstract void Run();
     public abstract void Cancel();
+  }
+
+  public abstract class UniTaskAbility : Ability {
+    CancellationTokenSource CancellationTokenSource;
+    bool IsActive;
+
+    void Activate() => IsActive = true;
+    void Deactivate() => IsActive = false;
+
+    public override bool IsRunning => IsActive;
+    public override void Run() {
+      CancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
+      Activate();
+      Task(CancellationTokenSource.Token)
+      .ContinueWith(Deactivate)
+      .Forget();
+    }
+    public override void Cancel() {
+      if (CancellationTokenSource != null && !CancellationTokenSource.IsCancellationRequested) {
+        CancellationTokenSource.Cancel();
+        CancellationTokenSource.Dispose();
+      }
+    }
+
+    protected abstract UniTask Task(CancellationToken token);
   }
 
   public interface IAimed {

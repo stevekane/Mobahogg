@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
       InputRouter.Instance.ConsumeButton("Ultimate", PortIndex);
     }
     if (activeSpellJustDown && player.CanUseActiveAbility) {
-      player.UseUltimateAbility(move);
+      player.UseActiveAbility(move);
       InputRouter.Instance.ConsumeButton("Active", PortIndex);
     }
     if (player.CanHover && jumpButtonState == ButtonState.Down) {

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SurfaceMaterial: {fileID: 2100000, guid: 9551cb12d59cbce44bd09aded0902931, type: 2}
   SpellPassiveEffectPrefab: {fileID: 4173541948895502304, guid: 4eff34f1f0d4b994a8c54b9940bbc7c2, type: 3}
-  ActiveAbilityPrefab: {fileID: 0}
+  ActiveAbilityPrefab: {fileID: 1757132217196792021, guid: 9500637038ffe7842af1be53d029ddf7, type: 3}
   UltimateAbilityPrefab: {fileID: 1964201316386782073, guid: f691b09fadd9bbf47905e8d7464eea10, type: 3}

@@ -28,6 +28,14 @@ public static class Tasks {
     }
   }
 
+  public static UniTask EveryFrame(
+  int frames,
+  LocalClock localClock,
+  CancellationToken token,
+  Action<int> action) {
+    return EveryFrame(frames, localClock, action, token);
+  }
+
   public static async UniTask Tween(
   float start,
   float end,
