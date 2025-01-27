@@ -36,6 +36,7 @@ namespace Abilities {
       .Forget();
     }
     public override void Cancel() {
+      Deactivate();
       if (CancellationTokenSource != null && !CancellationTokenSource.IsCancellationRequested) {
         CancellationTokenSource.Cancel();
         CancellationTokenSource.Dispose();
@@ -53,6 +54,11 @@ namespace Abilities {
   public interface ISteered {
     public bool CanSteer { get; }
     public void Steer(Vector2 direction);
+  }
+
+  public interface IHeld {
+    public bool CanRelease { get; }
+    public void Release();
   }
 
   public interface IAbilityStartCondition {

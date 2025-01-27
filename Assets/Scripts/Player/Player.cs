@@ -121,6 +121,12 @@ public class Player : MonoBehaviour {
       aimed.Aim(direction);
   }
 
+  public void ReleaseActiveAbility() {
+    if (PowerActiveAbility is IHeld held && held.CanRelease) {
+      held.Release();
+    }
+  }
+
   public void UseUltimateAbility(Vector2 direction) {
     StopRunning();
     PowerUltimateAbility.Run();

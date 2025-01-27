@@ -12,6 +12,7 @@ public class SpellStaff : MonoBehaviour {
   Transform SpellCharge;
 
   public Transform SpellChargeContainer;
+  public Transform EmissionPoint;
 
   public void Open() {
     Animator.SetInteger("Head State", 2);

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Collections.Generic;
 using State;
 
-public class LightPowerActive : UniTaskAbility {
+public class LightPowerActive : UniTaskAbility, IHeld {
   [SerializeField] LightPowerSettings Settings;
 
   SpellStaff SpellStaff;
@@ -16,6 +16,10 @@ public class LightPowerActive : UniTaskAbility {
     SpellStaff = AbilityManager.LocateComponent<SpellStaff>();
     WeaponAim = AbilityManager.LocateComponent<WeaponAim>();
   }
+
+  public bool CanRelease => IsRunning;
+  public void Release() => Cancel();
+
   public override bool CanRun => true;
   public override bool CanCancel => true;
   protected override async UniTask Task(CancellationToken token) {
@@ -30,8 +34,7 @@ public class LightPowerActive : UniTaskAbility {
       SpellStaff.Open();
       emissionBeam = Instantiate(
         Settings.ActiveChargeBeam,
-        SpellStaff.SpellChargeContainer.position,
-        Quaternion.identity);
+        SpellStaff.EmissionPoint);
       await Tasks.Delay(
         Settings.ActiveDownBeamsDelay.Ticks,
         LocalClock,
