@@ -9,13 +9,13 @@ public class EffectManager : MonoBehaviour {
 
   public void Register(Effect effect) {
     effect.EffectManager = this;
-    Effects.Add(effect);
     effect.transform.SetParent(EffectsContainer, false);
+    Effects.Add(effect);
   }
 
   public void Unregister(Effect effect) {
     effect.EffectManager = null;
+    effect.DestroyGameObject();
     Effects.Remove(effect);
-    Destroy(effect.gameObject);
   }
 }

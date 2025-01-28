@@ -96,6 +96,12 @@ public static class GameObjectExtensions {
       GameObject.Destroy(go);
     }
   }
+
+  public static void DestroyGameObject(this Component c) {
+    if (c && c.gameObject) {
+      Destroy(c.gameObject);
+    }
+  }
 }
 
 public static class MonobehaviorExtensions {
