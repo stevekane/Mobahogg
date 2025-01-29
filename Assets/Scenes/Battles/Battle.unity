@@ -203,7 +203,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &145744444
 Transform:
@@ -432,6 +432,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turtle Cannon Higher
       objectReference: {fileID: 0}
+    - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29
@@ -624,6 +628,10 @@ PrefabInstance:
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_Name
       value: Turtle Cannon Lower
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2045,7 +2053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &761695183
 Transform:
   m_ObjectHideFlags: 0
@@ -3356,6 +3364,10 @@ PrefabInstance:
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_Name
       value: Robot Cannon Higher
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6074,6 +6086,10 @@ PrefabInstance:
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_Name
       value: Robot Cannon Lower
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x

@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
 using State;
+using System;
 
 public class LightPowerActive : UniTaskAbility, IHeld {
   [SerializeField] LightPowerSettings Settings;
@@ -11,6 +12,7 @@ public class LightPowerActive : UniTaskAbility, IHeld {
   SpellStaff SpellStaff;
   WeaponAim WeaponAim;
   Dictionary<Player, GameObject> PlayerToBeamMap = new();
+  GameObject EmissionBeam;
 
   void Start() {
     SpellStaff = AbilityManager.LocateComponent<SpellStaff>();
@@ -23,7 +25,15 @@ public class LightPowerActive : UniTaskAbility, IHeld {
   public override bool CanRun => true;
   public override bool CanCancel => true;
   protected override async UniTask Task(CancellationToken token) {
-    GameObject emissionBeam = null;
+    try {
+      await Chargeup(token);
+      await RunHealing(token);
+    } finally {
+      Cleanup();
+    }
+  }
+
+  async UniTask Chargeup(CancellationToken token) {
     try {
       Animator.SetTrigger("Light Active");
       await Tasks.Delay(
@@ -32,25 +42,13 @@ public class LightPowerActive : UniTaskAbility, IHeld {
         token);
       WeaponAim.AimDirection = Vector3.up;
       SpellStaff.Open();
-      emissionBeam = Instantiate(
+      EmissionBeam = Instantiate(
         Settings.ActiveChargeBeam,
+        SpellStaff.EmissionPoint.position,
+        Quaternion.LookRotation(SpellStaff.EmissionPoint.forward, SpellStaff.EmissionPoint.up),
         SpellStaff.EmissionPoint);
-      await Tasks.Delay(
-        Settings.ActiveDownBeamsDelay.Ticks,
-        LocalClock,
-        token);
-      await RunHealing(token);
-    } finally {
-      if (Animator)
-        Animator.SetTrigger("Stop Hold");
-      if (WeaponAim)
-        WeaponAim.AimDirection = null;
-      if (SpellStaff)
-        SpellStaff.Close();
-      emissionBeam.Destroy();
-      foreach (var beamInstance in PlayerToBeamMap.Values) {
-        beamInstance.Destroy();
-      }
+    } catch (Exception e) {
+      Animator.SetTrigger("Stop Hold");
     }
   }
 
@@ -72,6 +70,19 @@ public class LightPowerActive : UniTaskAbility, IHeld {
       foreach (var beamInstance in PlayerToBeamMap.Values) {
         beamInstance.Destroy();
       }
+    }
+  }
+
+  void Cleanup() {
+    if (Animator)
+      Animator.SetTrigger("Stop Hold");
+    if (WeaponAim)
+      WeaponAim.AimDirection = null;
+    if (SpellStaff)
+      SpellStaff.Close();
+    EmissionBeam.Destroy();
+    foreach (var beamInstance in PlayerToBeamMap.Values) {
+      beamInstance.Destroy();
     }
   }
 

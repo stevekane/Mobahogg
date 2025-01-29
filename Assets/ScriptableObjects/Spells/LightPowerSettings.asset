@@ -45,9 +45,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   ActiveChargeDuration:
-    Millis: 1000
-  ActiveDownBeamsDelay:
-    Millis: 500
+    Millis: 850
   ActiveProcCooldown:
     Millis: 500
   ActiveProcHealthChange: 1
@@ -59,10 +57,10 @@ MonoBehaviour:
     Millis: 3000
   UltimateProcCooldown:
     Millis: 500
-  UltimateProcHealthChange: 2
+  UltimateProcHealthChange: 1
   UltimateTurnSpeed: 30
   ChargeSphereMaterial: {fileID: 2100000, guid: 9551cb12d59cbce44bd09aded0902931, type: 2}
-  UltimateChargeBeamPrefab: {fileID: 1223258884449188215, guid: c6f28c4dff4b4a2448e09abf12ced787, type: 3}
+  UltimateChargeBeamPrefab: {fileID: 5170260130308179760, guid: 7f3c95eb3e8b6854090b01558b96f6fd, type: 3}
   UltimateLayerMask:
     serializedVersion: 2
     m_Bits: 131073

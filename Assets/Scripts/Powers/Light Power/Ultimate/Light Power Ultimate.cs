@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Abilities;
 using Cysharp.Threading.Tasks;
@@ -11,7 +10,7 @@ public class LightPowerUltimate : UniTaskAbility, IAimed, ISteered {
   [SerializeField] LightPowerSettings Settings;
 
   RaycastHit[] RaycastHits = new RaycastHit[64];
-  Dictionary<SpellAffected, int> BeamProcTargetToFrameCooldown = new();
+  Dictionary<SpellAffected, int> BeamTargetToNextProcFrame = new();
 
   public override bool CanRun => true;
   public override bool CanCancel => false;
@@ -41,7 +40,7 @@ public class LightPowerUltimate : UniTaskAbility, IAimed, ISteered {
   protected override async UniTask Task(CancellationToken token) {
     GameObject sphere = null;
     GameObject chargeBeam = null;
-    BeamProcTargetToFrameCooldown.Clear();
+    BeamTargetToNextProcFrame.Clear();
     try {
       var spellAffected = AbilityManager.GetComponent<SpellAffected>();
       Animator.SetTrigger("Light Ultimate");
@@ -59,55 +58,54 @@ public class LightPowerUltimate : UniTaskAbility, IAimed, ISteered {
       }, token);
 
       Steering = true;
-      chargeBeam = Instantiate(Settings.UltimateChargeBeamPrefab);
-      chargeBeam.transform.SetParent(transform);
-      var lineRenderer = chargeBeam.GetComponent<LineRenderer>();
+      chargeBeam = Instantiate(
+        Settings.UltimateChargeBeamPrefab,
+        sphere.transform.position,
+        Quaternion.LookRotation(AbilityManager.transform.forward),
+        transform);
+
+      bool StopsBeam(RaycastHit hit) => !hit.collider.GetComponent<SpellAffected>();
       await Tasks.EveryFrame(Settings.UltimateChannelDuration.Ticks, LocalClock, f => {
-        var maxDistance = 100;
+        var maxDistance = 100f;
         var ray = new Ray(sphere.transform.position, AbilityManager.transform.forward);
         var count = Physics.RaycastNonAlloc(ray, RaycastHits, maxDistance, Settings.UltimateLayerMask);
-        var rayStopPosition = ray.origin + maxDistance * ray.direction;
-        for (var i = 0; i < count; i++) {
-          if (RaycastHits[i].collider.TryGetComponent(out SpellAffected targetAffected)) {
-            BeamProcTargetToFrameCooldown.TryAdd(targetAffected, 0);
-          } else {
-            rayStopPosition = RaycastHits[i].point;
-            break;
-          }
-        }
 
-        // TODO: Fucking crazy stupid allocation... jesus christ
-        var keys = BeamProcTargetToFrameCooldown.Keys.ToArray();
-        foreach (var affected in keys) {
-          // volatile references... gotta check they are not null
-          if (affected) {
-            if (BeamProcTargetToFrameCooldown[affected] <= 0) {
-              var healthChangeSign = Team.SameTeam(AbilityManager, affected) ? 1 : -1;
-              affected.ChangeHealth(healthChangeSign * Settings.UltimateProcHealthChange);
-              BeamProcTargetToFrameCooldown[affected] = Settings.UltimateProcCooldown.Ticks;
-            } else {
-              BeamProcTargetToFrameCooldown[affected]--;
-            }
-          } else {
-            BeamProcTargetToFrameCooldown.Remove(affected);
+        var rayDistance = maxDistance;
+        for (var i = 0; i < count; i++) {
+          var hit = RaycastHits[i];
+          if (StopsBeam(hit)) {
+            rayDistance = Mathf.Min(hit.distance, rayDistance);
           }
         }
-        lineRenderer.SetPosition(0, ray.origin);
-        lineRenderer.SetPosition(1, rayStopPosition);
+        var frame = LocalClock.FixedFrame();
+        var cooldownFrames = Settings.UltimateProcCooldown.Ticks;
+        var healthChange = Settings.UltimateProcHealthChange;
+        for (var i = 0; i < count; i++) {
+          var hit = RaycastHits[i];
+          if (hit.distance <= rayDistance && hit.collider.TryGetComponent(out SpellAffected targetAffected)) {
+            var nextProcFrame = BeamTargetToNextProcFrame.GetOrAdd(targetAffected, frame);
+            if (nextProcFrame <= frame) {
+              var sign = Team.SameTeam(targetAffected, AbilityManager) ? 1 : -1;
+              targetAffected.ChangeHealth(sign * healthChange);
+              BeamTargetToNextProcFrame[targetAffected] = frame + cooldownFrames;
+            }
+          }
+        }
         spellAffected.MultiplySpeed(0);
       }, token);
       Steering = false;
-
     } catch (Exception e) {
       Debug.LogWarning(e.Message);
     } finally {
       sphere.Destroy();
       chargeBeam.Destroy();
-      Animator.SetTrigger("Stop Hold");
-      BeamProcTargetToFrameCooldown.Clear();
+      if (Animator)
+        Animator.SetTrigger("Stop Hold");
+      BeamTargetToNextProcFrame.Clear();
       Steering = false;
       // N.B. THIS IS IMPORTANT LOL. Once you remove this, the ability itself is removed and this task is canceled
-      AbilityManager.GetComponent<SpellHolder>().Remove();
+      if (AbilityManager)
+        AbilityManager.GetComponent<SpellHolder>().Remove();
     }
   }
 }

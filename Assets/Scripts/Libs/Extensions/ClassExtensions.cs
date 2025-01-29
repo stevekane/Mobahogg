@@ -297,6 +297,14 @@ public static class DictionaryExtensions {
       dictionary.Add(key, value = createFunc());
     return value;
   }
+  public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value) {
+    if (dictionary.TryGetValue(key, out var output)) {
+      return output;
+    } else {
+      dictionary.Add(key, value);
+      return value;
+    }
+  }
   // Special case for "counting" dictionaries, where a 0 indicates "key not present".
   public static int Increment<TKey>(this IDictionary<TKey, int> dictionary, TKey key, int amount = 1) {
     var current = dictionary.TryGetValue(key, out var value) ? value : 0;

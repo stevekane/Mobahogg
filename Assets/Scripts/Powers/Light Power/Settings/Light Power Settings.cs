@@ -13,7 +13,6 @@ public class LightPowerSettings : ScriptableObject {
 
   [Header("Active")]
   public Timeval ActiveChargeDuration = Timeval.FromSeconds(1);
-  public Timeval ActiveDownBeamsDelay = Timeval.FromMillis(500);
   public Timeval ActiveProcCooldown = Timeval.FromMillis(500);
   public int ActiveProcHealthChange = 1;
   public GameObject ActiveChargeBeam;
