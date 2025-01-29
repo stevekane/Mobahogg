@@ -1,65 +1,96 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Abilities {
   [CustomPropertyDrawer(typeof(TagSet))]
-  public class TagSetDrawer : PropertyDrawer
-  {
-      private const float Padding = 2f;
+  public class TagSetDrawer : PropertyDrawer {
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+      EditorGUI.BeginProperty(position, label, property);
 
-      public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-      {
-          // Get the tags list and calculate height
-          SerializedProperty tagsProperty = property.FindPropertyRelative("Tags");
-          return EditorGUIUtility.singleLineHeight + (tagsProperty.arraySize + 1) * (EditorGUIUtility.singleLineHeight + Padding);
+      SerializedProperty tagsProperty = property.FindPropertyRelative("Tags");
+
+      // Fetch all available tags in the project
+      Tag[] allTags = FindAllTags();
+      List<Tag> selectedTags = tagsProperty.ToTagList();
+
+      // Convert selections into a flag-style popup
+      string displayText = selectedTags.Count == 0 ? "None" : string.Join(", ", selectedTags.Select(t => t.name));
+
+      if (EditorGUI.DropdownButton(position, new GUIContent(displayText), FocusType.Keyboard)) {
+        TagSelectorWindow.Show(tagsProperty, allTags);
       }
 
-      public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-      {
-          EditorGUI.BeginProperty(position, label, property);
+      EditorGUI.EndProperty();
+    }
 
-          SerializedProperty tagsProperty = property.FindPropertyRelative("Tags");
-
-          // Draw label
-          Rect labelRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-          EditorGUI.LabelField(labelRect, label);
-
-          // Draw the list
-          Rect listRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + Padding, position.width, position.height - EditorGUIUtility.singleLineHeight);
-          DrawTagList(listRect, tagsProperty);
-
-          EditorGUI.EndProperty();
-      }
-
-      private void DrawTagList(Rect position, SerializedProperty tagsProperty)
-      {
-          // Iterate over the list of tags
-          for (int i = 0; i < tagsProperty.arraySize; i++)
-          {
-              Rect elementRect = new Rect(position.x, position.y + i * (EditorGUIUtility.singleLineHeight + Padding), position.width - 30, EditorGUIUtility.singleLineHeight);
-              SerializedProperty elementProperty = tagsProperty.GetArrayElementAtIndex(i);
-
-              // Draw the tag object field
-              EditorGUI.ObjectField(elementRect, elementProperty, GUIContent.none);
-
-              // Remove button
-              Rect removeButtonRect = new Rect(position.x + position.width - 25, elementRect.y, 25, elementRect.height);
-              if (GUI.Button(removeButtonRect, "X"))
-              {
-                  tagsProperty.DeleteArrayElementAtIndex(i);
-                  break;
-              }
-          }
-
-          // Add button
-          Rect addButtonRect = new Rect(position.x, position.y + tagsProperty.arraySize * (EditorGUIUtility.singleLineHeight + Padding), position.width, EditorGUIUtility.singleLineHeight);
-          if (GUI.Button(addButtonRect, "Add Tag"))
-          {
-              tagsProperty.InsertArrayElementAtIndex(tagsProperty.arraySize);
-              tagsProperty.GetArrayElementAtIndex(tagsProperty.arraySize - 1).objectReferenceValue = null;
-          }
-      }
+    private Tag[] FindAllTags() {
+      string[] guids = AssetDatabase.FindAssets("t:Tag");
+      return guids.Select(guid => AssetDatabase.LoadAssetAtPath<Tag>(AssetDatabase.GUIDToAssetPath(guid))).ToArray();
+    }
   }
-  #endif
+
+  // Extension method to convert SerializedProperty list into a List<Tag>
+  public static class SerializedPropertyExtensions {
+    public static List<Tag> ToTagList(this SerializedProperty property) {
+      List<Tag> tagList = new();
+      for (int i = 0; i < property.arraySize; i++) {
+        SerializedProperty element = property.GetArrayElementAtIndex(i);
+        if (element.objectReferenceValue is Tag tag)
+          tagList.Add(tag);
+      }
+      return tagList;
+    }
+  }
+
+  // Popup window for selecting tags
+  public class TagSelectorWindow : EditorWindow {
+    private static SerializedProperty _tagsProperty;
+    private static Tag[] _allTags;
+    private Vector2 _scrollPos;
+
+    public static void Show(SerializedProperty tagsProperty, Tag[] allTags) {
+      TagSelectorWindow window = GetWindow<TagSelectorWindow>(true, "Select Tags", true);
+      window.minSize = new Vector2(250, 300);
+      _tagsProperty = tagsProperty;
+      _allTags = allTags;
+      window.ShowPopup();
+    }
+
+    private void OnGUI() {
+      if (_tagsProperty == null || _allTags == null) return;
+
+      List<Tag> selectedTags = _tagsProperty.ToTagList();
+
+      _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+
+      foreach (Tag tag in _allTags) {
+        bool isSelected = selectedTags.Contains(tag);
+        bool newValue = EditorGUILayout.ToggleLeft(tag.name, isSelected);
+
+        if (newValue && !isSelected) {
+          int newIndex = _tagsProperty.arraySize;
+          _tagsProperty.InsertArrayElementAtIndex(newIndex);
+          _tagsProperty.GetArrayElementAtIndex(newIndex).objectReferenceValue = tag;
+        }
+        else if (!newValue && isSelected) {
+          for (int i = 0; i < _tagsProperty.arraySize; i++) {
+            if (_tagsProperty.GetArrayElementAtIndex(i).objectReferenceValue == tag) {
+              _tagsProperty.DeleteArrayElementAtIndex(i);
+              break;
+            }
+          }
+        }
+      }
+
+      EditorGUILayout.EndScrollView();
+
+      if (GUILayout.Button("Close")) {
+        Close();
+      }
+    }
+  }
 }
+#endif
