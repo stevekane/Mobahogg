@@ -19,7 +19,15 @@ namespace Abilities {
       // Convert selections into a flag-style popup
       string displayText = selectedTags.Count == 0 ? "None" : string.Join(", ", selectedTags.Select(t => t.name));
 
-      if (EditorGUI.DropdownButton(position, new GUIContent(displayText), FocusType.Keyboard)) {
+      // Reserve space for label and dropdown
+      Rect labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
+      Rect dropdownRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, position.width - EditorGUIUtility.labelWidth, position.height);
+
+      // Draw label
+      EditorGUI.PrefixLabel(labelRect, label);
+
+      // Draw dropdown
+      if (EditorGUI.DropdownButton(dropdownRect, new GUIContent(displayText), FocusType.Keyboard)) {
         TagSelectorWindow.Show(tagsProperty, allTags);
       }
 
