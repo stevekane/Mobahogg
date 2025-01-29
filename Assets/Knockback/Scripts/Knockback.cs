@@ -12,7 +12,7 @@ public class Knockback : MonoBehaviour {
 
   [SerializeField] LocalClock LocalClock;
   [SerializeField] KCharacterController CharacterController;
-  [SerializeField] float DecayRate = 2.0f;
+  [SerializeField] KnockbackSettings Settings;
 
   Vector3 Current;
   Vector3? Next = null;
@@ -24,11 +24,12 @@ public class Knockback : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    float dt = LocalClock.DeltaTime();
+    var dt = LocalClock.DeltaTime();
+    var decayRate = Settings.KnockbackDecayRate;
     if (Next.HasValue) {
       Current = Next.Value;
     } else {
-      Current *= Mathf.Pow(Mathf.Clamp01(1 - dt * DecayRate), DecayRate);
+      Current *= Mathf.Pow(Mathf.Clamp01(1 - dt * decayRate), decayRate);
       Current = Current.magnitude <= MIN_MAGNITUDE ? Vector3.zero : Current;
     }
     Next = null;
