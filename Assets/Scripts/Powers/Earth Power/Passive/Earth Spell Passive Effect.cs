@@ -8,6 +8,6 @@ public class EarthSpellPassiveEffect : PowerEffect {
   }
 
   void FixedUpdate() {
-    SpellAffected.Immune.Set(true);
+    SpellAffected.ScaleKnockbackStrength(3);
   }
 }

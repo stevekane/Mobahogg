@@ -8,6 +8,7 @@ public class SpellAffected : MonoBehaviour {
   [SerializeField] Health HealthState;
   [SerializeField] Damage DamageState;
   [SerializeField] Knockback KnockbackState;
+  [SerializeField] KnockbackScale KnockbackScale;
 
   public BooleanAnyAttribute Immune;
 
@@ -23,6 +24,8 @@ public class SpellAffected : MonoBehaviour {
     Controller.DirectVelocity.Add(Immune.Current ? Vector3.zero : directVelocity);
   public void Knockback(Vector3 knockback) =>
     KnockbackState.Set(Immune.Current ? Vector3.zero : knockback);
+  public void ScaleKnockbackStrength(float multiplier) =>
+    KnockbackScale.Mul(multiplier);
 
   void FixedUpdate() {
     Immune.Sync();

@@ -811,6 +811,7 @@ MonoBehaviour:
   Collider: {fileID: 6665645738327028371}
   MeleeAttackConfig: {fileID: 11400000, guid: aa42d51c6311d094491c3b690084fbcc, type: 2}
   AttackAbility: {fileID: 5165232841971343211}
+  KnockbackScale: {fileID: 181006724518526996}
 --- !u!135 &6665645738327028371
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2126,6 +2127,7 @@ MonoBehaviour:
   HealthState: {fileID: 94004394668583191}
   DamageState: {fileID: 2887056759439107999}
   KnockbackState: {fileID: 7875168543698579960}
+  KnockbackScale: {fileID: 181006724518526996}
 --- !u!114 &3051964976537025274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2299,6 +2301,7 @@ GameObject:
   - component: {fileID: 94004394668583191}
   - component: {fileID: 2887056759439107999}
   - component: {fileID: 7875168543698579960}
+  - component: {fileID: 181006724518526996}
   m_Layer: 0
   m_Name: State
   m_TagString: Untagged
@@ -2389,6 +2392,18 @@ MonoBehaviour:
   LocalClock: {fileID: 988945814378296752}
   CharacterController: {fileID: 3542533184097295049}
   DecayRate: 4
+--- !u!114 &181006724518526996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9154293866625994780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669f492bb943cbc49ba85b7cbd5c97ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3767571294953913009
 PrefabInstance:
   m_ObjectHideFlags: 0

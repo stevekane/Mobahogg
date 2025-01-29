@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks.Triggers;
 using Melee;
 using UnityEngine;
 
@@ -9,6 +7,7 @@ public class Hitbox : MonoBehaviour {
   [SerializeField] Collider Collider;
   [SerializeField] MeleeAttackConfig MeleeAttackConfig;
   [SerializeField] AttackAbility AttackAbility;
+  [SerializeField] KnockbackScale KnockbackScale;
 
   public Combatant Owner => Combatant;
 
@@ -29,6 +28,7 @@ public class Hitbox : MonoBehaviour {
       var attackEvent = new MeleeAttackEvent {
         Damage = Damage.Value,
         Config = MeleeAttackConfig,
+        KnockbackScale = KnockbackScale.Value,
         Attacker = Owner,
         Victim = hurtbox.Owner
       };
