@@ -605,6 +605,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8840627875731547852, guid: ca7d17f6620d73c45900e5e37d1e35e0, type: 3}
   m_PrefabInstance: {fileID: 294492686}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &296252702
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (7)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &308822626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1314,6 +1371,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6763942633684154603, guid: 1eb943beba5e1ea4c827507c50eabe1e, type: 3}
   m_PrefabInstance: {fileID: 517235876}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &531026503
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (9)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &547844012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2439,6 +2553,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
   m_PrefabInstance: {fileID: 973255231}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &987509086
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &1046651627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2623,6 +2794,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Golems: []
   GolemAttractors: []
+--- !u!1001 &1071062185
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &1140503455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3186,6 +3414,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+--- !u!1001 &1386935448
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1 &1390202583
 GameObject:
   m_ObjectHideFlags: 0
@@ -4311,6 +4596,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616562925}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1618762234
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &1670275511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4580,6 +4922,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe024a0d8ab49a14b81c419e21cc4807, type: 3}
+--- !u!1001 &1745795524
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &1795471704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4878,6 +5277,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1897290465
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (10)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1 &1932763002 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4523053095193252874, guid: 33e02c53d5c1c604fad9b0166f21a8c6, type: 3}
@@ -5089,6 +5545,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
+--- !u!1001 &2035113198
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (8)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1 &2044782394
 GameObject:
   m_ObjectHideFlags: 0
@@ -5306,6 +5819,63 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &2067210336
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (5)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1 &2068514303
 GameObject:
   m_ObjectHideFlags: 0
@@ -5425,6 +5995,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6763942633684154603, guid: 1eb943beba5e1ea4c827507c50eabe1e, type: 3}
   m_PrefabInstance: {fileID: 2085926227}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2107711251
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29768401048473706, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175623024414250777, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
+      propertyPath: m_Name
+      value: Spell Charge Earth (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d8e43378aedc4474d8d26c8d14752846, type: 3}
 --- !u!1001 &2125281020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6173,3 +6800,14 @@ SceneRoots:
   - {fileID: 409854452}
   - {fileID: 1609592776}
   - {fileID: 767817297}
+  - {fileID: 1618762234}
+  - {fileID: 2107711251}
+  - {fileID: 1071062185}
+  - {fileID: 987509086}
+  - {fileID: 1745795524}
+  - {fileID: 2067210336}
+  - {fileID: 1386935448}
+  - {fileID: 296252702}
+  - {fileID: 2035113198}
+  - {fileID: 531026503}
+  - {fileID: 1897290465}
