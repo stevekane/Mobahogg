@@ -18,3 +18,4 @@ MonoBehaviour:
   GroundMoveSpeed: 10
   CoyoteFrameCount: 12
   JumpHeight: 5
+  KnockbackDecayRate: 3

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Abilities;
 using Cysharp.Threading.Tasks;
@@ -44,16 +45,20 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
     }
   }
 
+  /*
+  More annoying trash related to varying height levels.
+
+  We need to decide basically what happens when you do this "slam" on sound boundary.
+  */
   void OnSlam() {
+    CameraManager.Instance.Shake(Settings.ActiveCameraShakeIntensity);
     Vibrator.Vibrate(Vector3.up, Settings.ActiveSlamHitStop.Ticks, 0.125f, 20);
     HitStop.FramesRemaining = Settings.ActiveSlamHitStop.Ticks;
     // find affected targets nearby
     foreach (var player in LivesManager.Active.Players) {
       var delta = player.transform.position - AbilityManager.transform.position;
       if (delta.magnitude < Settings.ActiveKnockbackRadius && player.gameObject != AbilityManager.gameObject) {
-        var direction = delta.normalized.XZ();
-        direction.y = 1;
-        direction.Normalize();
+        var direction = delta.XZ().normalized;
         if (player.TryGetComponent(out SpellAffected targetSpellAffected)) {
           targetSpellAffected.Knockback(Settings.ActiveKnockbackStrength * direction);
         }
@@ -61,11 +66,12 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
     }
   }
 
-  bool RootMotion;
   void OnStartRootMotion() {
+    TimeManager.Instance.Log($"Start Root Motion");
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
   }
   void OnStopRootMotion() {
+    TimeManager.Instance.Log($"Stop Root Motion");
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
   void OnAnimatorMove() {
@@ -98,13 +104,14 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
         }
         SpellAffected.MultiplySpeed(0);
       });
-    } finally {
+    } catch (Exception e) {
       foreach (var notify in Settings.ActiveAnimationMontage.Notifies) {
         // Cleanup running notifies... is this really the same as "end"? maybe should be own thing?
         if (Frame >= notify.StartFrame && Frame <= notify.EndFrame) {
           OnNotifyEnd(notify);
         }
       }
+    } finally {
       Frame = Settings.ActiveAnimationMontage.FrameDuration;
       Animator.SetTrigger("Stop Hold");
     }

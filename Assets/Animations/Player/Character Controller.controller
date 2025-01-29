@@ -272,7 +272,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Slam
-  m_Speed: 2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4838160718602387781}
@@ -285,7 +285,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5685608454334328704, guid: bd4e1dd6d67bb8a4383abd5158affc24, type: 3}
+  m_Motion: {fileID: -998496362607748373, guid: bd4e1dd6d67bb8a4383abd5158affc24, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -473,7 +473,7 @@ AnimatorStateMachine:
     m_Position: {x: 380, y: -140, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 4698292768702727111}
-    m_Position: {x: 380, y: -320, z: 0}
+    m_Position: {x: 380, y: -290, z: 0}
   m_AnyStateTransitions:
   - {fileID: 4066777570510240326}
   - {fileID: -6529329398687348712}

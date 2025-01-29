@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimatorPrefab: {fileID: 5035619387605278895, guid: ec5216c9005ebec498f51547e618f28f, type: 3}
   Clips:
-  - AnimationClip: {fileID: -5685608454334328704, guid: bd4e1dd6d67bb8a4383abd5158affc24, type: 3}
+  - AnimationClip: {fileID: -998496362607748373, guid: bd4e1dd6d67bb8a4383abd5158affc24, type: 3}
     FootIK: 1
     StartFrame: 0
-    Speed: 2
+    Speed: 1
     FadeInFrames: 0
     FadeOutFrames: 0
   Notifies:
   - Name: Slam
-    StartFrame: 10
-    EndFrame: 10
+    StartFrame: 38
+    EndFrame: 38
   - Name: Root Motion
     StartFrame: 0
-    EndFrame: 31
+    EndFrame: 38

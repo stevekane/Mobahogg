@@ -15,10 +15,11 @@ MonoBehaviour:
   PassiveKnockbackStrength: 3
   ActiveAnimationMontage: {fileID: 11400000, guid: d5f6fbf428b54304ba53bc3b753550ea, type: 2}
   ActiveSlamHitStop:
-    Millis: 200
-  ActiveKnockbackRadius: 5
-  ActiveKnockbackStrength: 100
-  ActiveRootMotionMultiplier: 5
+    Millis: 500
+  ActiveKnockbackRadius: 10
+  ActiveKnockbackStrength: 250
+  ActiveRootMotionMultiplier: 3
+  ActiveCameraShakeIntensity: 2.5
   EarthBallPrefab: {fileID: 5361970549713510377, guid: 5bdba77b161bb9a4a85c2521e0ca2925, type: 3}
   RockPrefab: {fileID: 8951997924868042674, guid: e3c0b62371fc5774ebbc3e7b52b784b4, type: 3}
   SpikePrefab: {fileID: 4996498879357762785, guid: ff7d34eb33a47c846beb8b46741e746d, type: 3}

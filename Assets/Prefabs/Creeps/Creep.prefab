@@ -217,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 1737775483512742949}
   Motor: {fileID: 1415436390563285536}
+  ShowDebug: 0
 --- !u!114 &4867644372670552702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitFlinchName: 
   HurtFlinchName: 
   Animator: {fileID: 0}
   Health: {fileID: 5196275824233463631}
@@ -294,6 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 1737775483512742949}
   CharacterController: {fileID: 4255379430337605986}
+  Settings: {fileID: 11400000, guid: ed2969172678737448389227e619eaf5, type: 2}
 --- !u!136 &188196177290570217
 CapsuleCollider:
   m_ObjectHideFlags: 8

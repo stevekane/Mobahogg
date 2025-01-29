@@ -890,7 +890,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3650841436896553021}
-  m_LocalRotation: {x: 0.3535534, y: 0.61237246, z: -0.3535534, w: 0.61237246}
+  m_LocalRotation: {x: 0.27059808, y: 0.6532815, z: -0.27059808, w: 0.6532815}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.009999998, y: 0.01, z: 0.009999998}
   m_ConstrainProportionsScale: 0
@@ -2391,7 +2391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
   CharacterController: {fileID: 3542533184097295049}
-  DecayRate: 4
+  Settings: {fileID: 11400000, guid: ed2969172678737448389227e619eaf5, type: 2}
 --- !u!114 &181006724518526996
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class EarthSpellSettings : ScriptableObject {
   public float ActiveKnockbackRadius = 5;
   public float ActiveKnockbackStrength = 25;
   public float ActiveRootMotionMultiplier = 2;
+  public float ActiveCameraShakeIntensity = 2;
 
   [Header("Ultimate")]
   public GameObject EarthBallPrefab;
