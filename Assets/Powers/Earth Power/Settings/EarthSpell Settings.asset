@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PassiveKnockbackStrength: 3
   ActiveAnimationMontage: {fileID: 11400000, guid: d5f6fbf428b54304ba53bc3b753550ea, type: 2}
+  ActiveSpawnSpikesEffectPrefab: {fileID: 2569485580638881748, guid: b0db0dae9572fa54cb01bf3bc6280a53, type: 3}
   ActiveSlamHitStop:
     Millis: 500
   ActiveKnockbackRadius: 10

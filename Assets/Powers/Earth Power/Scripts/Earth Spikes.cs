@@ -9,7 +9,13 @@ public class EarthSpikes : MonoBehaviour {
   [SerializeField] float Distance = 10;
 
   void Start() {
-    Run(this.destroyCancellationToken).Forget();
+    SpawnSpikes();
+    // Run(this.destroyCancellationToken).Forget();
+  }
+
+  [ContextMenu("Spawn Spikes")]
+  void SpawnSpikes() {
+    VisualEffect.SendEvent("SpawnSpike");
   }
 
   async UniTask Run(CancellationToken token) {

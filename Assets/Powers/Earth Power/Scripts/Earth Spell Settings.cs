@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 [CreateAssetMenu(fileName = "EarthSpell Settings", menuName = "Spells/EarthSpellSettings")]
 public class EarthSpellSettings : ScriptableObject {
@@ -7,6 +8,7 @@ public class EarthSpellSettings : ScriptableObject {
 
   [Header("Active")]
   public AnimationMontage ActiveAnimationMontage;
+  public VisualEffect ActiveSpawnSpikesEffectPrefab;
   public Timeval ActiveSlamHitStop = Timeval.FromTicks(12);
   public float ActiveKnockbackRadius = 5;
   public float ActiveKnockbackStrength = 25;

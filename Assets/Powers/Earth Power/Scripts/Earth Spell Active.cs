@@ -3,9 +3,11 @@ using System.Threading;
 using Abilities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class EarthSpellActive : UniTaskAbility, IAimed {
   [SerializeField] EarthSpellSettings Settings;
+  [SerializeField] VisualEffect SpikesVisualEffect;
 
   int Frame;
   SpellAffected SpellAffected;
@@ -60,6 +62,10 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
       if (delta.magnitude < Settings.ActiveKnockbackRadius && player.gameObject != AbilityManager.gameObject) {
         var direction = delta.XZ().normalized;
         if (player.TryGetComponent(out SpellAffected targetSpellAffected)) {
+          var spikesEffect = Instantiate(Settings.ActiveSpawnSpikesEffectPrefab);
+          spikesEffect.SetVector3("Path_start", AbilityManager.transform.position+2*AbilityManager.transform.forward);
+          spikesEffect.SetVector3("Path_end", player.transform.position);
+          spikesEffect.SendEvent("SpawnSpikes");
           targetSpellAffected.Knockback(Settings.ActiveKnockbackStrength * direction);
         }
       }
@@ -67,11 +73,9 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
   }
 
   void OnStartRootMotion() {
-    TimeManager.Instance.Log($"Start Root Motion");
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
   }
   void OnStopRootMotion() {
-    TimeManager.Instance.Log($"Stop Root Motion");
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
   void OnAnimatorMove() {

@@ -13,9 +13,7 @@ GameObject:
   - component: {fileID: 8249280339222930021}
   - component: {fileID: 7610285754840962770}
   - component: {fileID: 1762967172145849388}
-  - component: {fileID: 7972737800534926729}
-  - component: {fileID: 7703821660946099534}
-  - component: {fileID: 2421828437245948790}
+  - component: {fileID: 7462368139010870449}
   m_Layer: 0
   m_Name: Earth Spikes
   m_TagString: Untagged
@@ -48,14 +46,20 @@ VisualEffect:
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 320b94bda5dccc74f891a45d2c9afca0, type: 3}
   m_InitialEventName: 
-  m_InitialEventNameOverriden: 1
+  m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0.05
+        m_Name: Duration
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: Lifetime
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -148,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7972737800534926729
+--- !u!114 &7462368139010870449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,40 +161,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3235990025355762808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58924621a0f80f941bfe87178881dbc7, type: 3}
+  m_Script: {fileID: 11500000, guid: ca12e696ba8256048aac71ba4426cd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalClock: {fileID: 1762967172145849388}
-  VisualEffect: {fileID: 2569485580638881748}
-  Distance: 25
---- !u!114 &7703821660946099534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3235990025355762808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
---- !u!114 &2421828437245948790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3235990025355762808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-    _objectReferences:
-    - {fileID: 11400000, guid: 9b4f4d03daff30c44a9b60d9244a644a, type: 2}
+  Lifetime:
+    Millis: 3000
