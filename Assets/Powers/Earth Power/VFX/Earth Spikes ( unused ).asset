@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e66c6366d904e98bc83428217d4fd7, type: 3}
+  m_Name: Earth Spikes ( unused )
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"Kind":"Flow","collection":{"$content":[{"name":"Visual
+      Effect","value":null,"typeHandle":{"Identification":"UnityEngine.VFX.VisualEffect,
+      UnityEngine.VFXModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Earth
+      Spikes","summary":"Spawns a sequence of spikes along a path","pan":{"x":-431.96,"y":-425.5},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{},"position":{"x":-871.0,"y":-366.0},"guid":"fde583e3-0d61-4ab5-9543-eebda8675d37","$version":"A","$type":"Unity.VisualScripting.Start","$id":"10"},{"chainable":false,"parameterNames":["type"],"member":{"name":"GetComponent","parameterTypes":["System.Type"],"targetType":"UnityEngine.Component","targetTypeName":"UnityEngine.Component","$version":"A"},"defaultValues":{"target":null,"%type":{"$content":"UnityEngine.VFX.VisualEffect","$type":"System.RuntimeType"}},"position":{"x":-722.0,"y":-367.0},"guid":"c8883ce3-0e6b-47d6-8194-15c0b18c265a","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"12"},{"kind":"Graph","defaultValues":{"name":{"$content":"Visual
+      Effect","$type":"System.String"}},"position":{"x":-432.0,"y":-392.0},"guid":"84690a3a-eb91-4c31-a5fd-5e17fe0ede14","$version":"A","$type":"Unity.VisualScripting.SetVariable","$id":"16"},{"chainable":false,"parameterNames":["methodName","time"],"member":{"name":"Invoke","parameterTypes":["System.String","System.Single"],"targetType":"UnityEngine.MonoBehaviour","targetTypeName":"UnityEngine.MonoBehaviour","$version":"A"},"defaultValues":{"target":null,"%methodName":{"$content":"","$type":"System.String"},"%time":{"$content":0.0,"$type":"System.Single"}},"position":{"x":-189.0,"y":-386.0},"guid":"9c7e00c0-c02b-468c-b2e4-26181c398715","$version":"A","$type":"Unity.VisualScripting.InvokeMember","$id":"18"},{"sourceUnit":{"$ref":"10"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"enter","guid":"4d7565d1-1433-4ca4-b656-b96086363070","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"exit","destinationUnit":{"$ref":"16"},"destinationKey":"assign","guid":"7c36352e-9b90-4e83-ac7a-300f29b130bb","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"result","destinationUnit":{"$ref":"16"},"destinationKey":"input","guid":"5570b2f7-35e1-4747-b502-85736df0bdeb","$type":"Unity.VisualScripting.ValueConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"output","destinationUnit":{"$ref":"18"},"destinationKey":"target","guid":"e6f7d74a-835a-4844-97ee-7c8e7b35a5b0","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []
