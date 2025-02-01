@@ -146,7 +146,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
         : slot.ActivePlayable.Equals(CurrentDashMontagePlayable)
           ? DiveRollRootMotionScalar
           : 0;
-    Debug.Log(rootMotionScale);
     RootMotionScaler.SetJobData(new RootMotionScaleJob(rootMotionScale));
     Slot.GetBehaviour().FadeDuration = SlotCrossFadeDuration;
     AirborneSelect.GetBehaviour().CrossFade(0, 1);
