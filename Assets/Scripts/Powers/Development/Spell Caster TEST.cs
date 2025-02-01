@@ -10,7 +10,7 @@ public class SpellCasterTEST : MonoBehaviour {
   void Start() {
     Debug.Log("TEST CASTER START");
     InputRouter.Instance?.TryListenValue("Move", PortIndex, HandleTurn);
-    InputRouter.Instance?.TryListenButton("Spin", ButtonState.JustDown, PortIndex, HandleEarth);
+    InputRouter.Instance?.TryListenButton("Active", ButtonState.JustDown, PortIndex, HandleEarth);
     InputRouter.Instance?.TryListenButton("Ultimate", ButtonState.JustDown, PortIndex, HandleFire);
     InputRouter.Instance?.TryListenButton("Jump", ButtonState.JustDown, PortIndex, HandleAir);
     InputRouter.Instance?.TryListenButton("Attack", ButtonState.JustDown, PortIndex, HandleWater);
@@ -19,7 +19,7 @@ public class SpellCasterTEST : MonoBehaviour {
   void OnDestroy() {
     Debug.Log("TEST CASTER DESTROY");
     InputRouter.Instance?.TryUnlistenValue("Move", PortIndex, HandleTurn);
-    InputRouter.Instance?.TryUnlistenButton("Spin", ButtonState.JustDown, PortIndex, HandleEarth);
+    InputRouter.Instance?.TryUnlistenButton("Active", ButtonState.JustDown, PortIndex, HandleEarth);
     InputRouter.Instance?.TryUnlistenButton("Ultimate", ButtonState.JustDown, PortIndex, HandleFire);
     InputRouter.Instance?.TryUnlistenButton("Jump", ButtonState.JustDown, PortIndex, HandleAir);
     InputRouter.Instance?.TryUnlistenButton("Attack", ButtonState.JustDown, PortIndex, HandleWater);
@@ -27,7 +27,7 @@ public class SpellCasterTEST : MonoBehaviour {
 
   public void HandleEarth(PortButtonState buttonState) {
     Instantiate(EarthSpell, transform.position, transform.rotation);
-    InputRouter.Instance.ConsumeButton("Spin", PortIndex);
+    InputRouter.Instance.ConsumeButton("Active", PortIndex);
   }
 
   public void HandleFire(PortButtonState buttonState) {

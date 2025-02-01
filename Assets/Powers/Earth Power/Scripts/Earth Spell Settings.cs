@@ -37,4 +37,6 @@ public class EarthSpellSettings : ScriptableObject {
   public float SpikeMaxLength = 2f;
   public float SpikeMaxTiltAngle = 25;
   public float CameraShakeIntensity = 1.5f;
+  public float UltimateProjectileAltitudeSpeed = 50;
+  public bool UltimateUseSmoothAltitudeChange;
 }

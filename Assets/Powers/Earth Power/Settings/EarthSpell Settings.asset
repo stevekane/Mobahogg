@@ -42,3 +42,5 @@ MonoBehaviour:
   SpikeMaxLength: 3
   SpikeMaxTiltAngle: 35
   CameraShakeIntensity: 1.5
+  UltimateProjectileAltitudeSpeed: 50
+  UltimateUseSmoothAltitudeChange: 1

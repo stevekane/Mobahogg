@@ -105,7 +105,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
     InputRouter.Instance.TryGetValue("Move", 0, out var move);
     InputRouter.Instance.TryGetButtonState("Attack", 0, out var attackState);
     InputRouter.Instance.TryGetButtonState("Dash", 0, out var dashState);
-    InputRouter.Instance.TryGetButtonState("Cast Spell", 0, out var castSpellState);
 
     if (attackState == ButtonState.JustDown) {
       if (move.sqrMagnitude > 0)
@@ -121,11 +120,6 @@ public class PlayerAnimationGraph : MonoBehaviour {
       CurrentDashMontagePlayable = DashMontage.CreateScriptPlayable(Graph);
       Slot.GetBehaviour().Play(CurrentDashMontagePlayable);
       InputRouter.Instance.ConsumeButton("Dash", 0);
-    }
-
-    if (castSpellState == ButtonState.JustDown) {
-      transform.position = Vector3.zero;
-      InputRouter.Instance.ConsumeButton("Cast Spell", 0);
     }
 
     if (move.sqrMagnitude > 0 && !Slot.GetBehaviour().IsRunning) {
