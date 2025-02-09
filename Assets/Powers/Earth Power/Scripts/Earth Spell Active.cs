@@ -47,16 +47,10 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
     }
   }
 
-  /*
-  More annoying trash related to varying height levels.
-
-  We need to decide basically what happens when you do this "slam" on sound boundary.
-  */
   void OnSlam() {
     CameraManager.Instance.Shake(Settings.ActiveCameraShakeIntensity);
     Vibrator.Vibrate(Vector3.up, Settings.ActiveSlamHitStop.Ticks, 0.125f, 20);
     HitStop.FramesRemaining = Settings.ActiveSlamHitStop.Ticks;
-    // find affected targets nearby
     foreach (var player in LivesManager.Active.Players) {
       var delta = player.transform.position - AbilityManager.transform.position;
       if (delta.magnitude < Settings.ActiveKnockbackRadius && player.gameObject != AbilityManager.gameObject) {

@@ -22,7 +22,6 @@ public class DiveRollAbility : Ability, IAimed, ISteered {
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
   }
 
-  // TODO: Could include Groundedness here as an internal requirement?
   public override bool IsRunning => Frame < FrameDuration;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
