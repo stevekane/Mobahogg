@@ -49,7 +49,6 @@ public class Combatant : MonoBehaviour {
     if (Animator && HurtFlinchName != "") {
       var direction = AttackedFrom(meleeAttackEvent.Attacker.transform.forward, meleeAttackEvent.Victim.transform.forward);
       var interpolant = ToInterpolant(direction);
-      Debug.Log($"{direction} {interpolant}");
       Animator.SetFloat(HurtDirectionName, interpolant);
       Animator.SetTrigger(HurtFlinchName);
     }

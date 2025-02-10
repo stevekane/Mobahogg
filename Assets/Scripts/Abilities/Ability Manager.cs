@@ -84,6 +84,14 @@ namespace Abilities {
       }
       ability.Run();
     }
+
+    public void StopRunning() {
+      foreach (var registeredAbility in RegisteredAbilities) {
+        if (registeredAbility.Ability.IsRunning) {
+          registeredAbility.Ability.Cancel();
+        }
+      }
+    }
   }
 
   [Serializable]
