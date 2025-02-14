@@ -48,6 +48,7 @@ public class CreepManager : MonoBehaviour {
     var rotation = creep.transform.rotation;
     var deadCreep = Instantiate(DeadCreepPrefab, position, rotation, transform);
     owner.DeadCreeps.Add(deadCreep);
+    LivingCreeps.Remove(creep);
     Destroy(creep.gameObject);
   }
 
