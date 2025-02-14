@@ -9,7 +9,7 @@ using UnityEditor;
 #endif
 
 [DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
-public class PlayerAnimationGraph : MonoBehaviour {
+public class PlayerAnimationGraph : AnimationGraph {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] Animator Animator;
   [Header("Grounded Locomotion")]
@@ -45,6 +45,9 @@ public class PlayerAnimationGraph : MonoBehaviour {
   Playable CurrentDashMontagePlayable;
 
   PlayableGraph Graph;
+
+  public override SlotBehavior SlotBehavior => Slot.GetBehaviour();
+  public override PlayableGraph PlayableGraph => Graph;
 
   #if UNITY_EDITOR
   [ContextMenu("Calculate Clip Velocities")]

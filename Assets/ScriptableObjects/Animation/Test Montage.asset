@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d928475fd50464ab9231726773e9a2, type: 3}
   m_Name: Test Montage
   m_EditorClassIdentifier: 
+  GameObjectExposedReference:
+    exposedName: 
+    defaultValue: {fileID: 0}
+  AnimatorExposedReference:
+    exposedName: 
+    defaultValue: {fileID: 0}
   AnimatorPrefab: {fileID: 5035619387605278895, guid: ec5216c9005ebec498f51547e618f28f, type: 3}
   Clips:
   - AnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
@@ -22,7 +28,7 @@ MonoBehaviour:
     FadeOutFrames: 5
   - AnimationClip: {fileID: -203655887218126122, guid: 7c863ad0feec5d346b45df903d2abd5b, type: 3}
     FootIK: 1
-    StartFrame: 59
+    StartFrame: 60
     Speed: 1
     FadeInFrames: 5
     FadeOutFrames: 0
@@ -31,8 +37,8 @@ MonoBehaviour:
     StartFrame: 38
     EndFrame: 51
   - Name: Weapon Trail
-    StartFrame: 10
-    EndFrame: 53
+    StartFrame: 34
+    EndFrame: 39
   - Name: Root Motion
     StartFrame: 0
-    EndFrame: 37
+    EndFrame: 128
