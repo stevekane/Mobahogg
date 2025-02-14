@@ -216,6 +216,31 @@ namespace Animation {
       SlotClipConfigs[ActiveIndex].FadeOutEnd = playable.GetDuration();
     }
 
+    public void Stop(Playable playable, bool destroyInstantly = true) {
+      var index = MixerIndex(playable);
+      if (index >= 0) {
+        var clipConfig = SlotClipConfigs[index];
+        if (destroyInstantly) {
+          clipConfig.FadeOutStart = playable.GetTime();
+          clipConfig.FadeOutEnd = playable.GetTime();
+        } else {
+          clipConfig.FadeOutStart = playable.GetTime();
+          clipConfig.FadeOutEnd = playable.GetTime() + FadeDuration;
+        }
+      }
+    }
+
+    int MixerIndex(Playable target) {
+      var count = Mixer.GetInputCount();
+      for (var i = 0; i < count; i++) {
+        var playable = Mixer.GetInput(i);
+        if (target.Equals(playable)) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
     public override void OnGraphStart(Playable playable) {
       var animationOutput = (AnimationPlayableOutput)playable.GetGraph().GetOutputByType<AnimationPlayableOutput>(0);
       if (!animationOutput.IsOutputNull() && animationOutput.IsOutputValid() && animationOutput.GetTarget() is var animator && animator) {
@@ -228,7 +253,6 @@ namespace Animation {
       }
     }
 
-    // TODO: Add Stop which is sort of like playing nothing new
     public override void OnPlayableCreate(Playable playable) {
       Mixer = AnimationScriptPlayable.Create(playable.GetGraph(), CurrentJob, 1);
       playable.ConnectInput(0, Mixer, 0, 1);
