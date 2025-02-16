@@ -81,7 +81,7 @@ public class SceneBindingPropertyDrawer : PropertyDrawer {
         propertyTable.SetReferenceValue(propertyName, next);
       }
     } else {
-      EditorGUI.LabelField(fieldRect, expectedType.ToString());
+      EditorGUI.LabelField(fieldRect, $"SceneBinding<{expectedType.ToString()}>");
     }
   }
 

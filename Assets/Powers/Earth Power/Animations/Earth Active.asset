@@ -25,5 +25,5 @@ MonoBehaviour:
     StartFrame: 38
     EndFrame: 38
   - Name: Root Motion
-    StartFrame: 0
+    StartFrame: 24
     EndFrame: 38

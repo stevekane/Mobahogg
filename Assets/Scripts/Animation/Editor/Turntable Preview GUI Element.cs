@@ -12,9 +12,6 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   public Vector2 CameraRotation = new(15, 90);
   public GameObject Subject;
 
-  List<Material> PreviewMaterials;
-  List<Material> GroundMaterials;
-
   Vector3 CameraLookAtTarget
     => Subject
     ? Subject.transform.position + CameraFocusHeight * Vector3.up
@@ -23,12 +20,6 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   Vector3 CameraOffset =>
     Quaternion.Euler(CameraRotation.x, CameraRotation.y, 0) * Vector3.back * CameraZoom;
 
-  void AssignMaterials(GameObject go, List<Material> materials) {
-    foreach (var renderer in go.GetComponentsInChildren<Renderer>()) {
-      renderer.SetSharedMaterials(materials);
-    }
-  }
-
   public void SetSubject(GameObject subject) {
     if (Subject)
       Object.DestroyImmediate(Subject);
@@ -36,7 +27,6 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     if (!Subject)
       return;
     AddSingleGO(Subject);
-    AssignMaterials(Subject, PreviewMaterials);
   }
 
   void PositionLights(Light keyLight, Light fillLight, Light rimLight) {
@@ -69,12 +59,6 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
   }
 
   public TurntablePreviewGUIElement(string shaderName = "Standard") : base() {
-    PreviewMaterials = new List<Material> { new(Shader.Find(shaderName)) };
-    GroundMaterials = new List<Material> { new(Shader.Find(shaderName)) };
-    PreviewMaterials[0].SetFloat("_Metallic", 1);
-    PreviewMaterials[0].SetFloat("_Glossiness", 1);
-    PreviewMaterials[0].color = Color.grey;
-    GroundMaterials[0].color = Color.white;
     camera.nearClipPlane = 0.1f;
     camera.farClipPlane = 1000f;
     camera.fieldOfView = 45f;
@@ -88,13 +72,6 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     AddSingleGO(rimLight.gameObject);
     AddSingleGO(groundPlane);
     PositionLights(keyLight, fillLight, rimLight);
-    AssignMaterials(groundPlane, GroundMaterials);
-  }
-
-  public new void Cleanup() {
-    base.Cleanup();
-    PreviewMaterials.ForEach(Object.DestroyImmediate);
-    GroundMaterials.ForEach(Object.DestroyImmediate);
   }
 
   public void Update(Rect rect, Event e) {
@@ -111,7 +88,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     camera.transform.position = CameraLookAtTarget + CameraOffset;
     camera.transform.LookAt(CameraLookAtTarget);
     BeginPreview(rect, GUIStyle.none);
-    Render();
+    Render(allowScriptableRenderPipeline: true);
     GUI.DrawTexture(rect, EndPreview(), ScaleMode.StretchToFill, false);
   }
 }
