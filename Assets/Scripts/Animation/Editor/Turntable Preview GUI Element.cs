@@ -34,7 +34,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     keyLight.type = LightType.Directional;
     keyLight.transform.position = new Vector3(-2, 3, 2);
     keyLight.transform.LookAt(Vector3.zero);
-    keyLight.intensity = 0.25f;
+    keyLight.intensity = 1f;
     keyLight.color = new Color(1.0f, 0.85f, 0.73f); // Warm white (#FFDAB9)
     keyLight.shadows = LightShadows.Hard;
     keyLight.shadowCustomResolution = 2048*2;
@@ -43,7 +43,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     fillLight.type = LightType.Directional;
     fillLight.transform.position = new Vector3(2, 1.5f, 2);
     fillLight.transform.LookAt(Vector3.zero);
-    fillLight.intensity = 0.1f;
+    fillLight.intensity = 0.5f;
     fillLight.color = new Color(0.69f, 0.79f, 1.0f); // Cool white (#AFCBFF)
     fillLight.shadows = LightShadows.Soft; // Optional shadows
     fillLight.shadowCustomResolution = 2048;
@@ -51,7 +51,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     rimLight.type = LightType.Directional;
     rimLight.transform.position = new Vector3(0, 3, -2);
     rimLight.transform.LookAt(Vector3.zero);
-    rimLight.intensity = 0.1f;
+    rimLight.intensity = 0.35f;
     rimLight.color = new Color(0.88f, 0.94f, 1.0f); // Neutral/cool white (#E0EFFF)
     rimLight.shadows = LightShadows.Soft;
     rimLight.shadowStrength = 0.3f;
