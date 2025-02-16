@@ -21,7 +21,6 @@ public class AnimationMontageInspector : Editor {
   int FrameOffset = 0;
   int CurrentFrame = 0;
   bool IsPlaying;
-  bool SubscribedToEditorUpdate;
 
   PlayableGraph Graph;
   ScriptPlayableOutput ScriptPlayableOutput;
@@ -30,66 +29,39 @@ public class AnimationMontageInspector : Editor {
   Animator PreviewAnimatorInstance;
   ScriptPlayable<AnimationMontagePlayableBehavior> AnimationMontagePlayable;
 
+  void OnEnable() {
+    AnimationMontage montage = (AnimationMontage)target;
+    PreviewRenderUtility = new();
+    EditorApplication.update += Repaint;
+    PreviousClockTime = EditorApplication.timeSinceStartup;
+    CurrentClockTime = EditorApplication.timeSinceStartup;
+    Graph = PlayableGraph.Create("Animation Montage Inspector");
+    ScriptPlayableOutput = ScriptPlayableOutput.Create(Graph, "Script Output");
+    AnimationPlayableOutput = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
+    SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
+    SetupMontagePlayable(montage);
+    Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+    Graph.Play();
+    Graph.Evaluate();
+  }
+
   void OnDisable() {
+    EditorApplication.update -= Repaint;
+    PreviewRenderUtility.Cleanup();
     if (Graph.IsValid()) {
       Graph.Destroy();
     }
-    if (PreviewRenderUtility != null) {
-      PreviewRenderUtility.Cleanup();
-      PreviewRenderUtility = null;
-    }
-    if (SubscribedToEditorUpdate) {
-      SubscribedToEditorUpdate = false;
-      EditorApplication.update -= Repaint;
-    }
-  }
-
-  // Any time play mode is entered/exited tear this thing down to prevent garbage
-  // from occurring in the preview scene ( Unity does not understand what this scene is )
-  // TODO: Is it possible that using their Preview facility would circumvent this issue?
-  // It might and that might be preferable overall if so.
-  void OnPlayModeStateChange(PlayModeStateChange stateChange) {
-    OnDisable();
   }
 
   // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
   public override void OnInspectorGUI() {
     AnimationMontage montage = (AnimationMontage)target;
 
-    // Early out with default editor
-    if (EditorApplication.isPlaying) {
-      DrawDefaultInspector();
-      return;
-    }
-
     // Ensure you have the most recent values in the serialized representation
     serializedObject.Update();
 
-    if (!SubscribedToEditorUpdate) {
-      PreviousClockTime = EditorApplication.timeSinceStartup;
-      CurrentClockTime = EditorApplication.timeSinceStartup;
-      SubscribedToEditorUpdate = true;
-      EditorApplication.update += Repaint;
-      EditorApplication.playModeStateChanged += OnPlayModeStateChange;
-    } else {
-      PreviousClockTime = CurrentClockTime;
-      CurrentClockTime = EditorApplication.timeSinceStartup;
-    }
-
-    if (!Graph.IsValid()) {
-      Graph = PlayableGraph.Create("Animation Montage Inspector");
-      Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-      Graph.Play();
-      Graph.Evaluate(0);
-      ScriptPlayableOutput = ScriptPlayableOutput.Create(Graph, "Script Output");
-      AnimationPlayableOutput = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
-    }
-
-    if (PreviewRenderUtility == null) {
-      PreviewRenderUtility = new();
-      SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
-      SetupMontagePlayable(montage);
-    }
+    PreviousClockTime = CurrentClockTime;
+    CurrentClockTime = EditorApplication.timeSinceStartup;
 
     GUILayout.BeginHorizontal();
     if (IsPlaying) {
@@ -119,7 +91,6 @@ public class AnimationMontageInspector : Editor {
       var currentMontageTime = (float)AnimationMontagePlayable.GetTime();
       var duration = (float)AnimationMontagePlayable.GetDuration();
       if (currentMontageTime >= duration) {
-        var loopingCurrentMontageTime = currentMontageTime % duration;
         AnimationMontagePlayable.SetTime(0);
       }
       CurrentFrame = Mathf.FloorToInt((float)AnimationMontagePlayable.GetTime()/FrameDuration)%montage.FrameDuration;

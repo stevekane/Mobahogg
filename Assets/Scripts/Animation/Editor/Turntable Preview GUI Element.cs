@@ -62,8 +62,9 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     camera.nearClipPlane = 0.1f;
     camera.farClipPlane = 1000f;
     camera.fieldOfView = 45f;
-    camera.clearFlags = CameraClearFlags.Skybox;
+    camera.clearFlags = CameraClearFlags.Depth;
     camera.backgroundColor = Color.black;
+    camera.cameraType = CameraType.Preview;
     var keyLight = lights[0];
     var fillLight = lights[1];
     var rimLight = new GameObject().AddComponent<Light>();

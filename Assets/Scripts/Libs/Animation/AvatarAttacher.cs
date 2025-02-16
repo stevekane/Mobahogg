@@ -45,7 +45,7 @@ public class AvatarAttacher : MonoBehaviour {
     var boneNames = Enum.GetNames(typeof(AvatarBone));
     foreach (var humanBone in Animator.avatar.humanDescription.human) {
       if (Array.FindIndex(boneNames, n => n == humanBone.humanName) is var idx && idx >= 0)
-        BoneToTransform.Add(boneEnums[idx], Animator.transform.FindDescendant(humanBone.boneName));
+        BoneToTransform.TryAdd(boneEnums[idx], Animator.transform.FindDescendant(humanBone.boneName));
     }
 
     GetComponentsInChildren<AvatarAttachment>().ForEach(TryReparent);
