@@ -35,7 +35,7 @@ class PreviewElement : VisualElement {
     m_Preview = new PreviewRenderUtility();
     m_Preview.cameraFieldOfView = 60f;
     m_Preview.camera.clearFlags = CameraClearFlags.SolidColor;
-    m_Preview.camera.backgroundColor = Color.gray;
+    m_Preview.camera.backgroundColor = Color.black;
     m_Cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
     m_Cube.hideFlags = HideFlags.HideAndDontSave;
     m_Cube.transform.position = new Vector3(0,0.5f,0);
@@ -64,7 +64,6 @@ class PreviewElement : VisualElement {
   }
 
   void UpdatePreview() {
-    if(m_Preview == null) return;
     float t = (float)EditorApplication.timeSinceStartup;
     float angle = (t - m_StartTime) * 180f;
     float rad = angle * Mathf.Deg2Rad;
@@ -75,9 +74,10 @@ class PreviewElement : VisualElement {
     Rect rct = contentRect;
     if (rct.width > 0 && rct.height > 0) {
       m_Preview.BeginPreview(rct,GUIStyle.none);
-      m_Preview.camera.Render();
+      m_Preview.Render(true);
       Texture tex = m_Preview.EndPreview();
       m_Image.image = tex;
+      m_Image.MarkDirtyRepaint();
     }
   }
 }
