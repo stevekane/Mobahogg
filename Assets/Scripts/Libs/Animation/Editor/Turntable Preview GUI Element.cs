@@ -58,7 +58,7 @@ public class TurntablePreviewGUIElement : PreviewRenderUtility {
     rimLight.shadowCustomResolution = 2048;
   }
 
-  public TurntablePreviewGUIElement(string shaderName = "Standard") : base() {
+  public TurntablePreviewGUIElement() : base() {
     camera.nearClipPlane = 0.1f;
     camera.farClipPlane = 1000f;
     camera.fieldOfView = 45f;

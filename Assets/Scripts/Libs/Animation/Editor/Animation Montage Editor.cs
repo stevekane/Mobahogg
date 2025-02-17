@@ -20,6 +20,7 @@ public class AnimationMontageInspector : Editor {
   int VisibleFrames = 60;
   int FrameOffset = 0;
   int CurrentFrame = 0;
+  double CurrentTime = 0;
   bool IsPlaying;
 
   PlayableGraph Graph;
@@ -29,40 +30,118 @@ public class AnimationMontageInspector : Editor {
   Animator PreviewAnimatorInstance;
   ScriptPlayable<AnimationMontagePlayableBehavior> AnimationMontagePlayable;
 
-  void OnEnable() {
-    AnimationMontage montage = (AnimationMontage)target;
-    PreviewRenderUtility = new();
-    EditorApplication.update += Repaint;
-    PreviousClockTime = EditorApplication.timeSinceStartup;
-    CurrentClockTime = EditorApplication.timeSinceStartup;
-    Graph = PlayableGraph.Create("Animation Montage Inspector");
-    ScriptPlayableOutput = ScriptPlayableOutput.Create(Graph, "Script Output");
-    AnimationPlayableOutput = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
-    SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
-    SetupMontagePlayable(montage);
-    Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-    Graph.Play();
-    Graph.Evaluate();
-  }
+  bool Initialized => Graph.IsValid() && PreviewRenderUtility != null;
 
   void OnDisable() {
-    EditorApplication.update -= Repaint;
-    PreviewRenderUtility.Cleanup();
     if (Graph.IsValid()) {
       Graph.Destroy();
     }
+    if (PreviewAnimatorInstance) {
+      DestroyImmediate(PreviewAnimatorInstance.gameObject);
+    }
+    if (PreviewRenderUtility != null) {
+      PreviewRenderUtility.Cleanup();
+      PreviewRenderUtility = null;
+    }
+    EditorApplication.update -= Repaint;
   }
 
-  // Lazy initialization because OnEnable seems like fucking bullshit in Unity for ScriptableObjects
-  public override void OnInspectorGUI() {
-    AnimationMontage montage = (AnimationMontage)target;
+  void InitializeClock() {
+    PreviousClockTime = EditorApplication.timeSinceStartup;
+    CurrentClockTime = EditorApplication.timeSinceStartup;
+  }
 
-    // Ensure you have the most recent values in the serialized representation
-    serializedObject.Update();
-
+  void TickClock() {
     PreviousClockTime = CurrentClockTime;
     CurrentClockTime = EditorApplication.timeSinceStartup;
+  }
 
+  public override void OnInspectorGUI() {
+    AnimationMontage montage = (AnimationMontage)target;
+    // Steve - Do not fuck with this lazy-initialization. OnEnable/OnDisable are worthless in Editors
+    if (!Initialized) {
+      PreviewRenderUtility = new();
+      Graph = PlayableGraph.Create("Animation Montage Inspector");
+      ScriptPlayableOutput = ScriptPlayableOutput.Create(Graph, "Script Output");
+      AnimationPlayableOutput = AnimationPlayableOutput.Create(Graph, "Animation Output", null);
+      InitializeClock();
+      SetupMontagePlayable(montage);
+      SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
+      Graph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+      Graph.Play();
+      Graph.Evaluate();
+      EditorApplication.update -= Repaint;
+      EditorApplication.update += Repaint;
+    }
+
+    serializedObject.Update();
+    TickClock();
+    DrawPlayStateButtons();
+    DrawTimeline(montage); // Draw before stuff that affects Current Frame
+    UpdatePreview(montage);
+    DrawPreview();
+    EditorGUI.BeginChangeCheck();
+    EditorGUILayout.PropertyField(serializedObject.FindProperty("AnimatorPrefab"));
+    if (EditorGUI.EndChangeCheck()) {
+      var newAnimator = (Animator)serializedObject.FindProperty("AnimatorPrefab").objectReferenceValue;
+      SetupPreviewAnimatorInstance(newAnimator);
+    }
+    EditorGUILayout.PropertyField(serializedObject.FindProperty("Clips"));
+    EditorGUILayout.PropertyField(serializedObject.FindProperty("Notifies"));
+    if (serializedObject.hasModifiedProperties) {
+      SetupMontagePlayable(montage);
+      serializedObject.ApplyModifiedProperties();
+    }
+  }
+
+  void SetupPreviewAnimatorInstance(Animator animatorPrefab) {
+    if (PreviewAnimatorInstance) {
+      DestroyImmediate(PreviewAnimatorInstance.gameObject);
+      PreviewRenderUtility.SetSubject(null);
+    }
+    if (animatorPrefab) {
+      PreviewAnimatorInstance = Instantiate(animatorPrefab);
+      PreviewAnimatorInstance.GetComponent<Animator>().applyRootMotion = false;
+      PreviewRenderUtility.SetSubject(PreviewAnimatorInstance.gameObject);
+      AnimationPlayableOutput.SetTarget(PreviewAnimatorInstance);
+      if (PreviewAnimatorInstance.TryGetComponent(out AvatarAttacher avatarAttacher)) {
+        avatarAttacher.Attach();
+      }
+    }
+  }
+
+  void SetupMontagePlayable(AnimationMontage montage) {
+    AnimationPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 0);
+    if (AnimationMontagePlayable.IsValid()) {
+      AnimationMontagePlayable.Destroy();
+    }
+    AnimationMontagePlayable = montage.CreateScriptPlayable(Graph);
+    AnimationMontagePlayable.SetOutputCount(2);
+    AnimationPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 0);
+    ScriptPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 1);
+  }
+
+  void UpdatePreview(AnimationMontage montage) {
+    if (IsPlaying) {
+      CurrentTime += DeltaTime;
+      CurrentTime = CurrentTime % AnimationMontagePlayable.GetDuration();
+      CurrentFrame = Mathf.FloorToInt((float)CurrentTime/FrameDuration)%montage.FrameDuration;
+      AnimationMontagePlayable.SetTime(CurrentTime);
+      Graph.Evaluate((float)DeltaTime);
+    } else {
+      AnimationMontagePlayable.SetTime(CurrentTime);
+      Graph.Evaluate();
+    }
+  }
+
+  void DrawPreview() {
+    GUILayout.BeginVertical("box");
+    Rect previewRect = GUILayoutUtility.GetRect(512, 512, GUILayout.ExpandWidth(true));
+    PreviewRenderUtility.Update(previewRect, Event.current);
+    GUILayout.EndVertical();
+  }
+
+  void DrawPlayStateButtons() {
     GUILayout.BeginHorizontal();
     if (IsPlaying) {
       EditorGUILayout.LabelField("Frame", CurrentFrame.ToString());
@@ -78,77 +157,6 @@ public class AnimationMontageInspector : Editor {
       }
     }
     GUILayout.EndHorizontal();
-
-    // Steve - Currently, we have to render timeline first because CurrentFrame potentially changes
-    // from its interactions. This is kinda weird though possibly?
-    // This should run before the graph is evaluated or you get jitter in the preview window
-    GUILayout.Space(10);
-    DrawTimeline(montage);
-    GUILayout.Space(10);
-
-    if (IsPlaying) {
-      Graph.Evaluate((float)DeltaTime);
-      var currentMontageTime = (float)AnimationMontagePlayable.GetTime();
-      var duration = (float)AnimationMontagePlayable.GetDuration();
-      if (currentMontageTime >= duration) {
-        AnimationMontagePlayable.SetTime(0);
-      }
-      CurrentFrame = Mathf.FloorToInt((float)AnimationMontagePlayable.GetTime()/FrameDuration)%montage.FrameDuration;
-    } else {
-      AnimationMontagePlayable.SetTime(CurrentFrame * FrameDuration);
-      Graph.Evaluate(0);
-    }
-
-    DrawPreview();
-    GUILayout.Space(10);
-
-    EditorGUI.BeginChangeCheck();
-    montage.AnimatorPrefab = (Animator)EditorGUILayout.ObjectField("AnimatorPrefab", montage.AnimatorPrefab, typeof(Animator), false);
-    if (EditorGUI.EndChangeCheck()) {
-      SetupPreviewAnimatorInstance(montage.AnimatorPrefab);
-      SetupMontagePlayable(montage);
-    }
-    EditorGUI.BeginChangeCheck();
-    EditorGUILayout.PropertyField(serializedObject.FindProperty("Clips"), true);
-    EditorGUILayout.PropertyField(serializedObject.FindProperty("Notifies"), true);
-    if (EditorGUI.EndChangeCheck()) {
-      SetupMontagePlayable(montage);
-    }
-    serializedObject.ApplyModifiedProperties();
-  }
-
-  void SetupPreviewAnimatorInstance(Animator animatorPrefab) {
-    if (PreviewAnimatorInstance) {
-      DestroyImmediate(PreviewAnimatorInstance.gameObject);
-    }
-    if (animatorPrefab) {
-      PreviewAnimatorInstance = Instantiate(animatorPrefab);
-      PreviewRenderUtility.SetSubject(PreviewAnimatorInstance.gameObject);
-      // TODO: Maybe some other object?
-      ScriptPlayableOutput.SetUserData(PreviewAnimatorInstance.gameObject);
-      AnimationPlayableOutput.SetTarget(PreviewAnimatorInstance);
-      PreviewAnimatorInstance.GetComponent<Animator>().applyRootMotion = false;
-      if (PreviewAnimatorInstance.TryGetComponent(out AvatarAttacher avatarAttacher)) {
-        avatarAttacher.Attach();
-      }
-    }
-  }
-
-  void SetupMontagePlayable(AnimationMontage montage) {
-    if (!AnimationMontagePlayable.IsNull()) {
-      AnimationMontagePlayable.Destroy();
-    }
-    AnimationMontagePlayable = montage.CreateScriptPlayable(Graph);
-    AnimationMontagePlayable.SetOutputCount(2);
-    AnimationPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 0);
-    ScriptPlayableOutput.SetSourcePlayable(AnimationMontagePlayable, 1);
-  }
-
-  void DrawPreview() {
-    GUILayout.BeginVertical("box");
-    Rect previewRect = GUILayoutUtility.GetRect(512, 512, GUILayout.ExpandWidth(true));
-    PreviewRenderUtility.Update(previewRect, Event.current);
-    GUILayout.EndVertical();
   }
 
   void DrawTimeline(AnimationMontage montage) {
@@ -156,6 +164,7 @@ public class AnimationMontageInspector : Editor {
     var notifies = serializedObject.FindProperty("Notifies");
     var clipCount = clips.arraySize;
     var notifyCount = notifies.arraySize;
+    GUILayout.Space(10);
     Rect header = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 50);
     EditorGUI.DrawRect(header, new Color(0.05f, 0.05f, 0.05f));
     Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, clipCount * (TrackHeight + TrackSpacing) + notifyCount * (TrackHeight + TrackSpacing) + 100);
@@ -177,6 +186,7 @@ public class AnimationMontageInspector : Editor {
       HandlePlayheadDragging(header);
     }
     DrawPlayhead(rect);
+    GUILayout.Space(10);
   }
 
   void HandleTimelineScrolling(Rect rect) {
@@ -226,6 +236,7 @@ public class AnimationMontageInspector : Editor {
     if (rect.Contains(e.mousePosition) && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && (e.button == 0 || e.button == 1 || e.button == 2)) {
       float clickedFrame = FrameOffset + Mathf.RoundToInt((e.mousePosition.x - rect.x - PaddingLeft) / (rect.width - PaddingLeft - PaddingRight) * VisibleFrames);
       CurrentFrame = Mathf.Clamp((int)clickedFrame, 0, int.MaxValue);
+      CurrentTime = CurrentFrame / 60d;
       e.Use();
     }
   }

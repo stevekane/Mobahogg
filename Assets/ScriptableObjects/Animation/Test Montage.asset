@@ -12,13 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d928475fd50464ab9231726773e9a2, type: 3}
   m_Name: Test Montage
   m_EditorClassIdentifier: 
-  GameObjectExposedReference:
-    exposedName: 
-    defaultValue: {fileID: 0}
-  AnimatorExposedReference:
-    exposedName: 
-    defaultValue: {fileID: 0}
-  AnimatorPrefab: {fileID: 5035619387605278895, guid: ec5216c9005ebec498f51547e618f28f, type: 3}
+  AnimatorPrefab: {fileID: 6404456416501584982, guid: e5707c2ffa92b9e4e9248eca981c0a1c, type: 3}
   Clips:
   - AnimationClip: {fileID: 7400000, guid: 3080862d14d061a4caab0dc5342d96b2, type: 3}
     FootIK: 1
@@ -35,7 +29,7 @@ MonoBehaviour:
   Notifies:
   - Name: Hitbox
     StartFrame: 38
-    EndFrame: 51
+    EndFrame: 46
   - Name: Weapon Trail
     StartFrame: 34
     EndFrame: 39

@@ -7,7 +7,6 @@ public class TimelineTestsAnimationGraph : AnimationGraph, IExposedPropertyTable
   [System.Serializable]
   class ExposedPropertyDict : SerializableDictionary<PropertyName, Object> {}
 
-  [SerializeField] Notify Notify;
   [SerializeField, HideInInspector] ExposedPropertyDict References = new();
   [SerializeField] Animator Animator;
   [SerializeField] LocalClock LocalClock;
@@ -47,7 +46,6 @@ public class TimelineTestsAnimationGraph : AnimationGraph, IExposedPropertyTable
     SlotPlayable = ScriptPlayable<SlotBehavior>.Create(Graph, 1);
     SlotPlayable.GetBehaviour().Connect(idle);
     AnimationPlayableOutput.Create(Graph, name, Animator).SetSourcePlayable(SlotPlayable);
-    ScriptPlayableOutput.Create(Graph, name).SetSourcePlayable(Notify.CreatePlayable(Graph, gameObject));
   }
 
   void OnDestroy() {
