@@ -41,7 +41,7 @@ public class ConcurrentSequenceBehaviorsEditor : Editor {
   SequenceBehavior CreateBehavior(Type t) {
     var asset = CreateInstance(t) as SequenceBehavior;
     asset.name = t.Name;
-    asset.EndFrame = 1;
+    asset.EndFrame = 60;
     AssetDatabase.AddObjectToAsset(asset, Data);
     Data.behaviors.Add(asset);
     EditorUtility.SetDirty(Data);
@@ -138,6 +138,7 @@ public class ClipDragRegion : VisualElement {
   void OnMouseMove(MouseMoveEvent moveEvent) {
     if (!this.HasMouseCapture())
       return;
+
     var mousePosition = moveEvent.originalMousePosition.x;
     var mouseDelta = mousePosition-MouseDownX;
     var grandParentWidth = parent.parent.contentRect.width;
@@ -145,15 +146,21 @@ public class ClipDragRegion : VisualElement {
     var framesPerWidth = visibleFrames / (float)grandParentWidth;
     var frameDelta = Mathf.RoundToInt(framesPerWidth * mouseDelta);
 
+    if (frameDelta == 0)
+      return;
+
     const int MAX_FRAME = 600; // hard-coded here because I hate threading data around it's so fucking boring
     if (UpdateStartFrame && UpdateEndFrame) {
       frameDelta = Mathf.Clamp(frameDelta, 0-DragStartFrame, MAX_FRAME-DragEndFrame);
+      Undo.RecordObject(SequenceBehavior, "Move Behavior");
       SequenceBehavior.StartFrame = DragStartFrame+frameDelta;
       SequenceBehavior.EndFrame = DragEndFrame+frameDelta;
     } else if (UpdateStartFrame) {
+      Undo.RecordObject(SequenceBehavior, "Move StartFrame");
       SequenceBehavior.StartFrame = DragStartFrame+frameDelta;
       SequenceBehavior.StartFrame = Mathf.Clamp(SequenceBehavior.StartFrame, 0, SequenceBehavior.EndFrame-1);
     } else if (UpdateEndFrame) {
+      Undo.RecordObject(SequenceBehavior, "Move EndFrame");
       SequenceBehavior.EndFrame = DragEndFrame+frameDelta;
       SequenceBehavior.EndFrame = Mathf.Clamp(SequenceBehavior.EndFrame, SequenceBehavior.StartFrame+1, MAX_FRAME);
     }
@@ -177,14 +184,14 @@ public class BehaviorRow : VisualElement {
     var startRegion = new ClipDragRegion(this, SequenceBehavior);
     startRegion.UpdateStartFrame = true;
     startRegion.LastVisibleFrame = MaxFrame;
-    startRegion.style.flexGrow = 1;
+    startRegion.style.flexGrow = 10;
     startRegion.style.minWidth = 1;
     startRegion.style.maxWidth = 6;
     startRegion.style.backgroundColor = Color.white;
     var endRegion = new ClipDragRegion(this, SequenceBehavior);
     endRegion.LastVisibleFrame = MaxFrame;
     endRegion.UpdateEndFrame = true;
-    endRegion.style.flexGrow = 1;
+    endRegion.style.flexGrow = 10;
     endRegion.style.minWidth = 1;
     endRegion.style.maxWidth = 6;
     endRegion.style.backgroundColor = Color.white;
@@ -200,6 +207,8 @@ public class BehaviorRow : VisualElement {
     NameLabel = new Label();
     NameLabel.text = b.name;
     NameLabel.style.color = Color.white;
+    NameLabel.style.marginLeft = 4;
+    NameLabel.style.width = 0; // it displays by overflow
     middleRegion.Add(NameLabel);
     Add(startRegion);
     Add(middleRegion);

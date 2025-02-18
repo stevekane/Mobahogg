@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5767916125904488993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb0e7ca8a0951349b021a7802cb0a6d, type: 3}
+  m_Name: AnimationSequence
+  m_EditorClassIdentifier: 
+  StartFrame: 0
+  EndFrame: 348
+  clip: {fileID: 7400000, guid: e57fc394b88a4904b93ac216f138e34e, type: 3}
+--- !u!114 &-539613821441984598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a2a0577d894224596465afea2b87c4, type: 3}
+  m_Name: VisualEffectSequence
+  m_EditorClassIdentifier: 
+  StartFrame: 0
+  EndFrame: 304
+  effect: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,24 +43,10 @@ MonoBehaviour:
   m_Name: New Concurrent Sequence Behaviors
   m_EditorClassIdentifier: 
   behaviors:
-  - {fileID: 141630044453236712}
-  - {fileID: 295695215292728495}
---- !u!114 &141630044453236712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cb0e7ca8a0951349b021a7802cb0a6d, type: 3}
-  m_Name: AnimationSequence
-  m_EditorClassIdentifier: 
-  StartFrame: 122
-  EndFrame: 407
-  clip: {fileID: 7400000, guid: 892de13d6a6884a4e8b8965bf2fc27af, type: 3}
---- !u!114 &295695215292728495
+  - {fileID: -5767916125904488993}
+  - {fileID: -539613821441984598}
+  - {fileID: 4036751468185776549}
+--- !u!114 &4036751468185776549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,6 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a2a0577d894224596465afea2b87c4, type: 3}
   m_Name: VisualEffectSequence
   m_EditorClassIdentifier: 
-  StartFrame: 37
-  EndFrame: 242
+  StartFrame: 0
+  EndFrame: 411
   effect: {fileID: 0}
