@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Timeline;
+
 public abstract class SequenceBehavior : ScriptableObject {
   [Min(0)]
   public int StartFrame;

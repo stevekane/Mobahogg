@@ -1,5 +1,8 @@
 using UnityEngine;
+using UnityEngine.Timeline;
 using UnityEngine.VFX;
+
+[TrackColor(0.5f, 0.7f,.9f)]
 public class VisualEffectSequence : SequenceBehavior {
   public VisualEffect effect;
 

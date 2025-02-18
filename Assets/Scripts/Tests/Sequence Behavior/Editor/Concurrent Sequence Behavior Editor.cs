@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
 using System.Linq;
+using UnityEngine.Timeline;
 
 [CustomEditor(typeof(ConcurrentSequenceBehaviors))]
 public class ConcurrentSequenceBehaviorsEditor : Editor {
@@ -199,7 +200,10 @@ public class BehaviorRow : VisualElement {
     middleRegion.LastVisibleFrame = MaxFrame;
     middleRegion.UpdateStartFrame = true;
     middleRegion.UpdateEndFrame = true;
-    middleRegion.style.backgroundColor = Color.grey;
+    // use reflection to try to access TrackColorAttribute
+    var sequenceType = SequenceBehavior.GetType();
+    var colorAttribute = (TrackColorAttribute)Attribute.GetCustomAttribute(sequenceType, typeof(TrackColorAttribute));
+    middleRegion.style.backgroundColor = colorAttribute != null ? colorAttribute.color : Color.grey;
     middleRegion.style.alignContent = Align.Center;
     middleRegion.style.justifyContent = Justify.Center;
     middleRegion.style.flexGrow = 1;

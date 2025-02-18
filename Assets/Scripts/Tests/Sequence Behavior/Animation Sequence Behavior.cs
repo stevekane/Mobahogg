@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.Timeline;
+
+[TrackColor(0.25f, .15f, .25f)]
 public class AnimationSequence : SequenceBehavior {
   public AnimationClip clip;
 
