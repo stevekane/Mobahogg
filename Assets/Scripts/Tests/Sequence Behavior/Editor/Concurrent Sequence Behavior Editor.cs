@@ -95,106 +95,113 @@ public class TimelineView : VisualElement {
   public void UpdateBehaviors() {
     for (var i = 0; i < childCount; i++) {
       var behaviorRow = this[i] as BehaviorRow;
-      behaviorRow.Update(i, MAX_FRAME);
+      behaviorRow.RowIndex = i;
+      behaviorRow.MaxFrame = MAX_FRAME;
+      behaviorRow.Update();
     }
   }
 }
 
-public class BehaviorRow : VisualElement {
+public class ClipDragRegion : VisualElement {
   float MouseDownX;
   int DragStartFrame;
   int DragEndFrame;
+  BehaviorRow BehaviorRow;
+  SequenceBehavior SequenceBehavior;
+
+  public int FirstVisibleFrame;
+  public int LastVisibleFrame;
+  public bool UpdateStartFrame;
+  public bool UpdateEndFrame;
+
+  public ClipDragRegion(
+  BehaviorRow behaviorRow,
+  SequenceBehavior sequenceBehavior) {
+    BehaviorRow = behaviorRow;
+    SequenceBehavior = sequenceBehavior;
+    RegisterCallback<MouseDownEvent>(OnMouseDown);
+    RegisterCallback<MouseMoveEvent>(OnMouseMove);
+    RegisterCallback<MouseUpEvent>(OnMouseUp);
+  }
+
+  void OnMouseDown(MouseDownEvent downEvent) {
+    MouseDownX = downEvent.originalMousePosition.x;
+    DragStartFrame = SequenceBehavior.StartFrame;
+    DragEndFrame = SequenceBehavior.EndFrame;
+    this.CaptureMouse();
+  }
+
+  void OnMouseUp(MouseUpEvent upEvent) {
+    this.ReleaseMouse();
+  }
+
+  void OnMouseMove(MouseMoveEvent moveEvent) {
+    if (!this.HasMouseCapture())
+      return;
+    var mousePosition = moveEvent.originalMousePosition.x;
+    var mouseDelta = mousePosition-MouseDownX;
+    var grandParentWidth = parent.parent.contentRect.width;
+    var visibleFrames = LastVisibleFrame-FirstVisibleFrame;
+    var framesPerWidth = visibleFrames / (float)grandParentWidth;
+    var frameDelta = Mathf.RoundToInt(framesPerWidth * mouseDelta);
+
+    const int MAX_FRAME = 600; // hard-coded here because I hate threading data around it's so fucking boring
+    if (UpdateStartFrame && UpdateEndFrame) {
+      frameDelta = Mathf.Clamp(frameDelta, 0-DragStartFrame, MAX_FRAME-DragEndFrame);
+      SequenceBehavior.StartFrame = DragStartFrame+frameDelta;
+      SequenceBehavior.EndFrame = DragEndFrame+frameDelta;
+    } else if (UpdateStartFrame) {
+      SequenceBehavior.StartFrame = DragStartFrame+frameDelta;
+      SequenceBehavior.StartFrame = Mathf.Clamp(SequenceBehavior.StartFrame, 0, SequenceBehavior.EndFrame-1);
+    } else if (UpdateEndFrame) {
+      SequenceBehavior.EndFrame = DragEndFrame+frameDelta;
+      SequenceBehavior.EndFrame = Mathf.Clamp(SequenceBehavior.EndFrame, SequenceBehavior.StartFrame+1, MAX_FRAME);
+    }
+    BehaviorRow.Update();
+  }
+}
+
+public class BehaviorRow : VisualElement {
   ConcurrentSequenceBehaviorsEditor Editor;
   SequenceBehavior SequenceBehavior;
   Label NameLabel;
 
+  public int MaxFrame;
+  public int RowIndex;
+
   public BehaviorRow(ConcurrentSequenceBehaviorsEditor ed, SequenceBehavior b, int maxFrame, int rowIndex) {
     Editor = ed;
     SequenceBehavior = b;
-    var startRegion = new VisualElement();
-    startRegion.style.width = 10;
-    startRegion.style.flexShrink = 0;
-    startRegion.style.flexGrow = 0;
+    MaxFrame = maxFrame;
+    RowIndex = rowIndex;
+    var startRegion = new ClipDragRegion(this, SequenceBehavior);
+    startRegion.UpdateStartFrame = true;
+    startRegion.LastVisibleFrame = MaxFrame;
+    startRegion.style.flexGrow = 1;
+    startRegion.style.minWidth = 1;
+    startRegion.style.maxWidth = 6;
     startRegion.style.backgroundColor = Color.white;
-    startRegion.RegisterCallback<MouseDownEvent>(e => {
-      MouseDownX = e.originalMousePosition.x;
-      DragStartFrame = SequenceBehavior.StartFrame;
-      Editor.detailView.Select(SequenceBehavior);
-      startRegion.CaptureMouse();
-    });
-    startRegion.RegisterCallback<MouseMoveEvent>(e => {
-      if (!startRegion.HasMouseCapture())
-        return;
-      var mousePosition = e.originalMousePosition.x;
-      var mouseDelta = mousePosition-MouseDownX;
-      var parentWidth = parent.contentRect.width;
-      var framesPerWidth = maxFrame / (float)parentWidth;
-      var frameDelta = Mathf.RoundToInt(framesPerWidth * mouseDelta);
-      b.StartFrame = DragStartFrame+frameDelta;
-      Update(rowIndex, maxFrame);
-    });
-    startRegion.RegisterCallback<MouseUpEvent>(e => {
-      startRegion.ReleaseMouse();
-    });
-    var endRegion = new VisualElement();
-    endRegion.style.width = 10;
-    endRegion.style.flexShrink = 0;
-    endRegion.style.flexGrow = 0;
+    var endRegion = new ClipDragRegion(this, SequenceBehavior);
+    endRegion.LastVisibleFrame = MaxFrame;
+    endRegion.UpdateEndFrame = true;
+    endRegion.style.flexGrow = 1;
+    endRegion.style.minWidth = 1;
+    endRegion.style.maxWidth = 6;
     endRegion.style.backgroundColor = Color.white;
-    endRegion.RegisterCallback<MouseDownEvent>(e => {
-      MouseDownX = e.originalMousePosition.x;
-      DragEndFrame = SequenceBehavior.EndFrame;
-      Editor.detailView.Select(SequenceBehavior);
-      endRegion.CaptureMouse();
-    });
-    endRegion.RegisterCallback<MouseMoveEvent>(e => {
-      if (!endRegion.HasMouseCapture())
-        return;
-      var mousePosition = e.originalMousePosition.x;
-      var mouseDelta = mousePosition-MouseDownX;
-      var parentWidth = parent.contentRect.width;
-      var framesPerWidth = maxFrame / (float)parentWidth;
-      var frameDelta = Mathf.RoundToInt(framesPerWidth * mouseDelta);
-      b.EndFrame = DragEndFrame+frameDelta;
-      Update(rowIndex, maxFrame);
-    });
-    endRegion.RegisterCallback<MouseUpEvent>(e => {
-      endRegion.ReleaseMouse();
-    });
-    var middleRegion = new VisualElement();
+    var middleRegion = new ClipDragRegion(this, SequenceBehavior);
+    middleRegion.LastVisibleFrame = MaxFrame;
+    middleRegion.UpdateStartFrame = true;
+    middleRegion.UpdateEndFrame = true;
     middleRegion.style.backgroundColor = Color.grey;
     middleRegion.style.alignContent = Align.Center;
-    middleRegion.style.paddingLeft = 8;
+    middleRegion.style.justifyContent = Justify.Center;
     middleRegion.style.flexGrow = 1;
-    middleRegion.RegisterCallback<MouseDownEvent>(e => {
-      MouseDownX = e.originalMousePosition.x;
-      DragStartFrame = SequenceBehavior.StartFrame;
-      DragEndFrame = SequenceBehavior.EndFrame;
-      Editor.detailView.Select(SequenceBehavior);
-      middleRegion.CaptureMouse();
-    });
-    middleRegion.RegisterCallback<MouseMoveEvent>(e => {
-      if (!middleRegion.HasMouseCapture())
-        return;
-      var mousePosition = e.originalMousePosition.x;
-      var mouseDelta = mousePosition-MouseDownX;
-      var parentWidth = parent.contentRect.width;
-      var framesPerWidth = maxFrame / (float)parentWidth;
-      var frameDelta = Mathf.RoundToInt(framesPerWidth * mouseDelta);
-      b.StartFrame = DragStartFrame+frameDelta;
-      b.EndFrame = DragEndFrame+frameDelta;
-      Update(rowIndex, maxFrame);
-    });
-    middleRegion.RegisterCallback<MouseUpEvent>(e => {
-      middleRegion.ReleaseMouse();
-    });
+    middleRegion.style.flexShrink = 1;
     NameLabel = new Label();
     NameLabel.text = b.name;
-    NameLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
     NameLabel.style.color = Color.white;
-    NameLabel.style.justifyContent = Justify.FlexStart;
-    Add(startRegion);
     middleRegion.Add(NameLabel);
+    Add(startRegion);
     Add(middleRegion);
     Add(endRegion);
     style.position = Position.Absolute;
@@ -202,15 +209,18 @@ public class BehaviorRow : VisualElement {
     style.top = rowIndex * 24;
     style.alignContent = Align.Center;
     style.flexDirection = FlexDirection.Row;
-    Update(rowIndex);
+    RegisterCallback<MouseDownEvent>(e => {
+      Editor.detailView.Select(SequenceBehavior);
+    });
+    Update();
   }
 
-  public void Update(int rowIndex, int maxFrame = 600) {
+  public void Update() {
     int start = SequenceBehavior.StartFrame;
     int end = SequenceBehavior.EndFrame;
-    style.top = rowIndex * 24;
-    float pctStart = start / (float)maxFrame;
-    float pctEnd = end / (float)maxFrame;
+    float pctStart = start / (float)MaxFrame;
+    float pctEnd = end / (float)MaxFrame;
+    style.top = RowIndex * 24;
     style.left = new Length(pctStart * 100, LengthUnit.Percent);
     style.width = new Length((pctEnd - pctStart) * 100, LengthUnit.Percent);
     NameLabel.text = SequenceBehavior.Name;
@@ -220,7 +230,7 @@ public class BehaviorRow : VisualElement {
 public class DetailView : VisualElement {
   ConcurrentSequenceBehaviorsEditor Editor;
   VisualElement Container;
-  Button DeletButton;
+  Button DeleteButton;
   SequenceBehavior SelectedBehavior;
 
   public DetailView(ConcurrentSequenceBehaviorsEditor ed) {
@@ -228,17 +238,17 @@ public class DetailView : VisualElement {
     Container = new VisualElement();
     Add(Container);
     style.marginTop = 10;
-    DeletButton = new Button(DeleteSelectedBehavior) { text = "Delete Behavior" };
-    Add(DeletButton);
+    DeleteButton = new Button(DeleteSelectedBehavior) { text = "Delete Behavior" };
+    Add(DeleteButton);
   }
 
   public void Select(SequenceBehavior behavior) {
     SelectedBehavior = behavior;
     Container.Clear();
     if(SelectedBehavior == null) {
-      DeletButton.SetEnabled(false);
+      DeleteButton.SetEnabled(false);
     } else {
-      DeletButton.SetEnabled(true);
+      DeleteButton.SetEnabled(true);
       var serializedObject = new SerializedObject(behavior);
       var inspector = new InspectorElement(serializedObject);
       inspector.RegisterCallback<SerializedPropertyChangeEvent>(evt => {
