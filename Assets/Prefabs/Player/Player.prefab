@@ -884,7 +884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RootMotionBehavior:
     StartFrame: 0
-    EndFrame: 8
+    EndFrame: 10
     Multiplier: 5
   AimAssistBehavior:
     StartFrame: 0
@@ -898,23 +898,23 @@ MonoBehaviour:
     StartFrame: 6
     EndFrame: 10
   AudioOneShotBehavior:
-    StartFrame: 4
-    EndFrame: 1
+    StartFrame: 6
+    EndFrame: 7
     AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
   AnimationClipBehavior:
     StartFrame: 0
     EndFrame: 1
     TriggerName: Ground Attack 0
   VisualEffectBehavior:
-    StartFrame: 0
-    EndFrame: 1
+    StartFrame: 2
+    EndFrame: 3
     StartEventName: OnPlay
     UpdateEventName: 
     EndEventName: 
   CancelBehavior:
     StartFrame: 20
     EndFrame: 24
-  EndFrame: 24
+  EndFrame: 28
   Hitbox: {fileID: 4976621135791344551}
   VisualEffect: {fileID: 4949252310495472370}
   AudioSource: {fileID: 1970164378300830981}
@@ -992,7 +992,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0

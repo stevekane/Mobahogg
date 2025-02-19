@@ -5,14 +5,6 @@ using Abilities;
 using System;
 using UnityEngine.VFX;
 
-abstract class FrameBehavior {
-  public int StartFrame = 0;
-  public int EndFrame = 1;
-  public bool Starting(int frame) => frame == StartFrame;
-  public bool Ending(int frame) => frame == EndFrame;
-  public bool Active(int frame) => frame >= StartFrame && frame <= EndFrame;
-}
-
 [Serializable]
 class RootMotionBehavior : FrameBehavior {
   public float Multiplier;
@@ -55,15 +47,14 @@ class CancelBehavior : FrameBehavior {
 }
 
 public class AttackAbility : Ability {
-  [Header("Frame Behaviors")]
-  [SerializeField] RootMotionBehavior RootMotionBehavior;
-  [SerializeField] AimAssistBehavior AimAssistBehavior;
-  [SerializeField] WeaponAimBehavior WeaponAimBehavior;
-  [SerializeField] HitboxBehavior HitboxBehavior;
-  [SerializeField] AudioOneShotBehavior AudioOneShotBehavior;
-  [SerializeField] AnimationClipBehavior AnimationClipBehavior;
-  [SerializeField] VisualEffectBehavior VisualEffectBehavior;
-  [SerializeField] CancelBehavior CancelBehavior;
+  [SerializeField, MaxFrames("EndFrame")] RootMotionBehavior RootMotionBehavior;
+  [SerializeField, MaxFrames("EndFrame")] AimAssistBehavior AimAssistBehavior;
+  [SerializeField, MaxFrames("EndFrame")] WeaponAimBehavior WeaponAimBehavior;
+  [SerializeField, MaxFrames("EndFrame")] HitboxBehavior HitboxBehavior;
+  [SerializeField, MaxFrames("EndFrame")] AudioOneShotBehavior AudioOneShotBehavior;
+  [SerializeField, MaxFrames("EndFrame")] AnimationClipBehavior AnimationClipBehavior;
+  [SerializeField, MaxFrames("EndFrame")] VisualEffectBehavior VisualEffectBehavior;
+  [SerializeField, MaxFrames("EndFrame")] CancelBehavior CancelBehavior;
   [SerializeField] int EndFrame = 24;
 
   [Header("Writes To")]
@@ -130,8 +121,10 @@ public class AttackAbility : Ability {
     if (AimAssistBehavior.Starting(Frame)) {}
     if (WeaponAimBehavior.Starting(Frame))
       WeaponAim.AimDirection = WeaponAimBehavior.Direction;
-    if (HitboxBehavior.Starting(Frame))
+    if (HitboxBehavior.Starting(Frame)) {
       Hitbox.CollisionEnabled = true;
+      Struck.Clear();
+    }
     if (AudioOneShotBehavior.Starting(Frame))
       AudioSource.PlayOptionalOneShot(AudioOneShotBehavior.AudioClip);
     if (AnimationClipBehavior.Starting(Frame))
@@ -148,8 +141,10 @@ public class AttackAbility : Ability {
     if (AimAssistBehavior.Ending(Frame)) {}
     if (WeaponAimBehavior.Ending(Frame))
       WeaponAim.AimDirection = null;
-    if (HitboxBehavior.Ending(Frame))
+    if (HitboxBehavior.Ending(Frame)) {
       Hitbox.CollisionEnabled = false;
+      Struck.Clear();
+    }
     if (AudioOneShotBehavior.Ending(Frame)) {}
     if (AnimationClipBehavior.Ending(Frame)) {}
     if (VisualEffectBehavior.Ending(Frame))
@@ -182,8 +177,10 @@ public class AttackAbility : Ability {
     if (AimAssistBehavior.Active(Frame)) {}
     if (WeaponAimBehavior.Active(Frame))
       WeaponAim.AimDirection = null;
-    if (HitboxBehavior.Active(Frame))
+    if (HitboxBehavior.Active(Frame)) {
+      Struck.Clear();
       Hitbox.CollisionEnabled = false;
+    }
     if (AudioOneShotBehavior.Active(Frame)) {}
     if (AnimationClipBehavior.Active(Frame)) {}
     if (VisualEffectBehavior.Active(Frame))
