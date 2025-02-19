@@ -883,8 +883,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RootMotionBehavior:
-    StartFrame: 0
-    EndFrame: 10
+    StartFrame: 1
+    EndFrame: 11
     Multiplier: 5
   AimAssistBehavior:
     StartFrame: 0
@@ -906,8 +906,8 @@ MonoBehaviour:
     EndFrame: 24
     TriggerName: Ground Attack 0
   VisualEffectBehavior:
-    StartFrame: 2
-    EndFrame: 3
+    StartFrame: 0
+    EndFrame: 24
     StartEventName: OnPlay
     UpdateEventName: 
     EndEventName: 
@@ -915,6 +915,7 @@ MonoBehaviour:
     StartFrame: 20
     EndFrame: 24
   EndFrame: 24
+  Frame: 5
   Hitbox: {fileID: 4976621135791344551}
   VisualEffect: {fileID: 4949252310495472370}
   AudioSource: {fileID: 1970164378300830981}

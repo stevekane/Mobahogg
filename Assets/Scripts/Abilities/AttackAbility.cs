@@ -47,22 +47,22 @@ class CancelBehavior : FrameBehavior {
 }
 
 public class AttackAbility : Ability {
-  [SerializeField, MaxFrames("EndFrame")] RootMotionBehavior RootMotionBehavior;
-  [SerializeField, MaxFrames("EndFrame")] AimAssistBehavior AimAssistBehavior;
-  [SerializeField, MaxFrames("EndFrame")] WeaponAimBehavior WeaponAimBehavior;
-  [SerializeField, MaxFrames("EndFrame")] HitboxBehavior HitboxBehavior;
-  [SerializeField, MaxFrames("EndFrame")] AudioOneShotBehavior AudioOneShotBehavior;
-  [SerializeField, MaxFrames("EndFrame")] AnimationClipBehavior AnimationClipBehavior;
-  [SerializeField, MaxFrames("EndFrame")] VisualEffectBehavior VisualEffectBehavior;
-  [SerializeField, MaxFrames("EndFrame")] CancelBehavior CancelBehavior;
-  [SerializeField] int EndFrame = 24;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] RootMotionBehavior RootMotionBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] AimAssistBehavior AimAssistBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] WeaponAimBehavior WeaponAimBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] HitboxBehavior HitboxBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] AudioOneShotBehavior AudioOneShotBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] AnimationClipBehavior AnimationClipBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] VisualEffectBehavior VisualEffectBehavior;
+  [SerializeField, MaxFrames("Frame", "EndFrame")] CancelBehavior CancelBehavior;
+  [SerializeField, Min(0)] int EndFrame = 24;
+  [SerializeField, Min(0)] int Frame;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
   [SerializeField] VisualEffect VisualEffect;
   [SerializeField] AudioSource AudioSource;
 
-  int Frame;
   bool Cancellable;
   WeaponAim WeaponAim;
   List<Combatant> Struck = new(16);
