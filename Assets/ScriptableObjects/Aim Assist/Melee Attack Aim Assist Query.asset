@@ -17,4 +17,4 @@ MonoBehaviour:
     m_Bits: 128
   TriggerInteraction: 2
   MaxDistance: 5
-  MaxAngle: 45
+  MaxAngle: 60

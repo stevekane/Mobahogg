@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public static class AnimationExtensions {
   public static bool TryAddLayerMaskFromAvatarMask(
@@ -174,6 +175,17 @@ public static class MonobehaviorExtensions {
     var distance = delta.magnitude;
     var didHit = Physics.Raycast(p, direction, out RaycastHit hit, distance, layerMask, triggerInteraction);
     return didHit && hit.transform == t;
+  }
+}
+
+public static class VisualEffectExtensions {
+  public static bool PlayNonEmptyEvent(this VisualEffect visualEffect, string name) {
+    if (string.IsNullOrEmpty(name)) {
+      return false;
+    } else {
+      visualEffect.SendEvent(name);
+      return true;
+    }
   }
 }
 

@@ -320,7 +320,7 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   }
 
   void OnDeviceEvent(InputDevice inputDevice) {
-    Debug.Log("Default InputDeviceChange Handled");
+    // Debug.Log("Default InputDeviceChange Handled");
   }
 
   void OnGUI() {

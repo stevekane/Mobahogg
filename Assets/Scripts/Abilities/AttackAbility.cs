@@ -2,100 +2,194 @@ using System.Collections.Generic;
 using UnityEngine;
 using AimAssist;
 using Abilities;
+using System;
+using UnityEngine.VFX;
 
-public enum AttackState {
-  Ready,
-  Windup,
-  Active,
-  Recovery
+abstract class FrameBehavior {
+  public int StartFrame = 0;
+  public int EndFrame = 1;
+  public bool Starting(int frame) => frame == StartFrame;
+  public bool Ending(int frame) => frame == EndFrame;
+  public bool Active(int frame) => frame >= StartFrame && frame <= EndFrame;
+}
+
+[Serializable]
+class RootMotionBehavior : FrameBehavior {
+  public float Multiplier;
+}
+
+[Serializable]
+class AimAssistBehavior : FrameBehavior {
+  [InlineEditor] public AimAssistQuery AimAssistQuery;
+}
+
+[Serializable]
+class WeaponAimBehavior : FrameBehavior {
+  public Vector3 Direction;
+}
+
+[Serializable]
+class HitboxBehavior : FrameBehavior {
+}
+
+[Serializable]
+class AudioOneShotBehavior : FrameBehavior {
+  public AudioClip AudioClip;
+}
+
+[Serializable]
+class AnimationClipBehavior : FrameBehavior {
+  public string TriggerName;
+}
+
+[Serializable]
+class VisualEffectBehavior : FrameBehavior {
+  public string StartEventName = "OnPlay";
+  public string UpdateEventName = "";
+  public string EndEventName = "";
+}
+
+[Serializable]
+class CancelBehavior : FrameBehavior {
+
 }
 
 public class AttackAbility : Ability {
-  [Header("Reads From")]
-  [SerializeField] AimAssistQuery AimAssistQuery;
-  [SerializeField] float RootMotionMultiplier = 1;
-  [SerializeField] int StartActiveFrame = 9;
-  [SerializeField] int StartRecoveryFrame = 12;
-  [SerializeField] int LastFrame = 24;
+  [Header("Frame Behaviors")]
+  [SerializeField] RootMotionBehavior RootMotionBehavior;
+  [SerializeField] AimAssistBehavior AimAssistBehavior;
+  [SerializeField] WeaponAimBehavior WeaponAimBehavior;
+  [SerializeField] HitboxBehavior HitboxBehavior;
+  [SerializeField] AudioOneShotBehavior AudioOneShotBehavior;
+  [SerializeField] AnimationClipBehavior AnimationClipBehavior;
+  [SerializeField] VisualEffectBehavior VisualEffectBehavior;
+  [SerializeField] CancelBehavior CancelBehavior;
+  [SerializeField] int EndFrame = 24;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
+  [SerializeField] VisualEffect VisualEffect;
+  [SerializeField] AudioSource AudioSource;
 
   int Frame;
+  bool Cancellable;
   WeaponAim WeaponAim;
-  AttackState State {
-    get {
-      if (Frame < StartActiveFrame) return AttackState.Windup;
-      if (Frame < StartRecoveryFrame) return AttackState.Active;
-      if (Frame < LastFrame) return AttackState.Recovery;
-      return AttackState.Ready;
-    }
-  }
   List<Combatant> Struck = new(16);
 
   void Awake() {
-    Frame = LastFrame;
+    Frame = EndFrame;
     Hitbox.CollisionEnabled = false;
+    Struck.Clear();
   }
 
   void Start() {
-    AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
     WeaponAim = AbilityManager.LocateComponent<WeaponAim>();
   }
 
-  void OnDestroy() {
-    AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
-  }
-
   void OnAnimatorMove() {
-    if (!IsRunning)
-      return;
     var forward = CharacterController.Rotation.Forward;
     var dp = Vector3.Project(AnimatorCallbackHandler.Animator.deltaPosition, forward);
     var v = dp / LocalClock.DeltaTime();
-    CharacterController.DirectVelocity.Add(RootMotionMultiplier * v);
+    CharacterController.DirectVelocity.Add(RootMotionBehavior.Multiplier * v);
   }
 
   public bool ShouldHit(Combatant combatant) => !Struck.Contains(combatant);
 
   public void Hit(Combatant combatant) => Struck.Add(combatant);
 
-  public override bool IsRunning => State != AttackState.Ready;
+  public override bool IsRunning => Frame <= EndFrame;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
-    Struck.Clear();
     Frame = 0;
-    WeaponAim.AimDirection = Vector3.forward;
-    Animator.SetTrigger($"Ground Attack {0}");
   }
 
-  public bool CanAim => State == AttackState.Ready;
+  public bool CanAim => Frame == 0;
   public void Aim(Vector2 direction) {
-    var bestTarget = AimAssistManager.Instance.BestTarget(AbilityManager.transform, AimAssistQuery);
-    if (bestTarget) {
-      var delta = bestTarget.transform.position-transform.position;
-      CharacterController.Rotation.Set(Quaternion.LookRotation(delta.normalized));
-    } else if (direction.magnitude > 0) {
+    if (direction.sqrMagnitude > 0)
       CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
-    }
   }
 
-  public override bool CanCancel => State == AttackState.Recovery && Struck.Count > 0;
+  public override bool CanCancel => Cancellable;
   public override void Cancel() {
-    Frame = LastFrame;
-    Hitbox.CollisionEnabled = false;
-    WeaponAim.AimDirection = null;
-    Animator.SetTrigger("Cancel");
+    CancelActiveBehaviors();
+    Frame = EndFrame+1;
   }
 
   void FixedUpdate() {
     if (IsRunning) {
-      Hitbox.CollisionEnabled = State == AttackState.Active;
-      Frame = Mathf.Min(Frame+1, LastFrame);
-      if (Frame == LastFrame) {
-        Hitbox.CollisionEnabled = false;
-        WeaponAim.AimDirection = null;
+      StartBehaviors();
+      UpdateBehaviors();
+      EndBehaviors();
+      Frame++;
+    }
+  }
+
+  void StartBehaviors() {
+    if (RootMotionBehavior.Starting(Frame))
+      AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
+    if (AimAssistBehavior.Starting(Frame)) {}
+    if (WeaponAimBehavior.Starting(Frame))
+      WeaponAim.AimDirection = WeaponAimBehavior.Direction;
+    if (HitboxBehavior.Starting(Frame))
+      Hitbox.CollisionEnabled = true;
+    if (AudioOneShotBehavior.Starting(Frame))
+      AudioSource.PlayOptionalOneShot(AudioOneShotBehavior.AudioClip);
+    if (AnimationClipBehavior.Starting(Frame))
+      Animator.SetTrigger(AnimationClipBehavior.TriggerName);
+    if (VisualEffectBehavior.Starting(Frame))
+      VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.StartEventName);
+    if (CancelBehavior.Starting(Frame))
+      Cancellable = true;
+  }
+
+  void EndBehaviors() {
+    if (RootMotionBehavior.Ending(Frame))
+      AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
+    if (AimAssistBehavior.Ending(Frame)) {}
+    if (WeaponAimBehavior.Ending(Frame))
+      WeaponAim.AimDirection = null;
+    if (HitboxBehavior.Ending(Frame))
+      Hitbox.CollisionEnabled = false;
+    if (AudioOneShotBehavior.Ending(Frame)) {}
+    if (AnimationClipBehavior.Ending(Frame)) {}
+    if (VisualEffectBehavior.Ending(Frame))
+      VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.EndEventName);
+    if (CancelBehavior.Ending(Frame))
+      Cancellable = false;
+  }
+
+  void UpdateBehaviors() {
+    if (RootMotionBehavior.Active(Frame)) {}
+    if (AimAssistBehavior.Active(Frame)) {
+      var bestTarget = AimAssistManager.Instance.BestTarget(transform, AimAssistBehavior.AimAssistQuery);
+      if (bestTarget) {
+        var direction = bestTarget.transform.position-transform.position;
+        CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ().normalized));
       }
+    }
+    if (WeaponAimBehavior.Active(Frame)) {}
+    if (HitboxBehavior.Active(Frame)) {}
+    if (AudioOneShotBehavior.Active(Frame)) {}
+    if (AnimationClipBehavior.Active(Frame)) {}
+    if (VisualEffectBehavior.Active(Frame))
+      VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.UpdateEventName);
+    if (CancelBehavior.Active(Frame)) {}
+  }
+
+  void CancelActiveBehaviors() {
+    if (RootMotionBehavior.Active(Frame))
+      AnimatorCallbackHandler.OnRootMotion.Unlisten(OnAnimatorMove);
+    if (AimAssistBehavior.Active(Frame)) {}
+    if (WeaponAimBehavior.Active(Frame))
+      WeaponAim.AimDirection = null;
+    if (HitboxBehavior.Active(Frame))
+      Hitbox.CollisionEnabled = false;
+    if (AudioOneShotBehavior.Active(Frame)) {}
+    if (AnimationClipBehavior.Active(Frame)) {}
+    if (VisualEffectBehavior.Active(Frame))
+      VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.EndEventName);
+    if (CancelBehavior.Active(Frame)) {
+      Cancellable = false;
     }
   }
 }

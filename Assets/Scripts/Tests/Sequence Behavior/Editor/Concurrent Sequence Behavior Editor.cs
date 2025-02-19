@@ -200,7 +200,6 @@ public class BehaviorRow : VisualElement {
     middleRegion.LastVisibleFrame = MaxFrame;
     middleRegion.UpdateStartFrame = true;
     middleRegion.UpdateEndFrame = true;
-    // use reflection to try to access TrackColorAttribute
     var sequenceType = SequenceBehavior.GetType();
     var colorAttribute = (TrackColorAttribute)Attribute.GetCustomAttribute(sequenceType, typeof(TrackColorAttribute));
     middleRegion.style.backgroundColor = colorAttribute != null ? colorAttribute.color : Color.grey;
@@ -210,7 +209,7 @@ public class BehaviorRow : VisualElement {
     middleRegion.style.flexShrink = 1;
     NameLabel = new Label();
     NameLabel.text = b.name;
-    NameLabel.style.color = Color.white;
+    NameLabel.style.color = Color.black;
     NameLabel.style.marginLeft = 4;
     NameLabel.style.width = 0; // it displays by overflow
     middleRegion.Add(NameLabel);
