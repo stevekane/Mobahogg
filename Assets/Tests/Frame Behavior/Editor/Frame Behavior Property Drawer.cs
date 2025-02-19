@@ -35,9 +35,9 @@ public class FrameBehaviorDrawer : PropertyDrawer {
     row.Add(timelineContainer);
     root.Add(row);
     var detailField = NoFoldoutInspectorUtility.CreateNoFoldoutInspector(property);
+    detailField.style.marginTop = 8;
     detailField.style.display = DisplayStyle.None;
     root.Add(detailField);
-    bool dragging = false;
     float dragOffset = 0;
     prefix.RegisterCallback<PointerDownEvent>(e => {
       detailField.style.display = detailField.style.display == DisplayStyle.Flex
@@ -46,7 +46,6 @@ public class FrameBehaviorDrawer : PropertyDrawer {
       e.StopPropagation();
     });
     clip.RegisterCallback<PointerDownEvent>(e => {
-      dragging = true;
       clip.CapturePointer(e.pointerId);
       var localX = e.originalMousePosition.x;
       var w = timelineContainer.resolvedStyle.width;
@@ -55,7 +54,7 @@ public class FrameBehaviorDrawer : PropertyDrawer {
       e.StopPropagation();
     });
     clip.RegisterCallback<PointerMoveEvent>(e => {
-      if (!dragging) return;
+      if (!clip.HasPointerCapture(e.pointerId)) return;
       var w = timelineContainer.resolvedStyle.width;
       var length = endProp.intValue - startProp.intValue;
       var localX = e.originalMousePosition.x - dragOffset;
@@ -68,15 +67,11 @@ public class FrameBehaviorDrawer : PropertyDrawer {
       e.StopPropagation();
     });
     clip.RegisterCallback<PointerUpEvent>(e => {
-      dragging = false;
       clip.ReleasePointer(e.pointerId);
       e.StopPropagation();
     });
     root.RegisterCallback<GeometryChangedEvent>(e => UpdateVisual());
     detailField.RegisterCallback<SerializedPropertyChangeEvent>(e => UpdateVisual());
-    // Steve
-    // poll maxFrames prop to resize timeline... kind of stupid we have to poll but not sure how
-    // else to do it atm
     if (maxFramesProperty != null) {
       var poll = root.schedule.Execute(() => {
         if (maxFrames != maxFramesProperty.intValue) {

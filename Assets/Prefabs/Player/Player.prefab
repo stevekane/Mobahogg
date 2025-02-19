@@ -892,7 +892,7 @@ MonoBehaviour:
     AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
   WeaponAimBehavior:
     StartFrame: 6
-    EndFrame: 24
+    EndFrame: 20
     Direction: {x: 0, y: 0, z: 1}
   HitboxBehavior:
     StartFrame: 6
@@ -903,7 +903,7 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
   AnimationClipBehavior:
     StartFrame: 0
-    EndFrame: 1
+    EndFrame: 24
     TriggerName: Ground Attack 0
   VisualEffectBehavior:
     StartFrame: 2
@@ -914,7 +914,7 @@ MonoBehaviour:
   CancelBehavior:
     StartFrame: 20
     EndFrame: 24
-  EndFrame: 28
+  EndFrame: 24
   Hitbox: {fileID: 4976621135791344551}
   VisualEffect: {fileID: 4949252310495472370}
   AudioSource: {fileID: 1970164378300830981}
