@@ -16,4 +16,15 @@ public static class FrameBehaviorTypeCache {
       .Where(x => x.IsSubclassOf(typeof(FrameBehavior)) && !x.IsAbstract)
       .ToArray();
   }
+
+  public static Type[] ConcreteTypesFor(Type abstractType) {
+    return AppDomain.CurrentDomain.GetAssemblies()
+      .SelectMany(a => {
+        Type[] types;
+        try { types = a.GetTypes(); } catch { types = new Type[0]; }
+        return types;
+      })
+      .Where(x => x.IsSubclassOf(abstractType) && !x.IsAbstract)
+      .ToArray();
+  }
 }

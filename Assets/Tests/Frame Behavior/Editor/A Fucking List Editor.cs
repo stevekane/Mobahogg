@@ -7,6 +7,7 @@ using System;
 [CustomEditor(typeof(AFuckingList))]
 public class AFuckingListEditor : Editor {
   VisualElement Elements;
+  GenericMenu TypeSelectionMenu;
 
   public override VisualElement CreateInspectorGUI() {
     var root = new VisualElement();
@@ -18,21 +19,33 @@ public class AFuckingListEditor : Editor {
       listElement.SetProperty(property);
       Elements.Add(listElement);
     }
-    var addButton = new Button(Add);
+    var addButton = new Button(DisplayConcreteTypeMenu);
     addButton.text = "+";
+    TypeSelectionMenu = new GenericMenu();
+    var types = FrameBehaviorTypeCache.ConcreteTypesFor(typeof(AFuckingItem));
+    foreach (var type in types) {
+      TypeSelectionMenu.AddItem(new GUIContent(type.Name), false, () => Add(type));
+    }
     root.Add(Elements);
     root.Add(addButton);
+    root.Bind(serializedObject);
     return root;
   }
 
-  public void Add() {
+  public void DisplayConcreteTypeMenu() {
+    TypeSelectionMenu.ShowAsContext();
+  }
+
+  public void Add(Type type) {
+    var instance = (AFuckingItem)Activator.CreateInstance(type);
+    instance.Name = type.Name;
     serializedObject.Update();
     var itemsProperty = serializedObject.FindProperty("Items");
     var index = itemsProperty.arraySize;
     itemsProperty.arraySize++;
     var property = itemsProperty.GetArrayElementAtIndex(index);
-    property.FindPropertyRelative("Name").stringValue = "New Item";
-    serializedObject.ApplyModifiedProperties();
+    property.managedReferenceValue = instance;
+    serializedObject.ApplyModifiedPropertiesWithoutUndo();
     var listElement = new ListElement(Delete);
     listElement.SetProperty(property);
     Elements.Add(listElement);
@@ -42,7 +55,7 @@ public class AFuckingListEditor : Editor {
     serializedObject.Update();
     var itemsProperty = serializedObject.FindProperty("Items");
     itemsProperty.DeleteArrayElementAtIndex(index);
-    serializedObject.ApplyModifiedProperties();
+    serializedObject.ApplyModifiedPropertiesWithoutUndo();
     itemsProperty = serializedObject.FindProperty("Items");
     Elements.RemoveAt(index);
     for (var i = 0; i < Elements.childCount; i++) {
@@ -62,17 +75,17 @@ class ListElement : VisualElement {
     OnDelete = onDelete;
     DeleteButton = new Button(DeleteSelf);
     DeleteButton.text = "X";
-    PropertyField = new PropertyField();
-    style.flexDirection = FlexDirection.Row;
     DeleteButton.style.flexShrink = 1;
+    PropertyField = new PropertyField();
     PropertyField.style.flexGrow = 1;
     Add(PropertyField);
     Add(DeleteButton);
+    style.flexDirection = FlexDirection.Row;
   }
 
   public void SetProperty(SerializedProperty property) {
+    PropertyField.Unbind();
     PropertyField.BindProperty(property);
-    PropertyField.MarkDirtyRepaint();
   }
 
   void DeleteSelf() {

@@ -13,5 +13,30 @@ MonoBehaviour:
   m_Name: A Fucking List
   m_EditorClassIdentifier: 
   Items:
-  - Name: Blanderer
-  - Name: GoNard
+  - rid: 1366355905362526320
+  - rid: 1366355905362526324
+  - rid: 1366355905362526326
+  - rid: 1366355905362526332
+  references:
+    version: 2
+    RefIds:
+    - rid: 1366355905362526320
+      type: {class: IntItem, ns: , asm: Assembly-CSharp}
+      data:
+        Name: IntItem
+        MyInt: 0
+    - rid: 1366355905362526324
+      type: {class: IntItem, ns: , asm: Assembly-CSharp}
+      data:
+        Name: IntItem
+        MyInt: 42
+    - rid: 1366355905362526326
+      type: {class: StringItem, ns: , asm: Assembly-CSharp}
+      data:
+        Name: StringItem
+        MyString: Donkey King
+    - rid: 1366355905362526332
+      type: {class: IntItem, ns: , asm: Assembly-CSharp}
+      data:
+        Name: IntItem
+        MyInt: 0
