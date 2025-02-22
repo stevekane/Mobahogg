@@ -6,55 +6,60 @@ using System;
 using UnityEngine.VFX;
 
 [Serializable]
-class RootMotionBehavior : FrameBehavior {
+public class RootMotionBehavior : FrameBehavior {
   public float Multiplier;
 }
 
 [Serializable]
-class AimAssistBehavior : FrameBehavior {
+public class AimAssistBehavior : FrameBehavior {
+  public float TurnSpeed = 90;
   [InlineEditor] public AimAssistQuery AimAssistQuery;
 }
 
 [Serializable]
-class WeaponAimBehavior : FrameBehavior {
+public class WeaponAimBehavior : FrameBehavior {
   public Vector3 Direction;
 }
 
 [Serializable]
-class HitboxBehavior : FrameBehavior {
+public class HitboxBehavior : FrameBehavior {
 }
 
 [Serializable]
-class AudioOneShotBehavior : FrameBehavior {
+public class AudioOneShotBehavior : FrameBehavior {
   public AudioClip AudioClip;
 }
 
 [Serializable]
-class AnimationClipBehavior : FrameBehavior {
-  public string TriggerName;
+public class AnimatorControllerCrossFadeBehavior : FrameBehavior {
+  // TODO: Very stupid names. Should be StartStateName EndStateName
+  public string StateName;
+  public string BaseName;
+  public int LayerIndex;
+  public float CrossFadeDuration = 0.25f;
+  public override string Name => string.IsNullOrEmpty(StateName) ? base.Name : $"AnimatorState({StateName})";
 }
 
 [Serializable]
-class VisualEffectBehavior : FrameBehavior {
+public class VisualEffectBehavior : FrameBehavior {
   public string StartEventName = "OnPlay";
   public string UpdateEventName = "";
   public string EndEventName = "";
 }
 
 [Serializable]
-class CancelBehavior : FrameBehavior {
-
+public class CancelBehavior : FrameBehavior {
 }
 
 public class AttackAbility : Ability {
-  [SerializeField, MaxFrames("Frame", "EndFrame")] RootMotionBehavior RootMotionBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] AimAssistBehavior AimAssistBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] WeaponAimBehavior WeaponAimBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] HitboxBehavior HitboxBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] AudioOneShotBehavior AudioOneShotBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] AnimationClipBehavior AnimationClipBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] VisualEffectBehavior VisualEffectBehavior;
-  [SerializeField, MaxFrames("Frame", "EndFrame")] CancelBehavior CancelBehavior;
+  [SerializeField] RootMotionBehavior RootMotionBehavior;
+  [SerializeField] AimAssistBehavior AimAssistBehavior;
+  [SerializeField] WeaponAimBehavior WeaponAimBehavior;
+  [SerializeField] HitboxBehavior HitboxBehavior;
+  [SerializeField] AudioOneShotBehavior AudioOneShotBehavior;
+  [SerializeField] AnimatorControllerCrossFadeBehavior CrossFadeStateBehavior;
+  [SerializeField] VisualEffectBehavior VisualEffectBehavior;
+  [SerializeField] CancelBehavior CancelBehavior;
   [SerializeField, Min(0)] int EndFrame = 24;
   [SerializeField, Min(0)] int Frame;
 
@@ -127,8 +132,12 @@ public class AttackAbility : Ability {
     }
     if (AudioOneShotBehavior.Starting(Frame))
       AudioSource.PlayOptionalOneShot(AudioOneShotBehavior.AudioClip);
-    if (AnimationClipBehavior.Starting(Frame))
-      Animator.SetTrigger(AnimationClipBehavior.TriggerName);
+    if (CrossFadeStateBehavior.Starting(Frame)) {
+      Animator.CrossFadeInFixedTime(
+        CrossFadeStateBehavior.StateName,
+        CrossFadeStateBehavior.CrossFadeDuration,
+        CrossFadeStateBehavior.LayerIndex);
+    }
     if (VisualEffectBehavior.Starting(Frame))
       VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.StartEventName);
     if (CancelBehavior.Starting(Frame))
@@ -146,7 +155,9 @@ public class AttackAbility : Ability {
       Struck.Clear();
     }
     if (AudioOneShotBehavior.Ending(Frame)) {}
-    if (AnimationClipBehavior.Ending(Frame)) {}
+    if (CrossFadeStateBehavior.Ending(Frame)) {
+      Animator.Play(CrossFadeStateBehavior.BaseName, CrossFadeStateBehavior.LayerIndex);
+    }
     if (VisualEffectBehavior.Ending(Frame))
       VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.EndEventName);
     if (CancelBehavior.Ending(Frame))
@@ -159,13 +170,18 @@ public class AttackAbility : Ability {
       var bestTarget = AimAssistManager.Instance.BestTarget(transform, AimAssistBehavior.AimAssistQuery);
       if (bestTarget) {
         var direction = bestTarget.transform.position-transform.position;
-        CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ().normalized));
+        var maxDegrees = AimAssistBehavior.TurnSpeed * LocalClock.DeltaTime();
+        var nextRotation = Quaternion.RotateTowards(
+          CharacterController.transform.rotation,
+          Quaternion.LookRotation(direction),
+          maxDegrees);
+        CharacterController.Rotation.Set(nextRotation);
       }
     }
     if (WeaponAimBehavior.Active(Frame)) {}
     if (HitboxBehavior.Active(Frame)) {}
     if (AudioOneShotBehavior.Active(Frame)) {}
-    if (AnimationClipBehavior.Active(Frame)) {}
+    if (CrossFadeStateBehavior.Active(Frame)) {}
     if (VisualEffectBehavior.Active(Frame))
       VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.UpdateEventName);
     if (CancelBehavior.Active(Frame)) {}
@@ -182,7 +198,9 @@ public class AttackAbility : Ability {
       Hitbox.CollisionEnabled = false;
     }
     if (AudioOneShotBehavior.Active(Frame)) {}
-    if (AnimationClipBehavior.Active(Frame)) {}
+    if (CrossFadeStateBehavior.Active(Frame)) {
+      Animator.Play(CrossFadeStateBehavior.BaseName, CrossFadeStateBehavior.LayerIndex);
+    }
     if (VisualEffectBehavior.Active(Frame))
       VisualEffect.PlayNonEmptyEvent(VisualEffectBehavior.EndEventName);
     if (CancelBehavior.Active(Frame)) {

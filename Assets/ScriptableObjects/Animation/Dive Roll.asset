@@ -22,5 +22,5 @@ MonoBehaviour:
     FadeOutFrames: 0
   Notifies:
   - Name: Root Motion
-    StartFrame: 0
-    EndFrame: 33
+    StartFrame: 33
+    EndFrame: 43

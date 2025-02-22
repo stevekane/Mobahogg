@@ -25,7 +25,7 @@ public class DiveRollAbility : Ability, IAimed, ISteered {
   public override bool IsRunning => Frame < FrameDuration;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
-    Animator.SetTrigger("Dash");
+    Animator.CrossFadeInFixedTime("Dive Roll", 0.05f, 2);
     Frame = 0;
   }
 
@@ -52,7 +52,7 @@ public class DiveRollAbility : Ability, IAimed, ISteered {
 
   public override bool CanCancel => IsRunning && Frame > (FrameDuration-CancelFrames);
   public override void Cancel() {
-    Animator.SetTrigger("Cancel");
+    Animator.Play("Layer Open");
     Frame = FrameDuration;
   }
 
@@ -69,6 +69,9 @@ public class DiveRollAbility : Ability, IAimed, ISteered {
     if (IsRunning) {
       SpellAffected.Immune.Set(true);
       Frame = Mathf.Min(FrameDuration, Frame+LocalClock.DeltaFrames());
+      if (Frame == FrameDuration) {
+        Cancel();
+      }
     }
   }
 }

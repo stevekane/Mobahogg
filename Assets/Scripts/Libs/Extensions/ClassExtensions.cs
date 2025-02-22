@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
+#if UNITY_EDITOR
+using UnityEditor.Animations;
+#endif
 
 public static class AnimationExtensions {
   public static bool TryAddLayerMaskFromAvatarMask(
@@ -202,6 +205,24 @@ public static class AudioSourceExtensions {
 
 public static class AnimatorExtensions {
   public static void SetSpeed(this Animator a, float s) => a.speed = s;
+
+  #if UNITY_EDITOR
+  public static AnimationClip AnimationClipForStateInLayer(this Animator animator, string stateName, int layerIndex) {
+    var controller = animator.runtimeAnimatorController as AnimatorController;
+    if (!controller)
+      return null;
+    if (layerIndex <= 0 || layerIndex > controller.layers.Length)
+      return null;
+    var layer = controller.layers[layerIndex];
+    var stateMachine = layer.stateMachine;
+    foreach(var child in stateMachine.states) {
+      if(child.state.name == stateName) {
+        if(child.state.motion is AnimationClip clip) return clip;
+      }
+    }
+    return null;
+  }
+  #endif
 }
 
 public static class AnimationClipExtensions {
