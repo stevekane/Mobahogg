@@ -68,7 +68,8 @@ public class AFuckingListEditor : Editor {
 
 class ListElement : VisualElement {
   Button DeleteButton;
-  PropertyField PropertyField;
+  VisualElement DetailsContainer;
+  VisualElement Details;
   Action<int> OnDelete;
 
   public ListElement(Action<int> onDelete) {
@@ -76,16 +77,21 @@ class ListElement : VisualElement {
     DeleteButton = new Button(DeleteSelf);
     DeleteButton.text = "X";
     DeleteButton.style.flexShrink = 1;
-    PropertyField = new PropertyField();
-    PropertyField.style.flexGrow = 1;
-    Add(PropertyField);
+    DetailsContainer = new();
+    DetailsContainer.style.flexGrow = 1;
+    Add(DetailsContainer);
     Add(DeleteButton);
     style.flexDirection = FlexDirection.Row;
   }
 
   public void SetProperty(SerializedProperty property) {
-    PropertyField.Unbind();
-    PropertyField.BindProperty(property);
+    if (Details != null) {
+      Details.Unbind();
+      DetailsContainer.Clear();
+    }
+    Details = NoFoldoutInspectorUtility.CreateNoFoldoutInspector(property);
+    Details.Bind(property.serializedObject);
+    DetailsContainer.Add(Details);
   }
 
   void DeleteSelf() {
