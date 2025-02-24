@@ -16,5 +16,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   TriggerInteraction: 2
-  MaxDistance: 25
+  MaxDistance: 10
   MaxAngle: 90
