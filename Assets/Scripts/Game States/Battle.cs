@@ -10,8 +10,8 @@ public class Battle : MonoBehaviour {
     if (!MatchManager.Instance.IsActiveMatch) {
       var players = new PotentialPlayer[4] {
         new PotentialPlayer { Name = "Alice", Team = true, State = PotentialPlayerState.Ready },
-        new PotentialPlayer { Name = "Bob", Team = true, State = PotentialPlayerState.Ready },
-        new PotentialPlayer { Name = "Jim", Team = false, State = PotentialPlayerState.Ready },
+        new PotentialPlayer { Name = "Bob", Team = false, State = PotentialPlayerState.Ready },
+        new PotentialPlayer { Name = "Jim", Team = true, State = PotentialPlayerState.Ready },
         new PotentialPlayer { Name = "Connie", Team = false, State = PotentialPlayerState.Ready }
       };
       var matchConfig = ScriptableObject.CreateInstance<MatchConfig>();
