@@ -4,75 +4,30 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
 
+/*
+The visual element created here is polymorphic in the following parameters:
+
+Abstract Type of the Items
+  Any System.Type ( not, this won't make much sense if it's not abstract )
+Display of the Item
+  (SerializedProperty (representing the item)) -> Visual Element
+*/
 [CustomEditor(typeof(AFuckingList))]
 public class AFuckingListEditor : Editor {
-  VisualElement Elements;
-  GenericMenu TypeSelectionMenu;
-
   public override VisualElement CreateInspectorGUI() {
-    var root = new VisualElement();
-    var itemsProperty = serializedObject.FindProperty("Items");
-    Elements = new VisualElement();
-    for (var i = 0; i < itemsProperty.arraySize; i++) {
-      var property = itemsProperty.GetArrayElementAtIndex(i);
-      var listElement = new ListElement(Delete);
-      listElement.SetProperty(property);
-      Elements.Add(listElement);
-    }
-    var addButton = new Button(DisplayConcreteTypeMenu);
-    addButton.text = "+";
-    TypeSelectionMenu = new GenericMenu();
-    var types = FrameBehaviorTypeCache.ConcreteTypesFor(typeof(AFuckingItem));
-    foreach (var type in types) {
-      TypeSelectionMenu.AddItem(new GUIContent(type.Name), false, () => Add(type));
-    }
-    root.Add(Elements);
-    root.Add(addButton);
-    root.Bind(serializedObject);
-    return root;
-  }
-
-  public void DisplayConcreteTypeMenu() {
-    TypeSelectionMenu.ShowAsContext();
-  }
-
-  public void Add(Type type) {
-    var instance = (AFuckingItem)Activator.CreateInstance(type);
-    instance.Name = type.Name;
-    serializedObject.Update();
-    var itemsProperty = serializedObject.FindProperty("Items");
-    var index = itemsProperty.arraySize;
-    itemsProperty.arraySize++;
-    var property = itemsProperty.GetArrayElementAtIndex(index);
-    property.managedReferenceValue = instance;
-    serializedObject.ApplyModifiedPropertiesWithoutUndo();
-    var listElement = new ListElement(Delete);
-    listElement.SetProperty(property);
-    Elements.Add(listElement);
-  }
-
-  public void Delete(int index) {
-    serializedObject.Update();
-    var itemsProperty = serializedObject.FindProperty("Items");
-    itemsProperty.DeleteArrayElementAtIndex(index);
-    serializedObject.ApplyModifiedPropertiesWithoutUndo();
-    itemsProperty = serializedObject.FindProperty("Items");
-    Elements.RemoveAt(index);
-    for (var i = 0; i < Elements.childCount; i++) {
-      var element = Elements[i] as ListElement;
-      var property = itemsProperty.GetArrayElementAtIndex(i);
-      element.SetProperty(property);
-    }
+    var list = new PolymorphicList();
+    list.BindSerializedObject(serializedObject);
+    return list;
   }
 }
 
-class ListElement : VisualElement {
+public class PolymorphicListElement : VisualElement {
   Button DeleteButton;
   VisualElement DetailsContainer;
   VisualElement Details;
   Action<int> OnDelete;
 
-  public ListElement(Action<int> onDelete) {
+  public PolymorphicListElement(Action<int> onDelete) {
     OnDelete = onDelete;
     DeleteButton = new Button(DeleteSelf);
     DeleteButton.text = "X";
@@ -96,5 +51,83 @@ class ListElement : VisualElement {
 
   void DeleteSelf() {
     OnDelete?.Invoke(parent.IndexOf(this));
+  }
+}
+
+public class PolymorphicList : VisualElement {
+  VisualElement ListContainer;
+  GenericMenu TypeSelectionMenu;
+  SerializedObject SerializedObject;
+
+  public PolymorphicList() {
+    ListContainer = new VisualElement { name = "ListItemsContainer" };
+    Add(ListContainer);
+    Button addButton = new Button(DisplayConcreteTypeMenu) { text = "+" };
+    Add(addButton);
+  }
+
+  public void BindSerializedObject(SerializedObject so) {
+    SerializedObject = so;
+    RebuildUI();
+    this.Bind(so);
+  }
+
+  void RebuildUI() {
+    ListContainer.Clear();
+    SerializedProperty itemsProperty = SerializedObject.FindProperty("Items");
+    for (int i = 0; i < itemsProperty.arraySize; i++) {
+      SerializedProperty property = itemsProperty.GetArrayElementAtIndex(i);
+      PolymorphicListElement listElement = new PolymorphicListElement(Delete);
+      listElement.SetProperty(property);
+      ListContainer.Add(listElement);
+    }
+    SetupTypeSelectionMenu();
+  }
+
+  private void SetupTypeSelectionMenu() {
+    TypeSelectionMenu = new GenericMenu();
+    var types = FrameBehaviorTypeCache.ConcreteTypesFor(typeof(AFuckingItem));
+    foreach (var type in types) {
+        TypeSelectionMenu.AddItem(new GUIContent(type.Name), false, () => Add(type));
+    }
+  }
+
+  private void DisplayConcreteTypeMenu() {
+    TypeSelectionMenu?.ShowAsContext();
+  }
+
+  private void Add(Type type) {
+    // Create a new instance of the concrete type.
+    AFuckingItem instance = (AFuckingItem)Activator.CreateInstance(type);
+    instance.Name = type.Name;
+
+    SerializedObject.Update();
+    SerializedProperty itemsProperty = SerializedObject.FindProperty("Items");
+    int index = itemsProperty.arraySize;
+    itemsProperty.arraySize++;
+    SerializedProperty property = itemsProperty.GetArrayElementAtIndex(index);
+    property.managedReferenceValue = instance;
+    SerializedObject.ApplyModifiedPropertiesWithoutUndo();
+
+    // Create and add a new list element.
+    PolymorphicListElement listElement = new PolymorphicListElement(Delete);
+    listElement.SetProperty(property);
+    ListContainer.Add(listElement);
+  }
+
+  private void Delete(int index) {
+    SerializedObject.Update();
+    SerializedProperty itemsProperty = SerializedObject.FindProperty("Items");
+    itemsProperty.DeleteArrayElementAtIndex(index);
+    SerializedObject.ApplyModifiedPropertiesWithoutUndo();
+
+    // Rebuild the list UI to ensure that binding paths are updated.
+    itemsProperty = SerializedObject.FindProperty("Items");
+    ListContainer.RemoveAt(index);
+    for (int i = 0; i < ListContainer.childCount; i++) {
+      PolymorphicListElement element = ListContainer[i] as PolymorphicListElement;
+      SerializedProperty property = itemsProperty.GetArrayElementAtIndex(i);
+      element.SetProperty(property);
+    }
   }
 }

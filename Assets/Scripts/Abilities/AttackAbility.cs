@@ -4,7 +4,6 @@ using AimAssist;
 using Abilities;
 using System;
 using UnityEngine.VFX;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 [Serializable]
 public class RootMotionBehavior : FrameBehavior {
