@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Melee;
 using UnityEngine;
 
@@ -6,14 +7,18 @@ public class Hitbox : MonoBehaviour {
   [SerializeField] Combatant Combatant;
   [SerializeField] Collider Collider;
   [SerializeField] MeleeAttackConfig MeleeAttackConfig;
-  [SerializeField] AttackAbility AttackAbility;
   [SerializeField] KnockbackScale KnockbackScale;
+
+  List<Combatant> Struck = new(16);
 
   public Combatant Owner => Combatant;
 
   public bool CollisionEnabled {
     get => Collider.enabled;
-    set => Collider.enabled = value;
+    set {
+      Struck.Clear();
+      Collider.enabled = value;
+    }
   }
 
   void OnTriggerEnter(Collider c) => HandleOverlap(c);
@@ -23,8 +28,8 @@ public class Hitbox : MonoBehaviour {
   void HandleOverlap(Collider c) {
     if (c.TryGetComponent(out Hurtbox hurtbox) &&
         hurtbox.Owner != Owner &&
-        AttackAbility.ShouldHit(hurtbox.Owner)) {
-      AttackAbility.Hit(hurtbox.Owner);
+        !Struck.Contains(hurtbox.Owner)) {
+      Struck.Add(hurtbox.Owner);
       var attackEvent = new MeleeAttackEvent {
         Damage = Damage.Value,
         Config = MeleeAttackConfig,

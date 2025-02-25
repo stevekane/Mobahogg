@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: A Fucking List
   m_EditorClassIdentifier: 
   Items:
-  - rid: 1366355905362526335
-  - rid: 1366355905362526337
-  - rid: 1366355905362526339
+  - rid: 1366355905362526341
+  - rid: 1366355905362526342
+  - rid: 1366355905362526343
   references:
     version: 2
     RefIds:
-    - rid: 1366355905362526335
-      type: {class: StringItem, ns: , asm: Assembly-CSharp}
-      data:
-        Name: StringItem
-        MyString: GodSmack
-    - rid: 1366355905362526337
+    - rid: 1366355905362526341
       type: {class: IntItem, ns: , asm: Assembly-CSharp}
       data:
-        Name: IntItem
-        MyInt: 56
-    - rid: 1366355905362526339
+        Name: Dog years
+        MyInt: 42
+    - rid: 1366355905362526342
       type: {class: StringItem, ns: , asm: Assembly-CSharp}
       data:
         Name: StringItem
-        MyString: Scary Courtney
+        MyString: Manuel Voldemaot
+    - rid: 1366355905362526343
+      type: {class: IntItem, ns: , asm: Assembly-CSharp}
+      data:
+        Name: Age of Luls
+        MyInt: 56

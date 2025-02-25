@@ -5,68 +5,6 @@ using Abilities;
 using System;
 using UnityEngine.VFX;
 
-interface IProvider<T> {
-  public T Value(BehaviorTag tag);
-}
-
-interface IConsumer {
-  public abstract void Initialize(object potentialProvider);
-}
-
-abstract class BehaviorTag {}
-
-class WeaponTag : BehaviorTag {}
-class PlayerTag : BehaviorTag {}
-
-class AnimatorConsumer : IConsumer {
-  BehaviorTag Tag;
-  Animator Animator;
-
-  public void Initialize(object potentialProvider) {
-    if (potentialProvider is IProvider<Animator> animatorProvider) {
-      Animator = animatorProvider.Value(Tag);
-    }
-  }
-}
-
-class CompositeConsumer : IConsumer {
-  BehaviorTag OwnerTag;
-  BehaviorTag AnimatorTag;
-
-  Animator Animator;
-  GameObject Owner;
-
-  public void Initialize(object potentialProvider) {
-    var animatorProvider = potentialProvider as IProvider<Animator>;
-    var gameObjectProvier = potentialProvider as IProvider<GameObject>;
-    if (animatorProvider != null && gameObjectProvier != null) {
-      Animator = animatorProvider.Value(AnimatorTag);
-      Owner = gameObjectProvier.Value(OwnerTag);
-    }
-  }
-}
-
-class Host : MonoBehaviour, IProvider<Animator>, IProvider<GameObject> {
-  List<IConsumer> Consumers = new();
-
-  WeaponTag WeaponTag;
-  PlayerTag PlayerTag;
-  Animator WeaponAnimator;
-  Animator PlayerAnimator;
-
-  Animator IProvider<Animator>.Value(BehaviorTag tag) => tag switch {
-    var t when t == PlayerTag => PlayerAnimator,
-    var t when t == WeaponTag => WeaponAnimator,
-    _ => null
-  };
-
-  GameObject IProvider<GameObject>.Value(BehaviorTag tag) => gameObject;
-
-  public void Run() {
-    Consumers.ForEach(c => c.Initialize(this));
-  }
-}
-
 [Serializable]
 public class RootMotionBehavior : FrameBehavior {
   public float Multiplier;
@@ -81,14 +19,17 @@ public class RootMotionBehavior : FrameBehavior {
     CharacterController.DirectVelocity.Add(Multiplier * v);
   }
 
-  public override void OnStart(GameObject runner, GameObject owner) {
-    LocalClock = owner.GetComponent<LocalClock>();
-    CharacterController = owner.GetComponent<KCharacterController>();
-    AnimatorCallbackHandler = owner.GetComponent<AbilityManager>().LocateComponent<AnimatorCallbackHandler>();
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out AnimatorCallbackHandler);
+    TryGetValue(provider, null, out CharacterController);
+    TryGetValue(provider, null, out LocalClock);
+  }
+
+  public override void OnStart() {
     AnimatorCallbackHandler.OnRootMotion.Listen(OnRootMotion);
   }
 
-  public override void OnEnd(GameObject runner, GameObject owner) {
+  public override void OnEnd() {
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnRootMotion);
   }
 }
@@ -98,18 +39,19 @@ public class AimAssistBehavior : FrameBehavior {
   public float TurnSpeed = 90;
   [InlineEditor]
   public AimAssistQuery AimAssistQuery;
+
   KCharacterController CharacterController;
   LocalClock LocalClock;
 
-  public override void OnStart(GameObject runner, GameObject owner) {
-    CharacterController = owner.GetComponent<KCharacterController>();
-    LocalClock = owner.GetComponent<LocalClock>();
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out CharacterController);
+    TryGetValue(provider, null, out LocalClock);
   }
 
-  public override void OnUpdate(GameObject runner, GameObject owner) {
-    var bestTarget = AimAssistManager.Instance.BestTarget(owner.transform, AimAssistQuery);
+  public override void OnUpdate() {
+    var bestTarget = AimAssistManager.Instance.BestTarget(CharacterController.transform, AimAssistQuery);
     if (bestTarget) {
-      var direction = bestTarget.transform.position-owner.transform.position;
+      var direction = bestTarget.transform.position-CharacterController.transform.position;
       var maxDegrees = TurnSpeed * LocalClock.DeltaTime();
       var nextRotation = Quaternion.RotateTowards(
         CharacterController.transform.rotation,
@@ -126,18 +68,34 @@ public class WeaponAimBehavior : FrameBehavior {
 
   WeaponAim WeaponAim;
 
-  public override void OnStart(GameObject runner, GameObject owner) {
-    WeaponAim = owner.GetComponent<AbilityManager>().LocateComponent<WeaponAim>();
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out WeaponAim);
+  }
+
+  public override void OnStart() {
     WeaponAim.AimDirection = Direction;
   }
 
-  public override void OnEnd(GameObject runner, GameObject owner) {
+  public override void OnEnd() {
     WeaponAim.AimDirection = null;
   }
 }
 
 [Serializable]
 public class HitboxBehavior : FrameBehavior {
+  Hitbox Hitbox;
+
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out Hitbox);
+  }
+
+  public override void OnStart() {
+    Hitbox.CollisionEnabled = true;
+  }
+
+  public override void OnEnd() {
+    Hitbox.CollisionEnabled = false;
+  }
 }
 
 [Serializable]
@@ -145,12 +103,18 @@ public class AudioOneShotBehavior : FrameBehavior {
   public float Volume = 0.25f;
   public AudioClip AudioClip;
 
-  public override void OnStart(GameObject runner, GameObject owner) {
+  GameObject Owner;
+
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out Owner);
+  }
+
+  public override void OnStart() {
     var audioSource = new GameObject($"AudioSourceOneShot({AudioClip.name})").AddComponent<AudioSource>();
     audioSource.spatialBlend = 0;
     audioSource.clip = AudioClip;
     audioSource.volume = Volume;
-    audioSource.transform.position = owner.transform.position;
+    audioSource.transform.position = Owner.transform.position;
     audioSource.Play();
     GameObject.Destroy(audioSource.gameObject, AudioClip.length);
   }
@@ -166,12 +130,15 @@ public class AnimatorControllerCrossFadeBehavior : FrameBehavior {
 
   AnimatorCallbackHandler AnimatorCallbackHandler;
 
-  public override void OnStart(GameObject runner, GameObject owner) {
-    AnimatorCallbackHandler = owner.GetComponent<AbilityManager>().LocateComponent<AnimatorCallbackHandler>();
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out AnimatorCallbackHandler);
+  }
+
+  public override void OnStart() {
     AnimatorCallbackHandler.Animator.CrossFadeInFixedTime(StartStateName, CrossFadeDuration, LayerIndex);
   }
 
-  public override void OnEnd(GameObject runner, GameObject owner) {
+  public override void OnEnd() {
     AnimatorCallbackHandler.Animator.Play(EndStateName, LayerIndex);
   }
 }
@@ -180,6 +147,7 @@ public class AnimatorControllerCrossFadeBehavior : FrameBehavior {
 public class VisualEffectBehavior : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
+  public GameObject Owner;
   public VisualEffectAsset VisualEffectAsset;
   public string StartEventName = "OnPlay";
   public string UpdateEventName = "";
@@ -190,25 +158,30 @@ public class VisualEffectBehavior : FrameBehavior {
 
   VisualEffect VisualEffect;
 
-  public override void OnStart(GameObject runner, GameObject owner) {
+  public override void Initialize(object potentialProvider) {
+    var gameObjectProvider = potentialProvider as IProvider<GameObject>;
+    Owner = gameObjectProvider.Value(null);
+  }
+
+  public override void OnStart() {
     if (VisualEffectAsset) {
       VisualEffect = new GameObject().AddComponent<VisualEffect>();
       VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
       VisualEffect.visualEffectAsset = VisualEffectAsset;
       VisualEffect.initialEventName = "";
       VisualEffect.PlayNonEmptyEvent(StartEventName);
-      VisualEffect.transform.SetParent(AttachedToOwner ? owner.transform : null);
+      VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
       VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
     }
   }
 
-  public override void OnUpdate(GameObject runner, GameObject owner) {
+  public override void OnUpdate() {
     if (VisualEffect) {
       VisualEffect.PlayNonEmptyEvent(UpdateEventName);
     }
   }
 
-  public override void OnEnd(GameObject runner, GameObject owner) {
+  public override void OnEnd() {
     if (VisualEffect) {
       VisualEffect.PlayNonEmptyEvent(EndEventName);
       GameObject.Destroy(VisualEffect.gameObject, MAX_VFX_LIFETIME);
@@ -218,9 +191,38 @@ public class VisualEffectBehavior : FrameBehavior {
 
 [Serializable]
 public class CancelBehavior : FrameBehavior {
+  ICancellable Cancellable;
+
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out Cancellable);
+  }
+
+  public override void OnStart() {
+    Cancellable.Cancellable = true;
+  }
+
+  public override void OnEnd() {
+    Cancellable.Cancellable = false;
+  }
 }
 
-public class AttackAbility : Ability {
+// Steve - this is kind of a temporary sort of thing until I think of something
+// less bespoke to do. Maybe cancellation by tags, etc. Here to keep things simple
+public interface ICancellable {
+  public bool Cancellable { get; set; }
+}
+
+public class AttackAbility :
+  Ability,
+  ICancellable,
+  IProvider<AnimatorCallbackHandler>,
+  IProvider<KCharacterController>,
+  IProvider<WeaponAim>,
+  IProvider<Hitbox>,
+  IProvider<GameObject>,
+  IProvider<LocalClock>,
+  IProvider<ICancellable>
+{
   [SerializeField] RootMotionBehavior RootMotionBehavior;
   [SerializeField] AimAssistBehavior AimAssistBehavior;
   [SerializeField] WeaponAimBehavior WeaponAimBehavior;
@@ -234,9 +236,6 @@ public class AttackAbility : Ability {
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
-
-  bool Cancellable;
-  List<Combatant> Struck = new(16);
 
   IEnumerable<FrameBehavior> Behaviors {
     get {
@@ -254,90 +253,46 @@ public class AttackAbility : Ability {
   void Awake() {
     Frame = EndFrame+1;
     Hitbox.CollisionEnabled = false;
-    Struck.Clear();
   }
 
-  public bool ShouldHit(Combatant combatant) => !Struck.Contains(combatant);
+  // Steve - It is worth contemplating whether most or all characters might have a single
+  // top-level provider that implements this shit. If so, you could move this noise out of here
+  // and create a very elegant Ability / User of FrameBehaviors
+  AnimatorCallbackHandler IProvider<AnimatorCallbackHandler>.Value(BehaviorTag tag) => AnimatorCallbackHandler;
+  KCharacterController IProvider<KCharacterController>.Value(BehaviorTag tag) => CharacterController;
+  WeaponAim IProvider<WeaponAim>.Value(BehaviorTag tag) => AbilityManager.LocateComponent<WeaponAim>();
+  GameObject IProvider<GameObject>.Value(BehaviorTag tag) => AbilityManager.gameObject;
+  LocalClock IProvider<LocalClock>.Value(BehaviorTag tag) => LocalClock;
+  Hitbox IProvider<Hitbox>.Value(BehaviorTag tag) => Hitbox;
+  ICancellable IProvider<ICancellable>.Value(BehaviorTag tag) => this;
 
-  public void Hit(Combatant combatant) => Struck.Add(combatant);
+  public bool Cancellable { get; set; }
+  public override bool CanCancel => Cancellable;
+  public override void Cancel() {
+    FrameBehavior.CancelActiveBehaviors(Behaviors, Frame);
+    Frame = EndFrame+1;
+  }
 
   public override bool IsRunning => Frame <= EndFrame;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     Frame = 0;
+    FrameBehavior.InitializeBehaviors(Behaviors, this);
   }
 
   public bool CanAim => Frame == 0;
   public void Aim(Vector2 direction) {
-    if (direction.sqrMagnitude > 0)
+    if (direction.sqrMagnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
-  }
-
-  public override bool CanCancel => Cancellable;
-  public override void Cancel() {
-    CancelActiveBehaviors();
-    Frame = EndFrame+1;
+    }
   }
 
   void FixedUpdate() {
     if (IsRunning) {
-      StartBehaviors();
-      UpdateBehaviors();
-      EndBehaviors();
+      FrameBehavior.StartBehaviors(Behaviors, Frame);
+      FrameBehavior.UpdateBehaviors(Behaviors, Frame);
+      FrameBehavior.EndBehaviors(Behaviors, Frame);
       Frame++;
-    }
-  }
-
-  void StartBehaviors() {
-    foreach (var behavior in Behaviors) {
-      if (behavior.Starting(Frame)) {
-        behavior.OnStart(gameObject, AbilityManager.gameObject);
-      }
-    }
-    if (HitboxBehavior.Starting(Frame)) {
-      Hitbox.CollisionEnabled = true;
-      Struck.Clear();
-    }
-    if (CancelBehavior.Starting(Frame))
-      Cancellable = true;
-  }
-
-  void EndBehaviors() {
-    foreach (var behavior in Behaviors) {
-      if (behavior.Ending(Frame)) {
-        behavior.OnEnd(gameObject, AbilityManager.gameObject);
-      }
-    }
-    if (HitboxBehavior.Ending(Frame)) {
-      Hitbox.CollisionEnabled = false;
-      Struck.Clear();
-    }
-    if (CancelBehavior.Ending(Frame))
-      Cancellable = false;
-  }
-
-  void UpdateBehaviors() {
-    foreach (var behavior in Behaviors) {
-      if (behavior.Active(Frame)) {
-        behavior.OnUpdate(gameObject, AbilityManager.gameObject);
-      }
-    }
-    if (HitboxBehavior.Active(Frame)) {}
-    if (CancelBehavior.Active(Frame)) {}
-  }
-
-  void CancelActiveBehaviors() {
-    foreach (var behavior in Behaviors) {
-      if (behavior.Active(Frame)) {
-        behavior.OnEnd(gameObject, AbilityManager.gameObject);
-      }
-    }
-    if (HitboxBehavior.Active(Frame)) {
-      Struck.Clear();
-      Hitbox.CollisionEnabled = false;
-    }
-    if (CancelBehavior.Active(Frame)) {
-      Cancellable = false;
     }
   }
 }
