@@ -2484,6 +2484,22 @@ MonoBehaviour:
     Millis: 0
   PostBattleDuration:
     Millis: 3000
+  Players:
+  - State: 3
+    Name: Alice
+    Team: 0
+  - State: 3
+    Name: Bob
+    Team: 0
+  - State: 3
+    Name: Jim
+    Team: 1
+  - State: 3
+    Name: Connie
+    Team: 1
+  - State: 3
+    Name: Smammy
+    Team: 1
 --- !u!1001 &884395469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6606,7 +6622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107332014362920586, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: field of view
-      value: 26.231289
+      value: 26.225605
       objectReference: {fileID: 0}
     - target: {fileID: 441921929137087940, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: m_LocalPosition.y
