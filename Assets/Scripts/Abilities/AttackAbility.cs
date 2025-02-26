@@ -99,7 +99,7 @@ public class HitboxBehavior : FrameBehavior {
 }
 
 [Serializable]
-public class AudioOneShotBehavior : FrameBehavior {
+public class SFXOneShotBehavior : FrameBehavior {
   public float Volume = 0.25f;
   public AudioClip AudioClip;
 
@@ -121,7 +121,7 @@ public class AudioOneShotBehavior : FrameBehavior {
 }
 
 [Serializable]
-public class AnimatorControllerCrossFadeBehavior : FrameBehavior {
+public class AnimationOneShot : FrameBehavior {
   public string StartStateName;
   public string EndStateName;
   public int LayerIndex;
@@ -144,7 +144,7 @@ public class AnimatorControllerCrossFadeBehavior : FrameBehavior {
 }
 
 [Serializable]
-public class VisualEffectBehavior : FrameBehavior {
+public class VFXOneShot : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
   public GameObject Owner;
@@ -227,9 +227,9 @@ public class AttackAbility :
   [SerializeField] AimAssistBehavior AimAssistBehavior;
   [SerializeField] WeaponAimBehavior WeaponAimBehavior;
   [SerializeField] HitboxBehavior HitboxBehavior;
-  [SerializeField] AudioOneShotBehavior AudioOneShotBehavior;
-  [SerializeField] AnimatorControllerCrossFadeBehavior CrossFadeStateBehavior;
-  [SerializeField] VisualEffectBehavior VisualEffectBehavior;
+  [SerializeField] SFXOneShotBehavior AudioOneShotBehavior;
+  [SerializeField] AnimationOneShot CrossFadeStateBehavior;
+  [SerializeField] VFXOneShot VisualEffectBehavior;
   [SerializeField] CancelBehavior CancelBehavior;
   [SerializeField, Min(0)] int EndFrame = 24;
   [SerializeField, Min(0)] int Frame;

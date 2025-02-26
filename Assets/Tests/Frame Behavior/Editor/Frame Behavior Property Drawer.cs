@@ -1,19 +1,27 @@
+using System.Linq.Expressions;
+using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(FrameBehavior), true)]
-public class FrameBehaviorDrawer : PropertyDrawer {
-  public override VisualElement CreatePropertyGUI(SerializedProperty property) {
+public class FrameBehaviorDrawer : PropertyDrawer
+{
+  public override VisualElement CreatePropertyGUI(SerializedProperty property)
+  {
     var behaviorRoot = new FrameBehaviorRoot();
-    behaviorRoot.Bind(property.serializedObject);
     behaviorRoot.BindProperty(property);
     return behaviorRoot;
   }
 }
 
-public class FrameBehaviorRoot : VisualElement {
+public interface IPropertyBinder {
+  public void BindProperty(SerializedProperty property);
+}
+
+public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
   SerializedProperty Property;
   Label prefix;
   VisualElement timelineContainer;
@@ -30,23 +38,29 @@ public class FrameBehaviorRoot : VisualElement {
   public int Frame { get; private set; } = 0;
   public int MaxFrame { get; private set; } = 60;
 
+  public string bindingPath { get; set; }
+  public IBinding binding { get; set; }
+
   public FrameBehaviorRoot() {
     style.flexDirection = FlexDirection.Column;
     BuildUI();
     RegisterCallbacks();
   }
 
-  public void BindProperty(SerializedProperty property) {
+  public void BindProperty(SerializedProperty property)
+  {
     Property = property;
-    this.Bind(Property.serializedObject);
-    // Debug.Log($"Binding {property.propertyPath} to Timeline Row");
-    var detailPanel = new PropertyField(Property.FindPropertyRelative("StateName"));
+    // Seems to complain that binding to reference object is not supported... not sure what it means
+    // bindingPath = property.propertyPath;
+    this.Bind(property.serializedObject);
+    var detailPanel = NoFoldoutInspectorUtility.CreateNoFoldoutInspector(property);
     detailContainer.Clear();
     detailContainer.Add(detailPanel);
     UpdateVisual();
   }
 
-  void BuildUI() {
+  void BuildUI()
+  {
     // Build the header row containing the prefix and the timeline container.
     var trackRow = new VisualElement();
     trackRow.style.flexDirection = FlexDirection.Row;
@@ -123,9 +137,11 @@ public class FrameBehaviorRoot : VisualElement {
     Add(detailContainer);
   }
 
-  void RegisterCallbacks() {
+  void RegisterCallbacks()
+  {
     // Toggle detail view on clicking the prefix label.
-    prefix.RegisterCallback<PointerDownEvent>(e => {
+    prefix.RegisterCallback<PointerDownEvent>(e =>
+    {
       detailContainer.style.display = detailContainer.style.display == DisplayStyle.Flex
         ? DisplayStyle.None
         : DisplayStyle.Flex;
@@ -134,7 +150,8 @@ public class FrameBehaviorRoot : VisualElement {
 
     float dragOffset = 0;
     // Dragging on the clip adjusts StartFrame and EndFrame.
-    clip.RegisterCallback<PointerDownEvent>(e => {
+    clip.RegisterCallback<PointerDownEvent>(e =>
+    {
       if (e.button != 0)
         return;
       clip.CapturePointer(e.pointerId);
@@ -145,7 +162,8 @@ public class FrameBehaviorRoot : VisualElement {
       dragOffset = localX - currentOffset;
       e.StopPropagation();
     });
-    clip.RegisterCallback<PointerMoveEvent>(e => {
+    clip.RegisterCallback<PointerMoveEvent>(e =>
+    {
       if (!clip.HasPointerCapture(e.pointerId))
         return;
       Property.serializedObject.Update();
@@ -162,7 +180,8 @@ public class FrameBehaviorRoot : VisualElement {
       UpdateVisual();
       e.StopPropagation();
     });
-    clip.RegisterCallback<PointerUpEvent>(e => {
+    clip.RegisterCallback<PointerUpEvent>(e =>
+    {
       if (!clip.HasPointerCapture(e.pointerId))
         return;
       clip.ReleasePointer(e.pointerId);
@@ -173,12 +192,14 @@ public class FrameBehaviorRoot : VisualElement {
     RegisterCallback<SerializedPropertyChangeEvent>(evt => UpdateVisual());
   }
 
-  public void SetFrame(int frame) {
+  public void SetFrame(int frame)
+  {
     Frame = frame;
     UpdateVisual();
   }
 
-  public void SetMaxFrame(int maxFrame) {
+  public void SetMaxFrame(int maxFrame)
+  {
     MaxFrame = maxFrame;
     UpdateVisual();
   }
@@ -203,6 +224,6 @@ public class FrameBehaviorRoot : VisualElement {
     bottomRightLabel.style.left = offset + cw - bottomRightLabel.resolvedStyle.width;
     float playheadX = Frame / (float)MaxFrame * midWidth;
     playhead.style.left = playheadX;
-    prefix.text = (Property.GetTargetObjectOfProperty() as FrameBehavior).Name;
+    prefix.text = Property.GetTargetObjectOfProperty().GetType().HumanName();
   }
 }

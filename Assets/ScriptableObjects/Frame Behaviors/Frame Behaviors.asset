@@ -13,27 +13,51 @@ MonoBehaviour:
   m_Name: Frame Behaviors
   m_EditorClassIdentifier: 
   Behaviors:
-  - rid: 1366355905362526291
-  - rid: 1366355905362526305
+  - rid: 1366355905362526352
+  - rid: 1366355905362526354
+  - rid: 1366355905362526356
+  - rid: 1366355905362526358
+  - rid: 1366355905362526364
   EndFrame: 60
   references:
     version: 2
     RefIds:
-    - rid: 1366355905362526291
-      type: {class: AnimatorControllerCrossFadeBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 13
-        EndFrame: 20
-        StateName: Smeeeee
-        BaseName: 
-        LayerIndex: 0
-        CrossFadeDuration: 0.25
-    - rid: 1366355905362526305
-      type: {class: AnimatorControllerCrossFadeBehavior, ns: , asm: Assembly-CSharp}
+    - rid: 1366355905362526352
+      type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 1
-        StateName: I HATE UNITY
-        BaseName: 
-        LayerIndex: 0
-        CrossFadeDuration: 0.25
+        EndFrame: 40
+        StartStateName: Attack
+        EndStateName: Layer Open
+        LayerIndex: 2
+        CrossFadeDuration: 0.05
+    - rid: 1366355905362526354
+      type: {class: CancelBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 40
+        EndFrame: 60
+    - rid: 1366355905362526356
+      type: {class: RootMotionBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 60
+        Multiplier: 0
+    - rid: 1366355905362526358
+      type: {class: WeaponAimBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 13
+        EndFrame: 46
+        Direction: {x: 0, y: 0, z: 0}
+    - rid: 1366355905362526364
+      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 46
+        Owner: {fileID: 0}
+        VisualEffectAsset: {fileID: 0}
+        StartEventName: OnPlay
+        UpdateEventName: 
+        EndEventName: 
+        AttachedToOwner: 0
+        Offset: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
