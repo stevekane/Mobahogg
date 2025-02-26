@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public enum PotentialPlayerState {
   Disconnected,
@@ -9,6 +10,7 @@ public enum PotentialPlayerState {
   Ready
 }
 
+[Serializable]
 public class PotentialPlayer {
   public PotentialPlayerState State;
   public string Name = "Player";
@@ -27,7 +29,7 @@ public static class Names {
     "Galaga",
   };
 
-  public static string GetRandom => Value[Random.Range(0, Value.Length)];
+  public static string GetRandom => Value[UnityEngine.Random.Range(0, Value.Length)];
 }
 
 public class MatchSetup : MonoBehaviour {
