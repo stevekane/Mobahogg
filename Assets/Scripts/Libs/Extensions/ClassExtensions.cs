@@ -222,6 +222,22 @@ public static class AnimatorExtensions {
     }
     return null;
   }
+
+  public static AnimatorState StateForNameInLayer(this Animator animator, string stateName, int layerIndex) {
+    var controller = animator.runtimeAnimatorController as AnimatorController;
+    if (!controller)
+      return null;
+    if (layerIndex <= 0 || layerIndex > controller.layers.Length)
+      return null;
+    var layer = controller.layers[layerIndex];
+    var stateMachine = layer.stateMachine;
+    foreach(var child in stateMachine.states) {
+      if(child.state.name == stateName) {
+        return child.state;
+      }
+    }
+    return null;
+  }
   #endif
 }
 

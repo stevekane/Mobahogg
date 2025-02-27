@@ -7,4 +7,5 @@ public class FrameBehaviors : ScriptableObject {
   public List<FrameBehavior> Behaviors;
   [Min(1)]
   public int EndFrame = 60;
+  public MonoBehaviour PreviewPrefab;
 }

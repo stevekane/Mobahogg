@@ -13,51 +13,52 @@ MonoBehaviour:
   m_Name: Frame Behaviors
   m_EditorClassIdentifier: 
   Behaviors:
-  - rid: 1366355905362526352
   - rid: 1366355905362526354
   - rid: 1366355905362526356
   - rid: 1366355905362526358
-  - rid: 1366355905362526364
-  EndFrame: 60
+  - rid: 1366356012347686979
+  - rid: 1366356012347686980
+  - rid: 1366356012347686981
+  EndFrame: 28
+  PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
     version: 2
     RefIds:
-    - rid: 1366355905362526352
-      type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 0
-        EndFrame: 40
-        StartStateName: Attack
-        EndStateName: Layer Open
-        LayerIndex: 2
-        CrossFadeDuration: 0.05
     - rid: 1366355905362526354
       type: {class: CancelBehavior, ns: , asm: Assembly-CSharp}
       data:
-        StartFrame: 40
-        EndFrame: 60
+        StartFrame: 20
+        EndFrame: 28
     - rid: 1366355905362526356
       type: {class: RootMotionBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 60
-        Multiplier: 0
+        EndFrame: 28
+        Multiplier: 5
     - rid: 1366355905362526358
       type: {class: WeaponAimBehavior, ns: , asm: Assembly-CSharp}
       data:
-        StartFrame: 13
-        EndFrame: 46
+        StartFrame: 4
+        EndFrame: 20
         Direction: {x: 0, y: 0, z: 0}
-    - rid: 1366355905362526364
-      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+    - rid: 1366356012347686979
+      type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 46
-        Owner: {fileID: 0}
-        VisualEffectAsset: {fileID: 0}
-        StartEventName: OnPlay
-        UpdateEventName: 
-        EndEventName: 
-        AttachedToOwner: 0
-        Offset: {x: 0, y: 0, z: 0}
-        Rotation: {x: 0, y: 0, z: 0}
+        EndFrame: 28
+        StartStateName: Attack
+        EndStateName: 
+        LayerIndex: 2
+        CrossFadeDuration: 0.1
+    - rid: 1366356012347686980
+      type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 5
+        EndFrame: 7
+    - rid: 1366356012347686981
+      type: {class: SFXOneShotBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 1
+        Volume: 0.25
+        AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}

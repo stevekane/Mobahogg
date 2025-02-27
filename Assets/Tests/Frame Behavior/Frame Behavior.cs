@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public abstract class BehaviorTag {}
 
@@ -10,6 +13,9 @@ public interface IProvider<T> {
 
 public interface IConsumer {
   public abstract void Initialize(object provider);
+  #if UNITY_EDITOR
+  public abstract void PreviewInitialize(object provider);
+  #endif
 }
 
 [Serializable]
@@ -63,6 +69,46 @@ public abstract class FrameBehavior : IConsumer {
     }
   }
 
+  #if UNITY_EDITOR
+  public static void PreviewInitializeBehaviors(IEnumerable<FrameBehavior> behaviors, object provider) {
+    foreach (var behavior in behaviors) {
+      behavior.PreviewInitialize(provider);
+    }
+  }
+
+  public static void PreviewStartBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
+    foreach (var behavior in behaviors) {
+      if (behavior.Starting(frame)) {
+        behavior.PreviewOnStart(preview);
+      }
+    }
+  }
+
+  public static void PreviewEndBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
+    foreach (var behavior in behaviors) {
+      if (behavior.Ending(frame)) {
+        behavior.PreviewOnEnd(preview);
+      }
+    }
+  }
+
+  public static void PreviewUpdateBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
+    foreach (var behavior in behaviors) {
+      if (behavior.Active(frame)) {
+        behavior.PreviewOnUpdate(preview);
+      }
+    }
+  }
+
+  public static void PreviewCancelActiveBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
+    foreach (var behavior in behaviors) {
+      if (behavior.Active(frame)) {
+        behavior.PreviewOnEnd(preview);
+      }
+    }
+  }
+  #endif
+
   [Min(0)]
   public int StartFrame = 0;
   public int EndFrame = 1;
@@ -70,11 +116,18 @@ public abstract class FrameBehavior : IConsumer {
   public bool Ending(int frame) => frame == EndFrame;
   public bool Active(int frame) => frame >= StartFrame && frame <= EndFrame;
 
-  void OnValidate() => EndFrame = Mathf.Clamp(EndFrame, StartFrame, int.MaxValue);
-
   public virtual void Initialize(object provider) {}
-  public virtual string Name => "Frame Behavior";
   public virtual void OnStart() {}
   public virtual void OnEnd() {}
   public virtual void OnUpdate() {}
+  public virtual FrameBehavior Clone() {
+    return (FrameBehavior)MemberwiseClone();
+  }
+  #if UNITY_EDITOR
+  void OnValidate() => EndFrame = Mathf.Clamp(EndFrame, StartFrame, int.MaxValue);
+  public virtual void PreviewInitialize(object provider) {}
+  public virtual void PreviewOnStart(PreviewRenderUtility preview) {}
+  public virtual void PreviewOnUpdate(PreviewRenderUtility preview) {}
+  public virtual void PreviewOnEnd(PreviewRenderUtility preview) {}
+  #endif
 }

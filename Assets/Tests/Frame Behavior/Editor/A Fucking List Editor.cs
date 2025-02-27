@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using UnityEngine.Events;
 
 [CustomEditor(typeof(AFuckingList))]
 public class AFuckingListEditor : Editor {

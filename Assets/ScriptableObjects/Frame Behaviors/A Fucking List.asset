@@ -15,7 +15,7 @@ MonoBehaviour:
   Items:
   - rid: 1366355905362526351
   - rid: 1366355905362526359
-  - rid: 1366355905362526362
+  - rid: 1366355905362526366
   references:
     version: 2
     RefIds:
@@ -29,8 +29,8 @@ MonoBehaviour:
       data:
         Name: Farts per century
         MyInt: 2222
-    - rid: 1366355905362526362
-      type: {class: StringItem, ns: , asm: Assembly-CSharp}
+    - rid: 1366355905362526366
+      type: {class: IntItem, ns: , asm: Assembly-CSharp}
       data:
-        Name: Stink Face Magoo
-        MyString: 22
+        Name: Fruebd
+        MyInt: 1111

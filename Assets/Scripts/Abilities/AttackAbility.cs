@@ -4,10 +4,13 @@ using AimAssist;
 using Abilities;
 using System;
 using UnityEngine.VFX;
+using UnityEditor;
+using UnityEngine.Playables;
+using UnityEngine.Animations;
 
 [Serializable]
 public class RootMotionBehavior : FrameBehavior {
-  public float Multiplier;
+  public float Multiplier = 1;
   AnimatorCallbackHandler AnimatorCallbackHandler;
   KCharacterController CharacterController;
   LocalClock LocalClock;
@@ -125,8 +128,18 @@ public class AnimationOneShot : FrameBehavior {
   public string StartStateName;
   public string EndStateName;
   public int LayerIndex;
-  public float CrossFadeDuration = 0.25f;
-  public override string Name => string.IsNullOrEmpty(StartStateName) ? base.Name : $"AnimatorState({StartStateName})";
+  public float CrossFadeDuration = 0.1f;
+
+  public override FrameBehavior Clone() {
+    return new AnimationOneShot {
+      StartFrame = StartFrame,
+      EndFrame = EndFrame,
+      StartStateName = StartStateName,
+      EndStateName = EndStateName,
+      LayerIndex = LayerIndex,
+      CrossFadeDuration = CrossFadeDuration
+    };
+  }
 
   AnimatorCallbackHandler AnimatorCallbackHandler;
 
@@ -141,6 +154,57 @@ public class AnimationOneShot : FrameBehavior {
   public override void OnEnd() {
     AnimatorCallbackHandler.Animator.Play(EndStateName, LayerIndex);
   }
+
+#if UNITY_EDITOR
+  AnimationClip Clip;
+  Animator Animator;
+  float Speed;
+  PlayableGraph PlayableGraph;
+  AnimationClipPlayable AnimationClipPlayable;
+
+  // Not sure that relying on a destructor from the language is best...
+  // But really need a way to know when these things are cleaned up to avoid
+  // leaking memory
+  ~AnimationOneShot() {
+    if (PlayableGraph.IsValid()) {
+      PlayableGraph.Destroy();
+    }
+  }
+
+  public override void PreviewInitialize(object provider) {
+    TryGetValue(provider, null, out Animator);
+    if (!Animator)
+      return;
+    var state = Animator.StateForNameInLayer(StartStateName, LayerIndex);
+    if (!state)
+      return;
+    Clip = state.motion as AnimationClip;
+    Speed = state.speed;
+  }
+
+  public override void PreviewOnStart(PreviewRenderUtility preview) {
+    if (Animator && Clip) {
+      PlayableGraph = PlayableGraph.Create("AnimationOneShotPreview");
+      PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+      AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, Clip);
+      AnimationClipPlayable.SetSpeed(Speed);
+      var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
+      output.SetSourcePlayable(AnimationClipPlayable, 0);
+      PlayableGraph.Play();
+      PlayableGraph.Evaluate();
+    }
+  }
+
+  public override void PreviewOnEnd(PreviewRenderUtility preview) {
+    if (PlayableGraph.IsValid()) {
+      PlayableGraph.Destroy();
+    }
+  }
+
+  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+    PlayableGraph.Evaluate(1 / 60f);
+  }
+#endif
 }
 
 [Serializable]
