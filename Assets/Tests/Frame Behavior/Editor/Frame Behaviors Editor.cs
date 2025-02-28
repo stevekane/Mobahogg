@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class FrameBehaviorsEditor : Editor {
   FrameBehaviorsPreviewScene PreviewScene;
   PropertyField PreviewPrefabField;
-  IntegerField FrameField;
+  FrameSlider FrameSlider;
   PropertyField EndFrameField;
   PolymorphicList<FrameBehavior, FrameBehaviorRoot> FrameBehaviors;
   int Frame;
@@ -24,21 +24,21 @@ public class FrameBehaviorsEditor : Editor {
     var container = new VisualElement();
     PreviewPrefabField = new PropertyField(serializedObject.FindProperty("PreviewPrefab"));
     PreviewScene = new FrameBehaviorsPreviewScene();
-    FrameField = new IntegerField("Frame");
-    FrameField.RegisterCallback<ChangeEvent<int>>(OnFrameChange);
     EndFrameField = new PropertyField(serializedObject.FindProperty("EndFrame"));
     EndFrameField.RegisterCallback<SerializedPropertyChangeEvent>(OnEndFrameChange);
+    FrameSlider = new FrameSlider();
+    FrameSlider.RegisterCallback<ChangeEvent<int>>(OnFrameChange);
+    FrameSlider.Frame = Frame;
+    FrameSlider.EndFrame = EndFrame;
     FrameBehaviors = new PolymorphicList<FrameBehavior, FrameBehaviorRoot>();
     FrameBehaviors.BindProperty(serializedObject.FindProperty("Behaviors"));
     FrameBehaviors.OnChange.Listen(OnListChange);
     PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
-    container.TrackSerializedObjectValue(serializedObject, (so) => {
-      PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
-    });
+    container.TrackSerializedObjectValue(serializedObject, OnTargetObjectChange);
     container.Add(PreviewPrefabField);
     container.Add(PreviewScene);
-    container.Add(FrameField);
     container.Add(EndFrameField);
+    container.Add(FrameSlider);
     container.Add(FrameBehaviors);
     container.Bind(serializedObject);
     return container;
@@ -51,9 +51,13 @@ public class FrameBehaviorsEditor : Editor {
     }
   }
 
+  void OnTargetObjectChange(SerializedObject so) {
+    PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
+  }
+
   void OnFrameChange(ChangeEvent<int> changeEvent) {
     Frame = Mathf.Clamp(changeEvent.newValue, 0, EndFrame);
-    FrameField.value = Frame;
+    FrameSlider.Frame = Frame;
     foreach (var behavior in FrameBehaviors.Elements) {
       SetFrame(behavior, changeEvent.newValue);
     }
@@ -63,7 +67,7 @@ public class FrameBehaviorsEditor : Editor {
   void OnEndFrameChange(SerializedPropertyChangeEvent evt) {
     EndFrame = evt.changedProperty.intValue;
     Frame = Mathf.Clamp(Frame, 0, EndFrame);
-    FrameField.value = Frame;
+    FrameSlider.EndFrame = EndFrame;
     foreach (var behavior in FrameBehaviors.Elements) {
       SetEndFrame(behavior, evt.changedProperty.intValue);
     }

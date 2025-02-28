@@ -4,9 +4,11 @@ using AimAssist;
 using Abilities;
 using System;
 using UnityEngine.VFX;
-using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [Serializable]
 public class RootMotionBehavior : FrameBehavior {
@@ -121,6 +123,12 @@ public class SFXOneShotBehavior : FrameBehavior {
     audioSource.Play();
     GameObject.Destroy(audioSource.gameObject, AudioClip.length);
   }
+
+#if UNITY_EDITOR
+  public override void PreviewOnStart(PreviewRenderUtility preview) {
+    EditorAudioSystem.PlayClip(AudioClip, 0, false);
+  }
+#endif
 }
 
 [Serializable]
@@ -141,30 +149,26 @@ public class AnimationOneShot : FrameBehavior {
     };
   }
 
-  AnimatorCallbackHandler AnimatorCallbackHandler;
+  Animator Animator;
 
   public override void Initialize(object provider) {
-    TryGetValue(provider, null, out AnimatorCallbackHandler);
+    TryGetValue(provider, null, out Animator);
   }
 
   public override void OnStart() {
-    AnimatorCallbackHandler.Animator.CrossFadeInFixedTime(StartStateName, CrossFadeDuration, LayerIndex);
+    Animator.CrossFadeInFixedTime(StartStateName, CrossFadeDuration, LayerIndex);
   }
 
   public override void OnEnd() {
-    AnimatorCallbackHandler.Animator.Play(EndStateName, LayerIndex);
+    Animator.Play(EndStateName, LayerIndex);
   }
 
-#if UNITY_EDITOR
-  AnimationClip Clip;
-  Animator Animator;
+  #if UNITY_EDITOR
+  AnimationClip AnimationClip;
   float Speed;
   PlayableGraph PlayableGraph;
   AnimationClipPlayable AnimationClipPlayable;
 
-  // Not sure that relying on a destructor from the language is best...
-  // But really need a way to know when these things are cleaned up to avoid
-  // leaking memory
   ~AnimationOneShot() {
     if (PlayableGraph.IsValid()) {
       PlayableGraph.Destroy();
@@ -178,15 +182,15 @@ public class AnimationOneShot : FrameBehavior {
     var state = Animator.StateForNameInLayer(StartStateName, LayerIndex);
     if (!state)
       return;
-    Clip = state.motion as AnimationClip;
+    AnimationClip = state.motion as AnimationClip;
     Speed = state.speed;
   }
 
   public override void PreviewOnStart(PreviewRenderUtility preview) {
-    if (Animator && Clip) {
+    if (Animator && AnimationClip) {
       PlayableGraph = PlayableGraph.Create("AnimationOneShotPreview");
       PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-      AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, Clip);
+      AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, AnimationClip);
       AnimationClipPlayable.SetSpeed(Speed);
       var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
       output.SetSourcePlayable(AnimationClipPlayable, 0);
@@ -202,9 +206,11 @@ public class AnimationOneShot : FrameBehavior {
   }
 
   public override void PreviewOnUpdate(PreviewRenderUtility preview) {
-    PlayableGraph.Evaluate(1 / 60f);
+    if (PlayableGraph.IsValid()) {
+      PlayableGraph.Evaluate(1/60f);
+    }
   }
-#endif
+  #endif
 }
 
 [Serializable]
@@ -279,6 +285,7 @@ public interface ICancellable {
 public class AttackAbility :
   Ability,
   ICancellable,
+  IProvider<Animator>,
   IProvider<AnimatorCallbackHandler>,
   IProvider<KCharacterController>,
   IProvider<WeaponAim>,
@@ -323,6 +330,7 @@ public class AttackAbility :
   // top-level provider that implements this shit. If so, you could move this noise out of here
   // and create a very elegant Ability / User of FrameBehaviors
   AnimatorCallbackHandler IProvider<AnimatorCallbackHandler>.Value(BehaviorTag tag) => AnimatorCallbackHandler;
+  Animator IProvider<Animator>.Value(BehaviorTag tag) => AnimatorCallbackHandler.Animator;
   KCharacterController IProvider<KCharacterController>.Value(BehaviorTag tag) => CharacterController;
   WeaponAim IProvider<WeaponAim>.Value(BehaviorTag tag) => AbilityManager.LocateComponent<WeaponAim>();
   GameObject IProvider<GameObject>.Value(BehaviorTag tag) => AbilityManager.gameObject;

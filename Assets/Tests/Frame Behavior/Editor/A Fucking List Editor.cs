@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using Unity.VisualScripting;
 
 [CustomEditor(typeof(AFuckingList))]
 public class AFuckingListEditor : Editor {
@@ -25,6 +26,7 @@ public class PolymorphicListElement<E> : VisualElement, IPropertyBinder
 where
 E : VisualElement, IBindable, IPropertyBinder, new() {
   Button DeleteButton;
+  VisualElement DeleteButtonContainer;
   VisualElement DetailsContainer;
   E Details;
   Action<int> OnDelete;
@@ -33,13 +35,16 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
 
   public PolymorphicListElement(Action<int> onDelete) {
     OnDelete = onDelete;
-    DeleteButton = new Button(DeleteSelf);
-    DeleteButton.text = "X";
-    DeleteButton.style.flexShrink = 1;
     DetailsContainer = new();
     DetailsContainer.style.flexGrow = 1;
+    DeleteButton = new Button(DeleteSelf);
+    DeleteButton.text = "Delete";
+    DeleteButtonContainer = new();
+    DeleteButtonContainer.style.width = 60;
+    DeleteButtonContainer.style.flexDirection = FlexDirection.Column;
     Add(DetailsContainer);
-    Add(DeleteButton);
+    Add(DeleteButtonContainer);
+    DeleteButtonContainer.Add(DeleteButton);
     style.flexDirection = FlexDirection.Row;
   }
 
@@ -58,8 +63,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
   }
 }
 
-public class PolymorphicList<T, E> : VisualElement, IPropertyBinder
-where
+public class PolymorphicList<T, E> : VisualElement, IPropertyBinder where
 E : VisualElement, IBindable, IPropertyBinder, new() {
   VisualElement ListContainer;
   GenericMenu TypeSelectionMenu;
@@ -72,7 +76,8 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
   public PolymorphicList() {
     ListContainer = new VisualElement { name = "ListItemsContainer" };
     Add(ListContainer);
-    Button addButton = new Button(DisplayConcreteTypeMenu) { text = "+" };
+    Button addButton = new Button(DisplayConcreteTypeMenu);
+    addButton.text = $"Add New {typeof(T).HumanName()}";
     Add(addButton);
   }
 

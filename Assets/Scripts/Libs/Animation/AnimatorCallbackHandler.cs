@@ -11,5 +11,5 @@ public class AnimatorCallbackHandler : MonoBehaviour {
 
   void OnAnimatorMove() => OnRootMotion.Fire();
 
-  void AnimationEvent(string name) => OnEvent.Fire(name);
+  // void AnimationEvent(string name) => OnEvent.Fire(name);
 }

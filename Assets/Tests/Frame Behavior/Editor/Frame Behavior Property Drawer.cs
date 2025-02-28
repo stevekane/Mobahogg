@@ -102,7 +102,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     midContainer.Add(clip);
     playhead = new VisualElement();
     playhead.style.position = Position.Absolute;
-    playhead.style.width = 2;
+    playhead.style.width = 5;
     playhead.style.backgroundColor = Color.red;
     playhead.style.top = 0;
     playhead.style.bottom = 0;
