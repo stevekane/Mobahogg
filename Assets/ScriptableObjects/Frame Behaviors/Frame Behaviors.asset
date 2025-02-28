@@ -19,7 +19,9 @@ MonoBehaviour:
   - rid: 1366356012347686980
   - rid: 1366356012347686981
   - rid: 1366356038239649855
-  EndFrame: 28
+  - rid: 1366356038239649859
+  - rid: 1366356038239649860
+  EndFrame: 24
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
     version: 2
@@ -28,7 +30,7 @@ MonoBehaviour:
       type: {class: RootMotionBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 28
+        EndFrame: 24
         Multiplier: 5
     - rid: 1366355905362526358
       type: {class: WeaponAimBehavior, ns: , asm: Assembly-CSharp}
@@ -40,7 +42,7 @@ MonoBehaviour:
       type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 28
+        EndFrame: 24
         StartStateName: Attack
         EndStateName: 
         LayerIndex: 2
@@ -49,7 +51,7 @@ MonoBehaviour:
       type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
-        EndFrame: 7
+        EndFrame: 8
     - rid: 1366356012347686981
       type: {class: SFXOneShotBehavior, ns: , asm: Assembly-CSharp}
       data:
@@ -61,4 +63,24 @@ MonoBehaviour:
       type: {class: CancelBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 20
-        EndFrame: 28
+        EndFrame: 24
+    - rid: 1366356038239649859
+      type: {class: AimAssistBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 4
+        TurnSpeed: 720
+        AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
+    - rid: 1366356038239649860
+      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 5
+        EndFrame: 10
+        VisualEffectAsset: {fileID: 8926484042661614526, guid: 5581c12b77b52da4ea01ef720f51006f, type: 3}
+        StartEventName: OnPlay
+        UpdateEventName: 
+        EndEventName: 
+        AttachedToOwner: 1
+        Offset: {x: 0, y: 1, z: 1}
+        Rotation: {x: 0, y: 90, z: 0}
+        Scale: {x: 0.5, y: 0.5, z: 0.5}

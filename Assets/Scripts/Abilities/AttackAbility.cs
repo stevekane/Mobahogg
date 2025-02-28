@@ -126,7 +126,7 @@ public class SFXOneShotBehavior : FrameBehavior {
 
 #if UNITY_EDITOR
   public override void PreviewOnStart(PreviewRenderUtility preview) {
-    EditorAudioSystem.PlayClip(AudioClip, 0, false);
+    // EditorAudioSystem.PlayClip(AudioClip, 0, false);
   }
 #endif
 }
@@ -217,7 +217,6 @@ public class AnimationOneShot : FrameBehavior {
 public class VFXOneShot : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
-  public GameObject Owner;
   public VisualEffectAsset VisualEffectAsset;
   public string StartEventName = "OnPlay";
   public string UpdateEventName = "";
@@ -225,12 +224,14 @@ public class VFXOneShot : FrameBehavior {
   public bool AttachedToOwner;
   public Vector3 Offset;
   public Vector3 Rotation;
+  public Vector3 Scale = Vector3.one;
+
+  GameObject Owner;
 
   VisualEffect VisualEffect;
 
-  public override void Initialize(object potentialProvider) {
-    var gameObjectProvider = potentialProvider as IProvider<GameObject>;
-    Owner = gameObjectProvider.Value(null);
+  public override void Initialize(object provider) {
+    TryGetValue(provider, null, out Owner);
   }
 
   public override void OnStart() {
@@ -242,6 +243,7 @@ public class VFXOneShot : FrameBehavior {
       VisualEffect.PlayNonEmptyEvent(StartEventName);
       VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
       VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
+      VisualEffect.transform.localScale = Scale;
     }
   }
 
@@ -251,12 +253,47 @@ public class VFXOneShot : FrameBehavior {
     }
   }
 
+
+
   public override void OnEnd() {
     if (VisualEffect) {
       VisualEffect.PlayNonEmptyEvent(EndEventName);
       GameObject.Destroy(VisualEffect.gameObject, MAX_VFX_LIFETIME);
     }
   }
+
+  #if UNITY_EDITOR
+  public override void PreviewInitialize(object provider) {
+    TryGetValue(provider, null, out Owner);
+  }
+
+  public override void PreviewOnStart(PreviewRenderUtility preview) {
+    if (VisualEffectAsset) {
+      VisualEffect = new GameObject().AddComponent<VisualEffect>();
+      preview.AddSingleGO(VisualEffect.gameObject);
+      VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
+      VisualEffect.visualEffectAsset = VisualEffectAsset;
+      VisualEffect.initialEventName = "";
+      VisualEffect.PlayNonEmptyEvent(StartEventName);
+      VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
+      VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
+      VisualEffect.transform.localScale = Scale;
+    }
+  }
+
+  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+    if (VisualEffect) {
+      VisualEffect.PlayNonEmptyEvent(UpdateEventName);
+    }
+  }
+
+  public override void PreviewOnEnd(PreviewRenderUtility preview) {
+    if (VisualEffect) {
+      VisualEffect.PlayNonEmptyEvent(EndEventName);
+    }
+  }
+
+  #endif
 }
 
 [Serializable]

@@ -45,6 +45,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
 
   void OnAttach(AttachToPanelEvent evt) {
     BuildPreview();
+    EditorApplication.update += UpdateCamera;
   }
 
   void OnDetach(DetachFromPanelEvent evt) {
@@ -52,11 +53,11 @@ class FrameBehaviorsPreviewScene : VisualElement {
     if (Preview != null) {
       Preview.Cleanup();
     }
+    EditorApplication.update -= UpdateCamera;
   }
 
   void OnGeometryChanged(GeometryChangedEvent evt) {
     style.height = Mathf.Min(resolvedStyle.width / (16/9), 512);
-    UpdateCamera();
   }
 
   void BuildPreview() {
@@ -116,7 +117,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
       CameraZoom += ZoomScalar * e.delta.y;
       CameraZoom = Mathf.Clamp(CameraZoom, MinZoom, MaxZoom);
       e.StopPropagation();
-      UpdateCamera();
     }
   }
 
@@ -135,7 +135,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
       CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 90);
       lastPointerPosition = e.position;
       e.StopPropagation();
-      UpdateCamera();
     }
   }
 
@@ -163,7 +162,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
       Frame = i;
       Run();
     }
-    UpdateCamera();
   }
 
   public void Advance() {
