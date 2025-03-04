@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
-  m_Name: Frame Behaviors
+  m_Name: Frame Behaviors 1
   m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356
@@ -22,7 +22,7 @@ MonoBehaviour:
   - rid: 1366356038239649859
   - rid: 1366356038239649860
   - rid: 2944954043238187008
-  EndFrame: 24
+  EndFrame: 60
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
     version: 2
@@ -43,8 +43,8 @@ MonoBehaviour:
       type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 24
-        StartStateName: Attack
+        EndFrame: 60
+        StartStateName: Dive Roll
         EndStateName: 
         LayerIndex: 2
         CrossFadeDuration: 0.1
@@ -76,7 +76,7 @@ MonoBehaviour:
       type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
-        EndFrame: 24
+        EndFrame: 60
         VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
         StartEventName: OnPlay
         UpdateEventName: 
@@ -89,7 +89,7 @@ MonoBehaviour:
       type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 24
+        EndFrame: 60
         VisualEffectAsset: {fileID: 8926484042661614526, guid: 80b43ce65143a8240bcdc7cc368e7261, type: 3}
         StartEventName: OnPlay
         UpdateEventName: 

@@ -35,22 +35,20 @@ class FrameBehaviorsPreviewScene : VisualElement {
   bool isDragging = false;
   Vector3 lastPointerPosition;
 
-  IVisualElementScheduledItem ScheduledPaint;
   void OnAttach(AttachToPanelEvent evt) {
-    ScheduledPaint = schedule.Execute(Update).Every(16);
-    // EditorApplication.update += Update;
+    style.width = 512;
+    style.height = 512;
+    EditorApplication.update += Update;
   }
 
   void OnDetach(DetachFromPanelEvent evt) {
     FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
     FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
-    ScheduledPaint.Pause();
-    // EditorApplication.update -= Update;
     Preview.Cleanup();
+    EditorApplication.update -= Update;
   }
 
   void OnGeometryChanged(GeometryChangedEvent evt) {
-    style.height = Mathf.Min(resolvedStyle.width / (16/9), 512);
   }
 
   public void SetProvider(MonoBehaviour provider) {
@@ -139,13 +137,17 @@ class FrameBehaviorsPreviewScene : VisualElement {
     FrameBehavior.PreviewInitializeBehaviors(FrameBehaviors, Provider);
     for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewStartBehaviors(FrameBehaviors, i, Preview);
+    }
+    for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
-      FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);
     }
     foreach (var fb in FrameBehaviors) {
       if (fb is VFXOneShot vFXOneShot && fb.Active(Frame)) {
         vFXOneShot.SimulateTo(Frame);
       }
+    }
+    for (var i = 0; i <= Frame; i++) {
+      FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);
     }
   }
 
