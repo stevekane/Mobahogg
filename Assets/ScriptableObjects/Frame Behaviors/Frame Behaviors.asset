@@ -75,12 +75,12 @@ MonoBehaviour:
       type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
-        EndFrame: 10
-        VisualEffectAsset: {fileID: 8926484042661614526, guid: 5581c12b77b52da4ea01ef720f51006f, type: 3}
+        EndFrame: 24
+        VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
         StartEventName: OnPlay
         UpdateEventName: 
         EndEventName: 
         AttachedToOwner: 1
         Offset: {x: 0, y: 1, z: 1}
         Rotation: {x: 0, y: 90, z: 0}
-        Scale: {x: 0.5, y: 0.5, z: 0.5}
+        Scale: {x: 1, y: 1, z: 1}

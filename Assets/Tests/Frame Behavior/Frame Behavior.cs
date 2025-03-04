@@ -76,6 +76,12 @@ public abstract class FrameBehavior : IConsumer {
     }
   }
 
+  public static void PreviewCleanupBehaviors(IEnumerable<FrameBehavior> behaviors, object provider) {
+    foreach (var behavior in behaviors) {
+      behavior.PreviewCleanup(provider);
+    }
+  }
+
   public static void PreviewStartBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
     foreach (var behavior in behaviors) {
       if (behavior.Starting(frame)) {
@@ -126,6 +132,7 @@ public abstract class FrameBehavior : IConsumer {
   #if UNITY_EDITOR
   void OnValidate() => EndFrame = Mathf.Clamp(EndFrame, StartFrame, int.MaxValue);
   public virtual void PreviewInitialize(object provider) {}
+  public virtual void PreviewCleanup(object provider) {}
   public virtual void PreviewOnStart(PreviewRenderUtility preview) {}
   public virtual void PreviewOnUpdate(PreviewRenderUtility preview) {}
   public virtual void PreviewOnEnd(PreviewRenderUtility preview) {}

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
+  m_Name: VFX  Tester
+  m_EditorClassIdentifier: 
+  Behaviors:
+  - rid: 2944953961957556290
+  EndFrame: 60
+  PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 2944953961957556290
+      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 60
+        VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
+        StartEventName: OnPlay
+        UpdateEventName: 
+        EndEventName: 
+        AttachedToOwner: 0
+        Offset: {x: 0, y: 1, z: 1}
+        Rotation: {x: 0, y: 90, z: 0}
+        Scale: {x: 1, y: 1, z: 1}

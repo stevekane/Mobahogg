@@ -23,7 +23,6 @@ public class FrameBehaviorsEditor : Editor {
   public override VisualElement CreateInspectorGUI() {
     var container = new VisualElement();
     PreviewPrefabField = new PropertyField(serializedObject.FindProperty("PreviewPrefab"));
-    PreviewScene = new FrameBehaviorsPreviewScene();
     EndFrameField = new PropertyField(serializedObject.FindProperty("EndFrame"));
     EndFrameField.RegisterCallback<SerializedPropertyChangeEvent>(OnEndFrameChange);
     FrameSlider = new FrameSlider();
@@ -33,7 +32,10 @@ public class FrameBehaviorsEditor : Editor {
     FrameBehaviors = new PolymorphicList<FrameBehavior, FrameBehaviorRoot>();
     FrameBehaviors.BindProperty(serializedObject.FindProperty("Behaviors"));
     FrameBehaviors.OnChange.Listen(OnListChange);
-    PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
+    PreviewScene = new FrameBehaviorsPreviewScene();
+    PreviewScene.SetProvider(PreviewProvider);
+    PreviewScene.SetFrameBehaviors(Behaviors);
+    PreviewScene.Seek(Frame);
     container.TrackSerializedObjectValue(serializedObject, OnTargetObjectChange);
     container.Add(PreviewPrefabField);
     container.Add(PreviewScene);
@@ -52,7 +54,8 @@ public class FrameBehaviorsEditor : Editor {
   }
 
   void OnTargetObjectChange(SerializedObject so) {
-    PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
+    PreviewScene.SetProvider(PreviewProvider);
+    PreviewScene.SetFrameBehaviors(Behaviors);
   }
 
   void OnFrameChange(ChangeEvent<int> changeEvent) {
@@ -61,7 +64,7 @@ public class FrameBehaviorsEditor : Editor {
     foreach (var behavior in FrameBehaviors.Elements) {
       SetFrame(behavior, changeEvent.newValue);
     }
-    PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
+    PreviewScene.Seek(Frame);
   }
 
   void OnEndFrameChange(SerializedPropertyChangeEvent evt) {
@@ -71,7 +74,7 @@ public class FrameBehaviorsEditor : Editor {
     foreach (var behavior in FrameBehaviors.Elements) {
       SetEndFrame(behavior, evt.changedProperty.intValue);
     }
-    PreviewScene.Seek(Frame, Behaviors, PreviewProvider);
+    PreviewScene.Seek(Frame);
   }
 
   void SetFrame(FrameBehaviorRoot frameBehavior, int frame) {

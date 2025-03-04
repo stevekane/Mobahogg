@@ -169,12 +169,6 @@ public class AnimationOneShot : FrameBehavior {
   PlayableGraph PlayableGraph;
   AnimationClipPlayable AnimationClipPlayable;
 
-  ~AnimationOneShot() {
-    if (PlayableGraph.IsValid()) {
-      PlayableGraph.Destroy();
-    }
-  }
-
   public override void PreviewInitialize(object provider) {
     TryGetValue(provider, null, out Animator);
     if (!Animator)
@@ -184,22 +178,17 @@ public class AnimationOneShot : FrameBehavior {
       return;
     AnimationClip = state.motion as AnimationClip;
     Speed = state.speed;
+    if (!AnimationClip)
+      return;
+    PlayableGraph = PlayableGraph.Create("AnimationOneShotPreview");
+    PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+    AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, AnimationClip);
+    AnimationClipPlayable.SetSpeed(Speed);
+    var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
+    output.SetSourcePlayable(AnimationClipPlayable, 0);
   }
 
-  public override void PreviewOnStart(PreviewRenderUtility preview) {
-    if (Animator && AnimationClip) {
-      PlayableGraph = PlayableGraph.Create("AnimationOneShotPreview");
-      PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-      AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, AnimationClip);
-      AnimationClipPlayable.SetSpeed(Speed);
-      var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
-      output.SetSourcePlayable(AnimationClipPlayable, 0);
-      PlayableGraph.Play();
-      PlayableGraph.Evaluate();
-    }
-  }
-
-  public override void PreviewOnEnd(PreviewRenderUtility preview) {
+  public override void PreviewCleanup(object provider) {
     if (PlayableGraph.IsValid()) {
       PlayableGraph.Destroy();
     }
@@ -253,8 +242,6 @@ public class VFXOneShot : FrameBehavior {
     }
   }
 
-
-
   public override void OnEnd() {
     if (VisualEffect) {
       VisualEffect.PlayNonEmptyEvent(EndEventName);
@@ -267,6 +254,13 @@ public class VFXOneShot : FrameBehavior {
     TryGetValue(provider, null, out Owner);
   }
 
+  public override void PreviewCleanup(object provider) {
+    if (VisualEffect) {
+      GameObject.DestroyImmediate(VisualEffect.gameObject);
+      VisualEffect = null;
+    }
+  }
+
   public override void PreviewOnStart(PreviewRenderUtility preview) {
     if (VisualEffectAsset) {
       VisualEffect = new GameObject().AddComponent<VisualEffect>();
@@ -274,17 +268,29 @@ public class VFXOneShot : FrameBehavior {
       VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
       VisualEffect.visualEffectAsset = VisualEffectAsset;
       VisualEffect.initialEventName = "";
-      VisualEffect.PlayNonEmptyEvent(StartEventName);
+      VisualEffect.resetSeedOnPlay = false;
       VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
       VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
       VisualEffect.transform.localScale = Scale;
     }
   }
 
-  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+  public void SimulateTo(int frame) {
     if (VisualEffect) {
-      VisualEffect.PlayNonEmptyEvent(UpdateEventName);
+      var steps = frame-StartFrame;
+      VisualEffect.pause = false;
+      VisualEffect.Reinit();
+      VisualEffect.PlayNonEmptyEvent(StartEventName);
+      VisualEffect.Simulate(1/60f, (uint)steps);
+      VisualEffect.pause = true;
     }
+  }
+
+  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+    // if (VisualEffect) {
+    //   VisualEffect.PlayNonEmptyEvent(UpdateEventName);
+    //   VisualEffect.Simulate(1/60f, 1);
+    // }
   }
 
   public override void PreviewOnEnd(PreviewRenderUtility preview) {
@@ -292,7 +298,6 @@ public class VFXOneShot : FrameBehavior {
       VisualEffect.PlayNonEmptyEvent(EndEventName);
     }
   }
-
   #endif
 }
 

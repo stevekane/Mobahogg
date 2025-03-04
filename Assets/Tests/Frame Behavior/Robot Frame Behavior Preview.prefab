@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1345189979435152806}
   - component: {fileID: 3508532864872909074}
   - component: {fileID: 2432901049836610599}
+  - component: {fileID: -7462341073188176542}
   m_Layer: 0
   m_Name: Robot Frame Behavior Preview
   m_TagString: Untagged
@@ -99,7 +100,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 53a262eada3400547be6e4b0e9f6a6d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -226,6 +227,23 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90397395288750122}
   m_Enabled: 1
+--- !u!114 &-7462341073188176542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90397395288750122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 0e71b3254c4b32b4eb2cd1ceedbb883b, type: 2}
 --- !u!1001 &218105136375716237
 PrefabInstance:
   m_ObjectHideFlags: 0
