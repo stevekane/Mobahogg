@@ -6,6 +6,8 @@ using System;
 using UnityEngine.VFX;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
+using Unity.VisualScripting;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -196,7 +198,7 @@ public class AnimationOneShot : FrameBehavior {
 
   public override void PreviewOnUpdate(PreviewRenderUtility preview) {
     if (PlayableGraph.IsValid()) {
-      PlayableGraph.Evaluate(1/60f);
+      PlayableGraph.Evaluate(Time.fixedDeltaTime);
     }
   }
   #endif
@@ -208,15 +210,12 @@ public class VFXOneShot : FrameBehavior {
 
   public VisualEffectAsset VisualEffectAsset;
   public string StartEventName = "OnPlay";
-  public string UpdateEventName = "";
-  public string EndEventName = "";
   public bool AttachedToOwner;
   public Vector3 Offset;
   public Vector3 Rotation;
   public Vector3 Scale = Vector3.one;
 
   GameObject Owner;
-
   VisualEffect VisualEffect;
 
   public override void Initialize(object provider) {
@@ -224,29 +223,14 @@ public class VFXOneShot : FrameBehavior {
   }
 
   public override void OnStart() {
-    if (VisualEffectAsset) {
-      VisualEffect = new GameObject().AddComponent<VisualEffect>();
-      VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
-      VisualEffect.visualEffectAsset = VisualEffectAsset;
-      VisualEffect.initialEventName = "";
-      VisualEffect.PlayNonEmptyEvent(StartEventName);
-      VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
-      VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
-      VisualEffect.transform.localScale = Scale;
-    }
-  }
-
-  public override void OnUpdate() {
-    if (VisualEffect) {
-      VisualEffect.PlayNonEmptyEvent(UpdateEventName);
-    }
-  }
-
-  public override void OnEnd() {
-    if (VisualEffect) {
-      VisualEffect.PlayNonEmptyEvent(EndEventName);
-      GameObject.Destroy(VisualEffect.gameObject, MAX_VFX_LIFETIME);
-    }
+    VisualEffect = new GameObject().AddComponent<VisualEffect>();
+    VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
+    VisualEffect.visualEffectAsset = VisualEffectAsset;
+    VisualEffect.initialEventName = StartEventName;
+    VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
+    VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
+    VisualEffect.transform.localScale = Scale;
+    VisualEffect.AddComponent<Shortlived>().Lifetime = Timeval.FromSeconds(MAX_VFX_LIFETIME);
   }
 
   #if UNITY_EDITOR
@@ -255,48 +239,27 @@ public class VFXOneShot : FrameBehavior {
   }
 
   public override void PreviewCleanup(object provider) {
-    if (VisualEffect) {
-      GameObject.DestroyImmediate(VisualEffect.gameObject);
-      VisualEffect = null;
-    }
+    VisualEffect.TryDestroyImmediateGameObject();
   }
 
   public override void PreviewOnStart(PreviewRenderUtility preview) {
-    if (VisualEffectAsset) {
-      VisualEffect = new GameObject().AddComponent<VisualEffect>();
-      preview.AddSingleGO(VisualEffect.gameObject);
-      VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
-      VisualEffect.visualEffectAsset = VisualEffectAsset;
-      VisualEffect.initialEventName = "";
-      VisualEffect.resetSeedOnPlay = false;
-      VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
-      VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
-      VisualEffect.transform.localScale = Scale;
-    }
+    var name = VisualEffectAsset ? VisualEffectAsset.name : "EMPTY_VFX";
+    VisualEffect = new GameObject($"Instance({name})").AddComponent<VisualEffect>();
+    preview.AddSingleGO(VisualEffect.gameObject);
+    VisualEffect.visualEffectAsset = VisualEffectAsset;
+    VisualEffect.initialEventName = StartEventName;
+    VisualEffect.resetSeedOnPlay = false;
+    VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
+    VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
+    VisualEffect.transform.localScale = Scale;
   }
 
-  public void SimulateTo(int frame) {
-    if (VisualEffect) {
-      var steps = frame-StartFrame;
-      VisualEffect.pause = false;
-      VisualEffect.Reinit();
-      VisualEffect.PlayNonEmptyEvent(StartEventName);
-      VisualEffect.Simulate(1/60f, (uint)steps);
-      VisualEffect.pause = true;
-    }
-  }
-
-  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
-    // if (VisualEffect) {
-    //   VisualEffect.PlayNonEmptyEvent(UpdateEventName);
-    //   VisualEffect.Simulate(1/60f, 1);
-    // }
-  }
-
-  public override void PreviewOnEnd(PreviewRenderUtility preview) {
-    if (VisualEffect) {
-      VisualEffect.PlayNonEmptyEvent(EndEventName);
-    }
+  public void Seek(int frame) {
+    var steps = frame-StartFrame;
+    VisualEffect.pause = false;
+    VisualEffect.Reinit();
+    VisualEffect.Simulate(Time.fixedDeltaTime, (uint)steps);
+    VisualEffect.pause = true;
   }
   #endif
 }

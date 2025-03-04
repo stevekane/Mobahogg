@@ -143,7 +143,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     }
     foreach (var fb in FrameBehaviors) {
       if (fb is VFXOneShot vFXOneShot && fb.Active(Frame)) {
-        vFXOneShot.SimulateTo(Frame);
+        vFXOneShot.Seek(Frame);
       }
     }
     for (var i = 0; i <= Frame; i++) {

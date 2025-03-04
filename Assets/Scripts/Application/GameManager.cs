@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.VFX;
 
 public class GameManager : SingletonBehavior<GameManager> {
   static string BOOT_SCENE_NAME = "Boot";
@@ -16,6 +17,7 @@ public class GameManager : SingletonBehavior<GameManager> {
     // Consider what this might mean for how to do this "properly"
     Application.targetFrameRate = FPS;
     Time.fixedDeltaTime = 1f/FIXED_FPS;
+    VFXManager.fixedTimeStep = 1f/FIXED_FPS;
     #if UNITY_EDITOR
     DirectlyLoaded = SceneManager.GetActiveScene();
     SceneManager.LoadScene(BOOT_SCENE_NAME, LoadSceneMode.Additive);
