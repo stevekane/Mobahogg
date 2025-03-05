@@ -1,18 +1,19 @@
+using System.ComponentModel;
 using System.Collections.Generic;
 using UnityEngine;
 using AimAssist;
 using Abilities;
 using System;
 using UnityEngine.VFX;
-using UnityEngine.Playables;
-using UnityEngine.Animations;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [Serializable]
+[DisplayName("Root Motion")]
 public class RootMotionBehavior : FrameBehavior {
   public float Multiplier = 1;
   AnimatorCallbackHandler AnimatorCallbackHandler;
@@ -42,6 +43,7 @@ public class RootMotionBehavior : FrameBehavior {
 }
 
 [Serializable]
+[DisplayName("Aim Assist")]
 public class AimAssistBehavior : FrameBehavior {
   public float TurnSpeed = 90;
   [InlineEditor]
@@ -70,6 +72,7 @@ public class AimAssistBehavior : FrameBehavior {
 }
 
 [Serializable]
+[DisplayName("Aim Weapon")]
 public class WeaponAimBehavior : FrameBehavior {
   public Vector3 Direction;
 
@@ -89,6 +92,7 @@ public class WeaponAimBehavior : FrameBehavior {
 }
 
 [Serializable]
+[DisplayName("Hitbox")]
 public class HitboxBehavior : FrameBehavior {
   Hitbox Hitbox;
 
@@ -106,6 +110,7 @@ public class HitboxBehavior : FrameBehavior {
 }
 
 [Serializable]
+[DisplayName("SFX One Shot")]
 public class SFXOneShotBehavior : FrameBehavior {
   public float Volume = 0.25f;
   public AudioClip AudioClip;
@@ -134,77 +139,7 @@ public class SFXOneShotBehavior : FrameBehavior {
 }
 
 [Serializable]
-public class AnimationOneShot : FrameBehavior {
-  public string StartStateName;
-  public string EndStateName;
-  public int LayerIndex;
-  public float CrossFadeDuration = 0.1f;
-
-  public override FrameBehavior Clone() {
-    return new AnimationOneShot {
-      StartFrame = StartFrame,
-      EndFrame = EndFrame,
-      StartStateName = StartStateName,
-      EndStateName = EndStateName,
-      LayerIndex = LayerIndex,
-      CrossFadeDuration = CrossFadeDuration
-    };
-  }
-
-  Animator Animator;
-
-  public override void Initialize(object provider) {
-    TryGetValue(provider, null, out Animator);
-  }
-
-  public override void OnStart() {
-    Animator.CrossFadeInFixedTime(StartStateName, CrossFadeDuration, LayerIndex);
-  }
-
-  public override void OnEnd() {
-    Animator.Play(EndStateName, LayerIndex);
-  }
-
-  #if UNITY_EDITOR
-  AnimationClip AnimationClip;
-  float Speed;
-  PlayableGraph PlayableGraph;
-  AnimationClipPlayable AnimationClipPlayable;
-
-  public override void PreviewInitialize(object provider) {
-    TryGetValue(provider, null, out Animator);
-    if (!Animator)
-      return;
-    var state = Animator.StateForNameInLayer(StartStateName, LayerIndex);
-    if (!state)
-      return;
-    AnimationClip = state.motion as AnimationClip;
-    Speed = state.speed;
-    if (!AnimationClip)
-      return;
-    PlayableGraph = PlayableGraph.Create("AnimationOneShotPreview");
-    PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
-    AnimationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, AnimationClip);
-    AnimationClipPlayable.SetSpeed(Speed);
-    var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
-    output.SetSourcePlayable(AnimationClipPlayable, 0);
-  }
-
-  public override void PreviewCleanup(object provider) {
-    if (PlayableGraph.IsValid()) {
-      PlayableGraph.Destroy();
-    }
-  }
-
-  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
-    if (PlayableGraph.IsValid()) {
-      PlayableGraph.Evaluate(Time.fixedDeltaTime);
-    }
-  }
-  #endif
-}
-
-[Serializable]
+[DisplayName("VFX One Shot")]
 public class VFXOneShot : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
@@ -245,26 +180,25 @@ public class VFXOneShot : FrameBehavior {
   public override void PreviewOnStart(PreviewRenderUtility preview) {
     var name = VisualEffectAsset ? VisualEffectAsset.name : "EMPTY_VFX";
     VisualEffect = new GameObject($"Instance({name})").AddComponent<VisualEffect>();
-    preview.AddSingleGO(VisualEffect.gameObject);
+    SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Owner.gameObject.scene);
     VisualEffect.visualEffectAsset = VisualEffectAsset;
     VisualEffect.initialEventName = StartEventName;
     VisualEffect.resetSeedOnPlay = false;
     VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
     VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
     VisualEffect.transform.localScale = Scale;
+    VisualEffect.pause = true;
+    VisualEffect.Reinit();
   }
 
-  public void Seek(int frame) {
-    var steps = frame-StartFrame;
-    VisualEffect.pause = false;
-    VisualEffect.Reinit();
-    VisualEffect.Simulate(Time.fixedDeltaTime, (uint)steps);
-    VisualEffect.pause = true;
+  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+    VisualEffect.Simulate(Time.fixedDeltaTime);
   }
-  #endif
+#endif
 }
 
 [Serializable]
+[DisplayName("Cancellable")]
 public class CancelBehavior : FrameBehavior {
   ICancellable Cancellable;
 
@@ -304,7 +238,7 @@ public class AttackAbility :
   [SerializeField] WeaponAimBehavior WeaponAimBehavior;
   [SerializeField] HitboxBehavior HitboxBehavior;
   [SerializeField] SFXOneShotBehavior AudioOneShotBehavior;
-  [SerializeField] AnimationOneShot CrossFadeStateBehavior;
+  [SerializeField] AnimationOneShotFrameBehavior CrossFadeStateBehavior;
   [SerializeField] VFXOneShot VisualEffectBehavior;
   [SerializeField] CancelBehavior CancelBehavior;
   [SerializeField, Min(0)] int EndFrame = 24;

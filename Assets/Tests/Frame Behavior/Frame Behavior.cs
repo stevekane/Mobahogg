@@ -31,6 +31,13 @@ public abstract class FrameBehavior : IConsumer {
     }
   }
 
+  public static T TryGet<T>(object provider, BehaviorTag tag) {
+    var tProvider = provider as IProvider<T>;
+    return tProvider != null
+      ? tProvider.Value(tag)
+      : default;
+  }
+
   public static void InitializeBehaviors(IEnumerable<FrameBehavior> behaviors, object provider) {
     foreach (var behavior in behaviors) {
       behavior.Initialize(provider);

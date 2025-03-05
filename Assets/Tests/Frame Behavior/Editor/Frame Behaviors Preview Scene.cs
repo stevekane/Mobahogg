@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Rendering.Universal;
 using Unity.VisualScripting;
-using UnityEngine.VFX;
 
 class FrameBehaviorsPreviewScene : VisualElement {
   PreviewRenderUtility Preview;
@@ -15,7 +14,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
   List<FrameBehavior> FrameBehaviors = new List<FrameBehavior>();
   MonoBehaviour Provider;
   int Frame;
-  Vector3 CameraOffset = new Vector3(3, 3, 3);
 
   // Camera control fields
   public float MinZoom = 1f;
@@ -36,7 +34,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
   Vector3 lastPointerPosition;
 
   void OnAttach(AttachToPanelEvent evt) {
-    style.width = 512;
     style.height = 512;
     EditorApplication.update += Update;
   }
@@ -46,9 +43,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
     FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
     Preview.Cleanup();
     EditorApplication.update -= Update;
-  }
-
-  void OnGeometryChanged(GeometryChangedEvent evt) {
   }
 
   public void SetProvider(MonoBehaviour provider) {
@@ -75,7 +69,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Add(RenderImage);
     RegisterCallback<AttachToPanelEvent>(OnAttach);
     RegisterCallback<DetachFromPanelEvent>(OnDetach);
-    RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
     RegisterCallback<WheelEvent>(OnWheelEvent);
     RegisterCallback<PointerDownEvent>(OnPointerDown);
     RegisterCallback<PointerMoveEvent>(OnPointerMove);
@@ -133,6 +126,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     // Simulate current frame
     FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
     FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
+    Provider.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
     FrameBehaviors = ReferenceFrameBehaviors.Select(fb => fb.Clone()).ToList();
     FrameBehavior.PreviewInitializeBehaviors(FrameBehaviors, Provider);
     for (var i = 0; i <= Frame; i++) {
@@ -140,11 +134,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
     }
     for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
-    }
-    foreach (var fb in FrameBehaviors) {
-      if (fb is VFXOneShot vFXOneShot && fb.Active(Frame)) {
-        vFXOneShot.Seek(Frame);
-      }
     }
     for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);

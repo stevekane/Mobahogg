@@ -10,19 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
-  m_Name: Frame Behaviors
+  m_Name: DIVE ROLL TEST FRAME BEHAVIORS
   m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356
   - rid: 1366355905362526358
-  - rid: 1366356012347686979
   - rid: 1366356012347686980
-  - rid: 1366356012347686981
-  - rid: 1366356038239649855
   - rid: 1366356038239649859
   - rid: 1366356038239649860
-  - rid: 2944954043238187008
-  EndFrame: 24
+  - rid: 2944954043238187079
+  - rid: 2944954043238187080
+  EndFrame: 60
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
     version: 2
@@ -39,32 +37,11 @@ MonoBehaviour:
         StartFrame: 4
         EndFrame: 20
         Direction: {x: 0, y: 0, z: 0}
-    - rid: 1366356012347686979
-      type: {class: AnimationOneShot, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 0
-        EndFrame: 24
-        StartStateName: Attack
-        EndStateName: 
-        LayerIndex: 2
-        CrossFadeDuration: 0.1
     - rid: 1366356012347686980
       type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
         EndFrame: 8
-    - rid: 1366356012347686981
-      type: {class: SFXOneShotBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 2
-        EndFrame: 3
-        Volume: 0.25
-        AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
-    - rid: 1366356038239649855
-      type: {class: CancelBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 20
-        EndFrame: 24
     - rid: 1366356038239649859
       type: {class: AimAssistBehavior, ns: , asm: Assembly-CSharp}
       data:
@@ -76,25 +53,26 @@ MonoBehaviour:
       type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
-        EndFrame: 24
+        EndFrame: 60
         VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
         StartEventName: OnPlay
-        UpdateEventName: 
-        EndEventName: 
         AttachedToOwner: 1
         Offset: {x: 0, y: 1, z: 1}
         Rotation: {x: 0, y: 90, z: 0}
-        Scale: {x: 2, y: 2, z: 2}
-    - rid: 2944954043238187008
-      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+        Scale: {x: 1, y: 1, z: 2}
+    - rid: 2944954043238187079
+      type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 24
-        VisualEffectAsset: {fileID: 8926484042661614526, guid: 80b43ce65143a8240bcdc7cc368e7261, type: 3}
-        StartEventName: OnPlay
-        UpdateEventName: 
-        EndEventName: 
-        AttachedToOwner: 1
-        Offset: {x: 0, y: 2, z: 0}
-        Rotation: {x: 0, y: 0, z: 0}
-        Scale: {x: 1, y: 1, z: 1}
+        EndFrame: 60
+        AnimationClip: {fileID: 0}
+        StartStateName: Dive Roll
+        LayerIndex: 2
+        CrossFadeDuration: 0.1
+    - rid: 2944954043238187080
+      type: {class: SFXOneShotBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 15
+        EndFrame: 16
+        Volume: 0.25
+        AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}

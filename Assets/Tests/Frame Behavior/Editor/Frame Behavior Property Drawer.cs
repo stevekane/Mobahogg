@@ -1,6 +1,5 @@
-using System.Linq.Expressions;
-using Unity.Properties;
-using Unity.VisualScripting;
+using System;
+using System.ComponentModel;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -224,6 +223,14 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     bottomRightLabel.style.left = offset + cw - bottomRightLabel.resolvedStyle.width;
     float playheadX = Frame / (float)MaxFrame * midWidth;
     playhead.style.left = playheadX;
-    prefix.text = Property.GetTargetObjectOfProperty().GetType().HumanName();
+    prefix.text = LabelName(Property);
+  }
+
+  string LabelName(SerializedProperty property) {
+    var type = Property.GetTargetObjectOfProperty().GetType();
+    var displayNameAttr = (DisplayNameAttribute)Attribute.GetCustomAttribute(type, typeof(DisplayNameAttribute));
+    return displayNameAttr != null
+      ? displayNameAttr.DisplayName
+      : type.Name;
   }
 }
