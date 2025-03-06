@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
   m_Name: DIVE ROLL TEST FRAME BEHAVIORS
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   Behaviors:
   - rid: 1366355905362526356
   - rid: 1366355905362526358
@@ -32,7 +32,7 @@ MonoBehaviour:
         EndFrame: 24
         Multiplier: 5
     - rid: 1366355905362526358
-      type: {class: WeaponAimBehavior, ns: , asm: Assembly-CSharp}
+      type: {class: WeaponAimFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 4
         EndFrame: 20
@@ -43,14 +43,14 @@ MonoBehaviour:
         StartFrame: 5
         EndFrame: 8
     - rid: 1366356038239649859
-      type: {class: AimAssistBehavior, ns: , asm: Assembly-CSharp}
+      type: {class: AimAssistFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
         EndFrame: 4
         TurnSpeed: 720
         AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
     - rid: 1366356038239649860
-      type: {class: VFXOneShot, ns: , asm: Assembly-CSharp}
+      type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
         EndFrame: 60
@@ -70,7 +70,7 @@ MonoBehaviour:
         LayerIndex: 2
         CrossFadeDuration: 0.1
     - rid: 2944954043238187080
-      type: {class: SFXOneShotBehavior, ns: , asm: Assembly-CSharp}
+      type: {class: SFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 15
         EndFrame: 16

@@ -4,7 +4,6 @@ using UnityEngine.Playables;
 using UnityEngine.Animations;
 using System.ComponentModel;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -29,7 +28,7 @@ public interface ISeekable {
   public void Seek(int frame);
 }
 
-public partial class AnimationOneShotFrameBehaviorPreview : IFrameBehaviorInstance {
+public class AnimationOneShotFrameBehaviorPreview : IFrameBehaviorInstance {
   public AnimationOneShotFrameBehavior Behavior;
   public Animator Animator;
   public void Initialize() {}
@@ -87,7 +86,10 @@ public partial class AnimationOneShotFrameBehavior : FrameBehavior {
   }
 
   public override void OnStart() {
-    Animator.CrossFadeInFixedTime(StartStateName, CrossFadeDuration, LayerIndex);
+    Animator.CrossFadeInFixedTime(
+      StartStateName,
+      CrossFadeDuration,
+      LayerIndex);
   }
 
   public override void OnEnd() {
@@ -103,7 +105,8 @@ public partial class AnimationOneShotFrameBehavior : FrameBehavior {
     PlayableGraph = PlayableGraph.Create("Animation One Shot Preview");
     PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
     AnimatorControllerPlayable = AnimatorControllerPlayable.Create(PlayableGraph, Animator.runtimeAnimatorController);
-    AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator).SetSourcePlayable(AnimatorControllerPlayable, 0);
+    var output = AnimationPlayableOutput.Create(PlayableGraph, "Animation Output", Animator);
+    output.SetSourcePlayable(AnimatorControllerPlayable);
   }
 
   public override void PreviewCleanup(object provider) {
