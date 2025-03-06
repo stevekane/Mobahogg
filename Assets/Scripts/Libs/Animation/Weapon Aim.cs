@@ -11,6 +11,15 @@ public class WeaponAim : MonoBehaviour {
 
   public Vector3? AimDirection = null;
 
+  public void Aim(float dt) {
+    var aimDirection = AimDirection;
+    var targetLocalRotation = aimDirection.HasValue
+      ? WeaponLocalRotationFromWorldSpaceVector(aimDirection.Value)
+      : DefaultLocalRotation;
+    var maxDegrees = dt * TurnSpeed;
+    Weapon.localRotation = Quaternion.RotateTowards(Weapon.localRotation, targetLocalRotation, maxDegrees);
+  }
+
   Quaternion WeaponLocalRotationFromWorldSpaceVector(Vector3 v) {
     var worldDirection = transform.TransformDirection(v);
     var weaponLocalDirection = Weapon.parent.InverseTransformDirection(worldDirection);
@@ -27,11 +36,6 @@ public class WeaponAim : MonoBehaviour {
   }
 
   void OnAnimatorIK(int layer) {
-    var aimDirection = AimDirection;
-    var targetLocalRotation = aimDirection.HasValue
-      ? WeaponLocalRotationFromWorldSpaceVector(aimDirection.Value)
-      : DefaultLocalRotation;
-    var maxDegrees = LocalClock.DeltaTime() * TurnSpeed;
-    Weapon.localRotation = Quaternion.RotateTowards(Weapon.localRotation, targetLocalRotation, maxDegrees);
+    Aim(LocalClock.DeltaTime());
   }
 }

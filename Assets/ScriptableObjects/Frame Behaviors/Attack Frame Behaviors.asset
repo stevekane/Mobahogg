@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
   m_Name: Attack Frame Behaviors
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356
   - rid: 1366355905362526358
@@ -37,7 +37,7 @@ MonoBehaviour:
       data:
         StartFrame: 4
         EndFrame: 20
-        Direction: {x: 0, y: 0, z: 0}
+        Direction: {x: 0, y: 0, z: 1}
     - rid: 1366356012347686980
       type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
       data:

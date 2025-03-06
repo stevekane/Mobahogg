@@ -12,11 +12,13 @@ GameObject:
   - component: {fileID: 2592350235531396016}
   - component: {fileID: 2636490879504530106}
   - component: {fileID: 9174145103019638162}
+  - component: {fileID: 2579904600862392869}
   - component: {fileID: 7046289567983306910}
   - component: {fileID: 1345189979435152806}
   - component: {fileID: 3508532864872909074}
   - component: {fileID: 2432901049836610599}
   - component: {fileID: -7462341073188176542}
+  - component: {fileID: 5032231845547752575}
   m_Layer: 0
   m_Name: Robot Frame Behavior Preview
   m_TagString: Untagged
@@ -54,10 +56,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 7046289567983306910}
-  AnimatorCallbackHandler: {fileID: 0}
-  AudioSource: {fileID: 0}
+  AnimatorCallbackHandler: {fileID: 2579904600862392869}
+  AudioSource: {fileID: 3508532864872909074}
   CharacterController: {fileID: 0}
-  WeaponAim: {fileID: 0}
+  WeaponAim: {fileID: 5032231845547752575}
   Hitbox: {fileID: 0}
   Owner: {fileID: 90397395288750122}
   LocalClock: {fileID: 2636490879504530106}
@@ -87,6 +89,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 7046289567983306910}
   LocalClock: {fileID: 2636490879504530106}
+--- !u!114 &2579904600862392869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90397395288750122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d700a8ae8873b5945b118f14d47138d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 0}
 --- !u!95 &7046289567983306910
 Animator:
   serializedVersion: 7
@@ -244,6 +259,22 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 0e71b3254c4b32b4eb2cd1ceedbb883b, type: 2}
+--- !u!114 &5032231845547752575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90397395288750122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329d8ee2637c85e458c3bb07030a60d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalClock: {fileID: 2636490879504530106}
+  AnimatorCallbackHandler: {fileID: 2579904600862392869}
+  Weapon: {fileID: 2717857249350506185}
+  TurnSpeed: 720
 --- !u!1001 &218105136375716237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -345,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6826726480740694936, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.305
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 6826726480740694936, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       propertyPath: m_LocalRotation.w
@@ -384,6 +415,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2031236337685847281}
   m_SourcePrefab: {fileID: 100100000, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+--- !u!4 &2717857249350506185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5129753263128977844, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+  m_PrefabInstance: {fileID: 7099730949335021437}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4339825438696721637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6826726480740694936, guid: 12f59ff14fd463743a72e116368defce, type: 3}

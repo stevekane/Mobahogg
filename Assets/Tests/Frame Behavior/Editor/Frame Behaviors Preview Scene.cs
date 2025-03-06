@@ -134,6 +134,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     }
     for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
+      FrameBehavior.PreviewLateUpdateBehaviors(FrameBehaviors, i, Preview);
     }
     for (var i = 0; i <= Frame; i++) {
       FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);

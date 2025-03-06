@@ -113,6 +113,14 @@ public abstract class FrameBehavior : IConsumer {
     }
   }
 
+  public static void PreviewLateUpdateBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
+    foreach (var behavior in behaviors) {
+      if (behavior.Active(frame)) {
+        behavior.PreviewOnLateUpdate(preview);
+      }
+    }
+  }
+
   public static void PreviewCancelActiveBehaviors(IEnumerable<FrameBehavior> behaviors, int frame, PreviewRenderUtility preview) {
     foreach (var behavior in behaviors) {
       if (behavior.Active(frame)) {
@@ -142,6 +150,7 @@ public abstract class FrameBehavior : IConsumer {
   public virtual void PreviewCleanup(object provider) {}
   public virtual void PreviewOnStart(PreviewRenderUtility preview) {}
   public virtual void PreviewOnUpdate(PreviewRenderUtility preview) {}
+  public virtual void PreviewOnLateUpdate(PreviewRenderUtility preview) {}
   public virtual void PreviewOnEnd(PreviewRenderUtility preview) {}
   #endif
 }
