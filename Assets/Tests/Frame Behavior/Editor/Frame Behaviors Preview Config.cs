@@ -6,6 +6,11 @@ public class FrameBehaviorsPreviewConfig : ScriptableObject {
 
   public GameObject FloorPrefab;
 
+  [ContextMenu("Set As Instance")]
+  void SetSingletonInstance() {
+    Instance = this;
+  }
+
   void OnEnable() {
     if (Instance != null) {
       Debug.LogWarning($"Project should have exactly one instance of FrameBehaviorsPreviewConfig.");

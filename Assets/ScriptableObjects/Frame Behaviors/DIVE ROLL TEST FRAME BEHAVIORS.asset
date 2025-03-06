@@ -28,7 +28,7 @@ MonoBehaviour:
       type: {class: RootMotionBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 24
+        EndFrame: 32
         PositionMultiplier: 5
     - rid: 1366356012347686980
       type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
@@ -39,7 +39,7 @@ MonoBehaviour:
       type: {class: AimAssistFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 4
+        EndFrame: 5
         TurnSpeed: 720
         AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
     - rid: 1366356038239649860
