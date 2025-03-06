@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2592350235531396016}
   - component: {fileID: 2636490879504530106}
   - component: {fileID: 9174145103019638162}
-  - component: {fileID: 2579904600862392869}
   - component: {fileID: 7046289567983306910}
   - component: {fileID: 1345189979435152806}
   - component: {fileID: 3508532864872909074}
@@ -56,7 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 7046289567983306910}
-  AnimatorCallbackHandler: {fileID: 2579904600862392869}
+  AnimatorCallbackHandler: {fileID: 0}
   AudioSource: {fileID: 3508532864872909074}
   CharacterController: {fileID: 0}
   WeaponAim: {fileID: 5032231845547752575}
@@ -89,19 +88,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 7046289567983306910}
   LocalClock: {fileID: 2636490879504530106}
---- !u!114 &2579904600862392869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90397395288750122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d700a8ae8873b5945b118f14d47138d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 0}
 --- !u!95 &7046289567983306910
 Animator:
   serializedVersion: 7
@@ -115,7 +101,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 53a262eada3400547be6e4b0e9f6a6d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -272,7 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 2636490879504530106}
-  AnimatorCallbackHandler: {fileID: 2579904600862392869}
+  AnimatorCallbackHandler: {fileID: 0}
   Weapon: {fileID: 2717857249350506185}
   TurnSpeed: 720
 --- !u!1001 &218105136375716237

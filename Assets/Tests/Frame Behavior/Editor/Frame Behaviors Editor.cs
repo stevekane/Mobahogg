@@ -23,6 +23,7 @@ public class FrameBehaviorsEditor : Editor {
   public override VisualElement CreateInspectorGUI() {
     var container = new VisualElement();
     PreviewPrefabField = new PropertyField(serializedObject.FindProperty("PreviewPrefab"));
+    PreviewPrefabField.RegisterCallback<SerializedPropertyChangeEvent>(OnPrefabChange);
     EndFrameField = new PropertyField(serializedObject.FindProperty("EndFrame"));
     EndFrameField.RegisterCallback<SerializedPropertyChangeEvent>(OnEndFrameChange);
     FrameSlider = new FrameSlider();
@@ -36,7 +37,7 @@ public class FrameBehaviorsEditor : Editor {
     PreviewScene.SetProvider(PreviewProvider);
     PreviewScene.SetFrameBehaviors(Behaviors);
     PreviewScene.Seek(Frame);
-    container.TrackSerializedObjectValue(serializedObject, OnTargetObjectChange);
+    container.TrackSerializedObjectValue(serializedObject, OnAnyBehaviorChange);
     container.Add(PreviewPrefabField);
     container.Add(PreviewScene);
     container.Add(EndFrameField);
@@ -53,8 +54,7 @@ public class FrameBehaviorsEditor : Editor {
     }
   }
 
-  void OnTargetObjectChange(SerializedObject so) {
-    PreviewScene.SetProvider(PreviewProvider);
+  void OnAnyBehaviorChange(SerializedObject so) {
     PreviewScene.SetFrameBehaviors(Behaviors);
   }
 
@@ -65,6 +65,10 @@ public class FrameBehaviorsEditor : Editor {
       SetFrame(behavior, changeEvent.newValue);
     }
     PreviewScene.Seek(Frame);
+  }
+
+  void OnPrefabChange(SerializedPropertyChangeEvent evt) {
+    PreviewScene.SetProvider(PreviewProvider);
   }
 
   void OnEndFrameChange(SerializedPropertyChangeEvent evt) {

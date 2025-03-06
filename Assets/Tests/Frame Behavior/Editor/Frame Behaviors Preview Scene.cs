@@ -10,7 +10,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
   PreviewRenderUtility Preview;
   Image RenderImage;
   GameObject Ground;
-  List<FrameBehavior> ReferenceFrameBehaviors = new List<FrameBehavior>();
+  IEnumerable<FrameBehavior> ReferenceFrameBehaviors = new List<FrameBehavior>();
   List<FrameBehavior> FrameBehaviors = new List<FrameBehavior>();
   MonoBehaviour Provider;
   int Frame;
@@ -61,7 +61,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
   }
 
   public void SetFrameBehaviors(IEnumerable<FrameBehavior> frameBehaviors) {
-    ReferenceFrameBehaviors = frameBehaviors.ToList();
+    ReferenceFrameBehaviors = frameBehaviors;
   }
 
   public FrameBehaviorsPreviewScene() {
@@ -81,13 +81,12 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Preview.camera.nearClipPlane = 0.1f;
     Preview.camera.farClipPlane = 1000f;
     Preview.camera.fieldOfView = 45f;
-    Preview.camera.clearFlags = CameraClearFlags.SolidColor | CameraClearFlags.Depth;
+    Preview.camera.clearFlags = CameraClearFlags.SolidColor;
     Preview.camera.backgroundColor = Color.black;
     Preview.camera.cameraType = CameraType.SceneView;
     Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
     Preview.camera.GetOrAddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
-    Ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-    Ground.transform.position = Vector3.zero;
+    Ground = (GameObject)PrefabUtility.InstantiatePrefab(FrameBehaviorsPreviewConfig.Instance.FloorPrefab);
     Ground.hideFlags = HideFlags.HideAndDontSave;
     Preview.AddSingleGO(Ground);
     var keyLight = Preview.lights[0];

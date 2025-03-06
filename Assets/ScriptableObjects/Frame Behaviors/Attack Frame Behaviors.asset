@@ -31,7 +31,7 @@ MonoBehaviour:
       data:
         StartFrame: 0
         EndFrame: 24
-        Multiplier: 5
+        PositionMultiplier: 5
     - rid: 1366355905362526358
       type: {class: WeaponAimFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
