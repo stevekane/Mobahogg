@@ -20,6 +20,7 @@ public interface IFrameBehaviorInstance {
   public void Initialize();
   public void OnStart();
   public void OnUpdate();
+  public void OnLateUpdate();
   public void OnEnd();
   public void Cleanup();
 }
@@ -34,6 +35,7 @@ public class AnimationOneShotFrameBehaviorPreview : IFrameBehaviorInstance {
   public void Initialize() {}
   public void OnStart() {}
   public void OnUpdate() {}
+  public void OnLateUpdate() {}
   public void OnEnd() {}
   public void Cleanup() {}
 }
@@ -44,6 +46,7 @@ public class AnimationOneShotFrameBehaviorRuntime : IFrameBehaviorInstance {
   public void Initialize() {}
   public void OnStart() {}
   public void OnUpdate() {}
+  public void OnLateUpdate() {}
   public void OnEnd() {}
   public void Cleanup() {}
 }
@@ -54,7 +57,7 @@ public partial class AnimationOneShotFrameBehavior : IInstanceablePreview {
   public IFrameBehaviorInstance CreatePreviewInstance(object provider) {
     return new AnimationOneShotFrameBehaviorPreview() {
       Behavior = this,
-      Animator = TryGet<Animator>(provider, (BehaviorTag)default)
+      Animator = TryGet<Animator>(provider, null)
     };
   }
 }
@@ -64,7 +67,7 @@ public partial class AnimationOneShotFrameBehavior : IInstanceableRuntime {
   public IFrameBehaviorInstance CreateRuntimeInstance(object provider) {
     return new AnimationOneShotFrameBehaviorRuntime() {
       Behavior = this,
-      Animator = TryGet<Animator>(provider, (BehaviorTag)default)
+      Animator = TryGet<Animator>(provider, null)
     };
   }
 }

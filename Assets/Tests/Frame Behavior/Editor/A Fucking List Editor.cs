@@ -104,7 +104,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
 
   private void SetupTypeSelectionMenu() {
     TypeSelectionMenu = new GenericMenu();
-    var types = FrameBehaviorTypeCache.ConcreteTypesFor(typeof(T));
+    var types = TypeExtensions.ConcreteTypes(typeof(T));
     foreach (var type in types) {
       TypeSelectionMenu.AddItem(new GUIContent(type.Name), false, () => Add(type));
     }

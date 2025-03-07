@@ -6,10 +6,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(FrameBehavior), true)]
-public class FrameBehaviorDrawer : PropertyDrawer
-{
-  public override VisualElement CreatePropertyGUI(SerializedProperty property)
-  {
+public class FrameBehaviorDrawer : PropertyDrawer {
+  public override VisualElement CreatePropertyGUI(SerializedProperty property) {
     var behaviorRoot = new FrameBehaviorRoot();
     behaviorRoot.BindProperty(property);
     return behaviorRoot;
@@ -46,8 +44,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     RegisterCallbacks();
   }
 
-  public void BindProperty(SerializedProperty property)
-  {
+  public void BindProperty(SerializedProperty property) {
     Property = property;
     // Seems to complain that binding to reference object is not supported... not sure what it means
     // bindingPath = property.propertyPath;
@@ -58,8 +55,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     UpdateVisual();
   }
 
-  void BuildUI()
-  {
+  void BuildUI() {
     // Build the header row containing the prefix and the timeline container.
     var trackRow = new VisualElement();
     trackRow.style.flexDirection = FlexDirection.Row;
@@ -136,11 +132,9 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     Add(detailContainer);
   }
 
-  void RegisterCallbacks()
-  {
+  void RegisterCallbacks() {
     // Toggle detail view on clicking the prefix label.
-    prefix.RegisterCallback<PointerDownEvent>(e =>
-    {
+    prefix.RegisterCallback<PointerDownEvent>(e => {
       detailContainer.style.display = detailContainer.style.display == DisplayStyle.Flex
         ? DisplayStyle.None
         : DisplayStyle.Flex;
@@ -149,8 +143,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
 
     float dragOffset = 0;
     // Dragging on the clip adjusts StartFrame and EndFrame.
-    clip.RegisterCallback<PointerDownEvent>(e =>
-    {
+    clip.RegisterCallback<PointerDownEvent>(e => {
       if (e.button != 0)
         return;
       clip.CapturePointer(e.pointerId);
@@ -161,8 +154,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
       dragOffset = localX - currentOffset;
       e.StopPropagation();
     });
-    clip.RegisterCallback<PointerMoveEvent>(e =>
-    {
+    clip.RegisterCallback<PointerMoveEvent>(e => {
       if (!clip.HasPointerCapture(e.pointerId))
         return;
       Property.serializedObject.Update();
@@ -179,8 +171,7 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
       UpdateVisual();
       e.StopPropagation();
     });
-    clip.RegisterCallback<PointerUpEvent>(e =>
-    {
+    clip.RegisterCallback<PointerUpEvent>(e => {
       if (!clip.HasPointerCapture(e.pointerId))
         return;
       clip.ReleasePointer(e.pointerId);
@@ -191,14 +182,12 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
     RegisterCallback<SerializedPropertyChangeEvent>(evt => UpdateVisual());
   }
 
-  public void SetFrame(int frame)
-  {
+  public void SetFrame(int frame) {
     Frame = frame;
     UpdateVisual();
   }
 
-  public void SetMaxFrame(int maxFrame)
-  {
+  public void SetMaxFrame(int maxFrame) {
     MaxFrame = maxFrame;
     UpdateVisual();
   }

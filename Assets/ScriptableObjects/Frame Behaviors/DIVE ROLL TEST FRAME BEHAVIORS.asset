@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356
-  - rid: 1366356012347686980
-  - rid: 1366356038239649859
   - rid: 1366356038239649860
   - rid: 2944954043238187079
   - rid: 2944954043238187080
-  EndFrame: 60
+  EndFrame: 32
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
     version: 2
@@ -29,24 +27,12 @@ MonoBehaviour:
       data:
         StartFrame: 0
         EndFrame: 32
-        PositionMultiplier: 5
-    - rid: 1366356012347686980
-      type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 5
-        EndFrame: 8
-    - rid: 1366356038239649859
-      type: {class: AimAssistFrameBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 0
-        EndFrame: 5
-        TurnSpeed: 720
-        AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
+        PositionMultiplier: 3
     - rid: 1366356038239649860
       type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
-        EndFrame: 60
+        EndFrame: 32
         VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
         StartEventName: OnPlay
         AttachedToOwner: 1
@@ -57,7 +43,7 @@ MonoBehaviour:
       type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
-        EndFrame: 60
+        EndFrame: 32
         AnimationClip: {fileID: 0}
         StartStateName: Dive Roll
         LayerIndex: 2

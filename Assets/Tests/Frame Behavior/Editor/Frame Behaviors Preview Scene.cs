@@ -78,14 +78,19 @@ class FrameBehaviorsPreviewScene : VisualElement {
 
   void BuildPreview() {
     Preview = new PreviewRenderUtility();
+    Preview.camera.fieldOfView = 45f;
     Preview.camera.nearClipPlane = 0.1f;
     Preview.camera.farClipPlane = 1000f;
-    Preview.camera.fieldOfView = 45f;
     Preview.camera.clearFlags = CameraClearFlags.SolidColor;
     Preview.camera.backgroundColor = Color.black;
-    Preview.camera.cameraType = CameraType.SceneView;
+    Preview.camera.forceIntoRenderTexture = true;
+    Preview.camera.allowHDR = true;
+    // Preview.camera.cameraType = CameraType.SceneView;
     Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
-    Preview.camera.GetOrAddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
+    var additionalData = Preview.camera.GetUniversalAdditionalCameraData();
+    additionalData.renderPostProcessing = true;
+    additionalData.requiresDepthTexture = true;
+    additionalData.SetRenderer(0);
     Ground = (GameObject)PrefabUtility.InstantiatePrefab(FrameBehaviorsPreviewConfig.Instance.FloorPrefab);
     Ground.hideFlags = HideFlags.HideAndDontSave;
     Preview.AddSingleGO(Ground);
@@ -116,7 +121,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Rect rct = contentRect;
     if (rct.width > 0 && rct.height > 0) {
       Preview.BeginPreview(rct, GUIStyle.none);
-      Preview.Render(true);
+      Preview.RenderURP();
       Texture tex = Preview.EndPreview();
       RenderImage.image = tex;
       RenderImage.MarkDirtyRepaint();
