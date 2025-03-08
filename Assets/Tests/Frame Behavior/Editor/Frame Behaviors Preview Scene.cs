@@ -4,7 +4,6 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Rendering.Universal;
-using Unity.VisualScripting;
 
 class FrameBehaviorsPreviewScene : VisualElement {
   PreviewRenderUtility Preview;
@@ -29,12 +28,11 @@ class FrameBehaviorsPreviewScene : VisualElement {
   Vector3 ComputedCameraOffset =>
     Quaternion.Euler(CameraRotation.x, CameraRotation.y, 0) * Vector3.back * CameraZoom;
 
-  // For pointer-drag detection
-  bool isDragging = false;
   Vector3 lastPointerPosition;
 
   void OnAttach(AttachToPanelEvent evt) {
     style.height = 512;
+    EditorApplication.focusChanged += OnFocusChange;
     EditorApplication.update += Update;
   }
 
@@ -42,7 +40,16 @@ class FrameBehaviorsPreviewScene : VisualElement {
     FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
     FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
     Preview.Cleanup();
+    EditorApplication.focusChanged -= OnFocusChange;
     EditorApplication.update -= Update;
+  }
+
+  void OnFocusChange(bool applicationFocused) {
+    if (applicationFocused) {
+      EditorApplication.update += Update;
+    } else {
+      EditorApplication.update -= Update;
+    }
   }
 
   public void SetProvider(MonoBehaviour provider) {
@@ -83,14 +90,8 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Preview.camera.farClipPlane = 1000f;
     Preview.camera.clearFlags = CameraClearFlags.SolidColor;
     Preview.camera.backgroundColor = Color.black;
-    Preview.camera.forceIntoRenderTexture = true;
-    Preview.camera.allowHDR = true;
-    // Preview.camera.cameraType = CameraType.SceneView;
     Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
-    var additionalData = Preview.camera.GetUniversalAdditionalCameraData();
-    additionalData.renderPostProcessing = true;
-    additionalData.requiresDepthTexture = true;
-    additionalData.SetRenderer(0);
+    Preview.camera.GetUniversalAdditionalCameraData().renderPostProcessing = true;
     Ground = (GameObject)PrefabUtility.InstantiatePrefab(FrameBehaviorsPreviewConfig.Instance.FloorPrefab);
     Ground.hideFlags = HideFlags.HideAndDontSave;
     Preview.AddSingleGO(Ground);
@@ -155,27 +156,23 @@ class FrameBehaviorsPreviewScene : VisualElement {
   }
 
   void OnPointerDown(PointerDownEvent e) {
-    if (e.button == 2) {
-      isDragging = true;
-      lastPointerPosition = e.position;
-      e.StopPropagation();
-    }
+    this.CapturePointer(e.pointerId);
+    lastPointerPosition = e.position;
+    e.StopPropagation();
   }
 
   void OnPointerMove(PointerMoveEvent e) {
-    if (isDragging) {
+    if (this.HasPointerCapture(e.pointerId)) {
       Vector2 delta = e.position - lastPointerPosition;
       CameraRotation += RotationScalar * new Vector2(delta.y, delta.x);
-      CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 90);
+      CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 89 /*lol gimbal lock*/);
       lastPointerPosition = e.position;
       e.StopPropagation();
     }
   }
 
   void OnPointerUp(PointerUpEvent e) {
-    if (e.button == 2) {
-      isDragging = false;
-      e.StopPropagation();
-    }
+    this.ReleasePointer(e.pointerId);
+    e.StopPropagation();
   }
 }
