@@ -4,11 +4,17 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+
+public partial class SFXOneShotFrameBehavior {
+  public override void PreviewOnStart(PreviewRenderUtility preview) {
+    // EditorAudioSystem.PlayClip(AudioClip, 0, false);
+  }
+}
 #endif
 
 [Serializable]
 [DisplayName("SFX One Shot")]
-public class SFXOneShotFrameBehavior : FrameBehavior {
+public partial class SFXOneShotFrameBehavior : FrameBehavior {
   public float Volume = 0.25f;
   public AudioClip AudioClip;
 
@@ -27,10 +33,4 @@ public class SFXOneShotFrameBehavior : FrameBehavior {
     audioSource.Play();
     GameObject.Destroy(audioSource.gameObject, AudioClip.length);
   }
-
-#if UNITY_EDITOR
-  public override void PreviewOnStart(PreviewRenderUtility preview) {
-    // EditorAudioSystem.PlayClip(AudioClip, 0, false);
-  }
-#endif
 }

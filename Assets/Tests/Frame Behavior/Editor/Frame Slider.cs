@@ -55,6 +55,7 @@ public class FrameSlider : VisualElement {
     frameLabel = new Label(Frame.ToString());
     frameLabel.style.paddingLeft = 8;
     frameLabel.style.color = Color.red;
+    frameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
     indicator.Add(frameLabel);
     frameSelector.Add(indicator);
     frameSelector.RegisterCallback<PointerDownEvent>(OnPointerDown);
@@ -71,7 +72,7 @@ public class FrameSlider : VisualElement {
   void OnPointerDown(PointerDownEvent evt) {
     Vector2 local = evt.localPosition;
     float width = frameSelector.layout.width;
-    int newFrame = Mathf.RoundToInt((local.x / width) * EndFrame);
+    int newFrame = Mathf.RoundToInt(local.x / width * EndFrame);
     Frame = newFrame;
     frameSelector.CapturePointer(evt.pointerId);
     evt.StopPropagation();
@@ -81,7 +82,7 @@ public class FrameSlider : VisualElement {
     if (frameSelector.HasPointerCapture(evt.pointerId)) {
       Vector2 local = evt.localPosition;
       float width = frameSelector.layout.width;
-      int newFrame = Mathf.RoundToInt((local.x / width) * EndFrame);
+      int newFrame = Mathf.RoundToInt(local.x / width * EndFrame);
       Frame = newFrame;
       evt.StopPropagation();
     }
@@ -95,7 +96,7 @@ public class FrameSlider : VisualElement {
   void UpdateIndicator() {
     float width = frameSelector.layout.width;
     if(width > 0 && EndFrame > 0) {
-      float pos = (Frame / (float)EndFrame) * width;
+      float pos = Frame / (float)EndFrame * width;
       indicator.style.left = pos;
       frameLabel.text = Frame.ToString();
     }

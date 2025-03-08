@@ -8,6 +8,7 @@ using UnityEditor;
 public partial class RootMotionBehavior : FrameBehavior {
   Animator Animator;
   Vector3 PreviousPosition;
+
   public override void PreviewInitialize(object provider) {
     TryGetValue(provider, null, out Animator);
   }
@@ -35,24 +36,6 @@ public partial class RootMotionBehavior : FrameBehavior {
   }
 }
 #endif
-
-public class RootMotionFrameBehaviorRuntime : IFrameBehaviorInstance {
-  public void Initialize() {}
-  public void OnStart() {}
-  public void OnUpdate() {}
-  public void OnLateUpdate() {}
-  public void OnEnd() {}
-  public void Cleanup() {}
-}
-
-public class RootMotionFrameBehaviorPreview : IFrameBehaviorInstance {
-  public void Initialize() {}
-  public void OnStart() {}
-  public void OnUpdate() {}
-  public void OnLateUpdate() {}
-  public void OnEnd() {}
-  public void Cleanup() {}
-}
 
 [Serializable]
 [DisplayName("Root Motion")]
@@ -83,4 +66,22 @@ public partial class RootMotionBehavior : FrameBehavior {
   public override void OnEnd() {
     AnimatorCallbackHandler.OnRootMotion.Unlisten(OnRootMotion);
   }
+}
+
+public class RootMotionFrameBehaviorRuntime : IFrameBehaviorInstance {
+  public void Initialize() {}
+  public void OnStart() {}
+  public void OnUpdate() {}
+  public void OnLateUpdate() {}
+  public void OnEnd() {}
+  public void Cleanup() {}
+}
+
+public class RootMotionFrameBehaviorPreview : IFrameBehaviorInstance {
+  public void Initialize() {}
+  public void OnStart() {}
+  public void OnUpdate() {}
+  public void OnLateUpdate() {}
+  public void OnEnd() {}
+  public void Cleanup() {}
 }

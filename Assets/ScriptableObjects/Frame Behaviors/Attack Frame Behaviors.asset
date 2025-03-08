@@ -18,7 +18,6 @@ MonoBehaviour:
   - rid: 1366356012347686980
   - rid: 1366356038239649855
   - rid: 1366356038239649859
-  - rid: 1366356038239649860
   - rid: 2944954043238187081
   EndFrame: 24
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
@@ -54,17 +53,6 @@ MonoBehaviour:
         EndFrame: 4
         TurnSpeed: 720
         AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
-    - rid: 1366356038239649860
-      type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 5
-        EndFrame: 24
-        VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
-        StartEventName: OnPlay
-        AttachedToOwner: 1
-        Offset: {x: 0, y: 1, z: 1}
-        Rotation: {x: 0, y: 90, z: 0}
-        Scale: {x: 2, y: 2, z: 2}
     - rid: 2944954043238187081
       type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:

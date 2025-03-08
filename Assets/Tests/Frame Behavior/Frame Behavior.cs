@@ -31,6 +31,8 @@ public abstract class FrameBehavior : IConsumer {
     }
   }
 
+  public static FrameBehavior Clone(FrameBehavior frameBehavior) => frameBehavior.Clone();
+
   public static T TryGet<T>(object provider, BehaviorTag tag) {
     var tProvider = provider as IProvider<T>;
     return tProvider != null

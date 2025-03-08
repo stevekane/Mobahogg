@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Abilities;
+using System.Linq;
 
 public interface ICancellable {
   public bool Cancellable { get; set; }
@@ -18,41 +19,20 @@ public class AttackAbility :
   IProvider<LocalClock>,
   IProvider<ICancellable>
 {
-  [SerializeField] RootMotionBehavior RootMotionBehavior;
-  [SerializeField] AimAssistFrameBehavior AimAssistBehavior;
-  [SerializeField] WeaponAimFrameBehavior WeaponAimBehavior;
-  [SerializeField] HitboxBehavior HitboxBehavior;
-  [SerializeField] SFXOneShotFrameBehavior AudioOneShotBehavior;
-  [SerializeField] AnimationOneShotFrameBehavior CrossFadeStateBehavior;
-  [SerializeField] VFXOneShotFrameBehavior VisualEffectBehavior;
-  [SerializeField] CancellableFrameBehavior CancelBehavior;
-  [SerializeField, Min(0)] int EndFrame = 24;
+  [SerializeField, InlineEditor] FrameBehaviors FrameBehaviors;
   [SerializeField, Min(0)] int Frame;
 
   [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
 
-  IEnumerable<FrameBehavior> Behaviors {
-    get {
-      yield return RootMotionBehavior;
-      yield return AimAssistBehavior;
-      yield return WeaponAimBehavior;
-      yield return HitboxBehavior;
-      yield return AudioOneShotBehavior;
-      yield return CrossFadeStateBehavior;
-      yield return VisualEffectBehavior;
-      yield return CancelBehavior;
-    }
-  }
+  List<FrameBehavior> Behaviors = new(8);
 
   void Awake() {
-    Frame = EndFrame+1;
+    Frame = FrameBehaviors.EndFrame+1;
     Hitbox.CollisionEnabled = false;
   }
 
-  // Steve - It is worth contemplating whether most or all characters might have a single
-  // top-level provider that implements this shit. If so, you could move this noise out of here
-  // and create a very elegant Ability / User of FrameBehaviors
+  // TODO: Possibly this could live elsewhere? Perhaps somewhere more...generic like the player / owner?
   AnimatorCallbackHandler IProvider<AnimatorCallbackHandler>.Value(BehaviorTag tag) => AnimatorCallbackHandler;
   Animator IProvider<Animator>.Value(BehaviorTag tag) => AnimatorCallbackHandler.Animator;
   KCharacterController IProvider<KCharacterController>.Value(BehaviorTag tag) => CharacterController;
@@ -66,13 +46,15 @@ public class AttackAbility :
   public override bool CanCancel => Cancellable;
   public override void Cancel() {
     FrameBehavior.CancelActiveBehaviors(Behaviors, Frame);
-    Frame = EndFrame+1;
+    Frame = FrameBehaviors.EndFrame+1;
   }
 
-  public override bool IsRunning => Frame <= EndFrame;
+  public override bool IsRunning => Frame <= FrameBehaviors.EndFrame;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     Frame = 0;
+    Behaviors.Clear();
+    FrameBehaviors.Behaviors.ForEach(b => Behaviors.Add(b.Clone()));
     FrameBehavior.InitializeBehaviors(Behaviors, this);
   }
 

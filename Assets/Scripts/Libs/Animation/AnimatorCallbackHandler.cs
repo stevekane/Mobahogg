@@ -10,6 +10,4 @@ public class AnimatorCallbackHandler : MonoBehaviour {
   void OnAnimatorIK(int layer) => OnIK.Fire(layer);
 
   void OnAnimatorMove() => OnRootMotion.Fire();
-
-  // void AnimationEvent(string name) => OnEvent.Fire(name);
 }
