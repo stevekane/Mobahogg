@@ -1,11 +1,13 @@
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class FrameSlider : VisualElement {
   int m_Frame = 0;
   int m_EndFrame = 100;
   Label prefixLabel;
+  Label frameLabel;
   VisualElement frameSelector;
   VisualElement indicator;
 
@@ -50,6 +52,10 @@ public class FrameSlider : VisualElement {
     indicator.style.width = 5;
     indicator.style.height = new Length(100, LengthUnit.Percent);
     indicator.style.backgroundColor = new StyleColor(Color.red);
+    frameLabel = new Label(Frame.ToString());
+    frameLabel.style.paddingLeft = 8;
+    frameLabel.style.color = Color.red;
+    indicator.Add(frameLabel);
     frameSelector.Add(indicator);
     frameSelector.RegisterCallback<PointerDownEvent>(OnPointerDown);
     frameSelector.RegisterCallback<PointerMoveEvent>(OnPointerMove);
@@ -91,6 +97,7 @@ public class FrameSlider : VisualElement {
     if(width > 0 && EndFrame > 0) {
       float pos = (Frame / (float)EndFrame) * width;
       indicator.style.left = pos;
+      frameLabel.text = Frame.ToString();
     }
   }
 }
