@@ -8,10 +8,12 @@ using UnityEngine.Rendering.Universal;
 class FrameBehaviorsPreviewScene : VisualElement {
   PreviewRenderUtility Preview;
   Image RenderImage;
-  GameObject Ground;
   IEnumerable<FrameBehavior> ReferenceFrameBehaviors = new List<FrameBehavior>();
   List<FrameBehavior> FrameBehaviors = new List<FrameBehavior>();
+  MonoBehaviour ReferenceProvider;
   MonoBehaviour Provider;
+  Vector3 lastPointerPosition;
+
   int Frame;
 
   public float MinZoom = 1f;
@@ -29,39 +31,21 @@ class FrameBehaviorsPreviewScene : VisualElement {
   Vector3 ComputedCameraOffset =>
     CameraZoom * (Quaternion.Euler(CameraRotation.x, CameraRotation.y, 0) * Vector3.back);
 
-  Vector3 lastPointerPosition;
-
-  void OnAttach(AttachToPanelEvent evt) {
+  public FrameBehaviorsPreviewScene() {
     style.height = 512;
-    EditorApplication.focusChanged += OnFocusChange;
-    EditorApplication.update += Update;
+    RenderImage = new Image();
+    Add(RenderImage);
+    RegisterCallback<AttachToPanelEvent>(OnAttach);
+    RegisterCallback<DetachFromPanelEvent>(OnDetach);
+    RegisterCallback<WheelEvent>(OnWheelEvent);
+    RegisterCallback<PointerDownEvent>(OnPointerDown);
+    RegisterCallback<PointerMoveEvent>(OnPointerMove);
+    RegisterCallback<PointerUpEvent>(OnPointerUp);
   }
 
-  void OnDetach(DetachFromPanelEvent evt) {
-    FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
-    FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
-    Preview.Cleanup();
-    EditorApplication.focusChanged -= OnFocusChange;
-    EditorApplication.update -= Update;
-  }
-
-  void OnFocusChange(bool applicationFocused) {
-    if (applicationFocused) {
-      EditorApplication.update += Update;
-    } else {
-      EditorApplication.update -= Update;
-    }
-  }
-
+  // Store the provider prefab. We instantiate a new instance from it every frame.
   public void SetProvider(MonoBehaviour provider) {
-    if (Provider) {
-      GameObject.DestroyImmediate(Provider.gameObject);
-    }
-    Provider = MonoBehaviour.Instantiate(provider);
-    if (Provider.TryGetComponent(out AvatarAttacher avatarAttacher)) {
-      avatarAttacher.Attach();
-    }
-    Preview.AddSingleGO(Provider.gameObject);
+    ReferenceProvider = provider;
   }
 
   public void Seek(int targetFrame) {
@@ -72,16 +56,20 @@ class FrameBehaviorsPreviewScene : VisualElement {
     ReferenceFrameBehaviors = frameBehaviors;
   }
 
-  public FrameBehaviorsPreviewScene() {
-    RenderImage = new Image();
-    Add(RenderImage);
-    RegisterCallback<AttachToPanelEvent>(OnAttach);
-    RegisterCallback<DetachFromPanelEvent>(OnDetach);
-    RegisterCallback<WheelEvent>(OnWheelEvent);
-    RegisterCallback<PointerDownEvent>(OnPointerDown);
-    RegisterCallback<PointerMoveEvent>(OnPointerMove);
-    RegisterCallback<PointerUpEvent>(OnPointerUp);
+  void OnAttach(AttachToPanelEvent evt) {
     BuildPreview();
+    EditorApplication.update += Update;
+  }
+
+  void OnDetach(DetachFromPanelEvent evt) {
+    FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
+    FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
+    Provider.TryDestroyImmediateGameObject();
+    if (Preview != null) {
+      Preview.Cleanup();
+      Preview = null;
+    }
+    EditorApplication.update -= Update;
   }
 
   void BuildPreview() {
@@ -93,10 +81,10 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Preview.camera.backgroundColor = Color.black;
     Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
     Preview.camera.GetUniversalAdditionalCameraData().renderPostProcessing = true;
-    Ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-    Ground.hideFlags = HideFlags.HideAndDontSave;
-    Ground.transform.localScale = new(10,10,10);
-    Preview.AddSingleGO(Ground);
+    var ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
+    ground.hideFlags = HideFlags.HideAndDontSave;
+    ground.transform.localScale = new Vector3(10, 10, 10);
+    Preview.AddSingleGO(ground);
     var keyLight = Preview.lights[0];
     keyLight.type = LightType.Directional;
     keyLight.transform.position = new Vector3(-2, 3, 2);
@@ -118,34 +106,44 @@ class FrameBehaviorsPreviewScene : VisualElement {
   }
 
   void Update() {
-    // Render previous frame
-    Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
-    Preview.camera.transform.LookAt(CameraLookAtTarget);
     Rect rct = contentRect;
     if (rct.width > 0 && rct.height > 0) {
       Preview.BeginPreview(rct, GUIStyle.none);
       Preview.RenderURP();
       Texture tex = Preview.EndPreview();
       RenderImage.image = tex;
-      RenderImage.MarkDirtyRepaint();
     }
 
-    // Simulate current frame
+    // Cancel and cleanup any active frame behaviors.
     FrameBehavior.PreviewCancelActiveBehaviors(FrameBehaviors, Frame, Preview);
     FrameBehavior.PreviewCleanupBehaviors(FrameBehaviors, Provider);
-    Provider.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-    FrameBehaviors = ReferenceFrameBehaviors.Select(fb => fb.Clone()).ToList();
-    FrameBehavior.PreviewInitializeBehaviors(FrameBehaviors, Provider);
-    for (var i = 0; i <= Frame; i++) {
-      FrameBehavior.PreviewStartBehaviors(FrameBehaviors, i, Preview);
+    // Destroy old Provider
+    Provider.TryDestroyImmediateGameObject();
+
+    // Create this frame's Provider
+    if (ReferenceProvider != null) {
+      Provider = MonoBehaviour.Instantiate(ReferenceProvider);
+      if (Provider.TryGetComponent(out AvatarAttacher avatarAttacher))
+        avatarAttacher.Attach();
+      Preview.AddSingleGO(Provider.gameObject);
+      Provider.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+      FrameBehaviors = ReferenceFrameBehaviors.Select(fb => fb.Clone()).ToList();
+      FrameBehavior.PreviewInitializeBehaviors(FrameBehaviors, Provider);
+      for (var i = 0; i <= Frame; i++) {
+        FrameBehavior.PreviewStartBehaviors(FrameBehaviors, i, Preview);
+      }
+      for (var i = 0; i <= Frame; i++) {
+        FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
+        FrameBehavior.PreviewLateUpdateBehaviors(FrameBehaviors, i, Preview);
+      }
+      for (var i = 0; i <= Frame; i++) {
+        FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);
+      }
     }
-    for (var i = 0; i <= Frame; i++) {
-      FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
-      FrameBehavior.PreviewLateUpdateBehaviors(FrameBehaviors, i, Preview);
-    }
-    for (var i = 0; i <= Frame; i++) {
-      FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);
-    }
+
+    // Update camera last as subject's pose may have changed during behavior updates.
+    Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
+    Preview.camera.transform.LookAt(CameraLookAtTarget);
   }
 
   void OnWheelEvent(WheelEvent e) {
@@ -167,7 +165,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     if (this.HasPointerCapture(e.pointerId)) {
       Vector2 delta = e.position - lastPointerPosition;
       CameraRotation += RotationScalar * new Vector2(delta.y, delta.x);
-      CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 89 /*lol gimbal lock*/);
+      CameraRotation.x = Mathf.Clamp(CameraRotation.x, -30, 89); // avoid gimbal lock
       lastPointerPosition = e.position;
       e.StopPropagation();
     }
