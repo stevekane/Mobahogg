@@ -1,18 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UIElements;
+using UnityEditor;
 using UnityEditor.UIElements;
-using Unity.VisualScripting;
 
-[CustomEditor(typeof(AFuckingList))]
-public class AFuckingListEditor : Editor {
-  public override VisualElement CreateInspectorGUI() {
-    var list = new PolymorphicList<AFuckingItem, PropertyFieldBinder>();
-    list.BindProperty(serializedObject.FindProperty("Items"));
-    return list;
-  }
+public interface IPropertyBinder {
+  public void BindProperty(SerializedProperty property);
 }
 
 public class PropertyFieldBinder : PropertyField, IPropertyBinder {
@@ -77,7 +71,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
     ListContainer = new VisualElement { name = "ListItemsContainer" };
     Add(ListContainer);
     Button addButton = new Button(DisplayConcreteTypeMenu);
-    addButton.text = $"Add New {typeof(T).HumanName()}";
+    addButton.text = $"Add New {typeof(T).FullName}";
     Add(addButton);
   }
 

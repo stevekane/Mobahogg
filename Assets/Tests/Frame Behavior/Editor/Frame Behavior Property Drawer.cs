@@ -14,10 +14,6 @@ public class FrameBehaviorDrawer : PropertyDrawer {
   }
 }
 
-public interface IPropertyBinder {
-  public void BindProperty(SerializedProperty property);
-}
-
 public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
   SerializedProperty Property;
   Label prefix;
@@ -46,8 +42,6 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
 
   public void BindProperty(SerializedProperty property) {
     Property = property;
-    // Seems to complain that binding to reference object is not supported... not sure what it means
-    // bindingPath = property.propertyPath;
     this.Bind(property.serializedObject);
     var detailPanel = NoFoldoutInspectorUtility.CreateNoFoldoutInspector(property);
     detailContainer.Clear();
@@ -56,7 +50,6 @@ public class FrameBehaviorRoot : VisualElement, IBindable, IPropertyBinder {
   }
 
   void BuildUI() {
-    // Build the header row containing the prefix and the timeline container.
     var trackRow = new VisualElement();
     trackRow.style.flexDirection = FlexDirection.Row;
     trackRow.style.alignItems = Align.Center;

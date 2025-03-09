@@ -1,14 +1,23 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering.Universal;
 
 [CustomEditor(typeof(CameraPreviewRenderer))]
 public class CameraPreviewRendererEditor : Editor {
   private RenderTexture previewTexture;
-  private const int previewWidth = 256;
-  private const int previewHeight = 256;
+  private const int previewWidth = 512;
+  private const int previewHeight = 512;
 
   void OnEnable() {
-    previewTexture = new RenderTexture(previewWidth, previewHeight, 16, RenderTextureFormat.ARGB32);
+    // Formatting here is important if you want HDR-based effects like Bloom
+    GraphicsFormat colorFormat = GraphicsFormat.R16G16B16A16_SFloat;
+    previewTexture = new RenderTexture(
+      previewWidth,
+      previewHeight,
+      colorFormat,
+      SystemInfo.GetGraphicsFormat(DefaultFormat.DepthStencil));
     previewTexture.Create();
   }
 
@@ -21,14 +30,12 @@ public class CameraPreviewRendererEditor : Editor {
 
   public override void OnInspectorGUI() {
     DrawDefaultInspector();
-
     CameraPreviewRenderer comp = (CameraPreviewRenderer)target;
     if (comp.previewCamera != null) {
-      // Set the camera to render into our render texture.
-      comp.previewCamera.targetTexture = previewTexture;
-      comp.previewCamera.Render();
-      comp.previewCamera.targetTexture = null;
-
+      UniversalRenderPipeline.SingleCameraRequest request = new() {
+        destination = previewTexture
+      };
+      RenderPipeline.SubmitRenderRequest(comp.previewCamera, request);
       GUILayout.Space(10);
       GUILayout.Label("Camera Preview:", EditorStyles.boldLabel);
       Rect rect = GUILayoutUtility.GetRect(previewWidth, previewHeight, GUILayout.ExpandWidth(false));

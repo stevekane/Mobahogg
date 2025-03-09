@@ -14,7 +14,6 @@ class FrameBehaviorsPreviewScene : VisualElement {
   MonoBehaviour Provider;
   int Frame;
 
-  // Camera control fields
   public float MinZoom = 1f;
   public float MaxZoom = 10f;
   public float ZoomScalar = 0.25f;
@@ -24,9 +23,11 @@ class FrameBehaviorsPreviewScene : VisualElement {
   public Vector2 CameraRotation = new Vector2(15, 90);
 
   Vector3 CameraLookAtTarget =>
-    Provider ? Provider.transform.position + CameraFocusHeight * Vector3.up : CameraFocusHeight * Vector3.up;
+    Provider
+      ? Provider.transform.position + CameraFocusHeight * Vector3.up
+      : CameraFocusHeight * Vector3.up;
   Vector3 ComputedCameraOffset =>
-    Quaternion.Euler(CameraRotation.x, CameraRotation.y, 0) * Vector3.back * CameraZoom;
+    CameraZoom * (Quaternion.Euler(CameraRotation.x, CameraRotation.y, 0) * Vector3.back);
 
   Vector3 lastPointerPosition;
 
@@ -92,8 +93,9 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Preview.camera.backgroundColor = Color.black;
     Preview.camera.transform.position = CameraLookAtTarget + ComputedCameraOffset;
     Preview.camera.GetUniversalAdditionalCameraData().renderPostProcessing = true;
-    Ground = (GameObject)PrefabUtility.InstantiatePrefab(FrameBehaviorsPreviewConfig.Instance.FloorPrefab);
+    Ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
     Ground.hideFlags = HideFlags.HideAndDontSave;
+    Ground.transform.localScale = new(10,10,10);
     Preview.AddSingleGO(Ground);
     var keyLight = Preview.lights[0];
     keyLight.type = LightType.Directional;

@@ -1,6 +1,4 @@
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class FrameSlider : VisualElement {
@@ -39,13 +37,14 @@ public class FrameSlider : VisualElement {
 
   public FrameSlider() {
     style.flexDirection = FlexDirection.Row;
+    style.height = 24;
     prefixLabel = new Label("Frame:");
     prefixLabel.style.width = 180;
     Add(prefixLabel);
     frameSelector = new VisualElement();
     frameSelector.style.flexGrow = 1;
     frameSelector.style.position = Position.Relative;
-    frameSelector.style.backgroundColor = new StyleColor(new Color(0.2f, 0.2f, 0.2f));
+    frameSelector.style.backgroundColor = new StyleColor(new Color(0.1f, 0.1f, 0.1f));
     Add(frameSelector);
     indicator = new VisualElement();
     indicator.style.position = Position.Absolute;
