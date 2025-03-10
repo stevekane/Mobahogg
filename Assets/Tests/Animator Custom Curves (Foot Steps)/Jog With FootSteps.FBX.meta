@@ -941,7 +941,7 @@ ModelImporter:
     second: IK_Weapon_R_Bone
   - first:
       74: 7400000
-    second: Jog Steady
+    second: Jog With Footsteps
   - first:
       95: 9500000
     second: //RootNode
@@ -976,7 +976,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Jog Steady
+      name: Jog With Footsteps
       takeName: Take 001
       internalID: 0
       firstFrame: 0
@@ -988,7 +988,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1005,37 +1005,71 @@ ModelImporter:
           curve:
           - serializedVersion: 3
             time: 0
-            value: 0
+            value: -1
             inSlope: 0
-            outSlope: 0
-            tangentMode: 0
+            outSlope: 2.6954353
+            tangentMode: 69
             weightedMode: 0
             inWeight: 0
             outWeight: 0
           - serializedVersion: 3
-            time: 0.25
-            value: 1
-            inSlope: 2.5767717
-            outSlope: 2.5767717
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.75
-            value: -1
-            inSlope: 1.4971125
-            outSlope: 1.4971125
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
+            time: 0.3709976
             value: 0
+            inSlope: 2.6954353
+            outSlope: 5.1327395
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.56582534
+            value: 1
+            inSlope: 5.1327395
+            outSlope: -3.3667521
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.8628475
+            value: 0
+            inSlope: -3.3667521
+            outSlope: -7.2455907
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1.0008625
+            value: -1
+            inSlope: -7.2455907
+            outSlope: 0
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          preInfinity: 2
+          postInfinity: 2
+          rotationOrder: 4
+      - name: HasFootStep
+        curve:
+          serializedVersion: 2
+          curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
             inSlope: 0
             outSlope: 0
-            tangentMode: 0
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 34
             weightedMode: 0
             inWeight: 0
             outWeight: 0

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356
-  - rid: 1366356038239649860
   - rid: 2944954043238187079
   - rid: 2944954043238187080
   EndFrame: 32
@@ -28,17 +27,6 @@ MonoBehaviour:
         StartFrame: 0
         EndFrame: 32
         PositionMultiplier: 3
-    - rid: 1366356038239649860
-      type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
-      data:
-        StartFrame: 5
-        EndFrame: 32
-        VisualEffectAsset: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
-        StartEventName: OnPlay
-        AttachedToOwner: 1
-        Offset: {x: 0, y: 1, z: 1}
-        Rotation: {x: 0, y: 90, z: 0}
-        Scale: {x: 1, y: 1, z: 2}
     - rid: 2944954043238187079
       type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
