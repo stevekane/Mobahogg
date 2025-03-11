@@ -252,7 +252,7 @@ MonoBehaviour:
   stickyNoteInfos: []
   categories:
   - name: Emission
-    collapsed: 1
+    collapsed: 0
   - name: Velocity and Forces
     collapsed: 1
   - name: Color
@@ -379,8 +379,8 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: Spawn Rate
-    path: Spawn Rate
+  - name: Spawn Count
+    path: Spawn Count
     tooltip: 
     space: -1
     spaceable: 0
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_InputSlots: []
   m_OutputSlots:
   - {fileID: 8926484042661614557}
-  m_ExposedName: Spawn Rate
+  m_ExposedName: Spawn Count
   m_Exposed: 1
   m_Order: 0
   m_Category: Emission
@@ -1343,7 +1343,15 @@ MonoBehaviour:
   m_EnumValues: []
   m_ValueFilter: 0
   m_Tooltip: 
-  m_Nodes: []
+  m_Nodes:
+  - m_Id: 0
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614557}
+      inputSlot: {fileID: 8926484042661614894}
+    position: {x: 502, y: -110}
+    expandedSlots: []
+    expanded: 1
+    supecollapsed: 0
 --- !u!114 &8926484042661614557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1377,7 +1385,8 @@ MonoBehaviour:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
   m_Direction: 1
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614894}
 --- !u!114 &8926484042661614558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7686,7 +7695,8 @@ MonoBehaviour:
       m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614557}
 --- !u!114 &8926484042661614895
 MonoBehaviour:
   m_ObjectHideFlags: 0

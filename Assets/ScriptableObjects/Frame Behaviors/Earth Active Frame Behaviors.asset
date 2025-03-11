@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
+  m_Name: Earth Active Frame Behaviors
+  m_EditorClassIdentifier: 
+  Behaviors:
+  - rid: 2944954201308135495
+  - rid: 2944954201308135496
+  - rid: 2944954201308135497
+  - rid: 2944954201308135498
+  - rid: 2944954201308135503
+  - rid: 2944954201308135504
+  - rid: 2944954201308135506
+  EndFrame: 72
+  PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 2944954201308135495
+      type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 0
+        EndFrame: 72
+        AnimationClip: {fileID: 0}
+        StartStateName: Earth Active
+        LayerIndex: 2
+        CrossFadeDuration: 0.1
+    - rid: 2944954201308135496
+      type: {class: RootMotionBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 24
+        EndFrame: 38
+        PositionMultiplier: 3
+    - rid: 2944954201308135497
+      type: {class: WeaponAimFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 38
+        EndFrame: 58
+        Direction: {x: 0, y: 1, z: 0}
+        TurnSpeed: 720
+    - rid: 2944954201308135498
+      type: {class: SFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 38
+        EndFrame: 39
+        Volume: 0.5
+        AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
+    - rid: 2944954201308135503
+      type: {class: VibrateFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 38
+        EndFrame: 58
+        Axis: {x: 0, y: 1, z: 0}
+        Frequency: 20
+        Intensity: 0.125
+    - rid: 2944954201308135504
+      type: {class: CameraShakeFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 38
+        EndFrame: 58
+        Intensity: 2.5
+    - rid: 2944954201308135506
+      type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 39
+        EndFrame: 72
+        VisualEffectAsset: {fileID: 0}
+        VisualEffectPrefab: {fileID: 5954992169719115302, guid: 45ec114cb58c7e1469831c34f061826b, type: 3}
+        StartEventName: OnPlay
+        BehaviorTag: {fileID: 11400000, guid: 52b78164d2e72f946b27157ebd7d8908, type: 2}
+        AttachedToParent: 0
+        Offset: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0}
+        Scale: {x: 1, y: 1, z: 1}

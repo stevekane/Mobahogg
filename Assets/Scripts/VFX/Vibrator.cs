@@ -17,7 +17,7 @@ public class Vibrator : MonoBehaviour {
   float ElapsedTime;
   int FramesRemaining;
 
-  public void Vibrate(Vector3 axis, int frames, float amplitude, float frequency) {
+  public void StartVibrate(Vector3 axis, int frames, float amplitude, float frequency) {
     Axis = axis;
     Amplitude = Mathf.Abs(amplitude);
     Frequency = frequency;
@@ -25,21 +25,25 @@ public class Vibrator : MonoBehaviour {
     FramesRemaining = Mathf.Max(FramesRemaining, frames);
   }
 
-  void Start() {
-    LocalPosition = Target.transform.localPosition;
-  }
-
-  void FixedUpdate() {
+  public void Vibrate(float dt) {
     if (FramesRemaining > 0) {
       var displacement = Mathf.Sin(ElapsedTime * Frequency * 2.0f * Mathf.PI) * Amplitude;
       var localAxis = Target.transform.InverseTransformDirection(Axis);
       Target.transform.localPosition = LocalPosition + displacement * localAxis;
-      ElapsedTime += LocalClock.Parent().DeltaTime();
+      ElapsedTime += dt;
       FramesRemaining--;
     } else {
       FramesRemaining = 0;
       ElapsedTime = 0;
       Target.transform.localPosition = LocalPosition;
     }
+  }
+
+  void Start() {
+    LocalPosition = Target.transform.localPosition;
+  }
+
+  void FixedUpdate() {
+    Vibrate(LocalClock.Parent().DeltaTime());
   }
 }

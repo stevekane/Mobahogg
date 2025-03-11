@@ -19,7 +19,7 @@ public partial class WeaponAimFrameBehavior {
   }
 
   public override void PreviewOnLateUpdate(PreviewRenderUtility preview) {
-    WeaponAim.Aim(1/60f);
+    WeaponAim.Aim(1/60f, TurnSpeed);
   }
 }
 #endif
@@ -27,7 +27,8 @@ public partial class WeaponAimFrameBehavior {
 [Serializable]
 [DisplayName("Aim Weapon")]
 public partial class WeaponAimFrameBehavior : FrameBehavior {
-  public Vector3 Direction;
+  public Vector3 Direction = Vector3.forward;
+  public float TurnSpeed = 720;
 
   WeaponAim WeaponAim;
 

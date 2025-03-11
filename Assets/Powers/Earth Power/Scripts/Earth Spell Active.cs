@@ -49,7 +49,7 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
 
   void OnSlam() {
     CameraManager.Instance.Shake(Settings.ActiveCameraShakeIntensity);
-    Vibrator.Vibrate(Vector3.up, Settings.ActiveSlamHitStop.Ticks, 0.125f, 20);
+    Vibrator.StartVibrate(Vector3.up, Settings.ActiveSlamHitStop.Ticks, 0.125f, 20);
     HitStop.FramesRemaining = Settings.ActiveSlamHitStop.Ticks;
     foreach (var player in LivesManager.Active.Players) {
       var delta = player.transform.position - AbilityManager.transform.position;

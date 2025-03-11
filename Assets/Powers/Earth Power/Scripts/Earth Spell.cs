@@ -77,7 +77,7 @@ public class EarthSpell : MonoBehaviour {
     var sz = Random.Range(Settings.RockMinSize, Settings.RockMaxSize);
     rock.transform.localScale = new Vector3(sx, sy, sz);
     var vibrationAxis = Random.onUnitSphere;
-    rock.GetComponent<Vibrator>().Vibrate(vibrationAxis, 120, Settings.RockJitterAmplitude, Settings.RockJitterFrequency);
+    rock.GetComponent<Vibrator>().StartVibrate(vibrationAxis, 120, Settings.RockJitterAmplitude, Settings.RockJitterFrequency);
     Rocks.Add(rock);
   }
 

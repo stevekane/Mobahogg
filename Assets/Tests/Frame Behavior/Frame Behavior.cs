@@ -5,8 +5,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public abstract class BehaviorTag {}
-
 public interface IProvider<T> {
   public T Value(BehaviorTag tag);
 }

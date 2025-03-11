@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4951ce8e93d81546a0ffb5999328320, type: 3}
-  m_Name: DIVE ROLL TEST FRAME BEHAVIORS
+  m_Name: Dive Roll Frame Behaviors
   m_EditorClassIdentifier: 
   Behaviors:
   - rid: 1366355905362526356

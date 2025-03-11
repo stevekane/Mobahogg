@@ -3,20 +3,18 @@ using UnityEngine;
 [DefaultExecutionOrder((int)ExecutionGroups.Rendering)]
 public class WeaponAim : MonoBehaviour {
   [SerializeField] LocalClock LocalClock;
-  [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
   [SerializeField] Transform Weapon;
-  [SerializeField] float TurnSpeed = 720;
 
   Quaternion DefaultLocalRotation;
 
   public Vector3? AimDirection = null;
 
-  public void Aim(float dt) {
+  public void Aim(float dt, float turnSpeed = 720) {
     var aimDirection = AimDirection;
     var targetLocalRotation = aimDirection.HasValue
       ? WeaponLocalRotationFromWorldSpaceVector(aimDirection.Value)
       : DefaultLocalRotation;
-    var maxDegrees = dt * TurnSpeed;
+    var maxDegrees = dt * turnSpeed;
     Weapon.localRotation = Quaternion.RotateTowards(Weapon.localRotation, targetLocalRotation, maxDegrees);
   }
 
@@ -28,14 +26,9 @@ public class WeaponAim : MonoBehaviour {
 
   void Start() {
     DefaultLocalRotation = Weapon.localRotation;
-    AnimatorCallbackHandler.OnIK.Listen(OnAnimatorIK);
   }
 
-  void OnDestroy() {
-    AnimatorCallbackHandler.OnIK.Unlisten(OnAnimatorIK);
-  }
-
-  void OnAnimatorIK(int layer) {
+  void FixedUpdate() {
     Aim(LocalClock.DeltaTime());
   }
 }

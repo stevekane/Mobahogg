@@ -61,7 +61,7 @@ public class Combatant : MonoBehaviour {
     if (Flash)
       Flash.Set(meleeAttackEvent.Config.HitStopDuration.Ticks);
     if (Vibrator)
-      Vibrator.Vibrate(
+      Vibrator.StartVibrate(
         meleeAttackEvent.ToVictim,
         meleeAttackEvent.Config.HitStopDuration.Ticks,
         meleeAttackEvent.Config.VibrationAmplitude,

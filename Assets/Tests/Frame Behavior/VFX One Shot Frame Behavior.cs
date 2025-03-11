@@ -9,7 +9,7 @@ using UnityEditor;
 
 public partial class VFXOneShotFrameBehavior {
   public override void PreviewInitialize(object provider) {
-    TryGetValue(provider, null, out Owner);
+    TryGetValue(provider, BehaviorTag, out Parent);
   }
 
   public override void PreviewCleanup(object provider) {
@@ -17,20 +17,21 @@ public partial class VFXOneShotFrameBehavior {
   }
 
   public override void PreviewOnStart(PreviewRenderUtility preview) {
-    var name = VisualEffectAsset ? VisualEffectAsset.name : "EMPTY_VFX";
-    VisualEffect = new GameObject($"Instance({name})").AddComponent<VisualEffect>();
-    SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Owner.gameObject.scene);
-    VisualEffect.visualEffectAsset = VisualEffectAsset;
-    VisualEffect.initialEventName = StartEventName;
-    VisualEffect.resetSeedOnPlay = false;
-    VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
-    VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
-    VisualEffect.transform.localScale = Scale;
-    VisualEffect.pause = true;
-    VisualEffect.Reinit();
+    if (VisualEffectPrefab) {
+      VisualEffect = GameObject.Instantiate(VisualEffectPrefab);
+      SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Parent.gameObject.scene);
+      VisualEffect.transform.position = Parent.transform.position + Parent.TransformVector(Offset);
+      VisualEffect.transform.SetParent(AttachedToParent ? Parent : null);
+      // Specific to preview setup
+      VisualEffect.resetSeedOnPlay = false;
+      VisualEffect.pause = true;
+      VisualEffect.Reinit();
+    }
   }
 
   public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+    if (!VisualEffect)
+      return;
     VisualEffect.Simulate(Time.fixedDeltaTime);
   }
 }
@@ -41,31 +42,26 @@ public partial class VFXOneShotFrameBehavior {
 public partial class VFXOneShotFrameBehavior : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
-  public VisualEffectAsset VisualEffectAsset;
+  public VisualEffect VisualEffectPrefab;
   public string StartEventName = "OnPlay";
-  public bool AttachedToOwner;
+  public BehaviorTag BehaviorTag;
+  public bool AttachedToParent;
   public Vector3 Offset;
-  public Vector3 Rotation;
-  public Vector3 Scale = Vector3.one;
 
-  GameObject Owner;
+  Transform Parent;
   VisualEffect VisualEffect;
 
   public override void Initialize(object provider) {
-    TryGetValue(provider, null, out Owner);
+    TryGetValue(provider, BehaviorTag, out Parent);
   }
 
   public override void OnStart() {
-    var name = VisualEffectAsset ? VisualEffectAsset.name : "EMPTY_VFX";
-    VisualEffect = new GameObject($"Instance({name})").AddComponent<VisualEffect>();
-    SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Owner.gameObject.scene);
-    VisualEffect.gameObject.name = $"Instance({VisualEffectAsset.name})";
-    VisualEffect.visualEffectAsset = VisualEffectAsset;
-    VisualEffect.initialEventName = StartEventName;
-    VisualEffect.resetSeedOnPlay = false;
-    VisualEffect.transform.SetParent(AttachedToOwner ? Owner.transform : null);
-    VisualEffect.transform.SetLocalPositionAndRotation(Offset, Quaternion.Euler(Rotation));
-    VisualEffect.transform.localScale = Scale;
-    VisualEffect.gameObject.AddComponent<Shortlived>().Lifetime = Timeval.FromSeconds(MAX_VFX_LIFETIME);
+    if (VisualEffectPrefab) {
+      VisualEffect = GameObject.Instantiate(VisualEffectPrefab);
+      SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Parent.gameObject.scene);
+      VisualEffect.transform.position = Parent.transform.position + Parent.TransformVector(Offset);
+      VisualEffect.transform.SetParent(AttachedToParent ? Parent : null);
+      VisualEffect.gameObject.AddComponent<Shortlived>().Lifetime = Timeval.FromSeconds(MAX_VFX_LIFETIME);
+    }
   }
 }
