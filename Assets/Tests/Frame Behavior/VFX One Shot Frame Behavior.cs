@@ -22,6 +22,7 @@ public partial class VFXOneShotFrameBehavior {
       SceneManager.MoveGameObjectToScene(VisualEffect.gameObject, Parent.gameObject.scene);
       VisualEffect.transform.position = Parent.transform.position + Parent.TransformVector(Offset);
       VisualEffect.transform.SetParent(AttachedToParent ? Parent : null);
+
       // Specific to preview setup
       VisualEffect.resetSeedOnPlay = false;
       VisualEffect.pause = true;

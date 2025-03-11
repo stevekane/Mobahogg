@@ -67,17 +67,14 @@ MonoBehaviour:
       data:
         StartFrame: 38
         EndFrame: 58
-        Intensity: 2.5
+        Intensity: 5
     - rid: 2944954201308135506
       type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 39
         EndFrame: 72
-        VisualEffectAsset: {fileID: 0}
         VisualEffectPrefab: {fileID: 5954992169719115302, guid: 45ec114cb58c7e1469831c34f061826b, type: 3}
         StartEventName: OnPlay
         BehaviorTag: {fileID: 11400000, guid: 52b78164d2e72f946b27157ebd7d8908, type: 2}
         AttachedToParent: 0
         Offset: {x: 0, y: 0, z: 0}
-        Rotation: {x: 0, y: 0, z: 0}
-        Scale: {x: 1, y: 1, z: 1}
