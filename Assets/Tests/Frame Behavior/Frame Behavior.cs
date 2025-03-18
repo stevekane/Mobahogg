@@ -138,13 +138,13 @@ public abstract class FrameBehavior : IConsumer {
   public bool Active(int frame) => frame >= StartFrame && frame <= EndFrame;
 
   public virtual void Initialize(object provider) {}
+  public virtual void Cleanup(object provider) {}
   public virtual void OnStart() {}
   public virtual void OnEnd() {}
   public virtual void OnUpdate() {}
-  public virtual FrameBehavior Clone() {
-    return (FrameBehavior)MemberwiseClone();
-  }
+  public virtual FrameBehavior Clone() => (FrameBehavior)MemberwiseClone();
   #if UNITY_EDITOR
+  public bool ShowPreview = true;
   void OnValidate() => EndFrame = Mathf.Clamp(EndFrame, StartFrame, int.MaxValue);
   public virtual void PreviewInitialize(object provider) {}
   public virtual void PreviewCleanup(object provider) {}

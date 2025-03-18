@@ -4,7 +4,6 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.Experimental.GraphView;
 
 class FrameBehaviorsPreviewScene : VisualElement {
   PreviewRenderUtility Preview;
@@ -81,34 +80,16 @@ class FrameBehaviorsPreviewScene : VisualElement {
     Preview.camera.clearFlags = CameraClearFlags.SolidColor;
     Preview.camera.backgroundColor = Color.black;
     Preview.camera.GetUniversalAdditionalCameraData().renderPostProcessing = true;
-    var cameraContainer = EditorUtility.CreateGameObjectWithHideFlags(
-      "Camera Container",
-      HideFlags.HideAndDontSave);
+
+    var cameraContainer = new GameObject("Camera Container");
     Preview.AddSingleGO(cameraContainer);
     Preview.camera.transform.SetParent(cameraContainer.transform);
-    /*
-    TODO: This kind of sucks...
-    It feels like you should be able to restrict physics in these scenes somehow...
 
-    Steve -
-    var parameters = new SceneParameters(LocalPhysicsMode.Physics3D);
-    There is an API during SceneConstruction: SceneManager.CreateScene("Name", paramaters);
-
-    According to what I can find, this creates an isolated PhysicsScene of the type Physics3D
-    and all gameobjects in this scene supposedly only interact with one another.
-
-    I have not tested this as doing so is a bit tedious.
-
-    You would need to bypass PreviewRenderUtility (Which I am close to being able to do
-    anyway) and create your own Scene ( Preview Scene ideally ... ) which also creates this
-    isolated physics world...yay.
-    */
     var ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-    GameObject.DestroyImmediate(ground.GetComponent<Rigidbody>());
-    GameObject.DestroyImmediate(ground.GetComponent<Collider>());
-    ground.hideFlags = HideFlags.HideAndDontSave;
     ground.transform.localScale = new Vector3(10, 10, 10);
+    ground.isStatic = true;
     Preview.AddSingleGO(ground);
+
     var keyLight = Preview.lights[0];
     keyLight.type = LightType.Directional;
     keyLight.transform.position = new Vector3(-2, 3, 2);
@@ -118,6 +99,7 @@ class FrameBehaviorsPreviewScene : VisualElement {
     keyLight.shadows = LightShadows.Hard;
     keyLight.shadowCustomResolution = 2048 * 2;
     keyLight.shadowStrength = 0.8f;
+
     var rimLight = Preview.lights[1];
     rimLight.type = LightType.Directional;
     rimLight.transform.position = new Vector3(0, 3, -2);
@@ -151,13 +133,21 @@ class FrameBehaviorsPreviewScene : VisualElement {
         avatarAttacher.Attach();
       Preview.AddSingleGO(Provider.gameObject);
       Provider.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-      FrameBehaviors = ReferenceFrameBehaviors.Select(fb => fb.Clone()).ToList();
+      FrameBehaviors =
+        ReferenceFrameBehaviors
+        .Where(fb => fb.ShowPreview)
+        .Select(fb => fb.Clone())
+        .ToList();
       FrameBehavior.PreviewInitializeBehaviors(FrameBehaviors, Provider);
       for (var i = 0; i <= Frame; i++) {
         FrameBehavior.PreviewStartBehaviors(FrameBehaviors, i, Preview);
         FrameBehavior.PreviewUpdateBehaviors(FrameBehaviors, i, Preview);
         FrameBehavior.PreviewLateUpdateBehaviors(FrameBehaviors, i, Preview);
         FrameBehavior.PreviewEndBehaviors(FrameBehaviors, i, Preview);
+        /*
+        var physicsScene = Preview.camera.scene.GetPhysicsScene();
+        physicsScene.Simulate(Time.fixedDeltaTime);
+        */
       }
     }
 

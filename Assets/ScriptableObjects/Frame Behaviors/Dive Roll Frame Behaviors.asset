@@ -16,6 +16,9 @@ MonoBehaviour:
   - rid: 1366355905362526356
   - rid: 2944954043238187079
   - rid: 2944954043238187080
+  - rid: 2944954207227609088
+  - rid: 2944954224413245511
+  - rid: 2944954224413245512
   EndFrame: 32
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:
@@ -43,3 +46,23 @@ MonoBehaviour:
         EndFrame: 16
         Volume: 0.25
         AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
+    - rid: 2944954207227609088
+      type: {class: CancellableFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 24
+        EndFrame: 32
+    - rid: 2944954224413245511
+      type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 15
+        EndFrame: 32
+        VisualEffectPrefab: {fileID: 5954992169719115302, guid: 45ec114cb58c7e1469831c34f061826b, type: 3}
+        BehaviorTag: {fileID: 0}
+        AttachedToParent: 0
+        Offset: {x: 0, y: 0, z: 0}
+    - rid: 2944954224413245512
+      type: {class: CameraShakeFrameBehavior, ns: , asm: Assembly-CSharp}
+      data:
+        StartFrame: 15
+        EndFrame: 32
+        Intensity: 1

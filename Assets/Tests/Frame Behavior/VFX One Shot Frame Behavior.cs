@@ -30,7 +30,7 @@ public partial class VFXOneShotFrameBehavior {
     }
   }
 
-  public override void PreviewOnUpdate(PreviewRenderUtility preview) {
+  public override void PreviewOnLateUpdate(PreviewRenderUtility preview) {
     if (!VisualEffect)
       return;
     VisualEffect.Simulate(Time.fixedDeltaTime);
@@ -44,7 +44,6 @@ public partial class VFXOneShotFrameBehavior : FrameBehavior {
   const float MAX_VFX_LIFETIME = 10;
 
   public VisualEffect VisualEffectPrefab;
-  public string StartEventName = "OnPlay";
   public BehaviorTag BehaviorTag;
   public bool AttachedToParent;
   public Vector3 Offset;
