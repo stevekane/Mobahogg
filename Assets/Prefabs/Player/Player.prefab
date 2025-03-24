@@ -243,9 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalClock: {fileID: 988945814378296752}
-  AnimatorCallbackHandler: {fileID: 4586432229471970141}
   Weapon: {fileID: 1577097722156766584}
-  TurnSpeed: 720
 --- !u!1 &1362762618311181353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1849,7 @@ GameObject:
   - component: {fileID: 6859262562219351446}
   - component: {fileID: 5297446814743032710}
   - component: {fileID: 988945814378296752}
+  - component: {fileID: 8837555653979256320}
   - component: {fileID: 946447732338073073}
   - component: {fileID: 2681228181615276424}
   - component: {fileID: 3542533184097295049}
@@ -1966,6 +1965,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8837555653979256320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760936782829562045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc07c8f9c525d1145967158feb718afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 689494837935415685}
+  AnimatorCallbackHandler: {fileID: 4586432229471970141}
+  CharacterController: {fileID: 3542533184097295049}
+  WeaponAim: {fileID: 2517820396137454006}
+  Vibrator: {fileID: 5073438194861813563}
+  Owner: {fileID: 7760936782829562045}
+  LocalClock: {fileID: 988945814378296752}
+  WeaponButtTag: {fileID: 11400000, guid: 52b78164d2e72f946b27157ebd7d8908, type: 2}
+  WeaponButt: {fileID: 8074032272218531998}
+  OwnerTag: {fileID: 11400000, guid: a8c5a5899cb83874086f13977b141da4, type: 2}
 --- !u!114 &946447732338073073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2665,3 +2686,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 2389756806577773164}
   LocalClock: {fileID: 988945814378296752}
+--- !u!4 &8074032272218531998 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2512666631502519378, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+  m_PrefabInstance: {fileID: 5967957181181424844}
+  m_PrefabAsset: {fileID: 0}

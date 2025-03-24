@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.ComponentModel;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 public partial class VibrateFrameBehavior {
@@ -35,5 +36,38 @@ public partial class VibrateFrameBehavior : FrameBehavior {
   public override void OnStart() {
     if (Vibrator)
       Vibrator.StartVibrate(Axis, EndFrame-StartFrame, Intensity, Frequency);
+  }
+
+  public VibrateInstance Instantiate(ITypeAndTagProvider<FrameBehavior> provider) {
+    return new VibrateInstance {
+      FrameBehavior = this,
+      Vibrator = provider.Get<Vibrator>(default)
+    };
+  }
+}
+
+public class VibrateInstance {
+  public VibrateFrameBehavior FrameBehavior;
+  public Vibrator Vibrator;
+
+  public void OnStart() {
+    Vibrator.StartVibrate(
+      FrameBehavior.Axis,
+      FrameBehavior.EndFrame-FrameBehavior.StartFrame,
+      FrameBehavior.Intensity,
+      FrameBehavior.Frequency);
+  }
+}
+
+public class VibratePreview {
+  public VibrateFrameBehavior FrameBehavior;
+  public Vibrator Vibrator;
+
+  public void OnStart() {
+    Vibrator.StartVibrate(
+      FrameBehavior.Axis,
+      FrameBehavior.EndFrame-FrameBehavior.StartFrame,
+      FrameBehavior.Intensity,
+      FrameBehavior.Frequency);
   }
 }

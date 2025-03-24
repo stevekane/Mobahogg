@@ -1,19 +1,10 @@
+using System;
 using UnityEngine;
 
 public class FrameBehaviorsPreviewProvider :
 MonoBehaviour,
 ICancellable,
-IProvider<Animator>,
-IProvider<AnimatorCallbackHandler>,
-IProvider<AudioSource>,
-IProvider<KCharacterController>,
-IProvider<WeaponAim>,
-IProvider<Hitbox>,
-IProvider<Vibrator>,
-IProvider<GameObject>,
-IProvider<Transform>,
-IProvider<LocalClock>,
-IProvider<ICancellable>
+ITypeAndTagProvider<BehaviorTag>
 {
   [SerializeField] Animator Animator;
   [SerializeField] AnimatorCallbackHandler AnimatorCallbackHandler;
@@ -30,15 +21,17 @@ IProvider<ICancellable>
 
   public bool Cancellable { get; set; }
 
-  Animator IProvider<Animator>.Value(BehaviorTag tag) => Animator;
-  AnimatorCallbackHandler IProvider<AnimatorCallbackHandler>.Value(BehaviorTag tag) => AnimatorCallbackHandler;
-  AudioSource IProvider<AudioSource>.Value(BehaviorTag tag) => AudioSource;
-  KCharacterController IProvider<KCharacterController>.Value(BehaviorTag tag) => CharacterController;
-  WeaponAim IProvider<WeaponAim>.Value(BehaviorTag tag) => WeaponAim;
-  GameObject IProvider<GameObject>.Value(BehaviorTag tag) => Owner;
-  Transform IProvider<Transform>.Value(BehaviorTag tag) => tag == WeaponButtTag ? WeaponButt : transform;
-  LocalClock IProvider<LocalClock>.Value(BehaviorTag tag) => LocalClock;
-  Hitbox IProvider<Hitbox>.Value(BehaviorTag tag) => Hitbox;
-  Vibrator IProvider<Vibrator>.Value(BehaviorTag tag) => Vibrator;
-  ICancellable IProvider<ICancellable>.Value(BehaviorTag tag) => this;
+  public object Get(Type type, BehaviorTag tag) => (type, tag) switch {
+    _ when type == typeof(GameObject) => gameObject,
+    _ when type == typeof(Animator) => Animator,
+    _ when type == typeof(AnimatorCallbackHandler) => AnimatorCallbackHandler,
+    _ when type == typeof(KCharacterController) => CharacterController,
+    _ when type == typeof(WeaponAim) => WeaponAim,
+    _ when type == typeof(Transform) & tag == WeaponButtTag => WeaponButt,
+    _ when type == typeof(Transform) => transform,
+    _ when type == typeof(LocalClock) => LocalClock,
+    _ when type == typeof(Vibrator) => Vibrator,
+    _ when type == typeof(ICancellable) => this,
+    _ => null
+  };
 }

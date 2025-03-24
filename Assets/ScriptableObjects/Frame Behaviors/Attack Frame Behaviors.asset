@@ -29,28 +29,34 @@ MonoBehaviour:
       data:
         StartFrame: 0
         EndFrame: 24
+        ShowPreview: 1
         PositionMultiplier: 5
     - rid: 1366355905362526358
       type: {class: WeaponAimFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 4
         EndFrame: 20
+        ShowPreview: 1
         Direction: {x: 0, y: 0, z: 1}
+        TurnSpeed: 1080
     - rid: 1366356012347686980
       type: {class: HitboxBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 5
         EndFrame: 8
+        ShowPreview: 1
     - rid: 1366356038239649855
       type: {class: CancellableFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 20
         EndFrame: 24
+        ShowPreview: 1
     - rid: 1366356038239649859
       type: {class: AimAssistFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
         EndFrame: 4
+        ShowPreview: 1
         TurnSpeed: 720
         AimAssistQuery: {fileID: 11400000, guid: 10f99c7b60ab16846a2a2da4c3259191, type: 2}
     - rid: 2944954043238187081
@@ -58,6 +64,7 @@ MonoBehaviour:
       data:
         StartFrame: 0
         EndFrame: 24
+        ShowPreview: 1
         AnimationClip: {fileID: 0}
         StartStateName: Attack
         LayerIndex: 2

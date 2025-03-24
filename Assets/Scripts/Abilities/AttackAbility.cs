@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Abilities;
-using System.Linq;
+using System;
 
 public interface ICancellable {
   public bool Cancellable { get; set; }
@@ -10,37 +10,24 @@ public interface ICancellable {
 public class AttackAbility :
   Ability,
   ICancellable,
-  IProvider<Animator>,
-  IProvider<AnimatorCallbackHandler>,
-  IProvider<KCharacterController>,
-  IProvider<WeaponAim>,
-  IProvider<Hitbox>,
-  IProvider<GameObject>,
-  IProvider<LocalClock>,
-  IProvider<ICancellable>
+  ITypeAndTagProvider<BehaviorTag>
 {
   [SerializeField, InlineEditor] FrameBehaviors FrameBehaviors;
-  [SerializeField, Min(0)] int Frame;
-
-  [Header("Writes To")]
   [SerializeField] Hitbox Hitbox;
 
   List<FrameBehavior> Behaviors = new(8);
+  int Frame;
 
   void Awake() {
     Frame = FrameBehaviors.EndFrame+1;
     Hitbox.CollisionEnabled = false;
   }
 
-  // TODO: Possibly this could live elsewhere? Perhaps somewhere more...generic like the player / owner?
-  AnimatorCallbackHandler IProvider<AnimatorCallbackHandler>.Value(BehaviorTag tag) => AnimatorCallbackHandler;
-  Animator IProvider<Animator>.Value(BehaviorTag tag) => AnimatorCallbackHandler.Animator;
-  KCharacterController IProvider<KCharacterController>.Value(BehaviorTag tag) => CharacterController;
-  WeaponAim IProvider<WeaponAim>.Value(BehaviorTag tag) => AbilityManager.LocateComponent<WeaponAim>();
-  GameObject IProvider<GameObject>.Value(BehaviorTag tag) => AbilityManager.gameObject;
-  LocalClock IProvider<LocalClock>.Value(BehaviorTag tag) => LocalClock;
-  Hitbox IProvider<Hitbox>.Value(BehaviorTag tag) => Hitbox;
-  ICancellable IProvider<ICancellable>.Value(BehaviorTag tag) => this;
+  public object Get(Type type, BehaviorTag tag) => (type, tag) switch {
+    _ when type == typeof(Hitbox) => Hitbox,
+    _ when type == typeof(ICancellable) => this,
+    _ => AbilityManager.LocateComponent<FrameBehaviorProvider>().Get(type, tag)
+  };
 
   public bool Cancellable { get; set; }
   public override bool CanCancel => Cancellable;
