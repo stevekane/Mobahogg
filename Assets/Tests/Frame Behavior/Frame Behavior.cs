@@ -4,10 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using System.Threading.Tasks;
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,30 +16,35 @@ public interface IConsumer {
   #endif
 }
 
-public static class FrameBehaviorExtensions {
+public static class FrameBehaviorsExtensions {
   public static async UniTask RunInstance(
-  FrameBehaviors frameBehaviors,
-  ITypeAndTagProvider<FrameBehavior> provider,
+  this FrameBehaviors frameBehaviors,
+  ITypeAndTagProvider<BehaviorTag> provider,
   LocalClock localClock,
   CancellationToken token) {
-    var instance = new FrameBehaviors(frameBehaviors);
+    var instance = FrameBehaviors.CreateDeepInstance(frameBehaviors);
     var frame = 0;
     var endFrame = instance.EndFrame;
+    TimeManager.Instance.Log("Task Started");
     try {
       instance.Behaviors.ForEach(behavior => behavior.Initialize(provider));
       do {
+        await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+        if (frame == 0)
+          TimeManager.Instance.Log("Task Processed 0th frame");
         if (!localClock.Frozen()) {
+          // Debug.Log($"Ran Frame { frame } / { endFrame }");
           FrameBehavior.StartBehaviors(instance.Behaviors, frame);
           FrameBehavior.UpdateBehaviors(instance.Behaviors, frame);
           FrameBehavior.EndBehaviors(instance.Behaviors, frame);
           frame = frame + localClock.DeltaFrames();
         }
-        await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-      } while (frame <= endFrame);
+      } while (frame <= endFrame && token.CanBeCanceled);
     } catch (Exception e) {
       throw e;
     } finally {
-      FrameBehavior.EndBehaviors(instance.Behaviors, frame);
+      TimeManager.Instance.Log("Task canceled");
+      FrameBehavior.CancelActiveBehaviors(instance.Behaviors, frame);
     }
   }
 }

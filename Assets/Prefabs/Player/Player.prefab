@@ -765,7 +765,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FrameBehaviors: {fileID: 11400000, guid: bd3d2227fcb402b4f8996aa1eefe3598, type: 2}
-  Frame: 25
   Hitbox: {fileID: 4976621135791344551}
 --- !u!114 &1178469524206981660
 MonoBehaviour:
@@ -823,7 +822,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 1, z: 2}
@@ -1982,7 +1981,6 @@ MonoBehaviour:
   CharacterController: {fileID: 3542533184097295049}
   WeaponAim: {fileID: 2517820396137454006}
   Vibrator: {fileID: 5073438194861813563}
-  Owner: {fileID: 7760936782829562045}
   LocalClock: {fileID: 988945814378296752}
   WeaponButtTag: {fileID: 11400000, guid: 52b78164d2e72f946b27157ebd7d8908, type: 2}
   WeaponButt: {fileID: 8074032272218531998}

@@ -38,7 +38,7 @@ public partial class VibrateFrameBehavior : FrameBehavior {
       Vibrator.StartVibrate(Axis, EndFrame-StartFrame, Intensity, Frequency);
   }
 
-  public VibrateInstance Instantiate(ITypeAndTagProvider<FrameBehavior> provider) {
+  public VibrateInstance Instantiate(ITypeAndTagProvider<BehaviorTag> provider) {
     return new VibrateInstance {
       FrameBehavior = this,
       Vibrator = provider.Get<Vibrator>(default)

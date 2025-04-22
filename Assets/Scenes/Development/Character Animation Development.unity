@@ -176,7 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de10383cf12ad3428e1fc76ee143c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PreviewLifecycle: {fileID: 98918461}
 --- !u!1 &385770870
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +313,7 @@ MonoBehaviour:
   - 1.7227249
   - 2.4058936
   - 6.0299726
-  - 7.375348
+  - 7.3753486
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
   AttackMontage: {fileID: 11400000, guid: 0c4349a2a3ce89b4eaf1d8cb842000ec, type: 2}
   DashMontage: {fileID: 11400000, guid: 215103246f432b349a6fd80515bb19e6, type: 2}
@@ -479,6 +478,54 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
+--- !u!1 &665880766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 665880768}
+  - component: {fileID: 665880767}
+  m_Layer: 0
+  m_Name: Fake Ability Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &665880767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665880766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e027c9845d0a9b4cb7e033748bbde44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WindupState:
+    TotalFrames: 120
+  RecoveryState:
+    TotalFrames: 60
+--- !u!4 &665880768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665880766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786212544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1382,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107332014362920586, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: field of view
-      value: 26.231289
+      value: 26.233448
       objectReference: {fileID: 0}
     - target: {fileID: 441921929137087940, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1606,3 +1653,4 @@ SceneRoots:
   - {fileID: 98918460}
   - {fileID: 1303022240}
   - {fileID: 1600833741665156115}
+  - {fileID: 665880768}

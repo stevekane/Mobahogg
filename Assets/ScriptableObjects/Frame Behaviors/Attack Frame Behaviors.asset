@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Attack Frame Behaviors
   m_EditorClassIdentifier: 
   Behaviors:
+  - rid: 2944954043238187081
   - rid: 1366355905362526356
   - rid: 1366355905362526358
   - rid: 1366356012347686980
   - rid: 1366356038239649855
   - rid: 1366356038239649859
-  - rid: 2944954043238187081
   EndFrame: 24
   PreviewPrefab: {fileID: 2592350235531396016, guid: 9bb61d454c91db849b6968788783b4e1, type: 3}
   references:

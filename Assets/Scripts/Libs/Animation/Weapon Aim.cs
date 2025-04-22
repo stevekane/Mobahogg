@@ -9,12 +9,12 @@ public class WeaponAim : MonoBehaviour {
 
   public Vector3? AimDirection = null;
 
-  public void Aim(float dt, float turnSpeed = 720) {
+  public void Aim(float dt, float turnSpeed = 1080) {
+    var maxDegrees = dt * turnSpeed;
     var aimDirection = AimDirection;
     var targetLocalRotation = aimDirection.HasValue
       ? WeaponLocalRotationFromWorldSpaceVector(aimDirection.Value)
       : DefaultLocalRotation;
-    var maxDegrees = dt * turnSpeed;
     Weapon.localRotation = Quaternion.RotateTowards(Weapon.localRotation, targetLocalRotation, maxDegrees);
   }
 
@@ -27,6 +27,7 @@ public class WeaponAim : MonoBehaviour {
   void Start() {
     DefaultLocalRotation = Weapon.localRotation;
   }
+
 
   void FixedUpdate() {
     Aim(LocalClock.DeltaTime());

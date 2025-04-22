@@ -1,27 +1,23 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Abilities;
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public interface ICancellable {
   public bool Cancellable { get; set; }
 }
 
-public class AttackAbility :
-  Ability,
-  ICancellable,
-  ITypeAndTagProvider<BehaviorTag>
-{
+public interface IAimable {
+  public bool Aimable { get; set; }
+}
+
+public class AttackAbility : Ability, ICancellable, IAimable, ITypeAndTagProvider<BehaviorTag> {
   [SerializeField, InlineEditor] FrameBehaviors FrameBehaviors;
   [SerializeField] Hitbox Hitbox;
 
-  List<FrameBehavior> Behaviors = new(8);
-  int Frame;
-
-  void Awake() {
-    Frame = FrameBehaviors.EndFrame+1;
-    Hitbox.CollisionEnabled = false;
-  }
+  UniTask Task;
+  CancellationTokenSource CancellationTokenSource;
 
   public object Get(Type type, BehaviorTag tag) => (type, tag) switch {
     _ when type == typeof(Hitbox) => Hitbox,
@@ -29,35 +25,26 @@ public class AttackAbility :
     _ => AbilityManager.LocateComponent<FrameBehaviorProvider>().Get(type, tag)
   };
 
-  public bool Cancellable { get; set; }
+  [field:SerializeField] public bool Cancellable { get; set; }
   public override bool CanCancel => Cancellable;
   public override void Cancel() {
-    FrameBehavior.CancelActiveBehaviors(Behaviors, Frame);
-    Frame = FrameBehaviors.EndFrame+1;
+    CancellationTokenSource.Cancel();
+    CancellationTokenSource.Dispose();
   }
 
-  public override bool IsRunning => Frame <= FrameBehaviors.EndFrame;
+  public override bool IsRunning => Task.Status == UniTaskStatus.Pending && !CancellationTokenSource.IsCancellationRequested;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
-    Frame = 0;
-    Behaviors.Clear();
-    FrameBehaviors.Behaviors.ForEach(b => Behaviors.Add(b.Clone()));
-    FrameBehavior.InitializeBehaviors(Behaviors, this);
+    CancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);
+    Task = FrameBehaviors.RunInstance(this, LocalClock, CancellationTokenSource.Token);
   }
 
-  public bool CanAim => Frame == 0;
+  [field:SerializeField]
+  public bool Aimable { get; set; }
+  public bool CanAim => Aimable;
   public void Aim(Vector2 direction) {
     if (direction.sqrMagnitude > 0) {
       CharacterController.Rotation.Set(Quaternion.LookRotation(direction.XZ()));
-    }
-  }
-
-  void FixedUpdate() {
-    if (IsRunning) {
-      FrameBehavior.StartBehaviors(Behaviors, Frame);
-      FrameBehavior.UpdateBehaviors(Behaviors, Frame);
-      FrameBehavior.EndBehaviors(Behaviors, Frame);
-      Frame++;
     }
   }
 }
