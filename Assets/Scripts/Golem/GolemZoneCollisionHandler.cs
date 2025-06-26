@@ -4,8 +4,6 @@ public class GolemZoneCollisionHandler : MonoBehaviour {
   [SerializeField] Golem Golem;
 
   void OnTriggerEnter(Collider other) {
-    if (other.TryGetComponent(out GolemZone golemZone)) {
-      Golem.OnReachAttractor(golemZone.GolemAttractor);
-    }
+    // Used to call something on Golem... maybe obsolete altogether now
   }
 }
