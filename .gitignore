@@ -83,3 +83,8 @@ crashlytics-build.properties
 /Assets/UMotionEditor/Data.meta
 /Assets/UMotionEditor/Data/*
 /UMotionData/*
+
+# Automatic backups of .blend files
+*.blend[1-9]*
+*.blend~
+*.blend@
