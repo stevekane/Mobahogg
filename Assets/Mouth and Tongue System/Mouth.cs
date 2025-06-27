@@ -6,15 +6,55 @@ class Mouth : MonoBehaviour
   [SerializeField] Timeval FireTravelDuration = Timeval.FromTicks(3);
   [SerializeField] float ClawImpactCameraShakeIntensity = 10;
   [SerializeField] float ClawImpactVibrationIntensity = 0.25f;
+  [SerializeField] Transform MouthModel;
 
   public Tongue Tongue;
   public Claw Claw;
+
+  public void Close()
+  {
+    StartCoroutine(MoveToLocalXRotation(45, 5));
+  }
+
+  public void Open()
+  {
+    StartCoroutine(MoveToLocalXRotation(0, 20));
+  }
 
   public void Fire(Sphere sphere)
   {
     StopAllCoroutines();
     StartCoroutine(FireClaw(sphere));
   }
+
+  IEnumerator MoveToLocalXRotation(float targetDegrees, int ticks)
+  {
+    // Cache initial local rotation
+    var initialRotation = MouthModel.localRotation;
+    var initialEuler = MouthModel.localEulerAngles;
+
+    // Convert current X angle into signed range (-180, 180)
+    float NormalizeAngle(float angle) => (angle > 180f) ? angle - 360f : angle;
+
+    var currentX = NormalizeAngle(initialEuler.x);
+    var delta = targetDegrees - currentX;
+    var degreesPerStep = delta / ticks;
+
+    for (var i = 0; i < ticks; i++)
+    {
+      currentX += degreesPerStep;
+      var euler = MouthModel.localEulerAngles;
+      euler.x = currentX;
+      MouthModel.localEulerAngles = euler;
+      yield return new WaitForFixedUpdate();
+    }
+
+    // Snap to exact final value to avoid precision drift
+    var finalEuler = MouthModel.localEulerAngles;
+    finalEuler.x = targetDegrees;
+    MouthModel.localEulerAngles = finalEuler;
+  }
+
 
   IEnumerator FireClaw(Sphere sphere)
   {

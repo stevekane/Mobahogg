@@ -14,6 +14,11 @@ public class MouthAndTongueSystem : MonoBehaviour
   }
 
   IEnumerator InitializationAnimation() {
+    LeftMouth.Close();
+    RightMouth.Close();
+    yield return new WaitForSeconds(PrefireDuration.Seconds);
+    LeftMouth.Open();
+    RightMouth.Open();
     yield return new WaitForSeconds(PrefireDuration.Seconds);
     LeftMouth.Fire(Sphere);
     RightMouth.Fire(Sphere);
