@@ -925,7 +925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1182,7 +1182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3171,6 +3171,10 @@ MonoBehaviour:
     Millis: 3000
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
+  ClawImpactImpulseDistance: 1
+  ClawImpactImpulseDuration:
+    Millis: 166.66667
+  ClawImpactEasingFunctionName: 23
   MouthModel: {fileID: 589393693}
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 1621622588}
@@ -5607,6 +5611,12 @@ MonoBehaviour:
   ImpactStrength: 500
   Radius: 1.5
   DirectVelocity: {x: 0, y: 0, z: 0}
+  Impulses: []
+  StrikeImpulseDistance: 5
+  StrikeImpulseDuration:
+    Millis: 166.66667
+  StrikeImpulseEasingFunctionName: 0
+  TugOfWarAxis: {x: 1, y: 0, z: 0}
 --- !u!54 &1324959180
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5918,7 +5928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7030,6 +7040,10 @@ MonoBehaviour:
     Millis: 3000
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
+  ClawImpactImpulseDistance: 1
+  ClawImpactImpulseDuration:
+    Millis: 166.66667
+  ClawImpactEasingFunctionName: 23
   MouthModel: {fileID: 199468193}
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 591653798}
@@ -9624,7 +9638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3940210354078894059, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7670139816875702728, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,28 +1,6 @@
 using System.Collections;
-using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 
-/*
-We can have different behaviors.
-
-We can be closed.
-We can be opening.
-We can be closing.
-We can be open.
-We can be firing.
-We can be pulling.
-
-When closed
-  Wait duration then begin opening
-When opening
-  Open over frame count
-When open
-  Wait duration then begin firing
-When firing
-  Let harpoon fly over frame count
-When pulling
-  Contribute to velocity of the sphere
-*/
 class Mouth : MonoBehaviour
 {
   [SerializeField] Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
@@ -38,6 +16,9 @@ class Mouth : MonoBehaviour
   [SerializeField] Timeval PullingDuration = Timeval.FromSeconds(3);
   [SerializeField] float ClawImpactCameraShakeIntensity = 10;
   [SerializeField] float ClawImpactVibrationIntensity = 0.25f;
+  [SerializeField] float ClawImpactImpulseDistance = 1;
+  [SerializeField] Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
+  [SerializeField] EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
   [SerializeField] Transform MouthModel;
 
   public Sphere Sphere;
@@ -108,6 +89,12 @@ class Mouth : MonoBehaviour
     var impactVFX = Instantiate(Sphere.ImpactVFXPrefab, impactPosition, Quaternion.identity);
     Destroy(impactVFX.gameObject, 3);
     CameraManager.Instance.Shake(ClawImpactCameraShakeIntensity);
+    var sphereImpulse = new SphereImpulse(
+      transform.forward,
+      ClawImpactImpulseDistance,
+      ClawImpactImpulseDuration.Ticks,
+      ClawImpactEasingFunctionName);
+    Sphere.Impulses.Add(sphereImpulse);
     Sphere.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
     Sphere.GetComponent<Flash>().Set(20);
     Claw.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
