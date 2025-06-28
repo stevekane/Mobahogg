@@ -842,6 +842,104 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
   m_PrefabInstance: {fileID: 1025706479}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &216312230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 216312231}
+  - component: {fileID: 216312232}
+  - component: {fileID: 216312233}
+  - component: {fileID: 216312234}
+  m_Layer: 7
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &216312231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216312230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 591653797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &216312232
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216312230}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &216312233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216312230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce0c9e24a5611d40b8628b31748e2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 1687836993}
+  Collider: {fileID: 216312232}
+--- !u!54 &216312234
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216312230}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1001 &238460196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2135,7 +2233,8 @@ Transform:
   m_LocalPosition: {x: 0.000034570694, y: 3, z: 4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 216312231}
   m_Father: {fileID: 199468193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &591653798
@@ -2150,11 +2249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PullingStrength: 1
-  ColliderLayerMask:
-    serializedVersion: 2
-    m_Bits: 524288
   LineRenderer: {fileID: 591653799}
+  Collider: {fileID: 216312232}
 --- !u!120 &591653799
 LineRenderer:
   serializedVersion: 2
@@ -3117,6 +3213,8 @@ GameObject:
   m_Component:
   - component: {fileID: 836649166}
   - component: {fileID: 836649167}
+  - component: {fileID: 836649168}
+  - component: {fileID: 836649169}
   m_Layer: 0
   m_Name: Turtle Mouth
   m_TagString: Untagged
@@ -3169,6 +3267,7 @@ MonoBehaviour:
     Millis: 100
   PullingDuration:
     Millis: 3000
+  PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
   ClawImpactImpulseDistance: 1
@@ -3179,6 +3278,56 @@ MonoBehaviour:
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 1621622588}
   Claw: {fileID: 514625590}
+--- !u!114 &836649168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836649165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HurtFlinchName: Hurt Flinch
+  HurtDirectionName: Hurt Direction
+  Animator: {fileID: 0}
+  Health: {fileID: 0}
+  HitStop: {fileID: 0}
+  Knockback: {fileID: 0}
+  Flash: {fileID: 0}
+  Vibrator: {fileID: 0}
+  OnHurt:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 836649167}
+        m_TargetAssemblyTypeName: Mouth, Assembly-CSharp
+        m_MethodName: OnTongueHurt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &836649169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836649165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &850122228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42e2a0cdb2ea3144d8e4ae8741d3a419, type: 3}
@@ -4273,7 +4422,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 07168b2ab93389e44b18a1370d28bb98, type: 2}
     - target: {fileID: 919132149155446097, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
       propertyPath: m_Name
-      value: Snake Open Mouth (1)
+      value: Robot Snake Open Mouth
       objectReference: {fileID: 0}
     - target: {fileID: 2986997666168468369, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -5555,6 +5704,104 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2595816520642639848, guid: be97e7cb154d51848a664c3640df3c34, type: 3}
   m_PrefabInstance: {fileID: 1305173820}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1320532443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1320532444}
+  - component: {fileID: 1320532445}
+  - component: {fileID: 1320532446}
+  - component: {fileID: 1320532447}
+  m_Layer: 7
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1320532444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320532443}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1621622587}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1320532445
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320532443}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1320532446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320532443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce0c9e24a5611d40b8628b31748e2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Combatant: {fileID: 836649168}
+  Collider: {fileID: 1320532445}
+--- !u!54 &1320532447
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320532443}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
 --- !u!1 &1324959177
 GameObject:
   m_ObjectHideFlags: 0
@@ -6787,7 +7034,8 @@ Transform:
   m_LocalPosition: {x: 0.00002336001, y: 3, z: 4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1320532444}
   m_Father: {fileID: 589393693}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1621622588
@@ -6802,11 +7050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PullingStrength: 1
-  ColliderLayerMask:
-    serializedVersion: 2
-    m_Bits: 524288
   LineRenderer: {fileID: 1621622589}
+  Collider: {fileID: 1320532445}
 --- !u!120 &1621622589
 LineRenderer:
   serializedVersion: 2
@@ -6986,6 +7231,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1687836990}
   - component: {fileID: 1687836991}
+  - component: {fileID: 1687836993}
+  - component: {fileID: 1687836992}
   m_Layer: 0
   m_Name: Robot Mouth
   m_TagString: Untagged
@@ -7038,6 +7285,7 @@ MonoBehaviour:
     Millis: 100
   PullingDuration:
     Millis: 3000
+  PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
   ClawImpactImpulseDistance: 1
@@ -7048,6 +7296,56 @@ MonoBehaviour:
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 591653798}
   Claw: {fileID: 352573497}
+--- !u!114 &1687836992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687836989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1687836993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687836989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HurtFlinchName: Hurt Flinch
+  HurtDirectionName: Hurt Direction
+  Animator: {fileID: 0}
+  Health: {fileID: 0}
+  HitStop: {fileID: 0}
+  Knockback: {fileID: 0}
+  Flash: {fileID: 0}
+  Vibrator: {fileID: 0}
+  OnHurt:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1687836991}
+        m_TargetAssemblyTypeName: Mouth, Assembly-CSharp
+        m_MethodName: OnTongueHurt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1696960137
 GameObject:
   m_ObjectHideFlags: 0
@@ -7057,10 +7355,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1696960138}
+  - component: {fileID: 1696960142}
   - component: {fileID: 1696960139}
   - component: {fileID: 1696960140}
   - component: {fileID: 1696960141}
-  - component: {fileID: 1696960142}
   m_Layer: 7
   m_Name: Hurtbox
   m_TagString: Untagged

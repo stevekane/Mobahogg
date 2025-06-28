@@ -1,4 +1,5 @@
 using System.Collections;
+using Melee;
 using UnityEngine;
 
 class Mouth : MonoBehaviour
@@ -14,6 +15,7 @@ class Mouth : MonoBehaviour
   [SerializeField] Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
   [SerializeField] Timeval FireTravelDuration = Timeval.FromTicks(3);
   [SerializeField] Timeval PullingDuration = Timeval.FromSeconds(3);
+  [SerializeField] float PullingStrength = 1;
   [SerializeField] float ClawImpactCameraShakeIntensity = 10;
   [SerializeField] float ClawImpactVibrationIntensity = 0.25f;
   [SerializeField] float ClawImpactImpulseDistance = 1;
@@ -24,6 +26,13 @@ class Mouth : MonoBehaviour
   public Sphere Sphere;
   public Tongue Tongue;
   public Claw Claw;
+
+  public void OnTongueHurt(MeleeAttackEvent meleeAttackEvent)
+  {
+    Debug.Log($"You hurt {name}");
+    ForceClose();
+  }
+
 
   [ContextMenu("Force Close")]
   void ForceClose()
@@ -104,7 +113,7 @@ class Mouth : MonoBehaviour
   IEnumerator PullingBehavior() {
     for (var i = 0; i < PullingDuration.Ticks; i++)
     {
-      Sphere.DirectVelocity -= Tongue.PullingStrength * (Sphere.transform.position - transform.position).XZ().normalized;
+      Sphere.DirectVelocity -= PullingStrength * (Sphere.transform.position - transform.position).XZ().normalized;
       yield return new WaitForFixedUpdate();
     }
     yield return ClosingBehavior();

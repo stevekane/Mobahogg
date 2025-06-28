@@ -2,67 +2,36 @@ using UnityEngine;
 
 class Tongue : MonoBehaviour
 {
-  public static int MAX_COLLIDERS = 64;
-  public static float TONGUE_RADIUS = 0.2f;
-
-  public float PullingStrength = 10f;
-
-  [SerializeField] LayerMask ColliderLayerMask;
-  [SerializeField] LineRenderer LineRenderer;
-
-  Vector3 End;
-  SphereCollider[] Colliders = new SphereCollider[0];
-
-  void Awake()
+  public static void AlignCapsuleBetweenPoints(CapsuleCollider capsuleCollider, Vector3 pointA, Vector3 pointB)
   {
-    Colliders = new SphereCollider[MAX_COLLIDERS];
-    for (var i = 0; i < MAX_COLLIDERS; i++)
-    {
-      Colliders[i] = new GameObject().AddComponent<SphereCollider>();
-      Colliders[i].radius = TONGUE_RADIUS;
-      Colliders[i].transform.SetParent(transform);
-      Colliders[i].gameObject.layer = Mathf.RoundToInt(Mathf.Log(ColliderLayerMask.value, 2));
-    }
+    var transform = capsuleCollider.transform;
+
+    // Compute direction and distance
+    Vector3 direction = pointB - pointA;
+    float distance = direction.magnitude;
+    Vector3 midPoint = (pointA + pointB) * 0.5f;
+
+    // Move the object to the midpoint
+    transform.position = midPoint;
+
+    // Orient the object to face from A to B
+    transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
+
+    // Adjust the capsule height to fit the distance
+    capsuleCollider.direction = 1; // 0 = X, 1 = Y, 2 = Z (default is Y)
+    capsuleCollider.height = distance;
+
+    // Optional: clamp to minimum size so height >= 2 * radius
+    capsuleCollider.height = Mathf.Max(capsuleCollider.height, 2f * capsuleCollider.radius);
   }
+
+  [SerializeField] LineRenderer LineRenderer;
+  [SerializeField] CapsuleCollider Collider;
 
   public void SetTongueEnd(Vector3 end)
   {
-    End = end;
-    var tongueLength = Vector3.Distance(End, transform.position);
-    var colliderCount = Mathf.Clamp(Mathf.FloorToInt(tongueLength), 0, MAX_COLLIDERS);
-    var start = transform.position;
-
-    if (colliderCount <= 1)
-    {
-      Colliders[0].transform.position = (start + End) * 0.5f;
-      Colliders[0].enabled = true;
-    }
-    else
-    {
-      for (var i = 0; i < colliderCount; i++)
-      {
-        var interpolant = (float)i / (colliderCount - 1);
-        Colliders[i].transform.position = Vector3.Lerp(End, start, interpolant);
-        Colliders[i].enabled = true;
-      }
-    }
-
-    for (var i = colliderCount; i < MAX_COLLIDERS; i++)
-    {
-      Colliders[i].enabled = false;
-    }
-
+    AlignCapsuleBetweenPoints(Collider, end, transform.position);
     LineRenderer.SetPosition(0, transform.position);
-    LineRenderer.SetPosition(1, End);
-  }
-
-
-  void OnDrawGizmos()
-  {
-    for (var i = 0; i < Colliders.Length; i++)
-    {
-      if (!Colliders[i].enabled) break;
-      Gizmos.DrawWireSphere(Colliders[i].transform.position, 1);
-    }
+    LineRenderer.SetPosition(1, end);
   }
 }
