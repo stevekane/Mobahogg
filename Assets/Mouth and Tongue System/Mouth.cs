@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 class Mouth : MonoBehaviour
@@ -72,11 +73,10 @@ class Mouth : MonoBehaviour
     var impactPosition = Claw.transform.position - Claw.transform.forward * sphere.Radius;
     var impactVFX = Instantiate(sphere.ImpactVFXPrefab, impactPosition, Quaternion.identity);
     Destroy(impactVFX.gameObject, 3);
-
-    // Camera
     CameraManager.Instance.Shake(ClawImpactCameraShakeIntensity);
-    sphere.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 60, ClawImpactVibrationIntensity, 20);
-    sphere.GetComponent<Flash>().Set(60);
+    sphere.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
+    sphere.GetComponent<Flash>().Set(20);
+    Claw.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
   }
 
   void LateUpdate()

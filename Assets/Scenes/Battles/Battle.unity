@@ -1314,6 +1314,8 @@ GameObject:
   m_Component:
   - component: {fileID: 352573496}
   - component: {fileID: 352573497}
+  - component: {fileID: 352573499}
+  - component: {fileID: 352573498}
   m_Layer: 0
   m_Name: Claw
   m_TagString: Untagged
@@ -1350,6 +1352,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 7
+--- !u!114 &352573498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352573495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &352573499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352573495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ac4748fe7ae9949967d4d80e08c40b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 471679570}
+  LocalClock: {fileID: 352573498}
+  Axis: {x: 0, y: 0, z: 0}
+  Frequency: 0
+  Amplitude: 0
 --- !u!1 &385530631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,6 +1736,8 @@ GameObject:
   m_Component:
   - component: {fileID: 514625589}
   - component: {fileID: 514625590}
+  - component: {fileID: 514625592}
+  - component: {fileID: 514625591}
   m_Layer: 0
   m_Name: Claw
   m_TagString: Untagged
@@ -1741,6 +1774,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 7
+--- !u!114 &514625591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514625588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &514625592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514625588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ac4748fe7ae9949967d4d80e08c40b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 86337601}
+  LocalClock: {fileID: 352573498}
+  Axis: {x: 0, y: 0, z: 0}
+  Frequency: 0
+  Amplitude: 0
 --- !u!1 &542286647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8376855064916863572, guid: 5414dd7f2634e43489391182e3311b20, type: 3}
@@ -3092,7 +3154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FireTravelDuration:
-    Millis: 50
+    Millis: 100
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
   MouthModel: {fileID: 589393693}
@@ -6934,7 +6996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FireTravelDuration:
-    Millis: 50
+    Millis: 100
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
   MouthModel: {fileID: 199468193}
