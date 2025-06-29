@@ -4,24 +4,31 @@ using UnityEngine;
 
 class Mouth : MonoBehaviour
 {
+  [Header("Prefab References")]
+  [SerializeField] GameObject ShatteredClawPrefab;
+  [SerializeField] ParticleSystem TongueExplosionFragmentsParticleSystem;
+
+  [Header("Child References")]
+  [SerializeField] Transform MouthModel;
+
   [SerializeField] Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
   [SerializeField] Vector3 OpenLocalMouthPosition = new Vector3(0, 0, 0);
   [SerializeField] float ClosedLocalXRotation = 45;
   [SerializeField] float OpenLocalXRotation = 0;
-  [SerializeField] GameObject ShatteredClawPrefab;
   [SerializeField] Timeval ClosedDuration = Timeval.FromSeconds(5);
   [SerializeField] Timeval OpenDuration = Timeval.FromSeconds(0.5f);
   [SerializeField] Timeval OpeningDuration = Timeval.FromSeconds(0.5f);
   [SerializeField] Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
   [SerializeField] Timeval FireTravelDuration = Timeval.FromTicks(3);
-  [SerializeField] Timeval PullingDuration = Timeval.FromSeconds(3);
   [SerializeField] float PullingStrength = 1;
   [SerializeField] float ClawImpactCameraShakeIntensity = 10;
   [SerializeField] float ClawImpactVibrationIntensity = 0.25f;
   [SerializeField] float ClawImpactImpulseDistance = 1;
   [SerializeField] Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
   [SerializeField] EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
-  [SerializeField] Transform MouthModel;
+  [SerializeField] float TongueStrikeVibrationAmplitude = 1;
+  [SerializeField] int TongueMaxHealth = 3;
+  [SerializeField] Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
 
   public Sphere Sphere;
   public Tongue Tongue;
@@ -29,8 +36,9 @@ class Mouth : MonoBehaviour
 
   public void OnTongueHurt(MeleeAttackEvent meleeAttackEvent)
   {
-    Debug.Log($"You hurt {name}");
-    ForceClose();
+    Tongue.Damage(1);
+    Tongue.Vibrate(TongueStrikeVibrationAmplitude);
+    Tongue.GetComponent<Flash>().Set(TongueStrikeFlashDuration.Ticks);
   }
 
 
@@ -82,6 +90,8 @@ class Mouth : MonoBehaviour
   }
 
   IEnumerator FiringBehavior() {
+    Tongue.GetComponent<Flash>().TurnOff();
+    Tongue.SetHealth(TongueMaxHealth);
     Tongue.gameObject.SetActive(true);
     var initialPosition = Claw.transform.position;
     for (var i = 0; i < FireTravelDuration.Ticks; i++)
@@ -111,11 +121,24 @@ class Mouth : MonoBehaviour
   }
 
   IEnumerator PullingBehavior() {
-    for (var i = 0; i < PullingDuration.Ticks; i++)
+    IEnumerator Pull()
     {
-      Sphere.DirectVelocity -= PullingStrength * (Sphere.transform.position - transform.position).XZ().normalized;
-      yield return new WaitForFixedUpdate();
+      while (true)
+      {
+        Sphere.DirectVelocity -= PullingStrength * (Sphere.transform.position - transform.position).XZ().normalized;
+        yield return new WaitForFixedUpdate();
+      }
     }
+    IEnumerator TongueDied()
+    {
+      yield return new WaitUntil(() => Tongue.IsDead);
+      var explosionVFX = Instantiate(TongueExplosionFragmentsParticleSystem, transform);
+      var moveTo = explosionVFX.GetComponent<TongueExplosionVFX>();
+      var clawAttachmentPoint = Claw.transform.position-Claw.Length*Claw.transform.forward;
+      moveTo.transform.position = clawAttachmentPoint;
+      moveTo.Destination = transform.position;
+    }
+    yield return Either(Pull(), TongueDied());
     yield return ClosingBehavior();
   }
 
@@ -169,6 +192,25 @@ class Mouth : MonoBehaviour
     StartCoroutine(AWrapper());
     StartCoroutine(BWrapper());
     yield return new WaitUntil(() => aDone && bDone);
+  }
+
+  IEnumerator Either(IEnumerator a, IEnumerator b)
+  {
+    var aDone = false;
+    var bDone = false;
+    IEnumerator AWrapper() {
+      yield return a;
+      aDone = true;
+    }
+    IEnumerator BWrapper() {
+      yield return b;
+      bDone = true;
+    }
+    var aRoutine = StartCoroutine(AWrapper());
+    var bRoutine = StartCoroutine(BWrapper());
+    yield return new WaitUntil(() => aDone || bDone);
+    StopCoroutine(aRoutine);
+    StopCoroutine(bRoutine);
   }
 
   void LateUpdate()

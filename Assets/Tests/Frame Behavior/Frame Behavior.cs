@@ -25,15 +25,11 @@ public static class FrameBehaviorsExtensions {
     var instance = FrameBehaviors.CreateDeepInstance(frameBehaviors);
     var frame = 0;
     var endFrame = instance.EndFrame;
-    TimeManager.Instance.Log("Task Started");
     try {
       instance.Behaviors.ForEach(behavior => behavior.Initialize(provider));
       do {
         await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-        if (frame == 0)
-          TimeManager.Instance.Log("Task Processed 0th frame");
         if (!localClock.Frozen()) {
-          // Debug.Log($"Ran Frame { frame } / { endFrame }");
           FrameBehavior.StartBehaviors(instance.Behaviors, frame);
           FrameBehavior.UpdateBehaviors(instance.Behaviors, frame);
           FrameBehavior.EndBehaviors(instance.Behaviors, frame);
@@ -43,7 +39,6 @@ public static class FrameBehaviorsExtensions {
     } catch (Exception e) {
       throw e;
     } finally {
-      TimeManager.Instance.Log("Task canceled");
       FrameBehavior.CancelActiveBehaviors(instance.Behaviors, frame);
     }
   }

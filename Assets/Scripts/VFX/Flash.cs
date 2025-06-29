@@ -22,6 +22,13 @@ public class Flash : MonoBehaviour {
     }
   }
 
+  public void TurnOff()
+  {
+    for (int i = 0; i < TargetMeshes.Count; i++) {
+      TargetMeshes[i].materials = OriginalMaterials[i];
+    }
+  }
+
   void Awake() {
     foreach (var root in RendererRoots) {
       foreach (var mesh in root.GetComponentsInChildren<Renderer>()) {
@@ -41,9 +48,7 @@ public class Flash : MonoBehaviour {
     if (RemainingFrames > 0) {
       RemainingFrames--;
     } else {
-      for (int i = 0; i < TargetMeshes.Count; i++) {
-        TargetMeshes[i].materials = OriginalMaterials[i];
-      }
+      TurnOff();
       RemainingFrames = 0;
     }
   }

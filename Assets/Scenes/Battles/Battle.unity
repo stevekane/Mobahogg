@@ -2214,6 +2214,8 @@ GameObject:
   - component: {fileID: 591653797}
   - component: {fileID: 591653798}
   - component: {fileID: 591653799}
+  - component: {fileID: 591653801}
+  - component: {fileID: 591653800}
   m_Layer: 0
   m_Name: Tongue
   m_TagString: Untagged
@@ -2249,8 +2251,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeSinceLastDamageBeforeHealing:
+    Millis: 2000
+  HealTickPeriod:
+    Millis: 500
   LineRenderer: {fileID: 591653799}
   Collider: {fileID: 216312232}
+  WaveLength: 7
+  WaveSpeed: 25
+  AmplitudeDecayRate: 3
 --- !u!120 &591653799
 LineRenderer:
   serializedVersion: 2
@@ -2298,6 +2307,68 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
@@ -2358,6 +2429,34 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &591653800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591653796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &591653801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591653796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6919ed33cf8baa4386e99747ed65d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererRoots:
+  - {fileID: 591653797}
+  LocalClock: {fileID: 591653800}
+  FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
 --- !u!1 &605262653
 GameObject:
   m_ObjectHideFlags: 0
@@ -3250,11 +3349,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fbd124e93704c4ba416569f2690d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShatteredClawPrefab: {fileID: 8653008429407193159, guid: 2b81a4d325d557c46844e5b9fc089a07, type: 3}
+  TongueExplosionFragmentsParticleSystem: {fileID: 2700094239802186608, guid: 96bf25e8141819641b8fb828b548e718, type: 3}
+  MouthModel: {fileID: 589393693}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
   OpenLocalXRotation: 0
-  ShatteredClawPrefab: {fileID: 8653008429407193159, guid: 2b81a4d325d557c46844e5b9fc089a07, type: 3}
   ClosedDuration:
     Millis: 1000
   OpenDuration:
@@ -3265,8 +3366,6 @@ MonoBehaviour:
     Millis: 100
   FireTravelDuration:
     Millis: 100
-  PullingDuration:
-    Millis: 3000
   PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
@@ -3274,7 +3373,10 @@ MonoBehaviour:
   ClawImpactImpulseDuration:
     Millis: 166.66667
   ClawImpactEasingFunctionName: 23
-  MouthModel: {fileID: 589393693}
+  TongueStrikeVibrationAmplitude: 1
+  TongueMaxHealth: 3
+  TongueStrikeFlashDuration:
+    Millis: 50
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 1621622588}
   Claw: {fileID: 514625590}
@@ -4935,7 +5037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1065322856
 Transform:
   m_ObjectHideFlags: 0
@@ -7015,6 +7117,8 @@ GameObject:
   - component: {fileID: 1621622587}
   - component: {fileID: 1621622588}
   - component: {fileID: 1621622589}
+  - component: {fileID: 1621622591}
+  - component: {fileID: 1621622590}
   m_Layer: 0
   m_Name: Tongue
   m_TagString: Untagged
@@ -7050,8 +7154,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeSinceLastDamageBeforeHealing:
+    Millis: 2000
+  HealTickPeriod:
+    Millis: 500
   LineRenderer: {fileID: 1621622589}
   Collider: {fileID: 1320532445}
+  WaveLength: 7
+  WaveSpeed: 25
+  AmplitudeDecayRate: 3
 --- !u!120 &1621622589
 LineRenderer:
   serializedVersion: 2
@@ -7099,6 +7210,68 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
@@ -7159,6 +7332,34 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1621622590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621622586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a973984a7280e428793082215733ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1621622591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621622586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6919ed33cf8baa4386e99747ed65d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererRoots:
+  - {fileID: 1621622587}
+  LocalClock: {fileID: 1621622590}
+  FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
 --- !u!1001 &1677407416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7268,11 +7469,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fbd124e93704c4ba416569f2690d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShatteredClawPrefab: {fileID: 5570329180541995147, guid: cc6199ae08a7e3743a3dae2da60c4dba, type: 3}
+  TongueExplosionFragmentsParticleSystem: {fileID: 1835772131316740359, guid: 58ab4b2b21fe2a543a54e329974e7081, type: 3}
+  MouthModel: {fileID: 199468193}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
   OpenLocalXRotation: 0
-  ShatteredClawPrefab: {fileID: 5570329180541995147, guid: cc6199ae08a7e3743a3dae2da60c4dba, type: 3}
   ClosedDuration:
     Millis: 1000
   OpenDuration:
@@ -7283,8 +7486,6 @@ MonoBehaviour:
     Millis: 100
   FireTravelDuration:
     Millis: 100
-  PullingDuration:
-    Millis: 3000
   PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
@@ -7292,7 +7493,10 @@ MonoBehaviour:
   ClawImpactImpulseDuration:
     Millis: 166.66667
   ClawImpactEasingFunctionName: 23
-  MouthModel: {fileID: 199468193}
+  TongueStrikeVibrationAmplitude: 1
+  TongueMaxHealth: 3
+  TongueStrikeFlashDuration:
+    Millis: 50
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 591653798}
   Claw: {fileID: 352573497}
@@ -9663,7 +9867,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107332014362920586, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: field of view
-      value: 26.233448
+      value: 26.229727
       objectReference: {fileID: 0}
     - target: {fileID: 441921929137087940, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: m_LocalPosition.y
