@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5414dd7f2634e43489391182e3311b20
+guid: 52a1fc11bfbd1b8468f1ff761667d29e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,10 +7,15 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Plasma Glow
+      name: Electrified
     second: {fileID: 2100000, guid: fe75fc9ed564c2e489c21867b83c9395, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tongue Metal
+    second: {fileID: 6341755078290054540, guid: 72150f0696bc9a943841317287eaffb0, type: 3}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

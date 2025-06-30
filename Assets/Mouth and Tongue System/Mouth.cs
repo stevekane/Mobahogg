@@ -29,6 +29,8 @@ class Mouth : MonoBehaviour
   [SerializeField] float TongueStrikeVibrationAmplitude = 1;
   [SerializeField] int TongueMaxHealth = 3;
   [SerializeField] Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
+  [SerializeField] float TongueStrikeImpulseDistance = 1;
+  [SerializeField] EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
 
   public Sphere Sphere;
   public Tongue Tongue;
@@ -38,7 +40,13 @@ class Mouth : MonoBehaviour
   {
     Tongue.Damage(1);
     Tongue.Vibrate(TongueStrikeVibrationAmplitude);
-    Tongue.GetComponent<Flash>().Set(TongueStrikeFlashDuration.Ticks);
+    Claw.GetComponent<Flash>().Set(TongueStrikeFlashDuration.Ticks);
+    Sphere.Impulses.Add(
+      new(
+        direction: -transform.forward,
+        distance: 1,
+        ticks: TongueStrikeFlashDuration.Ticks,
+        easingFunctionName: TongueStrikeImpulseEasingFunction));
   }
 
 
@@ -90,7 +98,7 @@ class Mouth : MonoBehaviour
   }
 
   IEnumerator FiringBehavior() {
-    Tongue.GetComponent<Flash>().TurnOff();
+    Claw.GetComponent<Flash>().TurnOff();
     Tongue.SetHealth(TongueMaxHealth);
     Tongue.gameObject.SetActive(true);
     var initialPosition = Claw.transform.position;
@@ -153,15 +161,12 @@ class Mouth : MonoBehaviour
   {
     var initialRotation = MouthModel.localRotation;
     var targetRotation = Quaternion.Euler(targetDegrees, MouthModel.localEulerAngles.y, MouthModel.localEulerAngles.z);
-
     for (int i = 0; i < ticks; i++)
     {
       float t = (i + 1f) / ticks;
       MouthModel.localRotation = Quaternion.Slerp(initialRotation, targetRotation, t);
       yield return new WaitForFixedUpdate();
     }
-
-    // Ensure final precision
     MouthModel.localRotation = targetRotation;
   }
 
