@@ -2,35 +2,35 @@ using System.Collections;
 using Melee;
 using UnityEngine;
 
-class Mouth : MonoBehaviour
+public class Mouth : MonoBehaviour
 {
   [Header("Prefab References")]
-  [SerializeField] GameObject ShatteredClawPrefab;
-  [SerializeField] ParticleSystem TongueExplosionFragmentsParticleSystem;
+  public GameObject ShatteredClawPrefab;
+  public ParticleSystem TongueExplosionFragmentsParticleSystem;
 
   [Header("Child References")]
-  [SerializeField] Transform MouthModel;
+  public Transform MouthModel;
 
-  [SerializeField] Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
-  [SerializeField] Vector3 OpenLocalMouthPosition = new Vector3(0, 0, 0);
-  [SerializeField] float ClosedLocalXRotation = 45;
-  [SerializeField] float OpenLocalXRotation = 0;
-  [SerializeField] Timeval ClosedDuration = Timeval.FromSeconds(5);
-  [SerializeField] Timeval OpenDuration = Timeval.FromSeconds(0.5f);
-  [SerializeField] Timeval OpeningDuration = Timeval.FromSeconds(0.5f);
-  [SerializeField] Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
-  [SerializeField] Timeval FireTravelDuration = Timeval.FromTicks(3);
-  [SerializeField] float PullingStrength = 1;
-  [SerializeField] float ClawImpactCameraShakeIntensity = 10;
-  [SerializeField] float ClawImpactVibrationIntensity = 0.25f;
-  [SerializeField] float ClawImpactImpulseDistance = 1;
-  [SerializeField] Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
-  [SerializeField] EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
-  [SerializeField] float TongueStrikeVibrationAmplitude = 1;
-  [SerializeField] int TongueMaxHealth = 3;
-  [SerializeField] Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
-  [SerializeField] float TongueStrikeImpulseDistance = 1;
-  [SerializeField] EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
+  public Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
+  public Vector3 OpenLocalMouthPosition = new Vector3(0, 0, 0);
+  public float ClosedLocalXRotation = 45;
+  public float OpenLocalXRotation = 0;
+  public Timeval ClosedDuration = Timeval.FromSeconds(5);
+  public Timeval OpenDuration = Timeval.FromSeconds(0.5f);
+  public Timeval OpeningDuration = Timeval.FromSeconds(0.5f);
+  public Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
+  public Timeval FireTravelDuration = Timeval.FromTicks(3);
+  public float PullingStrength = 1;
+  public float ClawImpactCameraShakeIntensity = 10;
+  public float ClawImpactVibrationIntensity = 0.25f;
+  public float ClawImpactImpulseDistance = 1;
+  public Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
+  public EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
+  public float TongueStrikeVibrationAmplitude = 1;
+  public int TongueMaxHealth = 3;
+  public Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
+  public float TongueStrikeImpulseDistance = 1;
+  public EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
 
   public Sphere Sphere;
   public Tongue Tongue;

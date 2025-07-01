@@ -1,8 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-class Tongue : MonoBehaviour
+public class Tongue : MonoBehaviour
 {
   public static void AlignCapsuleBetweenPoints(CapsuleCollider capsuleCollider, Vector3 pointA, Vector3 pointB)
   {

@@ -4,7 +4,7 @@ using Melee;
 using UnityEngine;
 
 [Serializable]
-class SphereImpulse
+public class SphereImpulse
 {
   public int Tick;
   public int Ticks;
@@ -42,7 +42,7 @@ class SphereImpulse
   }
 }
 
-class Sphere : MonoBehaviour
+public class Sphere : MonoBehaviour
 {
   public GameObject ImpactVFXPrefab;
   public float ImpactStrength = 1000;

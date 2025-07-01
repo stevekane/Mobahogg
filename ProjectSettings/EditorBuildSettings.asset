@@ -21,6 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Battles/Battle.unity
     guid: b61fb2549374cfe479411f5aa17fd54e
   m_configObjects:
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: d4428accc4e335f4c829e851e61d880a, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 0b38420960b325b48bb9101b2ea68b23, type: 3}
   m_UseUCBPForAssetBundles: 0

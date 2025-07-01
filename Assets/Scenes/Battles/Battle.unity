@@ -1584,6 +1584,85 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6ee9e1558a9c2d4fb5039451eb857b9, type: 3}
+--- !u!1 &324113005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324113006}
+  - component: {fileID: 324113007}
+  m_Layer: 0
+  m_Name: Behavior Man
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &324113006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324113005}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.00000038743013}
+  m_LocalPosition: {x: 0.0000046491614, y: 5, z: 24}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 628900547}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+--- !u!114 &324113007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324113005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Graph: {fileID: 5264770176252935528, guid: 985296c875306064ab333067df017efb, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 6490240816508829992
+  - rid: 6490240816508831302
+  - rid: 6490240816508831575
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6490240816508829992
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 324113005}
+    - rid: 6490240816508831302
+      type: {class: 'BlackboardVariable`1[[Mouth, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2443714556640024134
+          m_Value1: 5792873828795046183
+        Name: Mouth
+        m_Value: {fileID: 0}
+    - rid: 6490240816508831575
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7112521715902969130
+          m_Value1: 5726344718922529507
+        Name: Mouth Model
+        m_Value: {fileID: 628900547}
 --- !u!1001 &340237018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1671,6 +1750,7 @@ GameObject:
   - component: {fileID: 352573497}
   - component: {fileID: 352573499}
   - component: {fileID: 352573500}
+  - component: {fileID: 352573501}
   m_Layer: 0
   m_Name: Claw
   m_TagString: Untagged
@@ -1744,6 +1824,29 @@ MonoBehaviour:
   - {fileID: 591653797}
   LocalClock: {fileID: 1687836992}
   FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
+--- !u!136 &352573501
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352573495}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 72
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -36}
 --- !u!1 &385530631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,6 +2203,7 @@ GameObject:
   - component: {fileID: 514625590}
   - component: {fileID: 514625592}
   - component: {fileID: 514625593}
+  - component: {fileID: 514625594}
   m_Layer: 0
   m_Name: Claw
   m_TagString: Untagged
@@ -2173,6 +2277,29 @@ MonoBehaviour:
   - {fileID: 1621622587}
   LocalClock: {fileID: 836649169}
   FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
+--- !u!136 &514625594
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514625588}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 72
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -36}
 --- !u!1 &542286647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8376855064916863572, guid: 5414dd7f2634e43489391182e3311b20, type: 3}
@@ -3167,6 +3294,68 @@ Transform:
   - {fileID: 1390202584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &628900546
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 324113006}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.842171e-14
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00000023841858
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00000023841858
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+      propertyPath: m_Name
+      value: Snake Mouth Open
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+--- !u!4 &628900547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 304dd7b945c2bde4cb495b8865932a55, type: 3}
+  m_PrefabInstance: {fileID: 628900546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &654452044
 GameObject:
   m_ObjectHideFlags: 0
@@ -10938,3 +11127,4 @@ SceneRoots:
   - {fileID: 1948111079}
   - {fileID: 1914417710}
   - {fileID: 2914050757865728083}
+  - {fileID: 324113006}

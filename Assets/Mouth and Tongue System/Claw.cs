@@ -1,5 +1,5 @@
 using UnityEngine;
 
-class Claw : MonoBehaviour {
+public class Claw : MonoBehaviour {
   public float Length = 7;
 }
