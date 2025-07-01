@@ -1500,17 +1500,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8431595479493849170, guid: fe7df838257bb754ba956fa2a42498ff, type: 3}
   m_PrefabInstance: {fileID: 307013117}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &307013119 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1992091815914664053, guid: fe7df838257bb754ba956fa2a42498ff, type: 3}
-  m_PrefabInstance: {fileID: 307013117}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1efe1aac0eb10b448439536b9ec8fc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &308822626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1594,6 +1583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 324113006}
   - component: {fileID: 324113007}
+  - component: {fileID: 324113008}
   m_Layer: 0
   m_Name: Behavior Man
   m_TagString: Untagged
@@ -1663,6 +1653,18 @@ MonoBehaviour:
           m_Value1: 5726344718922529507
         Name: Mouth Model
         m_Value: {fileID: 628900547}
+--- !u!114 &324113008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324113005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d6981d1afede546b9486fdc610605c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &340237018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2738,13 +2740,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LineRenderer: {fileID: 591653799}
-  ElectricalArc: {fileID: 307013119}
   PlasmaArc: {fileID: 1582725992}
+  Collider: {fileID: 216312232}
   TimeSinceLastDamageBeforeHealing:
     Millis: 2000
   HealTickPeriod:
     Millis: 500
-  Collider: {fileID: 216312232}
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5
@@ -3833,17 +3834,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8431595479493849170, guid: fe7df838257bb754ba956fa2a42498ff, type: 3}
   m_PrefabInstance: {fileID: 727702519}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &727702521 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1992091815914664053, guid: fe7df838257bb754ba956fa2a42498ff, type: 3}
-  m_PrefabInstance: {fileID: 727702519}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1efe1aac0eb10b448439536b9ec8fc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &830113838
 GameObject:
   m_ObjectHideFlags: 0
@@ -7945,13 +7935,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LineRenderer: {fileID: 1621622589}
-  ElectricalArc: {fileID: 727702521}
   PlasmaArc: {fileID: 1782285996}
+  Collider: {fileID: 1320532445}
   TimeSinceLastDamageBeforeHealing:
     Millis: 2000
   HealTickPeriod:
     Millis: 500
-  Collider: {fileID: 1320532445}
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5

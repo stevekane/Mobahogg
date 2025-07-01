@@ -58,21 +58,21 @@ public class Mouth : MonoBehaviour
   }
 
   IEnumerator Start() {
-    yield return Both(
-      SlerpLocalXRotation(ClosedLocalXRotation, 1),
-      LerpLocal(ClosedLocalMouthPosition, 1));
+    yield return this.BothCoroutines(
+      MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, 1),
+      MouthModel.transform.LerpLocal(ClosedLocalMouthPosition, 1));
     yield return ClosedBehavior();
   }
 
   IEnumerator ClosedBehavior()
   {
-    yield return WaitFixed(ClosedDuration);
+    yield return CoroutineDelay.WaitFixed(ClosedDuration);
     yield return OpeningBehavior();
   }
 
   IEnumerator OpenBehavior()
   {
-    yield return WaitFixed(OpenDuration);
+    yield return CoroutineDelay.WaitFixed(OpenDuration);
     yield return FiringBehavior();
   }
 
@@ -80,9 +80,9 @@ public class Mouth : MonoBehaviour
   {
     Claw.transform.position = transform.position;
     Claw.gameObject.SetActive(true);
-    yield return Both(
-      SlerpLocalXRotation(OpenLocalXRotation, OpeningDuration.Ticks),
-      LerpLocal(OpenLocalMouthPosition, OpeningDuration.Ticks));
+    yield return this.BothCoroutines(
+      MouthModel.transform.SlerpLocalEulerX(OpenLocalXRotation, OpeningDuration.Ticks),
+      MouthModel.transform.LerpLocal(OpenLocalMouthPosition, OpeningDuration.Ticks));
     yield return OpenBehavior();
   }
 
@@ -91,9 +91,9 @@ public class Mouth : MonoBehaviour
     Tongue.gameObject.SetActive(false);
     Claw.gameObject.SetActive(false);
     Destroy(Instantiate(ShatteredClawPrefab, Claw.transform.position, Claw.transform.rotation), 3);
-    yield return Both(
-      SlerpLocalXRotation(ClosedLocalXRotation, ClosingDuration.Ticks),
-      LerpLocal(ClosedLocalMouthPosition, ClosingDuration.Ticks));
+    yield return this.BothCoroutines(
+      MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, ClosingDuration.Ticks),
+      MouthModel.transform.LerpLocal(ClosedLocalMouthPosition, ClosingDuration.Ticks));
     yield return ClosedBehavior();
   }
 
@@ -146,76 +146,8 @@ public class Mouth : MonoBehaviour
       moveTo.transform.position = clawAttachmentPoint;
       moveTo.Destination = transform.position;
     }
-    yield return Either(Pull(), TongueDied());
+    yield return this.FirstCoroutine(Pull(), TongueDied());
     yield return ClosingBehavior();
-  }
-
-  IEnumerator WaitFixed(Timeval timeval) {
-    for (var i = 0; i < timeval.Ticks; i++)
-    {
-      yield return new WaitForFixedUpdate();
-    }
-  }
-
-  IEnumerator SlerpLocalXRotation(float targetDegrees, int ticks)
-  {
-    var initialRotation = MouthModel.localRotation;
-    var targetRotation = Quaternion.Euler(targetDegrees, MouthModel.localEulerAngles.y, MouthModel.localEulerAngles.z);
-    for (int i = 0; i < ticks; i++)
-    {
-      float t = (i + 1f) / ticks;
-      MouthModel.localRotation = Quaternion.Slerp(initialRotation, targetRotation, t);
-      yield return new WaitForFixedUpdate();
-    }
-    MouthModel.localRotation = targetRotation;
-  }
-
-  IEnumerator LerpLocal(Vector3 localPosition, int ticks)
-  {
-    var initialPosition = MouthModel.localPosition;
-    for (var i = 0; i < ticks; i++)
-    {
-      float t = (i + 1f) / ticks;
-      MouthModel.localPosition = Vector3.Slerp(initialPosition, localPosition, t);
-      yield return new WaitForFixedUpdate();
-    }
-    MouthModel.localPosition = localPosition;
-  }
-
-  IEnumerator Both(IEnumerator a, IEnumerator b)
-  {
-    var aDone = false;
-    var bDone = false;
-    IEnumerator AWrapper() {
-      yield return a;
-      aDone = true;
-    }
-    IEnumerator BWrapper() {
-      yield return b;
-      bDone = true;
-    }
-    StartCoroutine(AWrapper());
-    StartCoroutine(BWrapper());
-    yield return new WaitUntil(() => aDone && bDone);
-  }
-
-  IEnumerator Either(IEnumerator a, IEnumerator b)
-  {
-    var aDone = false;
-    var bDone = false;
-    IEnumerator AWrapper() {
-      yield return a;
-      aDone = true;
-    }
-    IEnumerator BWrapper() {
-      yield return b;
-      bDone = true;
-    }
-    var aRoutine = StartCoroutine(AWrapper());
-    var bRoutine = StartCoroutine(BWrapper());
-    yield return new WaitUntil(() => aDone || bDone);
-    StopCoroutine(aRoutine);
-    StopCoroutine(bRoutine);
   }
 
   void LateUpdate()
