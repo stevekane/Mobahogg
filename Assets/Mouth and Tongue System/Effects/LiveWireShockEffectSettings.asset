@@ -15,5 +15,5 @@ MonoBehaviour:
   WeaponTipTag: {fileID: 11400000, guid: 166ae3e17222baf43a2fa6f3f2268e85, type: 2}
   KnockBackStrength: 100
   ShockDuration:
-    Millis: 600
-  PlasmaArcPrefab: {fileID: 9216041344456607611, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
+    Millis: 300
+  PlasmaArcPrefab: {fileID: 9216041344456607611, guid: f32dd997eb7c50e478307a5a38f39948, type: 3}
