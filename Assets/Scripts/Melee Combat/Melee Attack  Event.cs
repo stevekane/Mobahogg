@@ -15,5 +15,6 @@ namespace Melee {
     public int KnockbackFrames =>
       Config.KnockbackDuration.Ticks;
     public int Damage;
+    public Vector3 EstimatedContactPoint;
   }
 }

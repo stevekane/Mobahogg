@@ -31,6 +31,7 @@ public class Hitbox : MonoBehaviour {
         !Struck.Contains(hurtbox.Owner)) {
       Struck.Add(hurtbox.Owner);
       var attackEvent = new MeleeAttackEvent {
+        EstimatedContactPoint = c.ClosestPoint(Collider.transform.position),
         Damage = Damage.Value,
         Config = MeleeAttackConfig,
         KnockbackScale = KnockbackScale.Value,

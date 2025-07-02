@@ -10,8 +10,10 @@ public class Flash : MonoBehaviour {
   List<Renderer> TargetMeshes = new(8);
   Material[][] OriginalMaterials;
   int RemainingFrames;
+  bool Active;
 
   public void Set(int durationFrames) {
+    Active = true;
     RemainingFrames = Mathf.Max(durationFrames, RemainingFrames);
     foreach (var renderer in TargetMeshes) {
       Material[] flashMaterials = new Material[renderer.materials.Length];
@@ -27,6 +29,7 @@ public class Flash : MonoBehaviour {
     for (int i = 0; i < TargetMeshes.Count; i++) {
       TargetMeshes[i].materials = OriginalMaterials[i];
     }
+    Active = false;
   }
 
   void Awake() {
@@ -48,7 +51,10 @@ public class Flash : MonoBehaviour {
     if (RemainingFrames > 0) {
       RemainingFrames--;
     } else {
-      TurnOff();
+      if (Active)
+      {
+        TurnOff();
+      }
       RemainingFrames = 0;
     }
   }

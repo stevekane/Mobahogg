@@ -766,6 +766,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FrameBehaviors: {fileID: 11400000, guid: bd3d2227fcb402b4f8996aa1eefe3598, type: 2}
   Hitbox: {fileID: 4976621135791344551}
+  <Cancellable>k__BackingField: 0
+  <Aimable>k__BackingField: 0
 --- !u!114 &1178469524206981660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1982,8 +1984,11 @@ MonoBehaviour:
   WeaponAim: {fileID: 2517820396137454006}
   Vibrator: {fileID: 5073438194861813563}
   LocalClock: {fileID: 988945814378296752}
+  WeaponTipTag: {fileID: 11400000, guid: 166ae3e17222baf43a2fa6f3f2268e85, type: 2}
   WeaponButtTag: {fileID: 11400000, guid: 52b78164d2e72f946b27157ebd7d8908, type: 2}
+  WeaponTip: {fileID: 5642103225006645759}
   WeaponButt: {fileID: 8074032272218531998}
+  Weapon: {fileID: 4317267126845283119}
   OwnerTag: {fileID: 11400000, guid: a8c5a5899cb83874086f13977b141da4, type: 2}
 --- !u!114 &946447732338073073
 MonoBehaviour:
@@ -2617,6 +2622,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1567283784933641247, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       insertIndex: 1
       addedObject: {fileID: 3311053351605602936}
+    - targetCorrespondingSourceObject: {fileID: 1567283784933641247, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6233831038543658192}
     - targetCorrespondingSourceObject: {fileID: 1811139121262107095, guid: 12f59ff14fd463743a72e116368defce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 36055317435553265}
@@ -2665,6 +2673,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bone: 14
+--- !u!114 &6233831038543658192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121275726120384723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6919ed33cf8baa4386e99747ed65d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RendererRoots:
+  - {fileID: 1577097722156766584}
+  LocalClock: {fileID: 988945814378296752}
+  FlashMaterial: {fileID: 2100000, guid: 747c40375892e1b42ae650efba113eec, type: 2}
 --- !u!1 &5471877947762371867 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1811139121262107095, guid: 12f59ff14fd463743a72e116368defce, type: 3}
@@ -2684,6 +2708,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 2389756806577773164}
   LocalClock: {fileID: 988945814378296752}
+--- !u!4 &5642103225006645759 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2062287520222418227, guid: 12f59ff14fd463743a72e116368defce, type: 3}
+  m_PrefabInstance: {fileID: 5967957181181424844}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8074032272218531998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2512666631502519378, guid: 12f59ff14fd463743a72e116368defce, type: 3}

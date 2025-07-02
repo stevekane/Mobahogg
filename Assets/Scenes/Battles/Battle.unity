@@ -2742,10 +2742,6 @@ MonoBehaviour:
   LineRenderer: {fileID: 591653799}
   PlasmaArc: {fileID: 1582725992}
   Collider: {fileID: 216312232}
-  TimeSinceLastDamageBeforeHealing:
-    Millis: 2000
-  HealTickPeriod:
-    Millis: 500
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5
@@ -3945,7 +3941,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShatteredClawPrefab: {fileID: 6524494282921958028, guid: 8950f8f4f81333142bc7476a327b9abd, type: 3}
   TongueExplosionFragmentsParticleSystem: {fileID: 8567313761051897937, guid: d6fa4ce348f44b740a6e2543fe7d325c, type: 3}
+  LiveWireShockEffectPrefab: {fileID: 5352302216862658883, guid: d7203d2576d82ef49b249c77eb75e540, type: 3}
   MouthModel: {fileID: 589393693}
+  Sphere: {fileID: 1324959179}
+  Tongue: {fileID: 1621622588}
+  Claw: {fileID: 514625590}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
@@ -3973,9 +3973,12 @@ MonoBehaviour:
     Millis: 100
   TongueStrikeImpulseDistance: 1
   TongueStrikeImpulseEasingFunction: 5
-  Sphere: {fileID: 1324959179}
-  Tongue: {fileID: 1621622588}
-  Claw: {fileID: 514625590}
+  TongueDeathDuration:
+    Millis: 200
+  TimeSinceLastDamageBeforeHealing:
+    Millis: 2000
+  HealTickPeriod:
+    Millis: 500
 --- !u!114 &836649168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3988,6 +3991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitStopMultiplier: 0
   HurtFlinchName: Hurt Flinch
   HurtDirectionName: Hurt Direction
   Animator: {fileID: 0}
@@ -6635,6 +6639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitStopMultiplier: 1
   HurtFlinchName: Hurt Flinch
   HurtDirectionName: Hurt Direction
   Animator: {fileID: 0}
@@ -7937,10 +7942,6 @@ MonoBehaviour:
   LineRenderer: {fileID: 1621622589}
   PlasmaArc: {fileID: 1782285996}
   Collider: {fileID: 1320532445}
-  TimeSinceLastDamageBeforeHealing:
-    Millis: 2000
-  HealTickPeriod:
-    Millis: 500
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5
@@ -8225,7 +8226,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShatteredClawPrefab: {fileID: 6524494282921958028, guid: 8950f8f4f81333142bc7476a327b9abd, type: 3}
   TongueExplosionFragmentsParticleSystem: {fileID: 8567313761051897937, guid: d6fa4ce348f44b740a6e2543fe7d325c, type: 3}
+  LiveWireShockEffectPrefab: {fileID: 5352302216862658883, guid: d7203d2576d82ef49b249c77eb75e540, type: 3}
   MouthModel: {fileID: 199468193}
+  Sphere: {fileID: 1324959179}
+  Tongue: {fileID: 591653798}
+  Claw: {fileID: 352573497}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
@@ -8253,9 +8258,12 @@ MonoBehaviour:
     Millis: 100
   TongueStrikeImpulseDistance: 1
   TongueStrikeImpulseEasingFunction: 5
-  Sphere: {fileID: 1324959179}
-  Tongue: {fileID: 591653798}
-  Claw: {fileID: 352573497}
+  TongueDeathDuration:
+    Millis: 200
+  TimeSinceLastDamageBeforeHealing:
+    Millis: 2000
+  HealTickPeriod:
+    Millis: 500
 --- !u!114 &1687836992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8280,6 +8288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a53c3432fa5145a101f599bc90984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HitStopMultiplier: 0
   HurtFlinchName: Hurt Flinch
   HurtDirectionName: Hurt Direction
   Animator: {fileID: 0}
@@ -10707,71 +10716,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c16e08bfe29ea844b99445e2bdef291, type: 3}
---- !u!1001 &2914050757865728083
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2006577059674087916, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3396213686913458485, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_Name
-      value: Plasma Arc
-      objectReference: {fileID: 0}
-    - target: {fileID: 3396213686913458485, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5626143603626755811, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 176bb7b77a1ccab479bc9f6d4a7a0fb3, type: 3}
 --- !u!1001 &4719282044970934786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11115,5 +11059,4 @@ SceneRoots:
   - {fileID: 628578577}
   - {fileID: 1948111079}
   - {fileID: 1914417710}
-  - {fileID: 2914050757865728083}
   - {fileID: 324113006}

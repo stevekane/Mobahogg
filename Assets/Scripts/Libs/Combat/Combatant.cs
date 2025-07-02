@@ -12,6 +12,10 @@ public enum AttackDirection {
 }
 
 public class Combatant : MonoBehaviour {
+  [Header("Victim modifiers to normal Attacker reactions")]
+  [Tooltip("Use these to affect how an attacker reacts when striking this Victim")]
+  public int HitStopMultiplier = 1;
+
   [SerializeField] string HurtFlinchName = "Hurt Flinch";
   [SerializeField] string HurtDirectionName = "Hurt Direction";
   [SerializeField] Animator Animator;
@@ -39,7 +43,9 @@ public class Combatant : MonoBehaviour {
 
   public void Hit(MeleeAttackEvent meleeAttackEvent) {
     if (HitStop)
-      HitStop.FramesRemaining = meleeAttackEvent.Config.HitStopDuration.Ticks;
+    {
+      HitStop.FramesRemaining = meleeAttackEvent.Victim.HitStopMultiplier * meleeAttackEvent.Config.HitStopDuration.Ticks;
+    }
     CameraManager.Instance.Shake(meleeAttackEvent.Config.CameraShakeIntensity);
     OnHit?.Invoke(meleeAttackEvent);
   }
