@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
 public class WireWaveController : MonoBehaviour
 {
   [Header("Wire Settings")]
@@ -10,15 +9,27 @@ public class WireWaveController : MonoBehaviour
   public float AmplitudeDecayRate = 1f;
   public float WaveLength = 1f;
   public float WaveSpeed = 2f;
-
   public float Amplitude;
+  public float _DampedOscillationFraction = 0.25f;
+
+  [SerializeField] Material Material;
+  [SerializeField] Renderer[] Renderers;
 
   private float Offset;
   private Material _mat;
 
   void Awake()
   {
-    _mat = GetComponent<Renderer>().material;
+    _mat = new Material(Material);
+    foreach (var renderer in Renderers)
+    {
+      renderer.sharedMaterial = _mat;
+    }
+  }
+
+  void Oestroy()
+  {
+    Destroy(_mat);
   }
 
   IEnumerator Start()
@@ -41,6 +52,7 @@ public class WireWaveController : MonoBehaviour
     _mat.SetFloat("_WaveLength", WaveLength);
     _mat.SetFloat("_WaveSpeed", WaveSpeed);
     _mat.SetFloat("_Offset", Offset);
+    _mat.SetFloat("_DampedOscillationFraction", _DampedOscillationFraction);
     Offset += Time.deltaTime * WaveSpeed;
     Amplitude = Mathf.Max(0, Amplitude - Time.deltaTime * AmplitudeDecayRate);
   }
