@@ -2,6 +2,16 @@ using System.Collections;
 using Melee;
 using UnityEngine;
 
+/*
+NB
+
+As far as I can tell, these recursive "tail calls" for coroutines will actually eventually
+overflow the stack as they are apparently not optimized the way async methods / UniTask
+supposedly is.
+
+I cannot say for certain that this is true but GPT has warned me about it so pay attention
+to this possibility
+*/
 public class Mouth : MonoBehaviour
 {
   [Header("Prefab References")]
