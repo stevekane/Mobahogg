@@ -7,27 +7,12 @@ public class Tongue : MonoBehaviour
   [SerializeField] PlasmaArc PlasmaArc;
   [SerializeField] CapsuleCollider Collider;
 
-  [SerializeField] Timeval TimeSinceLastDamageBeforeHealing = Timeval.FromSeconds(2);
-  [SerializeField] Timeval HealTickPeriod = Timeval.FromSeconds(0.5f);
   [SerializeField] float WaveLength = 10;
   [SerializeField] float WaveSpeed = 10;
   [SerializeField] float AmplitudeDecayRate = 0.5f;
 
   float Offset = 0;
   float Amplitude = 0;
-  int Health = 3;
-
-  public bool IsDead => Health <= 0;
-
-  public void SetHealth(int health)
-  {
-    Health = health;
-  }
-
-  public void Damage(int damage)
-  {
-    Health -= damage;
-  }
 
   public void Vibrate(float amplitude)
   {

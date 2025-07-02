@@ -7,10 +7,15 @@ public class Mouth : MonoBehaviour
   [Header("Prefab References")]
   public GameObject ShatteredClawPrefab;
   public ParticleSystem TongueExplosionFragmentsParticleSystem;
+  public LiveWireShockEffect LiveWireShockEffectPrefab;
 
   [Header("Child References")]
   public Transform MouthModel;
+  public Sphere Sphere;
+  public Tongue Tongue;
+  public Claw Claw;
 
+  [Header("Mouth Behavior")]
   public Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
   public Vector3 OpenLocalMouthPosition = new Vector3(0, 0, 0);
   public float ClosedLocalXRotation = 45;
@@ -21,40 +26,42 @@ public class Mouth : MonoBehaviour
   public Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
   public Timeval FireTravelDuration = Timeval.FromTicks(3);
   public float PullingStrength = 1;
+  [Header("Claw Impact")]
   public float ClawImpactCameraShakeIntensity = 10;
   public float ClawImpactVibrationIntensity = 0.25f;
   public float ClawImpactImpulseDistance = 1;
   public Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
   public EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
+  [Header("Tongue Strike")]
   public float TongueStrikeVibrationAmplitude = 1;
   public int TongueMaxHealth = 3;
   public Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
   public float TongueStrikeImpulseDistance = 1;
   public EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
-
-  public Sphere Sphere;
-  public Tongue Tongue;
-  public Claw Claw;
+  [Header("Tongue Healing")]
+  int TongueHealth = 3;
+  public Timeval TongueDeathDuration = Timeval.FromSeconds(0.2f);
+  public float TongueDeathCameraShakeIntensity = 25;
+  public Timeval TimeSinceLastDamageBeforeHealing = Timeval.FromSeconds(2);
+  public Timeval HealTickPeriod = Timeval.FromSeconds(0.5f);
 
   public void OnTongueHurt(MeleeAttackEvent meleeAttackEvent)
   {
-    Tongue.Damage(1);
+    var effectManager = meleeAttackEvent.Attacker.GetComponent<EffectManager>();
+    var shockEffect = Instantiate(LiveWireShockEffectPrefab);
+    shockEffect.EffectManager = effectManager;
+    shockEffect.SpawnPlasmaArc = TongueHealth > 1;
+    shockEffect.ContactPoint = meleeAttackEvent.EstimatedContactPoint;
+    effectManager.Register(shockEffect);
     Tongue.Vibrate(TongueStrikeVibrationAmplitude);
     Claw.GetComponent<Flash>().Set(TongueStrikeFlashDuration.Ticks);
     Sphere.Impulses.Add(
       new(
-        direction: -transform.forward,
+        direction: TongueHealth == 1 ? transform.forward : -transform.forward,
         distance: 1,
         ticks: TongueStrikeFlashDuration.Ticks,
         easingFunctionName: TongueStrikeImpulseEasingFunction));
-  }
-
-
-  [ContextMenu("Force Close")]
-  void ForceClose()
-  {
-    StopAllCoroutines();
-    StartCoroutine(ClosingBehavior());
+    TongueHealth -= 1;
   }
 
   IEnumerator Start() {
@@ -78,6 +85,8 @@ public class Mouth : MonoBehaviour
 
   IEnumerator OpeningBehavior()
   {
+    TongueHealth = TongueMaxHealth;
+    Tongue.gameObject.SetActive(true);
     Claw.transform.position = transform.position;
     Claw.gameObject.SetActive(true);
     yield return this.BothCoroutines(
@@ -88,9 +97,6 @@ public class Mouth : MonoBehaviour
 
   IEnumerator ClosingBehavior()
   {
-    Tongue.gameObject.SetActive(false);
-    Claw.gameObject.SetActive(false);
-    Destroy(Instantiate(ShatteredClawPrefab, Claw.transform.position, Claw.transform.rotation), 3);
     yield return this.BothCoroutines(
       MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, ClosingDuration.Ticks),
       MouthModel.transform.LerpLocal(ClosedLocalMouthPosition, ClosingDuration.Ticks));
@@ -98,9 +104,6 @@ public class Mouth : MonoBehaviour
   }
 
   IEnumerator FiringBehavior() {
-    Claw.GetComponent<Flash>().TurnOff();
-    Tongue.SetHealth(TongueMaxHealth);
-    Tongue.gameObject.SetActive(true);
     var initialPosition = Claw.transform.position;
     for (var i = 0; i < FireTravelDuration.Ticks; i++)
     {
@@ -139,12 +142,18 @@ public class Mouth : MonoBehaviour
     }
     IEnumerator TongueDied()
     {
-      yield return new WaitUntil(() => Tongue.IsDead);
+      yield return new WaitUntil(() => TongueHealth <= 0);
       var explosionVFX = Instantiate(TongueExplosionFragmentsParticleSystem, transform);
       var moveTo = explosionVFX.GetComponent<TongueExplosionVFX>();
       var clawAttachmentPoint = Claw.transform.position-Claw.Length*Claw.transform.forward;
       moveTo.transform.position = clawAttachmentPoint;
       moveTo.Destination = transform.position;
+      Destroy(Instantiate(ShatteredClawPrefab, Claw.transform.position, Claw.transform.rotation), 3);
+      CameraManager.Instance.Shake(TongueDeathCameraShakeIntensity);
+      yield return CoroutineDelay.WaitFixed(TongueDeathDuration);
+      Tongue.gameObject.SetActive(false);
+      Claw.gameObject.SetActive(false);
+      Claw.GetComponent<Flash>().TurnOff();
     }
     yield return this.FirstCoroutine(Pull(), TongueDied());
     yield return ClosingBehavior();
