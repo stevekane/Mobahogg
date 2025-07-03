@@ -3,20 +3,24 @@ using UnityEngine;
 
 public class WireWaveController : MonoBehaviour
 {
-  [Header("Wire Settings")]
-  public Transform WireStart;
-  public Transform WireEnd;
+  [Header("Child References")]
+  [SerializeField] Transform WireStart;
+  [SerializeField] Transform WireEnd;
+  [SerializeField] Renderer[] Renderers;
+
+  [Header("Resources")]
+  [SerializeField] Material Material;
+
+  [Header("Wire Vibration")]
   public float AmplitudeDecayRate = 1f;
   public float WaveLength = 1f;
   public float WaveSpeed = 2f;
-  public float Amplitude;
-  public float _DampedOscillationFraction = 0.25f;
+  public float DampedOscillationFraction = 0.25f;
+  public float EmissionIntensityMultiplier = 3;
 
-  [SerializeField] Material Material;
-  [SerializeField] Renderer[] Renderers;
-
-  private float Offset;
-  private Material _mat;
+  float Amplitude;
+  float Offset;
+  Material _mat;
 
   void Awake()
   {
@@ -27,19 +31,18 @@ public class WireWaveController : MonoBehaviour
     }
   }
 
-  void Oestroy()
-  {
-    Destroy(_mat);
-  }
-
   IEnumerator Start()
   {
     while (true)
     {
       Impulse(1);
-      yield return new WaitUntil(() => Amplitude <= 0);
-      yield return new WaitForSeconds(1);
+      yield return new WaitForSeconds(3);
     }
+  }
+
+  void Oestroy()
+  {
+    Destroy(_mat);
   }
 
   void Update()
@@ -52,7 +55,8 @@ public class WireWaveController : MonoBehaviour
     _mat.SetFloat("_WaveLength", WaveLength);
     _mat.SetFloat("_WaveSpeed", WaveSpeed);
     _mat.SetFloat("_Offset", Offset);
-    _mat.SetFloat("_DampedOscillationFraction", _DampedOscillationFraction);
+    _mat.SetFloat("_DampedOscillationFraction", DampedOscillationFraction);
+    _mat.SetColor("_Emission", Amplitude * EmissionIntensityMultiplier * Color.white);
     Offset += Time.deltaTime * WaveSpeed;
     Amplitude = Mathf.Max(0, Amplitude - Time.deltaTime * AmplitudeDecayRate);
   }

@@ -10,10 +10,12 @@ public class Tongue : MonoBehaviour
   [Header("Resources")]
   [SerializeField] Material DeformableWireMaterial;
 
-  [SerializeField] float WaveLength = 10;
-  [SerializeField] float WaveSpeed = 10;
-  [SerializeField] float AmplitudeDecayRate = 0.5f;
-  [SerializeField] float _DampedOscillationFraction = 0.25f;
+  [SerializeField] float WaveLength = 7;
+  [SerializeField] float WaveSpeed = 100;
+  [SerializeField] float AmplitudeDecayRate = 3f;
+  [SerializeField] float DampedOscillationFraction = 0.25f;
+  [SerializeField] Color EmissionColor = Color.white;
+  [SerializeField] float EmissionIntensityPerAmplitudeMultiplier = 3;
 
   float Offset = 0;
   float Amplitude = 0;
@@ -44,7 +46,6 @@ public class Tongue : MonoBehaviour
     var start = transform.position;
     var wireVector = end - start;
     var wireDirection = wireVector.normalized;
-    var wireLength = wireVector.magnitude;
     var vibrationDirection = Vector3.Cross(Vector3.up, wireDirection);
 
     // Collider
@@ -57,7 +58,8 @@ public class Tongue : MonoBehaviour
     DeformableWireRendererMaterialInstance.SetFloat("_WaveLength", WaveLength);
     DeformableWireRendererMaterialInstance.SetFloat("_WaveSpeed", WaveSpeed);
     DeformableWireRendererMaterialInstance.SetFloat("_Offset", Offset);
-    DeformableWireRendererMaterialInstance.SetFloat("_DampedOscillationFraction", _DampedOscillationFraction);
+    DeformableWireRendererMaterialInstance.SetFloat("_DampedOscillationFraction", DampedOscillationFraction);
+    DeformableWireRendererMaterialInstance.SetColor("_Emission", Amplitude * EmissionIntensityPerAmplitudeMultiplier * EmissionColor);
 
     // Plasma Arc
     var p0 = start;
