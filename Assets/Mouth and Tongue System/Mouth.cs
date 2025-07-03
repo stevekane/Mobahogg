@@ -24,6 +24,7 @@ public class Mouth : MonoBehaviour
   public Sphere Sphere;
   public Tongue Tongue;
   public Claw Claw;
+  public TongueHealthMeter TongueHealthMeter;
 
   [Header("Mouth Behavior")]
   public Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
@@ -39,7 +40,9 @@ public class Mouth : MonoBehaviour
   [Header("Claw Impact")]
   public float ClawImpactCameraShakeIntensity = 10;
   public float ClawImpactVibrationIntensity = 0.25f;
+  public float ClawImpactTongueVibrationIntensity = 0.5f;
   public float ClawImpactImpulseDistance = 1;
+  public Timeval ClawImpactFlashDuration = Timeval.FromMillis(500);
   public Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
   public EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
   [Header("Tongue Strike")]
@@ -72,6 +75,7 @@ public class Mouth : MonoBehaviour
         ticks: TongueStrikeFlashDuration.Ticks,
         easingFunctionName: TongueStrikeImpulseEasingFunction));
     TongueHealth -= 1;
+    TongueHealthMeter.SetHealth(TongueHealth);
   }
 
   IEnumerator Start() {
@@ -96,6 +100,7 @@ public class Mouth : MonoBehaviour
   IEnumerator OpeningBehavior()
   {
     TongueHealth = TongueMaxHealth;
+    TongueHealthMeter.SetHealth(TongueHealth);
     Tongue.gameObject.SetActive(true);
     Claw.transform.position = transform.position;
     Claw.gameObject.SetActive(true);
@@ -123,21 +128,36 @@ public class Mouth : MonoBehaviour
       yield return new WaitForFixedUpdate();
     }
     Claw.transform.SetParent(Sphere.transform, worldPositionStays: true);
-
-    // FX
-    var impactPosition = Claw.transform.position - Claw.transform.forward * Sphere.Radius;
-    var impactVFX = Instantiate(Sphere.ImpactVFXPrefab, impactPosition, Quaternion.identity);
-    Destroy(impactVFX.gameObject, 3);
-    CameraManager.Instance.Shake(ClawImpactCameraShakeIntensity);
+    // Move the sphere
     var sphereImpulse = new SphereImpulse(
       transform.forward,
       ClawImpactImpulseDistance,
       ClawImpactImpulseDuration.Ticks,
       ClawImpactEasingFunctionName);
     Sphere.Impulses.Add(sphereImpulse);
-    Sphere.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
+
+    // FX
+    var impactPosition = Claw.transform.position - Claw.transform.forward * Sphere.Radius;
+    var impactVFX = Instantiate(Sphere.ImpactVFXPrefab, impactPosition, Quaternion.identity);
+    Destroy(impactVFX.gameObject, 3);
+    CameraManager.Instance.Shake(ClawImpactCameraShakeIntensity);
+    Sphere.GetComponent<Vibrator>().StartVibrate(
+      Claw.transform.forward,
+      ClawImpactFlashDuration.Ticks,
+      ClawImpactVibrationIntensity,
+      20);
     Sphere.GetComponent<Flash>().Set(20);
-    Claw.GetComponent<Vibrator>().StartVibrate(Claw.transform.forward, 20, ClawImpactVibrationIntensity, 20);
+    // TODO: Get rid of this by sending event to manager object that knows about all mouths
+    foreach (var mouth in FindObjectsByType<Mouth>(FindObjectsSortMode.None))
+    {
+      mouth.Claw.GetComponent<Flash>().Set(ClawImpactFlashDuration.Ticks);
+      mouth.Claw.GetComponent<Vibrator>().StartVibrate(
+        Claw.transform.forward,
+        ClawImpactFlashDuration.Ticks,
+        ClawImpactVibrationIntensity,
+        20);
+      mouth.Tongue.Vibrate(ClawImpactTongueVibrationIntensity);
+    }
     yield return PullingBehavior();
   }
 
@@ -169,6 +189,8 @@ public class Mouth : MonoBehaviour
     yield return ClosingBehavior();
   }
 
+  // TODO: Sketchy. This is largely visual but also has gameplay effects including
+  // setting the size of the collider
   void LateUpdate()
   {
     var clawAttachmentPoint = Claw.transform.position-Claw.Length*Claw.transform.forward;

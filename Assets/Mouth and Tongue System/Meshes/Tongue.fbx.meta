@@ -8,14 +8,14 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Electrified
-    second: {fileID: 2100000, guid: fe75fc9ed564c2e489c21867b83c9395, type: 2}
+    second: {fileID: 2100000, guid: b207e85213030aa4b890fcb4e94c0a82, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Tongue Metal
-    second: {fileID: 6341755078290054540, guid: 72150f0696bc9a943841317287eaffb0, type: 3}
+    second: {fileID: 2100000, guid: b207e85213030aa4b890fcb4e94c0a82, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1

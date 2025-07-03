@@ -14,12 +14,10 @@ public class Tongue : MonoBehaviour
   [SerializeField] float WaveSpeed = 100;
   [SerializeField] float AmplitudeDecayRate = 3f;
   [SerializeField] float DampedOscillationFraction = 0.25f;
-  [SerializeField] Color EmissionColor = Color.white;
-  [SerializeField] float EmissionIntensityPerAmplitudeMultiplier = 3;
+  [SerializeField] Color EnergizedEmissionColor = 3 * Color.white;
 
   float Offset = 0;
   float Amplitude = 0;
-  Material DeformableWireRendererMaterialInstance;
 
   public void Vibrate(float amplitude)
   {
@@ -29,16 +27,6 @@ public class Tongue : MonoBehaviour
   void Start()
   {
     PlasmaArc.gameObject.SetActive(true);
-    DeformableWireRendererMaterialInstance = new Material(DeformableWireMaterial);
-    foreach (var renderer in DeformableWireRenderers)
-    {
-      renderer.sharedMaterial = DeformableWireRendererMaterialInstance;
-    }
-  }
-
-  void OnDestroy()
-  {
-    Destroy(DeformableWireRendererMaterialInstance);
   }
 
   public void SetTongueEnd(Vector3 end)
@@ -51,15 +39,18 @@ public class Tongue : MonoBehaviour
     // Collider
     Collider.AlignCapsuleBetweenPoints(start, end);
 
-    // Deformable Wires
-    DeformableWireRendererMaterialInstance.SetVector("_WireStart", start);
-    DeformableWireRendererMaterialInstance.SetVector("_WireEnd", end);
-    DeformableWireRendererMaterialInstance.SetFloat("_WaveAmplitude", Amplitude);
-    DeformableWireRendererMaterialInstance.SetFloat("_WaveLength", WaveLength);
-    DeformableWireRendererMaterialInstance.SetFloat("_WaveSpeed", WaveSpeed);
-    DeformableWireRendererMaterialInstance.SetFloat("_Offset", Offset);
-    DeformableWireRendererMaterialInstance.SetFloat("_DampedOscillationFraction", DampedOscillationFraction);
-    DeformableWireRendererMaterialInstance.SetColor("_Emission", Amplitude * EmissionIntensityPerAmplitudeMultiplier * EmissionColor);
+    foreach (var renderer in DeformableWireRenderers)
+    {
+      var baseEmissionColor = renderer.material.GetColor("_BaseEmission");
+      renderer.material.SetVector("_WireStart", start);
+      renderer.material.SetVector("_WireEnd", end);
+      renderer.material.SetFloat("_WaveAmplitude", Amplitude);
+      renderer.material.SetFloat("_WaveLength", WaveLength);
+      renderer.material.SetFloat("_WaveSpeed", WaveSpeed);
+      renderer.material.SetFloat("_Offset", Offset);
+      renderer.material.SetFloat("_DampedOscillationFraction", DampedOscillationFraction);
+      renderer.material.SetColor("_Emission", Color.Lerp(baseEmissionColor, EnergizedEmissionColor, Amplitude));
+    }
 
     // Plasma Arc
     var p0 = start;

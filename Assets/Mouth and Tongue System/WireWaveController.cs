@@ -40,7 +40,7 @@ public class WireWaveController : MonoBehaviour
     }
   }
 
-  void Oestroy()
+  void OnDestroy()
   {
     Destroy(_mat);
   }
