@@ -2044,12 +2044,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LineRenderer: {fileID: 591653799}
-  PlasmaArc: {fileID: 1582725992}
   Collider: {fileID: 216312232}
+  PlasmaArc: {fileID: 1582725992}
+  DeformableWireRenderers: []
+  DeformableWireMaterial: {fileID: 0}
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5
+  DampedOscillationFraction: 0.25
+  EnergizedEmissionColor: {r: 3, g: 3, b: 3, a: 3}
 --- !u!120 &591653799
 LineRenderer:
   serializedVersion: 2
@@ -3001,6 +3004,7 @@ MonoBehaviour:
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 1621622588}
   Claw: {fileID: 514625590}
+  TongueHealthMeter: {fileID: 0}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
@@ -3018,7 +3022,10 @@ MonoBehaviour:
   PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
+  ClawImpactTongueVibrationIntensity: 0.5
   ClawImpactImpulseDistance: 1
+  ClawImpactFlashDuration:
+    Millis: 500
   ClawImpactImpulseDuration:
     Millis: 166.66667
   ClawImpactEasingFunctionName: 23
@@ -6095,12 +6102,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f767520c321cf94fa527084539c40b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LineRenderer: {fileID: 1621622589}
-  PlasmaArc: {fileID: 1782285996}
   Collider: {fileID: 1320532445}
+  PlasmaArc: {fileID: 1782285996}
+  DeformableWireRenderers: []
+  DeformableWireMaterial: {fileID: 0}
   WaveLength: 7
   WaveSpeed: 25
   AmplitudeDecayRate: 2.5
+  DampedOscillationFraction: 0.25
+  EnergizedEmissionColor: {r: 3, g: 3, b: 3, a: 3}
 --- !u!120 &1621622589
 LineRenderer:
   serializedVersion: 2
@@ -6322,7 +6332,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6382,6 +6393,7 @@ MonoBehaviour:
   Sphere: {fileID: 1324959179}
   Tongue: {fileID: 591653798}
   Claw: {fileID: 352573497}
+  TongueHealthMeter: {fileID: 0}
   ClosedLocalMouthPosition: {x: 0, y: 0, z: -5}
   OpenLocalMouthPosition: {x: 0, y: 0, z: 0}
   ClosedLocalXRotation: 45
@@ -6399,7 +6411,10 @@ MonoBehaviour:
   PullingStrength: 1
   ClawImpactCameraShakeIntensity: 10
   ClawImpactVibrationIntensity: 0.25
+  ClawImpactTongueVibrationIntensity: 0.5
   ClawImpactImpulseDistance: 1
+  ClawImpactFlashDuration:
+    Millis: 500
   ClawImpactImpulseDuration:
     Millis: 166.66667
   ClawImpactEasingFunctionName: 23
@@ -7987,7 +8002,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 107332014362920586, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: field of view
-      value: 26.239893
+      value: 26.231289
       objectReference: {fileID: 0}
     - target: {fileID: 441921929137087940, guid: ac94494de47fbd04f9907999f475d534, type: 3}
       propertyPath: m_LocalPosition.y
