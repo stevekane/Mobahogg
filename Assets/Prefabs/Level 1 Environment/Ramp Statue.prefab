@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4072578875931393055}
   - component: {fileID: 8557709270456061509}
-  - component: {fileID: 8559719208786952249}
+  - component: {fileID: 7163083072763485279}
   m_Layer: 0
   m_Name: Ramp Statue
   m_TagString: Untagged
@@ -55,8 +55,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 3, z: 3}
   m_Center: {x: 0, y: 1.5, z: -1.5}
---- !u!64 &8559719208786952249
-MeshCollider:
+--- !u!65 &7163083072763485279
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -73,10 +73,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 1.4873378, y: 2.11223, z: 3.1794138}
+  m_Center: {x: -0.028349161, y: 0.02984035, z: 1.332068}
 --- !u!1001 &4769569418080841312
 PrefabInstance:
   m_ObjectHideFlags: 0
