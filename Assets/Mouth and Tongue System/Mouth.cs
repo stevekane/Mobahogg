@@ -37,6 +37,7 @@ public class Mouth : MonoBehaviour
   public Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
   public Timeval FireTravelDuration = Timeval.FromTicks(3);
   public float PullingStrength = 1;
+
   [Header("Claw Impact")]
   public float ClawImpactCameraShakeIntensity = 10;
   public float ClawImpactVibrationIntensity = 0.25f;
@@ -45,12 +46,14 @@ public class Mouth : MonoBehaviour
   public Timeval ClawImpactFlashDuration = Timeval.FromMillis(500);
   public Timeval ClawImpactImpulseDuration = Timeval.FromTicks(10);
   public EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
+
   [Header("Tongue Strike")]
   public float TongueStrikeVibrationAmplitude = 1;
   public int TongueMaxHealth = 3;
   public Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
   public float TongueStrikeImpulseDistance = 1;
   public EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
+
   [Header("Tongue Healing")]
   int TongueHealth = 3;
   public Timeval TongueDeathDuration = Timeval.FromSeconds(0.2f);
