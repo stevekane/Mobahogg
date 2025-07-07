@@ -82,9 +82,7 @@ public class Mouth : MonoBehaviour
   }
 
   IEnumerator Start() {
-    yield return this.BothCoroutines(
-      MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, 1),
-      MouthModel.transform.LerpLocal(ClosedLocalMouthPosition, 1));
+    yield return MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, 1);
     yield return ClosedBehavior();
   }
 
@@ -107,17 +105,13 @@ public class Mouth : MonoBehaviour
     Tongue.gameObject.SetActive(true);
     Claw.transform.position = transform.position;
     Claw.gameObject.SetActive(true);
-    yield return this.BothCoroutines(
-      MouthModel.transform.SlerpLocalEulerX(OpenLocalXRotation, OpeningDuration.Ticks),
-      MouthModel.transform.LerpLocal(OpenLocalMouthPosition, OpeningDuration.Ticks));
+    yield return MouthModel.transform.SlerpLocalEulerX(OpenLocalXRotation, OpeningDuration.Ticks);
     yield return OpenBehavior();
   }
 
   IEnumerator ClosingBehavior()
   {
-    yield return this.BothCoroutines(
-      MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, ClosingDuration.Ticks),
-      MouthModel.transform.LerpLocal(ClosedLocalMouthPosition, ClosingDuration.Ticks));
+    yield return MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, ClosingDuration.Ticks);
     yield return ClosedBehavior();
   }
 
