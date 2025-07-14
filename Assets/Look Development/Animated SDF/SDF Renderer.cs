@@ -8,7 +8,9 @@ using UnityEditor;
 public class SDFRenderer : MonoBehaviour
 {
   [SerializeField] Material Material;
+  [SerializeField] Vector4[] Spheres;
   Mesh FullScreenQuad;
+  Vector4[] InternalSpheres = new Vector4[16];
 
   void OnEnable()
   {
@@ -34,5 +36,14 @@ public class SDFRenderer : MonoBehaviour
 #else
     Destroy(FullScreenQuad);
 #endif
+  }
+
+  void Update() {
+    for (var i = 0; i < Spheres.Length; i++)
+    {
+      InternalSpheres[i] = Spheres[i];
+    }
+    Material.SetInt("_SphereCount", Spheres.Length);
+    Material.SetVectorArray("_Spheres", InternalSpheres);
   }
 }
