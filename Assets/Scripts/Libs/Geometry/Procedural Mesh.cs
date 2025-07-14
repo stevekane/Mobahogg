@@ -30,4 +30,34 @@ public static class ProceduralMesh {
     mesh.RecalculateNormals();
     return mesh;
   }
+
+  public static Mesh FullScreenQuad() {
+    Mesh mesh = new Mesh { name = "FullscreenQuad" };
+
+    Vector3[] vertices = new Vector3[] {
+      new Vector3(-1, -1, 0),
+      new Vector3( 1, -1, 0),
+      new Vector3(-1,  1, 0),
+      new Vector3( 1,  1, 0)
+    };
+
+    Vector2[] uvs = new Vector2[] {
+      new Vector2(0, 0),
+      new Vector2(1, 0),
+      new Vector2(0, 1),
+      new Vector2(1, 1)
+    };
+
+    int[] triangles = new int[] {
+      0, 1, 2,
+      2, 1, 3
+    };
+
+    mesh.vertices = vertices;
+    mesh.uv = uvs;
+    mesh.triangles = triangles;
+    mesh.RecalculateBounds();
+
+    return mesh;
+  }
 }
