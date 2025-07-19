@@ -1,6 +1,9 @@
-Shader "Custom/SDFRaymarchURPWithDepth"
+Shader "Custom/SDF Renderer"
 {
   Properties {
+    _EmissionIntensity("EmissionIntensity", Float) = 1
+    _FresnelPower("FresnelPower", Float) = 1
+    _EdgeThreshold("EdgeThreshold", Float) = 0.25
   }
 
   SubShader {
@@ -35,9 +38,38 @@ Shader "Custom/SDFRaymarchURPWithDepth"
         float2 uv : TEXCOORD0;
       };
 
-      #define MAX_SPHERES 16
+      struct SphereData {
+        float3 center;
+        float radius;
+        float3 stretchAxis;
+        float stretchFraction;
+        float inverseSquareRootStretchFraction; // computed on CPU to avoid cost on GPU per-pixel
+      };
+
+      StructuredBuffer<SphereData> _Spheres;
       uniform int _SphereCount;
-      uniform float4 _Spheres[MAX_SPHERES]; // xyz = center, w = radius
+      uniform float4 _Color;
+      uniform float _EmissionIntensity;
+      uniform float _FresnelPower;
+      uniform float _EdgeThreshold;
+
+      float sdSphereStretchVolumePreserved(
+        float3 p,
+        float3 center,
+        float radius,
+        float3 axis,
+        float stretchAmt,
+        float invRootStretchAmt
+      ) {
+        float3 scale = float3(1.0, 1.0, 1.0);
+        float3 stretch = axis * stretchAmt;
+        float3 perp = 1.0 - axis;
+        scale = axis * stretchAmt + perp * invRootStretchAmt;
+        float3 q = (p - center) / scale;
+        float dist = length(q) - radius;
+        float correction = min(scale.x, min(scale.y, scale.z));
+        return dist * correction;
+      }
 
       float SDF_Sphere(float3 p, float3 center, float radius) {
         return length(p - center) - radius;
@@ -51,15 +83,21 @@ Shader "Custom/SDFRaymarchURPWithDepth"
       float SceneSDF(float3 p) {
         float d = 10000.0; // start with large distance
         for (int i = 0; i < _SphereCount; i++) {
-          float4 s = _Spheres[i];
-          float sphereDist = length(p - s.xyz) - s.w;
-          d = SmoothMin(d, sphereDist, 0.5);
+          SphereData sphere = _Spheres[i];
+          float dist = sdSphereStretchVolumePreserved(
+            p,
+            sphere.center,
+            sphere.radius,
+            sphere.stretchAxis,
+            sphere.stretchFraction,
+            sphere.inverseSquareRootStretchFraction);
+          d = SmoothMin(d, dist, 0.5);
         }
         return d;
       }
 
       float3 EstimateNormal(float3 p) {
-        float eps = 0.001;
+        const float eps = 0.001;
         float3 dx = float3(eps, 0, 0);
         float3 dy = float3(0, eps, 0);
         float3 dz = float3(0, 0, eps);
@@ -109,11 +147,9 @@ Shader "Custom/SDFRaymarchURPWithDepth"
         out float3 normal,
         out float rawDepth
       ) {
-        // Compute world-space ray
         float4 ndc = float4(uv * 2.0 - 1.0, 1.0, 1.0); // Far plane
         float4 worldFar = mul(invViewProj, ndc);
         worldFar.xyz /= worldFar.w;
-
         float3 rayDir = normalize(worldFar.xyz - camPos);
         float3 hitPos;
         float dist;
@@ -127,14 +163,110 @@ Shader "Custom/SDFRaymarchURPWithDepth"
           normal = float3(0, 0, 1);
           rawDepth = 1.0; // far plane
         }
-  }
+      }
+
+      float3 ComputeRayDirection(float2 uv) {
+        float4 clipPos = float4(uv * 2.0 - 1.0, 0.0, 1.0);
+        float4 worldNear = mul(UNITY_MATRIX_I_VP, clipPos);
+        worldNear.xyz /= worldNear.w;
+
+        clipPos.z = 1.0;
+        float4 worldFar = mul(UNITY_MATRIX_I_VP, clipPos);
+        worldFar.xyz /= worldFar.w;
+
+        return normalize(worldFar.xyz - worldNear.xyz);
+      }
+
+      float EdgeDetectNormal(
+        float2 uv,
+        float3 normal,
+        float2 texelSize,
+        float3 camPos,
+        float4x4 invVP,
+        float threshold
+      ) {
+        float2 dx = float2(texelSize.x, 0.0);
+        float2 dy = float2(0.0, texelSize.y);
+
+        float3 dummyN;
+        float dummyD;
+        float dummyVal;
+        float3 nX = 0, nY = 0;
+
+        RenderSDF_float(uv + dx, camPos, invVP, dummyVal, nX, dummyD);
+        RenderSDF_float(uv + dy, camPos, invVP, dummyVal, nY, dummyD);
+        float diffX = 1.0 - dot(normal, normalize(nX));
+        float diffY = 1.0 - dot(normal, normalize(nY));
+        float edge = saturate((diffX + diffY) * 0.5 / threshold);
+        return edge;
+      }
+
+      float EdgeDetectHybrid(
+        float2 uv,
+        float3 normal,
+        float rawDepth,
+        float2 texelSize,
+        float3 camPos,
+        float4x4 invVP,
+        float normalThreshold,
+        float depthThreshold
+      ) {
+        float2 dx = float2(texelSize.x, 0);
+        float2 dy = float2(0, texelSize.y);
+        float3 nX, nY;
+        float dX, dY;
+        float v;
+        RenderSDF_float(uv + dx, camPos, invVP, v, nX, dX);
+        RenderSDF_float(uv + dy, camPos, invVP, v, nY, dY);
+        float normalDiffX = 1.0 - dot(normal, normalize(nX));
+        float normalDiffY = 1.0 - dot(normal, normalize(nY));
+        float normalEdge = max(normalDiffX, normalDiffY);
+        float depthDiffX = abs(rawDepth - dX);
+        float depthDiffY = abs(rawDepth - dY);
+        float depthEdge = max(depthDiffX, depthDiffY);
+        depthEdge = depthEdge / (rawDepth + 1e-3); // prevent divide-by-zero
+        float nTerm = saturate(normalEdge / normalThreshold);
+        float dTerm = saturate(depthEdge / depthThreshold);
+        float suppress = smoothstep(0.0, 0.5, dot(normal, normalize(camPos - (camPos + normalize(normal) * rawDepth))));
+        return saturate((nTerm + dTerm) * (1.0 - suppress));
+      }
+
+      float EdgeDetectContourOnly(
+        float2 uv,
+        float rawDepth,
+        float2 texelSize,
+        float3 camPos,
+        float4x4 invVP,
+        float threshold
+      ) {
+        float2 dx = float2(texelSize.x, 0);
+        float2 dy = float2(0, texelSize.y);
+        float3 dummyN;
+        float dX, dY;
+        float v;
+        RenderSDF_float(uv + dx, camPos, invVP, v, dummyN, dX);
+        RenderSDF_float(uv + dy, camPos, invVP, v, dummyN, dY);
+        float diffX = abs(rawDepth - dX);
+        float diffY = abs(rawDepth - dY);
+        float edge = max(diffX, diffY);
+        edge /= max(rawDepth, 1e-3);
+        return saturate(edge / threshold);
+      }
+
+
+      float CalculateFresnel(
+        float3 viewDir,
+        float3 normal,
+        float fresnelPower
+      ) {
+        float f = dot(normal, viewDir);
+        f = 1.0 - abs(f);
+        f = pow(f, fresnelPower);
+        return f;
+      }
 
       Varyings Vert (Attributes input) {
         Varyings output;
-        // This is the normal behavior to cast objectspace to clipspace
-        // However, since our geo here is a fullscreen quad it's already
-        // in clipspace so don't do this
-        // output.positionCS = TransformObjectToHClip(input.positionOS);
         output.positionCS = input.positionOS;
         output.uv = input.uv;
         return output;
@@ -146,28 +278,34 @@ Shader "Custom/SDFRaymarchURPWithDepth"
       };
 
       FragmentOutput Frag (Varyings input) {
-        FragmentOutput o;
-
+        const float4 JET_BLACK = float4(0, 0, 0, 1);
+        float4 EmissionColor = float4(_EmissionIntensity, _EmissionIntensity, _EmissionIntensity, 1);
         float3 camPos = _WorldSpaceCameraPos;
         float4x4 invVP = UNITY_MATRIX_I_VP;
-
         float value, rawDepth;
         float3 normal;
+        FragmentOutput o;
 
         RenderSDF_float(input.uv, camPos, invVP, value, normal, rawDepth);
 
         if (value < 0.5) discard;
 
-        float3 worldPos = camPos + normalize(normal) * rawDepth;
-        float3 lightDir = normalize(_MainLightPosition.xyz);
-        float lightAtten = MainLightRealtimeShadow(TransformWorldToShadowCoord(worldPos));
+        float3 rayDir = ComputeRayDirection(input.uv);
+        float3 worldPos = camPos + rayDir * rawDepth;
+        float3 viewDir = normalize(camPos - worldPos);
+        // ScreenParams.z and w are 1+1/width and 1+1/height respectively
+        float texelSize = _ScreenParams.zw - 1;
+        float threshold = _EdgeThreshold;
+        float corona = EdgeDetectContourOnly(
+          input.uv,
+          rawDepth,
+          texelSize,
+          camPos,
+          invVP,
+          threshold);
 
-        float NdotL = max(0, dot(normal, lightDir));
-        float3 color = float3(1, 0.75, 0.4) * NdotL * lightAtten;
-
-        o.color = float4(color, 1.0);
+        o.color = lerp(JET_BLACK, EmissionColor, corona);
         o.depth = rawDepth;
-
         return o;
       }
 
