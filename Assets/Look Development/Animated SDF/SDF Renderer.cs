@@ -2,17 +2,16 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 [ExecuteAlways]
-[RequireComponent(typeof(MeshRenderer), typeof(MeshFilter))]
 public class SDFRenderer : MonoBehaviour
 {
-  public static SDFRenderer GlobalSystem;
-
   const int MAX_SPHERE_COUNT = 16;
 
   [StructLayout(LayoutKind.Sequential)]
@@ -25,39 +24,30 @@ public class SDFRenderer : MonoBehaviour
     public float inverseSquareRootStretchFraction;
   }
 
-  [SerializeField] Material Material;
+  [SerializeField] Material DepthMaterial;
+  [SerializeField] Material RenderingMaterial;
   public List<SDFSphere> Spheres = new(MAX_SPHERE_COUNT);
+
   SphereData[] SphereArray = new SphereData[MAX_SPHERE_COUNT];
   ComputeBuffer SphereBuffer;
-  Mesh FullScreenQuad;
+  SDFRenderPass SDFRenderPass;
 
   void OnEnable()
   {
-    GlobalSystem = this;
-    var filter = GetComponent<MeshFilter>();
-    var renderer = GetComponent<MeshRenderer>();
-    filter.sharedMesh = ProceduralMesh.FullScreenQuad();
-    renderer.sharedMaterial = Material;
+    Spheres.Clear();
     SphereBuffer = new ComputeBuffer(MAX_SPHERE_COUNT, Marshal.SizeOf(typeof(SphereData)));
+    DepthMaterial.SetBuffer("_Spheres", SphereBuffer);
+    SDFRenderPass = new SDFRenderPass();
+    SDFRenderPass.DepthMaterial = DepthMaterial;
+    SDFRenderPass.RenderingMaterial = RenderingMaterial;
+    RenderPipelineManager.beginCameraRendering += InjectRenderPass;
   }
 
   void OnDisable()
   {
+    Spheres.Clear();
     SphereBuffer.Dispose();
-    if (!FullScreenQuad)
-      return;
-#if UNITY_EDITOR
-    if (Application.isPlaying)
-    {
-      Destroy(FullScreenQuad);
-    }
-    else
-    {
-      DestroyImmediate(FullScreenQuad);
-    }
-#else
-    Destroy(FullScreenQuad);
-#endif
+    RenderPipelineManager.beginCameraRendering -= InjectRenderPass;
   }
 
   void Update() {
@@ -73,9 +63,11 @@ public class SDFRenderer : MonoBehaviour
       };
     }
     SphereBuffer.SetData(SphereArray);
-    // TODO: Must this be set every frame? Seems unlikely?
-    // maybe you only need to update the data in it?
-    Material.SetBuffer("_Spheres", SphereBuffer);
-    Material.SetInt("_SphereCount", Spheres.Count);
+    DepthMaterial.SetBuffer("_Spheres", SphereBuffer);
+    DepthMaterial.SetInt("_SphereCount", Spheres.Count);
+  }
+
+  void InjectRenderPass(ScriptableRenderContext ctx, Camera camera) {
+    camera.GetUniversalAdditionalCameraData().scriptableRenderer.EnqueuePass(SDFRenderPass);
   }
 }

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// run after SDFRenderer runs.
+[DefaultExecutionOrder(1)]
 [ExecuteAlways]
 public class SDFSphere : MonoBehaviour
 {
@@ -9,11 +11,19 @@ public class SDFSphere : MonoBehaviour
 
   void OnEnable()
   {
-    SDFRenderer.GlobalSystem.Spheres.Add(this);
+    var renderer = FindFirstObjectByType<SDFRenderer>();
+    if (renderer)
+    {
+      renderer.Spheres.Add(this);
+    }
   }
 
   void OnDisable()
   {
-    SDFRenderer.GlobalSystem.Spheres.Remove(this);
+    var renderer = FindFirstObjectByType<SDFRenderer>();
+    if (renderer)
+    {
+      renderer.Spheres.Remove(this);
+    }
   }
 }

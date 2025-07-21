@@ -21,10 +21,6 @@ class SDFSphereImpulseTester : MonoBehaviour
     }
   }
 
-  // Want to improve this so that it always begins going negative
-  // this means we need to not use raw Time but rather time since
-  // the impulse occurredand perhaps the cheapest thing to do is
-  // offset it by negation or shifting the offset
   void Update()
   {
     var sphere = GetComponent<SDFSphere>();

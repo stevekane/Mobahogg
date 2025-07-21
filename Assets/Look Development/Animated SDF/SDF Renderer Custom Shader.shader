@@ -1,11 +1,5 @@
 Shader "Custom/SDF Renderer"
 {
-  Properties {
-    _EmissionIntensity("EmissionIntensity", Float) = 1
-    _FresnelPower("FresnelPower", Float) = 1
-    _EdgeThreshold("EdgeThreshold", Float) = 0.25
-  }
-
   SubShader {
     Tags { "RenderType" = "Opaque" "Queue" = "Geometry" }
     LOD 100

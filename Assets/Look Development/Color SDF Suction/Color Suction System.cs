@@ -53,7 +53,7 @@ class ColorSuctionRenderPass : ScriptableRenderPass
       source,
       destination,
       Material,
-      shaderPass: 0); // 0 might be wrong. I don't know what shaderPass means and can't be bothered to learn atm
+      shaderPass: 0);
     renderGraph.AddBlitPass(blitParameters, PASS_NAME);
     resourceData.cameraColor = destination;
   }
