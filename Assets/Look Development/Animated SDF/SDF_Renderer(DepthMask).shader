@@ -1,5 +1,8 @@
 Shader "SDF_Renderer/DepthMask"
 {
+  Properties {
+    _UnionDistance ("Union Distance", Range(0.0, 10.0)) = 0.5
+  }
   FallBack "Hidden/InternalErrorShader"
   SubShader {
     Pass {
@@ -37,19 +40,20 @@ Shader "SDF_Renderer/DepthMask"
         float radius;
         float3 stretchAxis;
         float stretchFraction;
-        float inverseSquareRootStretchFraction; // computed on CPU to avoid cost on GPU per-pixel
+        float inverseSquareRootStretchFraction; // computed on CPU to avoid cost on GPU per - pixel
       };
 
       StructuredBuffer<SphereData> _Spheres;
       int _SphereCount;
+      float _UnionDistance;
 
       float sdSphereStretchVolumePreserved(
-        float3 p,
-        float3 center,
-        float radius,
-        float3 axis,
-        float stretchAmt,
-        float invRootStretchAmt
+      float3 p,
+      float3 center,
+      float radius,
+      float3 axis,
+      float stretchAmt,
+      float invRootStretchAmt
       ) {
         float3 scale = float3(1.0, 1.0, 1.0);
         float3 stretch = axis * stretchAmt;
@@ -72,16 +76,16 @@ Shader "SDF_Renderer/DepthMask"
 
       float SDF_Scene(float3 p) {
         float d = 10000.0; // start with large distance
-        for (int i = 0; i < _SphereCount; i++) {
+        for (int i = 0; i < _SphereCount; i ++) {
           SphereData sphere = _Spheres[i];
           float dist = sdSphereStretchVolumePreserved(
-            p,
-            sphere.center,
-            sphere.radius,
-            sphere.stretchAxis,
-            sphere.stretchFraction,
-            sphere.inverseSquareRootStretchFraction);
-          d = SmoothMin(d, dist, 0.5);
+          p,
+          sphere.center,
+          sphere.radius,
+          sphere.stretchAxis,
+          sphere.stretchFraction,
+          sphere.inverseSquareRootStretchFraction);
+          d = SmoothMin(d, dist, _UnionDistance);
         }
         return d;
       }
@@ -104,7 +108,7 @@ Shader "SDF_Renderer/DepthMask"
         const float surfEps = 0.001;
         float t = 0.0;
 
-        for (int i = 0; i < maxSteps; i++) {
+        for (int i = 0; i < maxSteps; i ++) {
           float3 p = ro + t * rd;
           float d = SDF_Scene(p);
           if (d < surfEps) {
@@ -116,7 +120,7 @@ Shader "SDF_Renderer/DepthMask"
           t += d;
         }
 
-        hitPos = float3(0,0,0);
+        hitPos = float3(0, 0, 0);
         distOut = maxDist;
         return false;
       }
@@ -134,7 +138,7 @@ Shader "SDF_Renderer/DepthMask"
         float3 rayOrigin = _WorldSpaceCameraPos;
         float3 rayDirection = RayDirection(input.uv);
 
-        if (!RayMarch(rayOrigin, rayDirection, hitPosition, hitDistance)) {
+        if (! RayMarch(rayOrigin, rayDirection, hitPosition, hitDistance)) {
           discard;
         }
         float4 clipPos = mul(UNITY_MATRIX_VP, float4(hitPosition, 1.0));
