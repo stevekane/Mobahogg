@@ -142,7 +142,7 @@ Shader "Custom/SDF Renderer"
         out float rawDepth
       ) {
         float4 ndc = float4(uv * 2.0 - 1.0, 1.0, 1.0); // Far plane
-        float4 worldFar = mul(invViewProj, ndc);
+        float4 worldFar = mul(UNITY_MATRIX_I_VP, ndc);
         worldFar.xyz /= worldFar.w;
         float3 rayDir = normalize(worldFar.xyz - camPos);
         float3 hitPos;
@@ -163,11 +163,9 @@ Shader "Custom/SDF Renderer"
         float4 clipPos = float4(uv * 2.0 - 1.0, 0.0, 1.0);
         float4 worldNear = mul(UNITY_MATRIX_I_VP, clipPos);
         worldNear.xyz /= worldNear.w;
-
         clipPos.z = 1.0;
         float4 worldFar = mul(UNITY_MATRIX_I_VP, clipPos);
         worldFar.xyz /= worldFar.w;
-
         return normalize(worldFar.xyz - worldNear.xyz);
       }
 

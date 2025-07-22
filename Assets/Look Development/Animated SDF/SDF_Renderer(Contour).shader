@@ -25,12 +25,11 @@ Shader "SDF_Renderer/Contour"
       #pragma fragment FullscreenFrag
 
       #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-      #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
       #include "Full Screen Utils.cginc"
 
       float _EdgeThreshold;
-      float4 _CoronaColor;
       float _CoronaThickness;
+      float4 _CoronaColor;
 
       TEXTURE2D_X(_SDFDepthTexture);
       SAMPLER(sampler_SDFDepthTexture);
@@ -66,6 +65,8 @@ Shader "SDF_Renderer/Contour"
       FragmentOutput FullscreenFrag(Varyings input)
       {
         FragmentOutput o;
+        // ABSOLUTELY CRITICAL to remap uv-space to texture space.
+        input.uv.y = 1-input.uv.y;
         float centerRawDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
         float centerMask = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv).r;
 

@@ -27,6 +27,11 @@ Shader "SDF_Renderer/DepthMask"
         float2 uv : TEXCOORD0;
       };
 
+      struct FragmentOutput {
+        float mask : SV_TARGET;
+        float depth : SV_DEPTH;
+      };
+
       struct SphereData {
         float3 center;
         float radius;
@@ -65,7 +70,7 @@ Shader "SDF_Renderer/DepthMask"
         return lerp(d2, d1, h) - k * h * (1.0 - h);
       }
 
-      float SceneSDF(float3 p) {
+      float SDF_Scene(float3 p) {
         float d = 10000.0; // start with large distance
         for (int i = 0; i < _SphereCount; i++) {
           SphereData sphere = _Spheres[i];
@@ -81,19 +86,27 @@ Shader "SDF_Renderer/DepthMask"
         return d;
       }
 
-      bool Raymarch(
+      float3 RayDirection(float2 uv) {
+        float4 ndc = float4(uv * 2.0 - 1.0, 1.0, 1.0); // Far plane
+        float4 worldFar = mul(UNITY_MATRIX_I_VP, ndc);
+        worldFar.xyz /= worldFar.w;
+        float3 rayDir = normalize(worldFar.xyz - _WorldSpaceCameraPos);
+        return rayDir;
+      }
+
+      bool RayMarch(
       float3 ro,
       float3 rd,
       out float3 hitPos,
       out float distOut) {
-        const int maxSteps = 128;
-        const float maxDist = 100.0;
+        const int maxSteps = 256;
+        const float maxDist = 10000.0;
         const float surfEps = 0.001;
         float t = 0.0;
 
         for (int i = 0; i < maxSteps; i++) {
           float3 p = ro + t * rd;
-          float d = SceneSDF(p);
+          float d = SDF_Scene(p);
           if (d < surfEps) {
             hitPos = p;
             distOut = t;
@@ -108,62 +121,25 @@ Shader "SDF_Renderer/DepthMask"
         return false;
       }
 
-      void RenderSDF_float(
-        float2 uv,
-        float3 camPos,
-        float4x4 invViewProj,
-        out float value,
-        out float rawDepth
-      ) {
-        float4 ndc = float4(uv * 2.0 - 1.0, 1.0, 1.0); // Far plane
-        float4 worldFar = mul(invViewProj, ndc);
-        worldFar.xyz /= worldFar.w;
-        float3 rayDir = normalize(worldFar.xyz - camPos);
-        float3 hitPos;
-        float dist;
-
-        if (Raymarch(camPos, rayDir, hitPos, dist)) {
-          value = 1.0;
-          float4 clipPos = mul(UNITY_MATRIX_VP, float4(hitPos, 1.0));
-          rawDepth = clipPos.z / clipPos.w;
-        } else {
-          value = 0.0;
-          rawDepth = 1.0; // far plane
-        }
-      }
-
-      float3 ComputeRayDirection(float2 uv) {
-        float4 clipPos = float4(uv * 2.0 - 1.0, 0.0, 1.0);
-        float4 worldNear = mul(UNITY_MATRIX_I_VP, clipPos);
-        worldNear.xyz /= worldNear.w;
-        clipPos.z = 1.0;
-        float4 worldFar = mul(UNITY_MATRIX_I_VP, clipPos);
-        worldFar.xyz /= worldFar.w;
-        return normalize(worldFar.xyz - worldNear.xyz);
-      }
-
       Varyings Vert (Attributes input) {
         Varyings output;
         FullScreenQuadFromVertexIDs(input.vertexID, output.uv, output.positionCS);
         return output;
       }
 
-      struct FragmentOutput {
-        float4 normal : SV_TARGET;
-        float depth : SV_DEPTH;
-      };
-
       FragmentOutput Frag (Varyings input) {
-        float3 camPos = _WorldSpaceCameraPos;
-        float4x4 invVP = UNITY_MATRIX_I_VP;
-        float value, rawDepth;
         FragmentOutput o;
-        RenderSDF_float(input.uv, camPos, invVP, value, rawDepth);
-        // TODO: What is value??
+        float value, hitDistance;
+        float3 hitPosition;
+        float3 rayOrigin = _WorldSpaceCameraPos;
+        float3 rayDirection = RayDirection(input.uv);
 
-        if (value < 0.5) discard;
-        o.depth = rawDepth;
-        o.normal = float4(1, 1, 1, 1);
+        if (!RayMarch(rayOrigin, rayDirection, hitPosition, hitDistance)) {
+          discard;
+        }
+        float4 clipPos = mul(UNITY_MATRIX_VP, float4(hitPosition, 1.0));
+        o.depth = clipPos.z / clipPos.w;
+        o.mask = 1;
         return o;
       }
 
