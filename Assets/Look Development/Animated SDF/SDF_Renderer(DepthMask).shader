@@ -15,18 +15,6 @@ Shader "SDF_Renderer/DepthMask"
       #pragma fragment Frag
       #pragma target 4.5
 
-      // TODO: Do we actually need these? I kind of doubt it
-      // URP Lighting Keywords
-      #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-      #pragma multi_compile _ _SHADOWS_SOFT
-
-      #define ATTRIBUTES_NEED_TEXCOORD0
-      #define ATTRIBUTES_NEED_TEXCOORD1
-      #define ATTRIBUTES_NEED_VERTEXID
-      #define VARYINGS_NEED_TEXCOORD0
-      #define VARYINGS_NEED_TEXCOORD1
-      #define REQUIRE_DEPTH_TEXTURE
-
       #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
       #include "Full Screen Utils.cginc"
 
