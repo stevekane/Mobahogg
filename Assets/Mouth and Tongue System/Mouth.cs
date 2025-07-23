@@ -2,16 +2,6 @@ using System.Collections;
 using Melee;
 using UnityEngine;
 
-/*
-NB
-
-As far as I can tell, these recursive "tail calls" for coroutines will actually eventually
-overflow the stack as they are apparently not optimized the way async methods / UniTask
-supposedly is.
-
-I cannot say for certain that this is true but GPT has warned me about it so pay attention
-to this possibility
-*/
 public class Mouth : MonoBehaviour
 {
   [Header("Prefab References")]
@@ -124,6 +114,7 @@ public class Mouth : MonoBehaviour
       Claw.transform.position = Vector3.Lerp(initialPosition, targetPosition, interpolant);
       yield return new WaitForFixedUpdate();
     }
+    // Claw.transform.SetParent(Sphere.transform, worldPositionStays: true);
     Claw.transform.SetParent(Sphere.transform, worldPositionStays: true);
     // Move the sphere
     var sphereImpulse = new SphereImpulse(
@@ -163,6 +154,8 @@ public class Mouth : MonoBehaviour
     {
       while (true)
       {
+        var sdfBlackhole = Sphere.GetComponentInChildren<SDFSphere>();
+        Claw.transform.position = Sphere.transform.position - sdfBlackhole.Radius * Claw.transform.forward;
         Sphere.DirectVelocity -= PullingStrength * (Sphere.transform.position - transform.position).XZ().normalized;
         yield return new WaitForFixedUpdate();
       }

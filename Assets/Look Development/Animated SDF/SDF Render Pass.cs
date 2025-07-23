@@ -51,10 +51,16 @@ public class SDFRenderPass : ScriptableRenderPass
     SDFDepthTextureDescription.name = "SDF Depth";
     SDFDepthTextureDescription.clearBuffer = true;
     SDFDepthTextureDescription.clearColor = Color.white;
+    SDFDepthTextureDescription.width = 1920;
+    SDFDepthTextureDescription.height = 1080;
+    // SDFDepthTextureDescription.filterMode = FilterMode.Bilinear;
     var SDFMaskTextureDescription = renderGraph.GetTextureDesc(resourceData.cameraNormalsTexture);
     SDFMaskTextureDescription.name = "SDF Mask";
     SDFMaskTextureDescription.clearBuffer = true;
     SDFMaskTextureDescription.clearColor = Color.black;
+    SDFMaskTextureDescription.width = 1920;
+    SDFMaskTextureDescription.height = 1080;
+    // SDFMaskTextureDescription.filterMode = FilterMode.Bilinear;
     SDFMaskTextureDescription.colorFormat = UnityEngine.Experimental.Rendering.GraphicsFormat.R8_SNorm;
     var SDFDepthTexture = renderGraph.CreateTexture(SDFDepthTextureDescription);
     var SDFMaskTexture = renderGraph.CreateTexture(SDFMaskTextureDescription);

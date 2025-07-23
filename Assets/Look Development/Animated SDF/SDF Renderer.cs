@@ -12,7 +12,7 @@ using UnityEditor;
 [ExecuteAlways]
 public class SDFRenderer : MonoBehaviour
 {
-  const int MAX_SPHERE_COUNT = 16;
+  const int MAX_SPHERE_COUNT = 32;
 
   [StructLayout(LayoutKind.Sequential)]
   struct SphereData
