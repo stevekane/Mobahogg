@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - DepthMaterial: {fileID: 2100000, guid: ebb672e2600e50d4fbc9d625dd4673cd, type: 2}
   - RenderingMaterial: {fileID: 2100000, guid: d5ad406a233a3b842863df18c369e101, type: 2}
+  - SDFScreenSpaceComputeShader: {fileID: 7200000, guid: b2278b5db38e4504fb1ce69f5857af8a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0411f1a2ef5cbea4caedc163d33b1111, type: 3}
+  m_Name: Blackhole Paramaters
+  m_EditorClassIdentifier: 
+  MoveSpeed: 10
+  OrbitTransitionEasingFunctionName: 11
+  OrbitTransitionDuration:
+    Millis: 250
+  OrbitDuration:
+    Millis: 5000
+  MinOrbitOffset: 5
+  OrbitOffset: 4
+  InitialOrbitSpeed: 150
+  OrbitAcceleration: 100
+  SpiralInRate: 2

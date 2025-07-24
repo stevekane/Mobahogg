@@ -3,9 +3,12 @@ Shader "SDF_Renderer/Contour"
   Properties
   {
     _EdgeThreshold ("Edge Threshold (Linear Depth)", Range(0.0001, 0.5)) = 0.05
-    [HDR] _CoronaColor ("Corona Color", Color) = (1,1,0,1)
-    _CoronaThickness ("Corona Thickness", Range(1, 5)) = 1.0
+    _HorizonThickness ("Horizon Thickness", Range(0.1, 20)) = 1.0
+    _CoronaThickness ("Corona Thickness", Range(1.0, 100)) = 5.0
+    [HDR] _CoronaColor ("Corona Color", Color) = (1, 1, 0, 1)
+    _DistortionStrength ("Distortion Strength", Range(0.001, 1)) = 0.01
   }
+
   SubShader
   {
     Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry" }
@@ -14,7 +17,6 @@ Shader "SDF_Renderer/Contour"
     Pass
     {
       Name "SDFContourPass"
-
       Cull Off
       ZWrite On
       ZTest LEqual
@@ -28,8 +30,10 @@ Shader "SDF_Renderer/Contour"
       #include "Full Screen Utils.cginc"
 
       float _EdgeThreshold;
+      float _HorizonThickness;
       float _CoronaThickness;
       float4 _CoronaColor;
+      float _DistortionStrength;
 
       TEXTURE2D_X(_SDFDepthTexture);
       SAMPLER(sampler_SDFDepthTexture);
@@ -38,6 +42,10 @@ Shader "SDF_Renderer/Contour"
       TEXTURE2D_X(_SDFMaskTexture);
       SAMPLER(sampler_SDFMaskTexture);
       float4 _SDFMaskTexture_TexelSize;
+
+      TEXTURE2D_X(_ColorTexture);
+      SAMPLER(sampler_ColorTexture);
+      float4 _ColorTexture_TexelSize;
 
       struct Attributes
       {
@@ -62,45 +70,73 @@ Shader "SDF_Renderer/Contour"
         float depth : SV_DEPTH;
       };
 
+      float2 CoronaDistortionAlongContour(float2 uv, float4 texelSize, float strength)
+      {
+        float rawC = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv).r;
+        float rawL = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv - float2(texelSize.x, 0)).r;
+        float rawR = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv + float2(texelSize.x, 0)).r;
+        float rawU = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv + float2(0, texelSize.y)).r;
+        float rawD = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv - float2(0, texelSize.y)).r;
+
+        float dx = rawR - rawL;
+        float dy = rawU - rawD;
+        float2 normal = normalize(float2(dx, dy));
+        float2 tangent = float2(-normal.y, normal.x);
+        return uv + tangent * strength;
+      }
+
+      float EstimateEdgeDistance(float2 uv, float texelStep)
+      {
+        float minDist = 9999.0;
+        for (int y = -2; y <= 2; y++)
+        {
+          for (int x = -2; x <= 2; x++)
+          {
+            float2 offset = float2(x, y) * texelStep;
+            float maskSample = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, uv + offset).r;
+            if (maskSample < 0.001)
+            {
+              float dist = length(offset);
+              minDist = min(minDist, dist);
+            }
+          }
+        }
+        return minDist;
+      }
+
       FragmentOutput FullscreenFrag(Varyings input)
       {
         FragmentOutput o;
-        // ABSOLUTELY CRITICAL to remap uv-space to texture space.
-        input.uv.y = 1-input.uv.y;
-        float centerRawDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
+        input.uv.y = 1.0 - input.uv.y;
+
+        float centerDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
         float centerMask = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv).r;
 
         if (centerMask < 0.001)
-        {
           discard;
+
+        const float4 PURE_BLACK = float4(0, 0, 0, 1);
+        float texelStep = _SDFDepthTexture_TexelSize.x;
+        float distToEdge = EstimateEdgeDistance(input.uv, texelStep);
+
+        if (distToEdge > _CoronaThickness)
+        {
+          o.color = PURE_BLACK;
+        }
+        else if (distToEdge < _HorizonThickness)
+        {
+          float horizonNorm = smoothstep(0.0, 1.0, 1.0 - distToEdge / _HorizonThickness);
+          float2 distortedUV = CoronaDistortionAlongContour(input.uv, _ColorTexture_TexelSize, _DistortionStrength * horizonNorm);
+          float4 distortedColor = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, distortedUV);
+          o.color = distortedColor;
+        }
+        else
+        {
+          // o.color = _CoronaColor * coronaNorm;
+          o.color = _CoronaColor;
         }
 
-        float linearCenterDepth = LinearEyeDepth(centerRawDepth, _ZBufferParams);
-        float2 offset = _SDFDepthTexture_TexelSize.xy * _CoronaThickness;
-        bool isEdge = false;
-
-        float raw_depth_up    = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv + float2(0, offset.y)).r;
-        float mask_up         = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv + float2(0, offset.y)).r;
-        float linear_depth_up = LinearEyeDepth(raw_depth_up, _ZBufferParams);
-        if (abs(linearCenterDepth - linear_depth_up) > _EdgeThreshold && mask_up < 0.001) { isEdge = true; }
-
-        float raw_depth_down  = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv - float2(0, offset.y)).r;
-        float mask_down       = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv - float2(0, offset.y)).r;
-        float linear_depth_down = LinearEyeDepth(raw_depth_down, _ZBufferParams);
-        if (abs(linearCenterDepth - linear_depth_down) > _EdgeThreshold && mask_down < 0.001) { isEdge = true; }
-
-        float raw_depth_left  = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv - float2(offset.x, 0)).r;
-        float mask_left       = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv - float2(offset.x, 0)).r;
-        float linear_depth_left = LinearEyeDepth(raw_depth_left, _ZBufferParams);
-        if (abs(linearCenterDepth - linear_depth_left) > _EdgeThreshold && mask_left < 0.001) { isEdge = true; }
-
-        float raw_depth_right = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv + float2(offset.x, 0)).r;
-        float mask_right      = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv + float2(offset.x, 0)).r;
-        float linear_depth_right = LinearEyeDepth(raw_depth_right, _ZBufferParams);
-        if (abs(linearCenterDepth - linear_depth_right) > _EdgeThreshold && mask_right < 0.001) { isEdge = true; }
-
-        o.color = isEdge ? _CoronaColor : float4(0,0,0,1);
-        o.depth = centerRawDepth;
+        o.depth = centerDepth;
         return o;
       }
       ENDHLSL

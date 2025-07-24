@@ -26,6 +26,7 @@ public class SDFRenderer : MonoBehaviour
 
   [SerializeField] Material DepthMaterial;
   [SerializeField] Material RenderingMaterial;
+  [SerializeField] ComputeShader SDFScreenSpaceComputeShader;
   public List<SDFSphere> Spheres = new(MAX_SPHERE_COUNT);
 
   SphereData[] SphereArray = new SphereData[MAX_SPHERE_COUNT];
@@ -40,6 +41,7 @@ public class SDFRenderer : MonoBehaviour
     SDFRenderPass = new SDFRenderPass();
     SDFRenderPass.DepthMaterial = DepthMaterial;
     SDFRenderPass.RenderingMaterial = RenderingMaterial;
+    SDFRenderPass.SDFScreenSpaceComputeShader = SDFScreenSpaceComputeShader;
     RenderPipelineManager.beginCameraRendering += InjectRenderPass;
   }
 

@@ -1,0 +1,62 @@
+#pragma kernel JumpFloodInit
+#pragma kernel JumpFloodStep
+#pragma kernel JumpFloodFinalize
+
+RWTexture2D<float2> _JumpFloodPing;
+RWTexture2D<float2> _JumpFloodPong;
+RWTexture2D<float> _JumpFloodDistance;
+Texture2D<float> _Mask;
+
+int _TexWidth;
+int _TexHeight;
+int _Step;
+
+// Pass 1: Initialize with positions of edge pixels
+[numthreads(8,8,1)]
+void JumpFloodInit(uint3 id : SV_DispatchThreadID)
+{
+  if (id.x >= _TexWidth || id.y >= _TexHeight) return;
+  float mask = _Mask.Load(int3(id.xy, 0));
+  _JumpFloodPing[id.xy] = mask < 0.5 ? float2(-1, -1) : id.xy;
+  _JumpFloodPong[id.xy] = float2(-1, -1);
+}
+
+// Pass 2: Jump flood iteration (ping-pong)
+[numthreads(8,8,1)]
+void JumpFloodStep(uint3 id : SV_DispatchThreadID)
+{
+  if (id.x >= _TexWidth || id.y >= _TexHeight) return;
+
+  float2 best = _JumpFloodPing[id.xy];
+  float minDist = 99999.0;
+
+  for (int dy = -1; dy <= 1; dy++)
+  for (int dx = -1; dx <= 1; dx++)
+  {
+    int2 samplePos = int2(id.xy) + int2(dx, dy) * _Step;
+    if (samplePos.x < 0 || samplePos.y < 0 || samplePos.x >= _TexWidth || samplePos.y >= _TexHeight) continue;
+
+    float2 candidate = _JumpFloodPing[samplePos];
+    if (candidate.x < 0) continue;
+    float dist = length(float2(id.xy) - candidate);
+    if (dist < minDist)
+    {
+      minDist = dist;
+      best = candidate;
+    }
+  }
+
+  _JumpFloodPong[id.xy] = best;
+}
+
+// Pass 3: Finalize by writing signed distance
+[numthreads(8,8,1)]
+void JumpFloodFinalize(uint3 id : SV_DispatchThreadID)
+{
+  if (id.x >= _TexWidth || id.y >= _TexHeight) return;
+
+  float2 seed = _JumpFloodPing[id.xy];
+  float mask = _Mask.Load(int3(id.xy, 0));
+  float dist = seed.x < 0 ? 0.0 : length(float2(id.xy) - seed);
+  _JumpFloodDistance[id.xy] = mask > 0.5 ? dist : -dist;
+}
