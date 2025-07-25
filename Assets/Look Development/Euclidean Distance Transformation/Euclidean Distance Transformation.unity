@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Material: {fileID: 2100000, guid: cabac3f67dea73e46a871e382dbb9577, type: 2}
+  MaskTexture: {fileID: 2800000, guid: 70ce7a5ab5ec0a54e8289848c8f16534, type: 3}
 --- !u!1 &1355973590
 GameObject:
   m_ObjectHideFlags: 0

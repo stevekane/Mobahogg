@@ -1,8 +1,4 @@
 Shader "EuclideanDistance/ScreenSpaceDistanceField" {
-  Properties {
-    _Mask ("Texture", 2D) = "white" {}
-  }
-
   CGINCLUDE
   #include "UnityCG.cginc"
   #include "../Animated SDF/Full Screen Utils.cginc"
@@ -29,10 +25,8 @@ Shader "EuclideanDistance/ScreenSpaceDistanceField" {
   }
 
   bool Seed(float2 uv) {
-    float2 center = float2(0.5, 0.5);
-    float radius = 0.25;
-    float dist = distance(uv, center);
-    return dist < radius;
+    float2 mask = tex2D(_Mask, uv);
+    return mask.r > 0.5;
   }
 
   v2f vert(appdata v) {
@@ -44,11 +38,11 @@ Shader "EuclideanDistance/ScreenSpaceDistanceField" {
     return o;
   }
 
-  float4 frag_init(v2f i) : SV_Target {
-    return Seed(i.uv) ? float4(i.uv, 0, 1) : float4(- 1, - 1, - 1, 1);
+  half2 frag_init(v2f i) : SV_Target {
+    return Seed(i.uv) ? half2(i.uv) : half2(-1, -1);
   }
 
-  float4 frag_jump(v2f i) : SV_Target {
+  half2 frag_jump(v2f i) : SV_Target {
     float2 selfUV = i.uv;
     float2 bestSeed = tex2D(_Source, selfUV).rg;
     float bestDist = (bestSeed.r < 0.0)
@@ -58,37 +52,33 @@ Shader "EuclideanDistance/ScreenSpaceDistanceField" {
     float2 stepOverScreenSize = _Step / _ScreenSize;
     for (int dy = - 1; dy <= 1; dy ++) {
       for (int dx = - 1; dx <= 1; dx ++) {
-        if (dx == 0 && dy == 0) continue;
-
         float2 offset = stepOverScreenSize * float2(dx, dy);
         float2 sampleUV = selfUV + offset;
         if (any(sampleUV < 0.0) || any(sampleUV > 1.0)) continue;
 
-        float4 candidate = tex2D(_Source, sampleUV);
+        half2 candidate = tex2D(_Source, sampleUV).rg;
         if (candidate.x < 0) continue;
-
-        float2 seedUV = candidate.rg;
-        float dist = ScreenDistSq(seedUV, selfUV);
+        float dist = ScreenDistSq(candidate, selfUV);
         if (dist < bestDist) {
           bestDist = dist;
-          bestSeed = seedUV;
+          bestSeed = candidate;
         }
       }
     }
 
+    // TODO: Move this to finalize pass probably
     if (abs(_Step - 1.0) < 0.001) {
       bool inside = Seed(selfUV);
       if (inside) {
-          return float4(0, 0, 0, 1);
+        return half2(0, 0);
       } else {
-          float distPixels = sqrt(bestDist);
-          float maxPossibleDistance = length(_ScreenSize);
-          float normalizedDist = saturate(distPixels / maxPossibleDistance);
-          return float4(normalizedDist, normalizedDist, normalizedDist, 1);
+        float distPixels = sqrt(bestDist);
+        float maxPossibleDistance = length(_ScreenSize);
+        float normalizedDist = saturate(distPixels / maxPossibleDistance);
+        return half2(normalizedDist, normalizedDist);
       }
     }
-
-    return float4(bestSeed, 0, 1);
+    return half2(bestSeed);
   }
 
   ENDCG
