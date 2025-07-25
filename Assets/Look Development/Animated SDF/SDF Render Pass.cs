@@ -74,7 +74,6 @@ public class SDFRenderPass : ScriptableRenderPass
   static void ExecuteScreenSpaceSDFPass(SDFScreenSpacePassData data, ComputeGraphContext ctx)
   {
     var cmd = ctx.cmd;
-    var maxStep = Mathf.CeilToInt(Mathf.Log(Mathf.Max(data.Width, data.Height), 2));
     var kernelInit = data.ComputeShader.FindKernel("JumpFloodInit");
     var kernelStep = data.ComputeShader.FindKernel("JumpFloodStep");
     var kernelFinalize = data.ComputeShader.FindKernel("JumpFloodFinalize");
@@ -97,6 +96,8 @@ public class SDFRenderPass : ScriptableRenderPass
       threadGroupsY,
       threadGroupsZ);
 
+    var maxDimension = Mathf.Max(data.Width, data.Height);
+    var maxStep = Mathf.NextPowerOfTwo(maxDimension) / 2;
     for (int i = maxStep; i > 0; i /= 2)
     {
       cmd.SetComputeIntParam(data.ComputeShader, "_Step", i);
@@ -110,6 +111,7 @@ public class SDFRenderPass : ScriptableRenderPass
         threadGroupsZ);
       (pingTexture, pongTexture) = (pongTexture, pingTexture);
     }
+    cmd.SetComputeTextureParam(data.ComputeShader, kernelFinalize, "_JumpFloodPing", pingTexture);
     cmd.DispatchCompute(
       data.ComputeShader,
       kernelFinalize,

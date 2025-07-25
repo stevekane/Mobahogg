@@ -107,7 +107,10 @@ Shader "SDF_Renderer/Contour"
       FragmentOutput FullscreenFrag(Varyings input)
       {
         FragmentOutput o;
+        // https://gist.github.com/CianNoonan/c56256433801991038c9c40a48fe3002#file-hiddenjumpfloodoutline-shader-L78
+        #ifdef UNITY_UV_STARTS_AT_TOP
         input.uv.y = 1.0 - input.uv.y;
+        #endif
 
         float centerDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
         float centerMask = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv).r;
