@@ -116,11 +116,29 @@ public static class ScreenSpaceSDFRenderUtils {
     }
 
     var maxDimension = Mathf.Max(pingTextureDesc.width, pingTextureDesc.height);
-    var maxStep = Mathf.NextPowerOfTwo(maxDimension);
+    var maxStep = Mathf.NextPowerOfTwo(maxDimension) / 2;
     var screenSize = new Vector2(pingTextureDesc.width, pingTextureDesc.height);
     for (var step = maxStep; step >= 1; step /= 2)
     {
       var stepPassName = $"{namePrefix}_ScreenSpaceSDF_Step(Size={step})";
+      using (var builder = renderGraph.AddRasterRenderPass<StepPassData>(stepPassName, out var passData))
+      {
+        passData.Material = material;
+        passData.Mask = mask;
+        passData.Source = pingTexture;
+        passData.ScreenSize = screenSize;
+        passData.Step = step;
+        builder.UseTexture(pingTexture);
+        builder.SetRenderAttachment(pongTexture, 0);
+        builder.SetRenderFunc<StepPassData>(RunStep);
+      }
+      (pingTexture, pongTexture) = (pongTexture, pingTexture);
+    }
+
+    // JFA+2 to see if it reduces errors... kinda weird
+    for (var step = -2; step < 0 ; step++)
+    {
+      var stepPassName = $"{namePrefix}_ScreenSpaceSDF_EXTRAStep(Size={step})";
       using (var builder = renderGraph.AddRasterRenderPass<StepPassData>(stepPassName, out var passData))
       {
         passData.Material = material;

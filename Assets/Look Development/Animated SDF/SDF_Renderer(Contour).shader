@@ -43,6 +43,10 @@ Shader "SDF_Renderer/Contour"
       SAMPLER(sampler_SDFMaskTexture);
       float4 _SDFMaskTexture_TexelSize;
 
+      TEXTURE2D_X(_ScreenSpaceSDFTexture);
+      SAMPLER(sampler_ScreenSpaceSDFTexture);
+      float4 _ScreenSpaceSDFTexture_TexelSize;
+
       TEXTURE2D_X(_ColorTexture);
       SAMPLER(sampler_ColorTexture);
       float4 _ColorTexture_TexelSize;
@@ -62,6 +66,10 @@ Shader "SDF_Renderer/Contour"
       {
         Varyings output;
         FullScreenQuadFromVertexIDs(input.vertexID, output.uv, output.positionCS);
+        // https://gist.github.com/CianNoonan/c56256433801991038c9c40a48fe3002#file-hiddenjumpfloodoutline-shader-L78
+        #ifdef UNITY_UV_STARTS_AT_TOP
+        output.uv.y = 1.0 - output.uv.y;
+        #endif
         return output;
       }
 
@@ -106,40 +114,19 @@ Shader "SDF_Renderer/Contour"
 
       FragmentOutput FullscreenFrag(Varyings input)
       {
+        const float4 PURE_BLACK = float4(0, 0, 0, 1);
         FragmentOutput o;
-        // https://gist.github.com/CianNoonan/c56256433801991038c9c40a48fe3002#file-hiddenjumpfloodoutline-shader-L78
-        #ifdef UNITY_UV_STARTS_AT_TOP
-        input.uv.y = 1.0 - input.uv.y;
-        #endif
 
         float centerDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
-        float centerMask = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, input.uv).r;
+        float4 sceneColor = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, input.uv);
+        half ssDistance = SAMPLE_TEXTURE2D_X(_ScreenSpaceSDFTexture, sampler_ScreenSpaceSDFTexture, input.uv).r;
+        ssDistance *= 10;
+        float4 distanceColor = float4(ssDistance, ssDistance, ssDistance, 1);
 
-        if (centerMask < 0.001)
-          discard;
-
-        const float4 PURE_BLACK = float4(0, 0, 0, 1);
-        float texelStep = _SDFDepthTexture_TexelSize.x;
-        float distToEdge = EstimateEdgeDistance(input.uv, texelStep);
-
-        if (distToEdge > _CoronaThickness)
-        {
-          o.color = PURE_BLACK;
-        }
-        else if (distToEdge < _HorizonThickness)
-        {
-          float horizonNorm = smoothstep(0.0, 1.0, 1.0 - distToEdge / _HorizonThickness);
-          float2 distortedUV = CoronaDistortionAlongContour(input.uv, _ColorTexture_TexelSize, _DistortionStrength * horizonNorm);
-          float4 distortedColor = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, distortedUV);
-          o.color = distortedColor;
-        }
-        else
-        {
-          // o.color = _CoronaColor * coronaNorm;
-          o.color = _CoronaColor;
-        }
-
-        o.depth = centerDepth;
+        o.color = lerp(distanceColor, sceneColor, ssDistance);
+        o.color = distanceColor;
+        // o.depth = centerDepth;
+        o.depth = 1;
         return o;
       }
       ENDHLSL

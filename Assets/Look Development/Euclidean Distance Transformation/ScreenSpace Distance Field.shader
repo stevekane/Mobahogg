@@ -49,7 +49,8 @@ Shader "EuclideanDistance/ScreenSpaceDistanceField" {
     ? 1e20
     : ScreenDistSq(bestSeed, selfUV);
 
-    float2 stepOverScreenSize = _Step / _ScreenSize;
+    float2 AbsStep = abs(_Step);
+    float2 stepOverScreenSize = AbsStep / _ScreenSize;
     for (int dy = - 1; dy <= 1; dy ++) {
       for (int dx = - 1; dx <= 1; dx ++) {
         float2 offset = stepOverScreenSize * float2(dx, dy);
@@ -67,7 +68,7 @@ Shader "EuclideanDistance/ScreenSpaceDistanceField" {
     }
 
     // TODO: Move this to finalize pass probably
-    if (abs(_Step - 1.0) < 0.001) {
+    if (_Step == -1) {
       bool inside = Seed(selfUV);
       if (inside) {
         return half2(0, 0);

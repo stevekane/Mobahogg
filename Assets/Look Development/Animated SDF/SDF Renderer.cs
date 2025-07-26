@@ -26,7 +26,7 @@ public class SDFRenderer : MonoBehaviour
 
   [SerializeField] Material DepthMaterial;
   [SerializeField] Material RenderingMaterial;
-  [SerializeField] ComputeShader SDFScreenSpaceComputeShader;
+  [SerializeField] Material ScreenSpaceSDFMaterial;
   public List<SDFSphere> Spheres = new(MAX_SPHERE_COUNT);
 
   SphereData[] SphereArray = new SphereData[MAX_SPHERE_COUNT];
@@ -37,11 +37,7 @@ public class SDFRenderer : MonoBehaviour
   {
     Spheres.Clear();
     SphereBuffer = new ComputeBuffer(MAX_SPHERE_COUNT, Marshal.SizeOf(typeof(SphereData)));
-    DepthMaterial.SetBuffer("_Spheres", SphereBuffer);
     SDFRenderPass = new SDFRenderPass();
-    SDFRenderPass.DepthMaterial = DepthMaterial;
-    SDFRenderPass.RenderingMaterial = RenderingMaterial;
-    SDFRenderPass.SDFScreenSpaceComputeShader = SDFScreenSpaceComputeShader;
     RenderPipelineManager.beginCameraRendering += InjectRenderPass;
   }
 
@@ -65,6 +61,9 @@ public class SDFRenderer : MonoBehaviour
       };
     }
     SphereBuffer.SetData(SphereArray);
+    SDFRenderPass.DepthMaterial = DepthMaterial;
+    SDFRenderPass.RenderingMaterial = RenderingMaterial;
+    SDFRenderPass.ScreenSpaceSDFMaterial = ScreenSpaceSDFMaterial;
     DepthMaterial.SetBuffer("_Spheres", SphereBuffer);
     DepthMaterial.SetInt("_SphereCount", Spheres.Count);
   }
