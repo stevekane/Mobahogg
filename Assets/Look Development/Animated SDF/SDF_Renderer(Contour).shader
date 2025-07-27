@@ -6,6 +6,7 @@ Shader "SDF_Renderer/Contour"
     _HorizonThickness ("Horizon Thickness", Range(0.1, 20)) = 1.0
     _CoronaThickness ("Corona Thickness", Range(1.0, 100)) = 5.0
     [HDR] _CoronaColor ("Corona Color", Color) = (1, 1, 0, 1)
+    [HDR] _EinsteinRingColor ("EinsteinRing Color", Color) = (1, 1, 0, 1)
     _DistortionStrength ("Distortion Strength", Range(0.001, 1)) = 0.01
   }
 
@@ -33,6 +34,7 @@ Shader "SDF_Renderer/Contour"
       float _HorizonThickness;
       float _CoronaThickness;
       float4 _CoronaColor;
+      float4 _EinsteinRingColor;
       float _DistortionStrength;
 
       TEXTURE2D_X(_SDFDepthTexture);
@@ -78,55 +80,33 @@ Shader "SDF_Renderer/Contour"
         float depth : SV_DEPTH;
       };
 
-      float2 CoronaDistortionAlongContour(float2 uv, float4 texelSize, float strength)
-      {
-        float rawC = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv).r;
-        float rawL = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv - float2(texelSize.x, 0)).r;
-        float rawR = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv + float2(texelSize.x, 0)).r;
-        float rawU = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv + float2(0, texelSize.y)).r;
-        float rawD = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, uv - float2(0, texelSize.y)).r;
-
-        float dx = rawR - rawL;
-        float dy = rawU - rawD;
-        float2 normal = normalize(float2(dx, dy));
-        float2 tangent = float2(-normal.y, normal.x);
-        return uv + tangent * strength;
-      }
-
-      float EstimateEdgeDistance(float2 uv, float texelStep)
-      {
-        float minDist = 9999.0;
-        for (int y = -2; y <= 2; y++)
-        {
-          for (int x = -2; x <= 2; x++)
-          {
-            float2 offset = float2(x, y) * texelStep;
-            float maskSample = SAMPLE_TEXTURE2D_X(_SDFMaskTexture, sampler_SDFMaskTexture, uv + offset).r;
-            if (maskSample < 0.001)
-            {
-              float dist = length(offset);
-              minDist = min(minDist, dist);
-            }
-          }
-        }
-        return minDist;
-      }
-
       FragmentOutput FullscreenFrag(Varyings input)
       {
         const float4 PURE_BLACK = float4(0, 0, 0, 1);
         FragmentOutput o;
+        float depth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
+        float4 c = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, input.uv);
+        float d = SAMPLE_TEXTURE2D_X(_ScreenSpaceSDFTexture, sampler_ScreenSpaceSDFTexture, input.uv).r;
 
-        float centerDepth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
-        float4 sceneColor = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, input.uv);
-        half ssDistance = SAMPLE_TEXTURE2D_X(_ScreenSpaceSDFTexture, sampler_ScreenSpaceSDFTexture, input.uv).r;
-        ssDistance *= 10;
-        float4 distanceColor = float4(ssDistance, ssDistance, ssDistance, 1);
+        if (d < 0)
+          discard;
 
-        o.color = lerp(distanceColor, sceneColor, ssDistance);
-        o.color = distanceColor;
-        // o.depth = centerDepth;
-        o.depth = 1;
+        float EinsteinRingThickness = .0008;
+        float PhotonSphereMin = .008;
+        float PhotonSpheremax = .009;
+        bool EinsteinRing = d <= EinsteinRingThickness;
+        bool PhotonSphere = d >= PhotonSphereMin && d <= PhotonSpheremax;
+        bool WarpedBackground = d > EinsteinRingThickness && d < PhotonSphereMin;
+        if (EinsteinRing) {
+          o.color = _EinsteinRingColor;
+        } else if (PhotonSphere) {
+          o.color = _CoronaColor;
+        } else if (WarpedBackground) {
+          o.color = lerp(c, float4(1,1,1,1), .1);
+        } else {
+          o.color = PURE_BLACK;
+        }
+        o.depth = depth;
         return o;
       }
       ENDHLSL

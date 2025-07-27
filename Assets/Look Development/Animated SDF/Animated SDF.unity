@@ -144,7 +144,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41968236}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e926bc79ecfe49a47b14cdc0bd412589, type: 3}
   m_Name: 
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209552547}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e926bc79ecfe49a47b14cdc0bd412589, type: 3}
   m_Name: 
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 243227267}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e926bc79ecfe49a47b14cdc0bd412589, type: 3}
   m_Name: 
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DepthMaterial: {fileID: 2100000, guid: ebb672e2600e50d4fbc9d625dd4673cd, type: 2}
   RenderingMaterial: {fileID: 2100000, guid: d5ad406a233a3b842863df18c369e101, type: 2}
-  ScreenSpaceSDFMaterial: {fileID: 2100000, guid: cabac3f67dea73e46a871e382dbb9577, type: 2}
+  ScreenSpaceSDFMaterial: {fileID: 2100000, guid: a561af45b02fc544390717d93fa0b194, type: 2}
   Spheres:
   - {fileID: 41968238}
   - {fileID: 209552549}

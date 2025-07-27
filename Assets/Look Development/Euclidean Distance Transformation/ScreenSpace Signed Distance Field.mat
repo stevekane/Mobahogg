@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SDF_Renderer(Contour)
-  m_Shader: {fileID: 4800000, guid: 15c4b7f61df8a2942babdf6dca6e2f11, type: 3}
+  m_Name: ScreenSpace Signed Distance Field
+  m_Shader: {fileID: 4800000, guid: 727b6584c952c4d499bd79623db631e4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -49,7 +49,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b0394665e16ef504bb922274dd606020, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 338685d7a91449f45a6a95b3756c4750, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -90,21 +94,16 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _CoronaThickness: 10
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DebugMask: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DistortionStrength: 0.25
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeThreshold: 0.0001
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HorizonThickness: 10
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -116,19 +115,16 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _SwirlStrength: 10
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CoronaColor: {r: 1.5553666, g: 0.95334625, b: 2.1185474, a: 1}
-    - _EinsteinRingColor: {r: 0.95390093, g: 1.3327829, b: 2.1185474, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &974852046471353872
+--- !u!114 &6618118663838270889
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -28,7 +28,7 @@ public class ScreenSpaceSDFRenderer : MonoBehaviour
   {
     RenderPass.Material = Material;
     RenderPass.Mask = MaskTexture;
-    RenderPass.renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
+    RenderPass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
     camera.GetUniversalAdditionalCameraData().scriptableRenderer.EnqueuePass(RenderPass);
   }
 }
@@ -45,14 +45,21 @@ public static class ScreenSpaceSDFRenderUtils {
     public Material Material;
     public TextureHandle Source;
     public TextureHandle Mask;
-    public Vector2 ScreenSize;
     public int Step;
+  }
+
+  class DistancePassData
+  {
+    public Material Material;
+    public TextureHandle Source;
   }
 
   static int StepPropertyID = Shader.PropertyToID("_Step");
   static int SourcePropertyID = Shader.PropertyToID("_Source");
   static int MaskPropertyID = Shader.PropertyToID("_Mask");
-  static int ScreenSizePropertyID = Shader.PropertyToID("_ScreenSize");
+  const int INIT_PASS_ID = 0;
+  const int STEP_PASS_ID = 1;
+  const int DISTANCE_PASS_ID = 2;
 
   static void RunInit(InitPassData passData, RasterGraphContext ctx)
   {
@@ -61,7 +68,7 @@ public static class ScreenSpaceSDFRenderUtils {
     ctx.cmd.DrawProcedural(
       matrix: Matrix4x4.identity,
       material: passData.Material,
-      shaderPass: 0,
+      shaderPass: INIT_PASS_ID,
       topology: MeshTopology.Triangles,
       vertexCount: 3,
       instanceCount: 1,
@@ -73,18 +80,30 @@ public static class ScreenSpaceSDFRenderUtils {
     var propertyBlock = new MaterialPropertyBlock();
     propertyBlock.SetTexture(MaskPropertyID, passData.Mask);
     propertyBlock.SetTexture(SourcePropertyID, passData.Source);
-    propertyBlock.SetVector(ScreenSizePropertyID, passData.ScreenSize);
     propertyBlock.SetFloat(StepPropertyID, passData.Step);
     ctx.cmd.DrawProcedural(
       matrix: Matrix4x4.identity,
       material: passData.Material,
-      shaderPass: 1,
+      shaderPass: STEP_PASS_ID,
       topology: MeshTopology.Triangles,
       vertexCount: 3,
       instanceCount: 1,
       propertyBlock);
   }
 
+  static void RunDistance(DistancePassData passData, RasterGraphContext ctx)
+  {
+    var propertyBlock = new MaterialPropertyBlock();
+    propertyBlock.SetTexture(SourcePropertyID, passData.Source);
+    ctx.cmd.DrawProcedural(
+      matrix: Matrix4x4.identity,
+      material: passData.Material,
+      shaderPass: DISTANCE_PASS_ID,
+      topology: MeshTopology.Triangles,
+      vertexCount: 3,
+      instanceCount: 1,
+      propertyBlock);
+  }
 
   public static TextureHandle ScreenSpaceSDFRenderPass(
   RenderGraph renderGraph,
@@ -94,19 +113,25 @@ public static class ScreenSpaceSDFRenderUtils {
   string namePrefix = "")
   {
     var resourceData = contextContainer.Get<UniversalResourceData>();
-    var pingTextureDesc = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
-    pingTextureDesc.name = $"{namePrefix}_Ping";
-    pingTextureDesc.format = GraphicsFormat.R16G16_SFloat;
-    pingTextureDesc.wrapMode = TextureWrapMode.Clamp;
-    pingTextureDesc.filterMode = FilterMode.Point;
-    var pongTextureDesc = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
-    pongTextureDesc.name = $"{namePrefix}_Pong";
-    pongTextureDesc.format = GraphicsFormat.R16G16_SFloat;
-    pongTextureDesc.wrapMode = TextureWrapMode.Clamp;
-    pongTextureDesc.filterMode = FilterMode.Point;
+    var pingPongDesc = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
+    pingPongDesc.format = GraphicsFormat.R32G32B32A32_SFloat;
+    pingPongDesc.wrapMode = TextureWrapMode.Clamp;
+    pingPongDesc.filterMode = FilterMode.Point;
+    var pingTextureDesc = pingPongDesc;
+    pingTextureDesc.name = $"{namePrefix}SSSDF_Ping";
+    var pongTextureDesc = pingPongDesc;
+    pongTextureDesc.name = $"{namePrefix}SSSDF_Pong";
+    var distanceTextureDesc = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
+    distanceTextureDesc.name = $"{namePrefix}SSSDF_Distance";
+    // distanceTextureDesc.format = GraphicsFormat.R32G32B32A32_SFloat;
+    distanceTextureDesc.format = GraphicsFormat.R32_SFloat;
+    distanceTextureDesc.wrapMode = TextureWrapMode.Clamp;
+    distanceTextureDesc.filterMode = FilterMode.Point;
     var pingTexture = renderGraph.CreateTexture(pingTextureDesc);
     var pongTexture = renderGraph.CreateTexture(pongTextureDesc);
-    var initPassName = $"{namePrefix}_ScreenSpaceSDF_Init";
+    var distanceTexture = renderGraph.CreateTexture(distanceTextureDesc);
+
+    var initPassName = $"{namePrefix}SSSDF_Init";
     using (var builder = renderGraph.AddRasterRenderPass<InitPassData>(initPassName, out var passData))
     {
       passData.Material = material;
@@ -117,16 +142,14 @@ public static class ScreenSpaceSDFRenderUtils {
 
     var maxDimension = Mathf.Max(pingTextureDesc.width, pingTextureDesc.height);
     var maxStep = Mathf.NextPowerOfTwo(maxDimension) / 2;
-    var screenSize = new Vector2(pingTextureDesc.width, pingTextureDesc.height);
     for (var step = maxStep; step >= 1; step /= 2)
     {
-      var stepPassName = $"{namePrefix}_ScreenSpaceSDF_Step(Size={step})";
+      var stepPassName = $"{namePrefix}SSSDF_Step(Size={step})";
       using (var builder = renderGraph.AddRasterRenderPass<StepPassData>(stepPassName, out var passData))
       {
         passData.Material = material;
         passData.Mask = mask;
         passData.Source = pingTexture;
-        passData.ScreenSize = screenSize;
         passData.Step = step;
         builder.UseTexture(pingTexture);
         builder.SetRenderAttachment(pongTexture, 0);
@@ -135,30 +158,16 @@ public static class ScreenSpaceSDFRenderUtils {
       (pingTexture, pongTexture) = (pongTexture, pingTexture);
     }
 
-    // JFA+2 to see if it reduces errors... kinda weird
-    for (var step = -2; step < 0 ; step++)
-    {
-      var stepPassName = $"{namePrefix}_ScreenSpaceSDF_EXTRAStep(Size={step})";
-      using (var builder = renderGraph.AddRasterRenderPass<StepPassData>(stepPassName, out var passData))
-      {
-        passData.Material = material;
-        passData.Mask = mask;
-        passData.Source = pingTexture;
-        passData.ScreenSize = screenSize;
-        passData.Step = step;
-        builder.UseTexture(pingTexture);
-        builder.SetRenderAttachment(pongTexture, 0);
-        builder.SetRenderFunc<StepPassData>(RunStep);
-      }
-      (pingTexture, pongTexture) = (pongTexture, pingTexture);
+    // Debug.Log($"DESC.NAME:{distanceTextureDesc.name} | TEX.DESC.NAME:{distanceTexture.GetDescriptor(renderGraph).name}");
+    var distancePassName = $"{namePrefix}SSSDF_Distance";
+    using (var builder = renderGraph.AddRasterRenderPass<DistancePassData>(distancePassName, out var passData)) {
+      passData.Source = pingTexture;
+      passData.Material = material;
+      builder.UseTexture(pingTexture);
+      builder.SetRenderAttachment(distanceTexture, 0);
+      builder.SetRenderFunc<DistancePassData>(RunDistance);
     }
-
-    // TODO: Implement the distance texture here
-    var distanceTextureDesc = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
-    distanceTextureDesc.name = $"{namePrefix}_ScreenSpaceDistance";
-    distanceTextureDesc.format = GraphicsFormat.R16_SFloat;
-
-    return pingTexture;
+    return distanceTexture;
   }
 }
 
