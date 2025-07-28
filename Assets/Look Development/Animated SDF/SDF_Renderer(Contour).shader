@@ -2,12 +2,14 @@ Shader "SDF_Renderer/Contour"
 {
   Properties
   {
-    _EdgeThreshold ("Edge Threshold (Linear Depth)", Range(0.0001, 0.5)) = 0.05
-    _HorizonThickness ("Horizon Thickness", Range(0.1, 20)) = 1.0
-    _CoronaThickness ("Corona Thickness", Range(1.0, 100)) = 5.0
     [HDR] _CoronaColor ("Corona Color", Color) = (1, 1, 0, 1)
+    [HDR] _PhotonSphereColor ("PhotonSphere Color", Color) = (1, 1, 0, 1)
     [HDR] _EinsteinRingColor ("EinsteinRing Color", Color) = (1, 1, 0, 1)
-    _DistortionStrength ("Distortion Strength", Range(0.001, 1)) = 0.01
+    [HDR] _InnerRegionTint ("InnerRegion Tint", Color) = (.1, .1, .1, 1)
+    _PhotonSphereMin ("PhotonSphere Min", Range(.0001, .01)) = .008
+    _PhotonSphereThickness ("PhotonSphere Thickness", Range(.0001, .01)) = .001
+    _EinsteinRingThickness ("Einstein Ring Thickness", Range(.0001, .01)) = .001
+    _RadialDistortionAngle ("Radial Distortion Angle", Range(0.0, 360.0)) = 30
   }
 
   SubShader
@@ -30,12 +32,14 @@ Shader "SDF_Renderer/Contour"
       #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
       #include "Full Screen Utils.cginc"
 
-      float _EdgeThreshold;
-      float _HorizonThickness;
-      float _CoronaThickness;
       float4 _CoronaColor;
+      float4 _PhotonSphereColor;
       float4 _EinsteinRingColor;
-      float _DistortionStrength;
+      float4 _InnerRegionTint;
+      float _PhotonSphereMin;
+      float _PhotonSphereThickness;
+      float _EinsteinRingThickness;
+      float _RadialDistortionAngle;
 
       TEXTURE2D_X(_SDFDepthTexture);
       SAMPLER(sampler_SDFDepthTexture);
@@ -53,6 +57,90 @@ Shader "SDF_Renderer/Contour"
       SAMPLER(sampler_ColorTexture);
       float4 _ColorTexture_TexelSize;
 
+      float2 ComputeSDFGradient(
+      float2 uv_current,
+      TEXTURE2D_X(sdfTexture),
+      SAMPLER(sampler_sdfTexture),
+      float4 sdfTexture_TexelSize,
+      float2 screenSize_pixels
+      ) {
+        float maxPossibleDistance_pixels = length(screenSize_pixels);
+        float d = SAMPLE_TEXTURE2D_X(sdfTexture, sampler_sdfTexture, uv_current).r * maxPossibleDistance_pixels;
+        float fx = ddx(d);
+        float fy = ddy(d);
+        return float2(fx, fy);
+      }
+
+      float ComputeSDFCurvature(
+      float2 uv_current,
+      float2 gradient) {
+        float fx = gradient.x;
+        float fy = gradient.y;
+
+        float fxx2 = ddx(fx);
+        float fyy2 = ddy(fy);
+        float fxy2 = ddy(fx);
+
+        float gradMagSq2 = fx * fx + fy * fy;
+        if (gradMagSq2 < 0.00001) return 0.0;
+
+        float numerator = fxx2 * fy * fy - 2 * fx * fy * fxy2 + fyy2 * fx * fx;
+        float denominator = pow(gradMagSq2, 1.5);
+        return numerator / denominator;
+      }
+
+      float ComputeRadiusOfCurvature(
+      float2 uv_current,
+      float2 gradient) {
+        float kappa = ComputeSDFCurvature(uv_current, gradient);
+        if (abs(kappa) < 0.00001) return 1e10;
+        return 1.0 / abs(kappa);
+      }
+
+      float2 ComputeRadiallyOffsetSampleUV(
+      float2 uv_current,
+      TEXTURE2D_X(sdfTexture),
+      SAMPLER(sampler_sdfTexture),
+      float4 sdfTexture_TexelSize,
+      float distortionAngleDegrees,
+      float maxRadius_pixels,
+      float2 screenSize_pixels) {
+        float2 gradient_pixel_deriv = ComputeSDFGradient(
+        uv_current,
+        sdfTexture,
+        sampler_sdfTexture,
+        sdfTexture_TexelSize,
+        screenSize_pixels);
+        float gradMag_pixel_deriv = length(gradient_pixel_deriv);
+        float radius_pixels = ComputeRadiusOfCurvature(
+        uv_current,
+        gradient_pixel_deriv);
+        radius_pixels = min(radius_pixels, maxRadius_pixels);
+        float2 currentPixelCoord_texel = uv_current * screenSize_pixels;
+        float2 centerPixelCoord_texel = currentPixelCoord_texel;
+
+        if (gradMag_pixel_deriv >= 0.00001) {
+          float2 normal_pixel_deriv = - gradient_pixel_deriv / gradMag_pixel_deriv;
+          centerPixelCoord_texel = currentPixelCoord_texel + normal_pixel_deriv * radius_pixels;
+        }
+
+        float2 vecToPixel_texel = currentPixelCoord_texel - centerPixelCoord_texel;
+        float currentRadiusFromCenter_pixels = length(vecToPixel_texel);
+
+        vecToPixel_texel /= currentRadiusFromCenter_pixels;
+
+        float distortionAngle_radians = radians(distortionAngleDegrees);
+        float cosAngle = cos(distortionAngle_radians);
+        float sinAngle = sin(distortionAngle_radians);
+        float2 rotatedVec_texel = float2(
+        vecToPixel_texel.x * cosAngle - vecToPixel_texel.y * sinAngle,
+        vecToPixel_texel.x * sinAngle + vecToPixel_texel.y * cosAngle);
+
+        float2 samplePixelCoord_texel = centerPixelCoord_texel + rotatedVec_texel * radius_pixels;
+        float2 sample_uv = samplePixelCoord_texel / screenSize_pixels;
+        return sample_uv;
+      }
+
       struct Attributes
       {
         uint vertexID : SV_VertexID;
@@ -68,7 +156,7 @@ Shader "SDF_Renderer/Contour"
       {
         Varyings output;
         FullScreenQuadFromVertexIDs(input.vertexID, output.uv, output.positionCS);
-        // https://gist.github.com/CianNoonan/c56256433801991038c9c40a48fe3002#file-hiddenjumpfloodoutline-shader-L78
+        // https : //gist.github.com / CianNoonan / c56256433801991038c9c40a48fe3002
         #ifdef UNITY_UV_STARTS_AT_TOP
         output.uv.y = 1.0 - output.uv.y;
         #endif
@@ -85,15 +173,14 @@ Shader "SDF_Renderer/Contour"
         const float4 PURE_BLACK = float4(0, 0, 0, 1);
         FragmentOutput o;
         float depth = SAMPLE_TEXTURE2D_X(_SDFDepthTexture, sampler_SDFDepthTexture, input.uv).r;
-        float4 c = SAMPLE_TEXTURE2D_X(_ColorTexture, sampler_ColorTexture, input.uv);
         float d = SAMPLE_TEXTURE2D_X(_ScreenSpaceSDFTexture, sampler_ScreenSpaceSDFTexture, input.uv).r;
 
         if (d < 0)
-          discard;
+        discard;
 
-        float EinsteinRingThickness = .0008;
-        float PhotonSphereMin = .008;
-        float PhotonSpheremax = .009;
+        float EinsteinRingThickness = _EinsteinRingThickness;
+        float PhotonSphereMin = _PhotonSphereMin;
+        float PhotonSpheremax = _PhotonSphereMin + _PhotonSphereThickness;
         bool EinsteinRing = d <= EinsteinRingThickness;
         bool PhotonSphere = d >= PhotonSphereMin && d <= PhotonSpheremax;
         bool WarpedBackground = d > EinsteinRingThickness && d < PhotonSphereMin;
@@ -102,7 +189,22 @@ Shader "SDF_Renderer/Contour"
         } else if (PhotonSphere) {
           o.color = _CoronaColor;
         } else if (WarpedBackground) {
-          o.color = lerp(c, float4(1,1,1,1), .1);
+          float maxPixelRadius = 100;
+          float strength = 1 - smoothstep(EinsteinRingThickness, PhotonSphereMin, d);
+          float2 radiallyOffsetUV = ComputeRadiallyOffsetSampleUV(
+          input.uv,
+          _ScreenSpaceSDFTexture,
+          sampler_ScreenSpaceSDFTexture,
+          _ScreenSpaceSDFTexture_TexelSize,
+          strength * _RadialDistortionAngle,
+          maxPixelRadius,
+          _ScreenParams.xy);
+
+          o.color = SAMPLE_TEXTURE2D_X(
+          _ColorTexture,
+          sampler_ColorTexture,
+          radiallyOffsetUV);
+          o.color += pow(strength, 2) * _InnerRegionTint;
         } else {
           o.color = PURE_BLACK;
         }

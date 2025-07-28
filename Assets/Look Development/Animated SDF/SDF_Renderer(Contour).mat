@@ -100,6 +100,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EdgeThreshold: 0.0001
+    - _EinsteinRingThickness: 0.001
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -108,7 +109,10 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PhotonSphereMin: 0.008
+    - _PhotonSphereThickness: 0.00075
     - _QueueOffset: 0
+    - _RadialDistortionAngle: 360
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -122,9 +126,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CoronaColor: {r: 1.5553666, g: 0.95334625, b: 2.1185474, a: 1}
-    - _EinsteinRingColor: {r: 0.95390093, g: 1.3327829, b: 2.1185474, a: 1}
+    - _CoronaColor: {r: 17.596964, g: 10.785881, b: 23.968628, a: 1}
+    - _EinsteinRingColor: {r: 1.2, g: 1.2, b: 1.2, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _InnerRegionTint: {r: 0.062745094, g: 0, b: 0.4, a: 1}
+    - _PhotonSphereColor: {r: 1, g: 1, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

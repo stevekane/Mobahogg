@@ -128,6 +128,7 @@ Shader "ScreenSpaceSDF/ScreenSpaceSignedDistanceField" {
         float sign = inside ? 1 : -1;
 
         float texelDistance = resolved ? length(pTexel - closest) : 0;
+        // TODO: Could be computed on CPU. Constant for all pixels and involves sqrt
         float maxPossibleTexelDistance = length(_ScreenSize);
         float uvDistance = saturate(texelDistance / maxPossibleTexelDistance);
         return sign * uvDistance;
