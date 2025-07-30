@@ -2,11 +2,10 @@ Shader "SDF_Renderer/Render"
 {
   Properties
   {
-    [HDR] _CoronaColor ("Corona Color", Color) = (1, 1, 0, 1)
     [HDR] _PhotonSphereColor ("PhotonSphere Color", Color) = (1, 1, 0, 1)
     [HDR] _EinsteinRingColor ("EinsteinRing Color", Color) = (1, 1, 0, 1)
     [HDR] _InnerRegionTint ("InnerRegion Tint", Color) = (.1, .1, .1, 1)
-    _PhotonSphereMin ("PhotonSphere Min", Range(.0001, .01)) = .008
+    _PhotonSphereMin ("PhotonSphere Min", Range(.0001, 1)) = .008
     _PhotonSphereThickness ("PhotonSphere Thickness", Range(.0001, .01)) = .001
     _EinsteinRingThickness ("Einstein Ring Thickness", Range(.0001, .01)) = .001
     _RadialDistortionAngle ("Radial Distortion Angle", Range(0.0, 360.0)) = 30
@@ -33,7 +32,6 @@ Shader "SDF_Renderer/Render"
       #include "Assets/Shaders/Includes/Full Screen.hlsl"
       #include "Assets/Shaders/Includes/Noise.hlsl"
 
-      float4 _CoronaColor;
       float4 _PhotonSphereColor;
       float4 _EinsteinRingColor;
       float4 _InnerRegionTint;
@@ -188,7 +186,7 @@ Shader "SDF_Renderer/Render"
         if (EinsteinRing) {
           o.color = _EinsteinRingColor;
         } else if (PhotonSphere) {
-          o.color = _CoronaColor;
+          o.color = _PhotonSphereColor;
         } else if (WarpedBackground) {
           float maxPixelRadius = 100;
           float strength = 1 - smoothstep(EinsteinRingThickness, PhotonSphereMin, d);
