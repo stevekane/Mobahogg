@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6a771a5f75454ab4d877e0f7587d9fcc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - grassMesh: {fileID: 9004459873298597314, guid: f3619caefa6508549837506b5fc4e298, type: 3}
+  - grassMaterial: {fileID: 2100000, guid: 8074e44fcecbbcf4ea05dbe6dbf6a125, type: 2}
+  - grassComputeShader: {fileID: 7200000, guid: 449375017a2a182488e2b5226ba7eaf2, type: 3}
+  - terrainHeightmap: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

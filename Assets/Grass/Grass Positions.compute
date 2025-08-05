@@ -1,0 +1,51 @@
+#pragma kernel GenerateGrass
+
+struct GrassInstance
+{
+  float3 position;
+  float scale;
+};
+
+RWStructuredBuffer<GrassInstance> GrassInstances;
+
+int GrassCount;
+float TerrainSize;
+
+float valueNoise(float2 p)
+{
+  float2 i = floor(p);
+  float2 f = frac(p);
+  float a = frac(sin(dot(i + float2(0,0), float2(12.9898,78.233))) * 43758.5453);
+  float b = frac(sin(dot(i + float2(1,0), float2(12.9898,78.233))) * 43758.5453);
+  float c = frac(sin(dot(i + float2(0,1), float2(12.9898,78.233))) * 43758.5453);
+  float d = frac(sin(dot(i + float2(1,1), float2(12.9898,78.233))) * 43758.5453);
+  float2 u = f * f * (3.0 - 2.0 * f);
+  return lerp(lerp(a, b, u.x), lerp(c, d, u.x), u.y);
+}
+
+float2 hash2(uint seed)
+{
+  float2 p = float2(seed, seed * 1664525u + 1013904223u);
+  return frac(sin(p) * float2(43758.5453, 22578.145912));
+}
+
+[numthreads(1024, 1, 1)]
+void GenerateGrass(uint3 id : SV_DispatchThreadID)
+{
+  if (id.x >= GrassCount) return;
+
+  uint index = id.x;
+  uint gridDim = (uint)sqrt(GrassCount);
+  uint xIndex = index % gridDim;
+  uint zIndex = index / gridDim;
+  float cellSize = TerrainSize / gridDim;
+  float2 baseXZ = float2(xIndex, zIndex) * cellSize;
+  float2 jitter = (hash2(index) - 0.5) * cellSize * 0.3;
+  float2 uv = baseXZ / TerrainSize;
+  float clumpStrength = valueNoise(uv * 3.0 + 15.0); // low-freq noise
+  float2 clumpOffset = (clumpStrength - 0.5) * cellSize * 0.5;
+  float2 finalXZ = baseXZ + jitter + clumpOffset - TerrainSize * 0.5;
+
+  GrassInstances[index].position = float3(finalXZ.x, 0.0, finalXZ.y);
+  GrassInstances[index].scale = 1.0;
+}

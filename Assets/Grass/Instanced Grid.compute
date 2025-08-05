@@ -1,0 +1,17 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float4x4> _Matrices;
+
+[numthreads(100, 1, 1)]
+void CSMain(uint3 i : SV_DispatchThreadID)
+{
+  float x = (i.x % 10) - 5.0;
+  float z = (i.x / 10) - 5.0;
+  float4x4 m = float4x4(
+    1,0,0,x,
+    0,1,0,0,
+    0,0,1,z,
+    0,0,0,1
+  );
+  _Matrices[i.x] = m;
+}
