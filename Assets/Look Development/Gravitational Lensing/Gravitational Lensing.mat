@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Background:
-        m_Texture: {fileID: 2800000, guid: 30aa7858588e65c46a862620e7246016, type: 3}
+        m_Texture: {fileID: 2800000, guid: b163bf2a288dd46efa3cc7460d5f9cd8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -100,13 +100,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EinsteinRing: 500
+    - _EinsteinRing: 200
     - _EnvironmentReflections: 1
     - _EventHorizon: 100
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NoiseScale: 300
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PhotonSphereThickness: 2

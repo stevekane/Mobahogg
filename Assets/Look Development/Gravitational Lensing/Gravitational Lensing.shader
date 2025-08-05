@@ -6,7 +6,8 @@ Shader "Tests/Gravitational Lensing"
     _EventHorizon ("Event Horizon", Range(0, 1000)) = 60
     _PhotonSphereThickness ("Photon Sphere Thickness", Range(0, 100)) = 2
     _EinsteinRing ("Einstein Ring", Range(0, 1000)) = 90
-    _Scale ("Scale", Range(0, 1000)) = 1
+    _Scale ("Distortion Scale", Range(0, 1000)) = 100
+    _NoiseScale ("Noise Scale", Range(0.0001, 1000)) = 1
   }
   SubShader {
     Pass {
@@ -33,6 +34,7 @@ Shader "Tests/Gravitational Lensing"
       float _EventHorizon;
       float _PhotonSphereThickness;
       float _EinsteinRing;
+      float _NoiseScale;
 
       struct Attributes {
         uint vertexID : SV_VertexID;
@@ -78,7 +80,7 @@ Shader "Tests/Gravitational Lensing"
         if (d >= _EventHorizon && d < DISTORTION) return float4(10*float3(1, .5, .2), 1);
         float k = 1-smoothstep(DISTORTION, _EinsteinRing, d);
         float2 p1 = p + k * _Scale * direction;
-        float2 p1_uv = ScreenTexel_to_UV(p1) + k * noise(p / 100);
+        float2 p1_uv = ScreenTexel_to_UV(p1) + k * noise(_Time.x * 5 + p / _NoiseScale);
         float c = SAMPLE_TEXTURE2D_X(_Background, sampler_Background, p1_uv).r;
         return float4(c * k, c * .5, c * .2, 1);
       }

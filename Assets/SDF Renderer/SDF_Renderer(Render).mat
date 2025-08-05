@@ -109,7 +109,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PhotonSphereMin: 0.01
+    - _PhotonSphereMin: 0.017
     - _PhotonSphereThickness: 0.0005
     - _QueueOffset: 0
     - _RadialDistortionAngle: 0

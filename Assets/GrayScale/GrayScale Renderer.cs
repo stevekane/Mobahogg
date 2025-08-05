@@ -39,6 +39,10 @@ public class GrayScaleRenderer : MonoBehaviour {
 
 class GrayScaleRenderPass : ScriptableRenderPass
 {
+  // This name is important as it is what URP expects you to use to bind textures that can be
+  // sampled in shader graphs using the URP buffer node ( with target blit )
+  static int BlitTexturePropertyID = Shader.PropertyToID("_BlitTexture");
+
   public Material Material;
 
   class PassData
@@ -65,7 +69,7 @@ class GrayScaleRenderPass : ScriptableRenderPass
       builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
       {
         var propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetTexture("_BlitTexture", data.Source);
+        propertyBlock.SetTexture(BlitTexturePropertyID, data.Source);
         ctx.cmd.DrawProcedural(
           Matrix4x4.identity,
           data.Material,
