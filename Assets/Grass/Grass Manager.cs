@@ -1,14 +1,21 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.RenderGraphModule;
 
 [ExecuteAlways]
+// TODO: Just a test to see if I can force this rendering to occur before SDF rendering.
+[DefaultExecutionOrder(-1)]
 public class GrassManager : MonoBehaviour
 {
-  public Mesh GrassMesh;
-  public Material GrassMaterial;
+  public GrassRenderPass RenderPass;
   public ComputeShader GrassComputeShader;
   public int GrassCount = 100000;
   public float TerrainSize = 60f;
+
+  const string KernelName = "GenerateGrass";
+  const int ThreadsPerGroup = 64;
 
   [StructLayout(LayoutKind.Sequential)]
   struct GrassInstance
@@ -17,48 +24,43 @@ public class GrassManager : MonoBehaviour
     public float scale;
   }
 
-  const string KernelName = "GenerateGrass";
-  const int ThreadGroupsXSize = 1024;
-  int GrassInstancesPropertyID = Shader.PropertyToID("GrassInstances");
-  int GrassCountPropertyID = Shader.PropertyToID("GrassCount");
-  int TerrainSizePropertyID = Shader.PropertyToID("TerrainSize");
+  static readonly int GrassInstancesID = Shader.PropertyToID("GrassInstances");
+  static readonly int GrassCountID = Shader.PropertyToID("GrassCount");
+  static readonly int TerrainSizeID = Shader.PropertyToID("TerrainSize");
+
   GraphicsBuffer GrassInstancesBuffer;
   GraphicsBuffer IndirectArgsBuffer;
-  uint[] IndirectArgs = new uint[5] { 0, 0, 0, 0, 0 };
+  uint[] IndirectArgs = new uint[5];
 
-  void OnValidate() {
+  void OnEnable()
+  {
+    Setup();
+    RenderPipelineManager.beginCameraRendering += InjectRenderPass;
+  }
+
+  void OnDisable()
+  {
+    Cleanup();
+    RenderPipelineManager.beginCameraRendering -= InjectRenderPass;
+  }
+
+  void OnValidate()
+  {
     Cleanup();
     Setup();
   }
 
-  void OnEnable() => Setup();
-
-  void OnDisable() => Cleanup();
-
-  void OnDestroy() => Cleanup();
-
-  void Update()
+  void OnDestroy()
   {
-    var renderParams = new RenderParams(GrassMaterial)
-    {
-      worldBounds = new Bounds(Vector3.zero, TerrainSize * Vector3.one),
-      // layer = gameObject.layer
-    };
-    GrassMaterial.SetBuffer(GrassInstancesPropertyID, GrassInstancesBuffer);
-    // This may be getting called at the wrong time...
-    // The problem with the lighting may be that there is no lighting data at the time
-    // this shader is run.
-    // This code may need to be migrated into a render pass that is setup to run after opaques
-    // or something
-    Graphics.RenderMeshIndirect(renderParams, GrassMesh, IndirectArgsBuffer);
+    Cleanup();
   }
 
   void Setup()
   {
-    IndirectArgs[0] = GrassMesh.GetIndexCount(0);
+    IndirectArgs[0] = RenderPass.Mesh.GetIndexCount(0);
     IndirectArgs[1] = (uint)GrassCount;
-    IndirectArgs[2] = GrassMesh.GetIndexStart(0);
-    IndirectArgs[3] = GrassMesh.GetBaseVertex(0);
+    IndirectArgs[2] = RenderPass.Mesh.GetIndexStart(0);
+    IndirectArgs[3] = RenderPass.Mesh.GetBaseVertex(0);
     IndirectArgs[4] = 0;
     GrassInstancesBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.Structured,
@@ -67,21 +69,79 @@ public class GrassManager : MonoBehaviour
     IndirectArgsBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.IndirectArguments,
       count: 1,
-      stride: 5 * sizeof(uint));
+      stride: sizeof(uint) * 5);
     IndirectArgsBuffer.SetData(IndirectArgs);
-    int kernelHandle = GrassComputeShader.FindKernel(KernelName);
-    int threadGroupsX = Mathf.Max(1, Mathf.CeilToInt(GrassCount / ThreadGroupsXSize));
-    GrassComputeShader.SetBuffer(kernelHandle, GrassInstancesPropertyID, GrassInstancesBuffer);
-    GrassComputeShader.SetInt(GrassCountPropertyID, GrassCount);
-    GrassComputeShader.SetFloat(TerrainSizePropertyID, TerrainSize);
-    GrassComputeShader.Dispatch(kernelHandle, threadGroupsX, threadGroupsY: 1, threadGroupsZ: 1);
+    int kernel = GrassComputeShader.FindKernel(KernelName);
+    GrassComputeShader.SetBuffer(kernel, GrassInstancesID, GrassInstancesBuffer);
+    GrassComputeShader.SetInt(GrassCountID, GrassCount);
+    GrassComputeShader.SetFloat(TerrainSizeID, TerrainSize);
+    int groupCount = Mathf.CeilToInt((float)GrassCount / ThreadsPerGroup);
+    GrassComputeShader.Dispatch(kernel, groupCount, 1, 1);
+    RenderPass.ArgsBuffer = IndirectArgsBuffer;
+    RenderPass.InstanceBuffer = GrassInstancesBuffer;
   }
 
   void Cleanup()
   {
-    if (GrassInstancesBuffer != null) GrassInstancesBuffer.Release();
-    if (IndirectArgsBuffer != null) IndirectArgsBuffer.Release();
+    GrassInstancesBuffer?.Release();
+    IndirectArgsBuffer?.Release();
     GrassInstancesBuffer = null;
     IndirectArgsBuffer = null;
+  }
+
+  void InjectRenderPass(ScriptableRenderContext context, Camera camera)
+  {
+    if (RenderPass == null) return;
+    if (RenderPass.Material == null) return;
+    if (RenderPass.Mesh == null) return;
+    if (camera.cameraType == CameraType.Preview) return;
+    if (camera.cameraType == CameraType.Reflection) return;
+    RenderPass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+    camera.GetUniversalAdditionalCameraData().scriptableRenderer.EnqueuePass(RenderPass);
+  }
+}
+
+[System.Serializable]
+public class GrassRenderPass : ScriptableRenderPass
+{
+  public Material Material;
+  public Mesh Mesh;
+  public GraphicsBuffer InstanceBuffer;
+  public GraphicsBuffer ArgsBuffer;
+
+  static readonly int GrassInstancesID = Shader.PropertyToID("GrassInstances");
+
+  static void Render(PassData passData, RasterGraphContext ctx)
+  {
+    passData.Material.SetBuffer(GrassInstancesID, passData.InstanceBuffer);
+    ctx.cmd.DrawMeshInstancedIndirect(
+      passData.Mesh,
+      submeshIndex: 0,
+      passData.Material,
+      shaderPass: 0,
+      passData.ArgsBuffer);
+  }
+
+  class PassData
+  {
+    public Mesh Mesh;
+    public Material Material;
+    public GraphicsBuffer InstanceBuffer;
+    public GraphicsBuffer ArgsBuffer;
+  }
+
+  public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
+  {
+    var resourceData = frameData.Get<UniversalResourceData>();
+    using (var builder = renderGraph.AddRasterRenderPass<PassData>("Grass Render", out var passData))
+    {
+      passData.Mesh = Mesh;
+      passData.Material = Material;
+      passData.InstanceBuffer = InstanceBuffer;
+      passData.ArgsBuffer = ArgsBuffer;
+      builder.SetRenderAttachment(resourceData.activeColorTexture, 0);
+      builder.SetRenderAttachmentDepth(resourceData.activeDepthTexture);
+      builder.SetRenderFunc<PassData>(Render);
+    }
   }
 }
