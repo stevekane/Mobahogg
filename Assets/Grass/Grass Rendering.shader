@@ -14,7 +14,6 @@ Shader "Grass/Rendering"
       "UniversalMaterialType" = "Lit"
       "IgnoreProjector" = "True"
     }
-    LOD 300 // no idea what this does... should find out at some point
     Pass
     {
       Name "ForwardLit"
@@ -43,6 +42,7 @@ Shader "Grass/Rendering"
       #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
       #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
       #pragma shader_feature_local_fragment _OCCLUSIONMAP
+
       // #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
       #pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
       #pragma shader_feature_local_fragment _SPECULAR_SETUP
@@ -89,15 +89,14 @@ Shader "Grass/Rendering"
 
       StructuredBuffer<GrassInstance> GrassInstances;
       float4 _Color;
-      // possibly this is already included for some reason by one of our includes? ... confusing
-      // float _Smoothness;
 
       Varyings vert (Attributes input, uint instanceID : SV_INSTANCEID)
       {
-        Varyings varyings;
+        Varyings varyings = (Varyings)0;
         float3 instancePos = GrassInstances[instanceID].position;
-        varyings.positionCS = float4(instancePos + input.positionOS, 1.0);
-        varyings.positionCS = mul(UNITY_MATRIX_VP, varyings.positionCS);
+        float4 worldPos = float4(instancePos + input.positionOS.xyz, 1);
+        varyings.positionWS = worldPos;
+        varyings.positionCS = mul(UNITY_MATRIX_VP, worldPos);
         varyings.normalWS = GetVertexNormalInputs(input.normalOS).normalWS;
         varyings.uv = input.texcoord;
         return varyings;
@@ -109,13 +108,14 @@ Shader "Grass/Rendering"
         inputData.positionWS = varyings.positionWS;
         inputData.normalWS = normalize(varyings.normalWS);
         inputData.viewDirectionWS = GetWorldSpaceNormalizeViewDir(varyings.positionWS);
+        inputData.shadowCoord = TransformWorldToShadowCoord(varyings.positionWS);
 
         SurfaceData surfaceData = (SurfaceData)0;
         surfaceData.albedo = _Color.rgb;
         surfaceData.alpha = 1;
-        surfaceData.specular = 1;
+        surfaceData.specular = half3(1,1,1); // this is a color
         surfaceData.smoothness = _Smoothness;
-        return UniversalFragmentBlinnPhong(inputData, surfaceData);
+        return UniversalFragmentPBR(inputData, surfaceData);
       }
 
       ENDHLSL

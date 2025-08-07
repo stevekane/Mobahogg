@@ -25,6 +25,8 @@ Shader "Grass/URP Blinn Phong"
 
       #pragma vertex vert
       #pragma fragment frag
+      #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+      #pragma multi_compile_fragment _ _SHADOWS_SOFT
       #pragma multi_compile _ _FORWARD_PLUS
 
       #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
@@ -36,7 +38,9 @@ Shader "Grass/URP Blinn Phong"
       Varyings vert (Attributes input)
       {
         Varyings varyings = (Varyings)0;
-        varyings.positionCS = GetVertexPositionInputs(input.positionOS.xyz).positionCS;
+        VertexPositionInputs vpi = GetVertexPositionInputs(input.positionOS.xyz);
+        varyings.positionWS = vpi.positionWS;
+        varyings.positionCS = vpi.positionCS;
         varyings.normalWS = GetVertexNormalInputs(input.normalOS).normalWS;
         varyings.uv = input.texcoord;
         return varyings;
@@ -48,16 +52,25 @@ Shader "Grass/URP Blinn Phong"
         inputData.positionWS = varyings.positionWS;
         inputData.normalWS = normalize(varyings.normalWS);
         inputData.viewDirectionWS = GetWorldSpaceNormalizeViewDir(varyings.positionWS);
+        inputData.shadowCoord = TransformWorldToShadowCoord(varyings.positionWS);
 
         SurfaceData surfaceData = (SurfaceData)0;
         surfaceData.albedo = _Color.rgb;
         surfaceData.alpha = 1;
         surfaceData.smoothness = _Smoothness;
-        surfaceData.specular = 1;
-        return UniversalFragmentBlinnPhong(inputData, surfaceData);
+        surfaceData.specular = half3(1,1,1); // this is actually a color
+        return UniversalFragmentPBR(inputData, surfaceData);
       }
 
       ENDHLSL
+    }
+    Pass {
+      Name "ShadowCaster"
+      Tags
+      {
+        "LightMode" = "ShadowCaster"
+      }
+      ColorMask 0
     }
   }
 }
