@@ -69,6 +69,8 @@ public class SDFRenderer : MonoBehaviour
   }
 
   void InjectRenderPass(ScriptableRenderContext ctx, Camera camera) {
+    if (camera.cameraType == CameraType.Preview) return;
+    if (camera.cameraType == CameraType.Reflection) return;
     camera.GetUniversalAdditionalCameraData().scriptableRenderer.EnqueuePass(SDFRenderPass);
   }
 }

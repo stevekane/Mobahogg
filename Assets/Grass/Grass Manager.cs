@@ -57,11 +57,8 @@ public class GrassManager : MonoBehaviour
 
   void Setup()
   {
-    // Conceptually, you could end up setting these values ( or some of them )
-    // in the compute shader. This might make sense for example if you don't know
-    // exactly how many blades you will ultimately generate.
     IndirectArgs[0] = RenderPass.Mesh.GetIndexCount(0);
-    IndirectArgs[1] = (uint)GrassCount;
+    IndirectArgs[1] = (uint)GrassCount; // could set inside compute shader if total count may vary
     IndirectArgs[2] = RenderPass.Mesh.GetIndexStart(0);
     IndirectArgs[3] = RenderPass.Mesh.GetBaseVertex(0);
     IndirectArgs[4] = 0;

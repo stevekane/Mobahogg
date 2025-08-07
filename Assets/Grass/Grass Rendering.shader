@@ -2,7 +2,7 @@ Shader "Grass/Rendering"
 {
   Properties
   {
-    _Color ("Color", Color) = (1, 1, 1, 1)
+    [MainColor] _BaseColor ("Color", Color) = (1, 1, 1, 1)
     _Smoothness ("Smoothness", Range(0.0, 1.0)) = 1.0
   }
   SubShader
@@ -21,34 +21,16 @@ Shader "Grass/Rendering"
       {
         "LightMode" = "UniversalForward"
       }
+      // Cull Off
 
       HLSLPROGRAM
-      // Very important for specular. no idea why
-      #define _SPECULAR_COLOR
-      #pragma vertex vert
-      #pragma fragment frag
-      // #pragma fragment LitPassFragment
       #pragma multi_compile_instancing
       #pragma multi_compile_shadowcaster
-      // #pragma instancing_options renderingLayer
-      #pragma shader_feature_local _NORMALMAP
-      #pragma shader_feature_local _PARALLAXMAP
-      #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-      #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
-      #pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
-      #pragma shader_feature_local_fragment _ALPHATEST_ON
-      #pragma shader_feature_local_fragment _ _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON
-      #pragma shader_feature_local_fragment _EMISSION
-      #pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
-      #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-      #pragma shader_feature_local_fragment _OCCLUSIONMAP
+      #pragma instancing_options renderingLayer
 
-      // #pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
       #pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
       #pragma shader_feature_local_fragment _SPECULAR_SETUP
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-      // Universal Pipeline keywords
       #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
       #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
       #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
@@ -61,12 +43,8 @@ Shader "Grass/Rendering"
       #pragma multi_compile_fragment _ _LIGHT_COOKIES
       #pragma multi_compile _ _LIGHT_LAYERS
       #pragma multi_compile _ _FORWARD_PLUS
-      // #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-      // #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
 
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-      // Unity defined keywords
       #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
       #pragma multi_compile _ SHADOWS_SHADOWMASK
       #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -76,10 +54,19 @@ Shader "Grass/Rendering"
       #pragma multi_compile_fog
       #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
+      #pragma vertex vert
+      // #pragma fragment frag
+      #pragma fragment LitPassFragment
+
+      // Very important for specular
+      #define _SPECULAR_COLOR
       #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
       #include "Packages/com.unity.render-pipelines.universal/Shaders/LitForwardPass.hlsl"
       #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+      // Needed for proper indirect drawing (though I cannot see why so far)
       #define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
+      #include "UnityIndirect.cginc"
 
       struct GrassInstance
       {
@@ -88,11 +75,23 @@ Shader "Grass/Rendering"
       };
 
       StructuredBuffer<GrassInstance> GrassInstances;
-      float4 _Color;
 
+      /*
+      This is an excellent resource for indirect rendering
+      https : //raw.githubusercontent.com / Shitakami / Unity - URP - RenderMehsIndirect / refs / heads / main / URP - GPUInstancing - Sample / Assets / Shaders / ForRenderMeshIndirect.shader
+      This is a nice resource for elementary custom URP shaders
+      https://gist.githubusercontent.com/NedMakesGames/0fc3cc299443d7efe81f25486c7178ec/raw/c761793e411c93a5add2a9a54003d290cd042223/MyLit.shader
+      */
       Varyings vert (Attributes input, uint instanceID : SV_INSTANCEID)
       {
+        const float BLADE_HEIGHT = 1;
+
+        InitIndirectDrawArgs(0);
         Varyings varyings = (Varyings)0;
+
+        UNITY_SETUP_INSTANCE_ID(input);
+        UNITY_TRANSFER_INSTANCE_ID(input, varyings);
+        instanceID = GetIndirectInstanceID(instanceID);
         float3 instancePos = GrassInstances[instanceID].position;
         float4 worldPos = float4(instancePos + input.positionOS.xyz, 1);
         varyings.positionWS = worldPos;
@@ -102,6 +101,8 @@ Shader "Grass/Rendering"
         return varyings;
       }
 
+      // n.b. this shader is not currently used ( LitPassFragment from URP is ) but I'm keeping this code here
+      // because it could be useful eventually if we need to write more custom code into the fragment.
       half4 frag (Varyings varyings) : SV_Target
       {
         InputData inputData = (InputData)0;
@@ -111,9 +112,9 @@ Shader "Grass/Rendering"
         inputData.shadowCoord = TransformWorldToShadowCoord(varyings.positionWS);
 
         SurfaceData surfaceData = (SurfaceData)0;
-        surfaceData.albedo = _Color.rgb;
+        surfaceData.albedo = _BaseColor.rgb;
         surfaceData.alpha = 1;
-        surfaceData.specular = half3(1,1,1); // this is a color
+        surfaceData.specular = half3(1, 1, 1); // this is a color
         surfaceData.smoothness = _Smoothness;
         return UniversalFragmentPBR(inputData, surfaceData);
       }
