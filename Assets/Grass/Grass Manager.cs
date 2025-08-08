@@ -11,7 +11,8 @@ public class GrassManager : MonoBehaviour
 {
   public GrassRenderPass RenderPass;
   public ComputeShader GrassComputeShader;
-  public int GrassCount = 100000;
+  [Range(0, 20)]
+  public int GrassDensityPOT = 10;
   public float TerrainSize = 60f;
 
   const string KernelName = "GenerateGrass";
@@ -57,14 +58,15 @@ public class GrassManager : MonoBehaviour
 
   void Setup()
   {
+    var grassCount = (int)Mathf.Pow(2, GrassDensityPOT);
     IndirectArgs[0] = RenderPass.Mesh.GetIndexCount(0);
-    IndirectArgs[1] = (uint)GrassCount; // could set inside compute shader if total count may vary
+    IndirectArgs[1] = (uint)grassCount; // could set inside compute shader if total count may vary
     IndirectArgs[2] = RenderPass.Mesh.GetIndexStart(0);
     IndirectArgs[3] = RenderPass.Mesh.GetBaseVertex(0);
     IndirectArgs[4] = 0;
     GrassInstancesBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.Structured,
-      count: GrassCount,
+      count: grassCount,
       stride: Marshal.SizeOf(typeof(GrassInstance)));
     IndirectArgsBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.IndirectArguments,
@@ -73,9 +75,9 @@ public class GrassManager : MonoBehaviour
     IndirectArgsBuffer.SetData(IndirectArgs);
     int kernel = GrassComputeShader.FindKernel(KernelName);
     GrassComputeShader.SetBuffer(kernel, GrassInstancesID, GrassInstancesBuffer);
-    GrassComputeShader.SetInt(GrassCountID, GrassCount);
+    GrassComputeShader.SetInt(GrassCountID, grassCount);
     GrassComputeShader.SetFloat(TerrainSizeID, TerrainSize);
-    int groupCount = Mathf.CeilToInt((float)GrassCount / ThreadsPerGroup);
+    int groupCount = Mathf.CeilToInt((float)grassCount / ThreadsPerGroup);
     GrassComputeShader.Dispatch(kernel, groupCount, 1, 1);
     RenderPass.ArgsBuffer = IndirectArgsBuffer;
     RenderPass.InstanceBuffer = GrassInstancesBuffer;
