@@ -15,7 +15,7 @@ Material:
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
@@ -86,7 +86,11 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Bend: 0
-    - _BladeCurve: 0.65
+    - _BlackThicknessMultiplier: 2
+    - _BladeCurve: 0.73
+    - _BladeHeight: 1
+    - _BladeRadius: 0.05
+    - _BladeWidth: 0.067
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -103,21 +107,25 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HighFrequency: 1
+    - _LowFrequency: 3
+    - _MaxYRotationHighFrequency: 24
+    - _MaxYRotationLowFrequency: 360
     - _Metallic: 0
-    - _NormalBend: 1.15
+    - _NormalBend: 0.55
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 0.78
-    - _Smoothness: 0.5
+    - _Smoothness: 0.7
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _Thickness: 1
-    - _ThicknessMultiplier: 3
+    - _ThicknessMultiplier: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

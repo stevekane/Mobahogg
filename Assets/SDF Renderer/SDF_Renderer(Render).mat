@@ -110,7 +110,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _PhotonSphereMin: 0.017
-    - _PhotonSphereThickness: 0.0005
+    - _PhotonSphereThickness: 0.00236
     - _QueueOffset: 0
     - _RadialDistortionAngle: 0
     - _ReceiveShadows: 1
