@@ -14,6 +14,8 @@ Shader "Grass/Rendering"
     _MaxYRotationLowFrequency ("Max Y Rotation at Low Frequency", Range(0, 360)) = 180
     _MaxYRotationHighFrequency ("Max Y Rotation at High Frequency", Range(0, 360)) = 24
     _ForceStrength ("External Force Strength", Range(0, 10)) = 5
+    _BendGain ("Bend Gain", Range(0, 10)) = 0.6
+    _CurvePow ("Curve Power", Range(0, 10)) = 2
   }
   SubShader
   {
@@ -36,6 +38,7 @@ Shader "Grass/Rendering"
       HLSLPROGRAM
       #pragma multi_compile_instancing
       #pragma multi_compile_shadowcaster
+
       #pragma instancing_options renderingLayer
 
       #pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
@@ -44,6 +47,14 @@ Shader "Grass/Rendering"
       #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
       #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
       #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
+      #pragma multi_compile _ _LIGHT_LAYERS
+      #pragma multi_compile _ _FORWARD_PLUS
+      #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+      #pragma multi_compile _ SHADOWS_SHADOWMASK
+      #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+      #pragma multi_compile _ LIGHTMAP_ON
+      #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+
       #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
       #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
       #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
@@ -51,18 +62,6 @@ Shader "Grass/Rendering"
       #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
       #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
       #pragma multi_compile_fragment _ _LIGHT_COOKIES
-      #pragma multi_compile _ _LIGHT_LAYERS
-      #pragma multi_compile _ _FORWARD_PLUS
-
-
-      #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-      #pragma multi_compile _ SHADOWS_SHADOWMASK
-      #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-      #pragma multi_compile _ LIGHTMAP_ON
-      #pragma multi_compile _ DYNAMICLIGHTMAP_ON
-      #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
-      #pragma multi_compile_fog
-      #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
       #pragma vertex vert
       #pragma fragment frag
@@ -73,6 +72,7 @@ Shader "Grass/Rendering"
       #include "Packages/com.unity.render-pipelines.universal/Shaders/LitForwardPass.hlsl"
       #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
       #include "Assets/Shaders/Includes/Bezier.hlsl"
+      #include "Assets/Shaders/Includes/Noise.hlsl"
 
       // #define DEBUG_SHOW_NORMALS
 
@@ -80,18 +80,21 @@ Shader "Grass/Rendering"
       #define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
       #include "UnityIndirect.cginc"
 
+      static float DEG_TO_RAD = 2 * 3.14159 / 360;
+
       struct GrassInstance
       {
         float3 position;
-        float scale;
       };
 
-      StructuredBuffer<GrassInstance> GrassInstances;
+      void Scale(inout float3 posOS, float radius, float height) {
+        posOS.x *= radius;
+        posOS.y *= height;
+      }
 
-      float3 RotateAboutOrigin(float3 posOS, float maxRotationRadians, float maxHeight)
+      void RotateAboutOrigin(inout float3 posOS, float maxRotationRadians, float maxHeight)
       {
         float h = saturate(posOS.y / maxHeight);
-        // float w = h * h;
         float w = h;
         float angle = maxRotationRadians * w;
         float s, c;
@@ -100,15 +103,12 @@ Shader "Grass/Rendering"
         float z = posOS.z;
         posOS.y = y * c - z * s;
         posOS.z = y * s + z * c;
-        return posOS;
       }
 
-      float3 RotateNormalAboutOrigin(float3 posOS, float3 normalOS, float maxRotationRadians, float maxHeight)
+      void RotateNormalAboutOrigin(inout float3 normalOS, float3 posOS, float maxRotationRadians, float maxHeight)
       {
         float h = saturate(posOS.y / maxHeight);
-        // float w = h * h;
         float w = h;
-        // TODO : What in the christmas fuck. Why does this seem to work better?
         float angle = maxRotationRadians * w * 2.;
         float s, c;
         sincos(angle, s, c);
@@ -116,7 +116,7 @@ Shader "Grass/Rendering"
         float z = normalOS.z;
         normalOS.y = y * c - z * s;
         normalOS.z = y * s + z * c;
-        return normalize(normalOS);
+        normalOS = normalize(normalOS);
       }
 
       void BendNormalAboutY(inout float3 normal, float radians)
@@ -128,23 +128,6 @@ Shader "Grass/Rendering"
         normal.x = x * c + z * s;
         normal.z = - x * s + z * c;
         normal = normalize(normal);
-      }
-
-      float hash21(float2 p) {
-        p = frac(p * float2(123.34, 456.21));
-        p += dot(p, p + 78.233);
-        return frac(p.x * p.y);
-      }
-
-      float noise2D(float2 p) {
-        float2 i = floor(p);
-        float2 f = frac(p);
-        float a = hash21(i);
-        float b = hash21(i + float2(1, 0));
-        float c = hash21(i + float2(0, 1));
-        float d = hash21(i + float2(1, 1));
-        float2 u = f * f * (3.0 - 2.0 * f);
-        return lerp(lerp(a, b, u.x), lerp(c, d, u.x), u.y) * 2.0 - 1.0;
       }
 
       void GrassNoiseRotateY(
@@ -226,30 +209,27 @@ Shader "Grass/Rendering"
       float _MaxYRotationHighFrequency;
 
       float _ForceStrength;
+      float _BendGain;
+      float _CurvePow;
+
+      StructuredBuffer<GrassInstance> GrassInstances;
 
       Varyings vert (Attributes input, uint instanceID : SV_INSTANCEID)
       {
-        const float DEG_TO_RAD = 2 * 3.14159 / 360;
-        const float3 _ForceDirection = float3(1, 0, 0);
-        const float _BendGain = 0.6;
-        const float _CurvePow = 2;
-
         Varyings varyings = (Varyings)0;
-
         InitIndirectDrawArgs(0);
         UNITY_SETUP_INSTANCE_ID(input);
         UNITY_TRANSFER_INSTANCE_ID(input, varyings);
-        instanceID = GetIndirectInstanceID(instanceID);
 
-        float3 instancePos = GrassInstances[instanceID].position;
+        float3 _ForceDirection = float3(1, 0, 0);
+        float3 instancePos = GrassInstances[GetIndirectInstanceID(instanceID)].position;
         float3 positionOS = input.positionOS.xyz;
         float3 normalOS = input.normalOS;
-        float bladeHeight = .75f * _BladeHeight + .25 * _BladeHeight * noise2D(instancePos.xz);
-        positionOS = RotateAboutOrigin(positionOS, _BladeCurve, bladeHeight);
-        positionOS.x *= _BladeRadius;
-        positionOS.y *= bladeHeight;
+        float bladeHeight = .5f * _BladeHeight + .5 * _BladeHeight * abs(noise2D(instancePos.xz));
+        RotateAboutOrigin(positionOS, _BladeCurve, bladeHeight);
+        Scale(positionOS, _BladeRadius, bladeHeight);
         BendNormalAboutY(normalOS, clamp(input.positionOS.x / _BladeRadius, - 1, 1) * _NormalBend);
-        normalOS = RotateNormalAboutOrigin(input.positionOS.xyz, normalOS, _BladeCurve, bladeHeight);
+        RotateNormalAboutOrigin(normalOS, input.positionOS.xyz, _BladeCurve, bladeHeight);
         GrassNoiseRotateY(positionOS, normalOS, instancePos.xz, _LowFrequency, DEG_TO_RAD * _MaxYRotationLowFrequency);
         GrassNoiseRotateY(positionOS, normalOS, instancePos.xz, _HighFrequency, DEG_TO_RAD * _MaxYRotationHighFrequency);
         ApplyExternalForce(

@@ -86,6 +86,7 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Bend: 0
+    - _BendGain: 0.6
     - _BlackThicknessMultiplier: 2
     - _BladeCurve: 0.51
     - _BladeHeight: 1
@@ -98,6 +99,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Curve: 1.570795
+    - _CurvePow: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -108,7 +110,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HighFrequency: 1
+    - _HighFrequency: 0
     - _LowFrequency: 3
     - _MaxYRotationHighFrequency: 24
     - _MaxYRotationLowFrequency: 360
@@ -119,7 +121,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 0.78
-    - _Smoothness: 0.55
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -130,11 +132,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.28235295, g: 0.2654902, b: 0.11372548, a: 1}
+    - _BaseColor: {r: 0.1, g: 0.094444446, b: 0.040277775, a: 1}
     - _Color: {r: 0.28559986, g: 0.3584906, b: 0.16064437, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TipColor: {r: 0.54166657, g: 0.65, b: 0.2618055, a: 1}
+    - _TipColor: {r: 0.41566268, g: 0.5, b: 0.20180723, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &3683604607247895823

@@ -5,8 +5,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 
 [ExecuteAlways]
-// TODO: Just a test to see if I can force this rendering to occur before SDF rendering.
-[DefaultExecutionOrder(-1)]
+[DefaultExecutionOrder(-1)] // run before sdf ( could  / should be done better )
 public class GrassManager : MonoBehaviour
 {
   public GrassRenderPass RenderPass;
@@ -22,7 +21,6 @@ public class GrassManager : MonoBehaviour
   struct GrassInstance
   {
     public Vector3 position;
-    public float scale;
   }
 
   static readonly int GrassInstancesID = Shader.PropertyToID("GrassInstances");
