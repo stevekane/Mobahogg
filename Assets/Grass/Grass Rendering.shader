@@ -13,6 +13,7 @@ Shader "Grass/Rendering"
     _HighFrequency ("High Frequency", Range(0, 10)) = 2
     _MaxYRotationLowFrequency ("Max Y Rotation at Low Frequency", Range(0, 360)) = 180
     _MaxYRotationHighFrequency ("Max Y Rotation at High Frequency", Range(0, 360)) = 24
+    _ForceStrength ("External Force Strength", Range(0, 10)) = 5
   }
   SubShader
   {
@@ -160,6 +161,58 @@ Shader "Grass/Rendering"
         n = normalize(float3(c * n.x + s * n.z, n.y, - s * n.x + c * n.z));
       }
 
+      float3x3 RotAxis(float3 u, float a) {
+        u = normalize(u);
+        float s, c;
+        sincos(a, s, c);
+        float x = u.x;
+        float y = u.y;
+        float z = u.z;
+        float ic = 1.0 - c;
+        return float3x3(
+        c + ic * x * x, ic * x * y + z * s, ic * x * z - y * s,
+        ic * y * x - z * s, c + ic * y * y, ic * y * z + x * s,
+        ic * z * x + y * s, ic * z * y - x * s, c + ic * z * z
+        );
+      }
+
+      void ApplyExternalForce(
+      inout float3 pLS,
+      inout float3 nLS,
+      float bladeHeight,
+      float3 forceDirLS,
+      float forceStrength,
+      float bendGain,
+      float curvePow
+      ) {
+        const float3 up = float3(0, 1, 0);
+
+        if (bladeHeight <= 0.0 || forceStrength <= 0.0) {
+          return;
+        }
+        float u = saturate(pLS.y / bladeHeight);
+        float2 fxz = forceDirLS.xz;
+        float fxzLen = length(fxz);
+
+        if (fxzLen < .00001) {
+          return;
+        }
+
+        float3 f = float3(
+          fxz.x / fxzLen,
+          0.0,
+          fxz.y / fxzLen);
+        float3 axis = cross(up, f);
+        float axisLen2 = dot(axis, axis);
+        if (axisLen2 < .000000001) {
+          return;
+        }
+
+        float angle = bendGain * forceStrength * pow(u, curvePow);
+        float3x3 R = RotAxis(normalize(axis), angle);
+        pLS = mul(R, pLS);
+        nLS = normalize(mul(R, nLS));
+      }
 
       float _NormalBend;
       float _BladeCurve;
@@ -172,9 +225,14 @@ Shader "Grass/Rendering"
       float _MaxYRotationLowFrequency;
       float _MaxYRotationHighFrequency;
 
+      float _ForceStrength;
+
       Varyings vert (Attributes input, uint instanceID : SV_INSTANCEID)
       {
         const float DEG_TO_RAD = 2 * 3.14159 / 360;
+        const float3 _ForceDirection = float3(1, 0, 0);
+        const float _BendGain = 0.6;
+        const float _CurvePow = 2;
 
         Varyings varyings = (Varyings)0;
 
@@ -186,7 +244,7 @@ Shader "Grass/Rendering"
         float3 instancePos = GrassInstances[instanceID].position;
         float3 positionOS = input.positionOS.xyz;
         float3 normalOS = input.normalOS;
-        float bladeHeight = .75f * _BladeHeight + .25 * _BladeHeight * noise2D(instancePos.xz * .5);
+        float bladeHeight = .75f * _BladeHeight + .25 * _BladeHeight * noise2D(instancePos.xz);
         positionOS = RotateAboutOrigin(positionOS, _BladeCurve, bladeHeight);
         positionOS.x *= _BladeRadius;
         positionOS.y *= bladeHeight;
@@ -194,6 +252,14 @@ Shader "Grass/Rendering"
         normalOS = RotateNormalAboutOrigin(input.positionOS.xyz, normalOS, _BladeCurve, bladeHeight);
         GrassNoiseRotateY(positionOS, normalOS, instancePos.xz, _LowFrequency, DEG_TO_RAD * _MaxYRotationLowFrequency);
         GrassNoiseRotateY(positionOS, normalOS, instancePos.xz, _HighFrequency, DEG_TO_RAD * _MaxYRotationHighFrequency);
+        ApplyExternalForce(
+        positionOS,
+        normalOS,
+        bladeHeight,
+        _ForceDirection,
+        _ForceStrength * abs(noise2D(3 * instancePos.xz + _Time.y)),
+        _BendGain,
+        _CurvePow);
 
         float3 worldPos = instancePos + positionOS;
         float4 worldPos4D = float4(worldPos, 1);
@@ -209,7 +275,7 @@ Shader "Grass/Rendering"
         UNITY_SETUP_INSTANCE_ID(varyings);
         InputData inputData = (InputData)0;
         inputData.positionWS = varyings.positionWS;
-        inputData.normalWS = (isFrontFace ? 1 : -1) * normalize(varyings.normalWS);
+        inputData.normalWS = (isFrontFace ? 1 : - 1) * normalize(varyings.normalWS);
         inputData.viewDirectionWS = GetWorldSpaceNormalizeViewDir(varyings.positionWS);
         inputData.shadowCoord = TransformWorldToShadowCoord(varyings.positionWS);
 

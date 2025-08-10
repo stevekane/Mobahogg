@@ -87,7 +87,7 @@ Material:
     - _AlphaToMask: 0
     - _Bend: 0
     - _BlackThicknessMultiplier: 2
-    - _BladeCurve: 0.73
+    - _BladeCurve: 0.51
     - _BladeHeight: 1
     - _BladeRadius: 0.05
     - _BladeWidth: 0.067
@@ -104,6 +104,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _ForceStrength: 2
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -118,7 +119,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 0.78
-    - _Smoothness: 0.7
+    - _Smoothness: 0.55
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
