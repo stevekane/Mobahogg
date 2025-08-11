@@ -76,7 +76,6 @@ Shader "Grass/Rendering"
 
       // #define DEBUG_SHOW_NORMALS
 
-      // Needed for proper indirect drawing (though I cannot see why so far)
       #define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
       #include "UnityIndirect.cginc"
 

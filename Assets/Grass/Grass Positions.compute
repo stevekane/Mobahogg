@@ -7,8 +7,16 @@ struct GrassInstance
   float3 position;
 };
 
+StructuredBuffer<uint> Triangles;
+StructuredBuffer<float3> VertexPositions;
+StructuredBuffer<float3> VertexNormals;
+StructuredBuffer<float3> VertexDensities;
 RWStructuredBuffer<GrassInstance> GrassInstances;
 
+int TriangleCount;
+float MaxDensity;
+
+// soon to be obsolete
 int GrassCount;
 float TerrainSize;
 
