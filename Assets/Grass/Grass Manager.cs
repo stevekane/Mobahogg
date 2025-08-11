@@ -13,11 +13,7 @@ public class GrassManager : MonoBehaviour
 
   public GrassRenderPass RenderPass;
   public ComputeShader GrassComputeShader;
-  [Range(0, 20)]
-  public int GrassDensityPOT = 10;
-  public float TerrainSize = 60f;
-  [Range(1, 1000)]
-  public float MaxDensity = 100;
+  [Range(1, 1000)] public float MaxDensity = 100;
 
   const string KernelName = "GenerateGrass";
   const int ThreadsPerGroup = 64;
@@ -35,8 +31,6 @@ public class GrassManager : MonoBehaviour
   static readonly int GrassInstancesID = Shader.PropertyToID("GrassInstances");
   static readonly int TriangleCountID = Shader.PropertyToID("TriangleCount");
   static readonly int MaxDensityID = Shader.PropertyToID("MaxDensity");
-  static readonly int TerrainSizeID = Shader.PropertyToID("TerrainSize");
-  static readonly int GrassCountID = Shader.PropertyToID("GrassCount");
 
   GraphicsBuffer TrianglesBuffer;
   GraphicsBuffer VertexPositionsBuffer;
@@ -116,15 +110,15 @@ public class GrassManager : MonoBehaviour
       stride: Marshal.SizeOf(typeof(float)));
     VertexDensitiesBuffer.SetData(vertexDensities);
 
-    var grassCount = (int)Mathf.Pow(2, GrassDensityPOT);
+    var MAX_GRASS_COUNT = (int)Mathf.Pow(2, 20);
     GrassInstancesBuffer = new GraphicsBuffer(
-      GraphicsBuffer.Target.Structured,
-      count: grassCount,
+      GraphicsBuffer.Target.Append,
+      count: MAX_GRASS_COUNT,
       stride: Marshal.SizeOf(typeof(GrassInstance)));
 
     IndirectArgs = new uint[5];
     IndirectArgs[0] = RenderPass.InstanceMesh.GetIndexCount(0);
-    IndirectArgs[1] = (uint)grassCount; // could set inside compute shader if total count may vary
+    IndirectArgs[1] = 0;
     IndirectArgs[2] = RenderPass.InstanceMesh.GetIndexStart(0);
     IndirectArgs[3] = RenderPass.InstanceMesh.GetBaseVertex(0);
     IndirectArgs[4] = 0;
@@ -135,7 +129,7 @@ public class GrassManager : MonoBehaviour
     IndirectArgsBuffer.SetData(IndirectArgs);
 
     int kernel = GrassComputeShader.FindKernel(KernelName);
-    int groupCount = Mathf.CeilToInt((float)grassCount / ThreadsPerGroup);
+    int groupCount = 1;
 
     GrassComputeShader.SetBuffer(kernel, TrianglesID, TrianglesBuffer);
     GrassComputeShader.SetBuffer(kernel, VertexPositionsID, VertexPositionsBuffer);
@@ -143,10 +137,13 @@ public class GrassManager : MonoBehaviour
     GrassComputeShader.SetBuffer(kernel, VertexDensitiesID, VertexDensitiesBuffer);
     GrassComputeShader.SetBuffer(kernel, GrassInstancesID, GrassInstancesBuffer);
     GrassComputeShader.SetInt(TriangleCountID, triangleCount);
-    GrassComputeShader.SetInt(GrassCountID, grassCount);
     GrassComputeShader.SetFloat(MaxDensityID, MaxDensity);
-    GrassComputeShader.SetFloat(TerrainSizeID, TerrainSize);
     GrassComputeShader.Dispatch(kernel, groupCount, 1, 1);
+
+    GraphicsBuffer.CopyCount(
+      src: GrassInstancesBuffer,
+      dst: IndirectArgsBuffer,
+      dstOffsetBytes: sizeof(uint)); // the second index
 
     RenderPass.ArgsBuffer = IndirectArgsBuffer;
     RenderPass.InstanceBuffer = GrassInstancesBuffer;

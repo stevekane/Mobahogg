@@ -11,32 +11,21 @@ StructuredBuffer<uint> Triangles;
 StructuredBuffer<float3> VertexPositions;
 StructuredBuffer<float3> VertexNormals;
 StructuredBuffer<float3> VertexDensities;
-RWStructuredBuffer<GrassInstance> GrassInstances;
+AppendStructuredBuffer<GrassInstance> GrassInstances;
 
-int TriangleCount;
+uint TriangleCount;
 float MaxDensity;
 
-// soon to be obsolete
-int GrassCount;
-float TerrainSize;
-
-[numthreads(1024, 1, 1)]
+[numthreads(1, 1, 1)]
 void GenerateGrass(uint3 id : SV_DispatchThreadID)
 {
-  if (id.x >= GrassCount) return;
+  if (id.x >= TriangleCount) return;
 
-  uint index = id.x;
-  uint gridDim = (uint)sqrt(GrassCount);
-  uint xIndex = index % gridDim;
-  uint zIndex = index / gridDim;
-  float cellSize = TerrainSize / gridDim;
-  float2 baseXZ = float2(xIndex, zIndex) * cellSize;
-  float2 jitter = (hash2(index) - 0.5) * cellSize * 0.3;
-  float2 uv = baseXZ / TerrainSize;
-  float clumpStrength = valueNoise(uv * 3.0 + 15.0); // low-freq noise
-  float2 clumpOffset = (clumpStrength - 0.5) * cellSize * 0.5;
-  clumpOffset = 0;
-  float2 finalXZ = baseXZ + jitter + clumpOffset - TerrainSize * 0.5;
+  uint instanceCount = 100;
 
-  GrassInstances[index].position = float3(finalXZ.x, 0.0, finalXZ.y);
+  for (uint i = 0; i < instanceCount; i++) {
+    GrassInstance instance;
+    instance.position = float3(i % 10, 0, i / 10);
+    GrassInstances.Append(instance);
+  }
 }

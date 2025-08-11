@@ -517,6 +517,7 @@ MonoBehaviour:
   ScreenSpaceSDFMaterial: {fileID: 2100000, guid: a561af45b02fc544390717d93fa0b194, type: 2}
   Spheres:
   - {fileID: 467357792}
+  - {fileID: 1920044259}
 --- !u!4 &407809387
 Transform:
   m_ObjectHideFlags: 0
@@ -1013,8 +1014,6 @@ MonoBehaviour:
     InstanceMesh: {fileID: 5266712617787076647, guid: f3619caefa6508549837506b5fc4e298, type: 3}
     InstanceMaterial: {fileID: 2100000, guid: 8074e44fcecbbcf4ea05dbe6dbf6a125, type: 2}
   GrassComputeShader: {fileID: 7200000, guid: 449375017a2a182488e2b5226ba7eaf2, type: 3}
-  GrassDensityPOT: 18
-  TerrainSize: 60
   MaxDensity: 100
 --- !u!33 &1183713733
 MeshFilter:
@@ -1681,6 +1680,73 @@ Transform:
   - {fileID: 407177430}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1920044257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1920044260}
+  - component: {fileID: 1920044259}
+  - component: {fileID: 1920044258}
+  m_Layer: 0
+  m_Name: Black Hole (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1920044258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920044257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e926bc79ecfe49a47b14cdc0bd412589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AxisMode: 0
+  ImpulseMode: 0
+  Axis: {x: 1, y: 0, z: 0}
+  ImpulsePeriod: 1
+  Frequency: 20
+  StretchDecayRate: 1
+  StretchFraction: 0.7
+--- !u!114 &1920044259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920044257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2e98a5970efbe428dfcf8518712548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Radius: 0.5
+  StretchFraction: 1
+  StretchAxis: {x: 0, y: 1, z: 0}
+--- !u!4 &1920044260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920044257}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 1, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1956106158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1836,6 +1902,7 @@ SceneRoots:
   - {fileID: 1735151013}
   - {fileID: 914120441}
   - {fileID: 467357790}
+  - {fileID: 1920044260}
   - {fileID: 180335132}
   - {fileID: 1956106159}
   - {fileID: 1900776062}
