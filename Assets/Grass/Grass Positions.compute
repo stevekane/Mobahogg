@@ -10,22 +10,76 @@ struct GrassInstance
 StructuredBuffer<uint> Triangles;
 StructuredBuffer<float3> VertexPositions;
 StructuredBuffer<float3> VertexNormals;
-StructuredBuffer<float3> VertexDensities;
+StructuredBuffer<float> VertexDensities;
 AppendStructuredBuffer<GrassInstance> GrassInstances;
 
 uint TriangleCount;
 float MaxDensity;
+float4x4 ObjectToWorldSpaceMatrix;
 
-[numthreads(1, 1, 1)]
+float TriangleDensity(float d0, float d1, float d2)
+{
+  return max(max(d0, d1), d2);
+}
+
+float AreaOfTriangle(float3 p0, float3 p1, float3 p2)
+{
+  float3 a = p1-p0;
+  float3 b = p2-p0;
+  float3 c = cross(a, b);
+  return 0.5 * length(c);
+}
+
+float3 RandomBarycentric(uint seed)
+{
+  float r1 = Hash01(seed);
+  float r2 = Hash01(seed+1);
+  float s = sqrt(r1);
+  float x = 1-s;
+  float y = s*(1-r2);
+  float z = s*r2;
+  return float3(x,y,z);
+}
+
+float3 BarycentricToWorldSpace(float3 barycentric, float3 p0, float3 p1, float3 p2)
+{
+  float bx = barycentric.x;
+  float by = barycentric.y;
+  float bz = barycentric.z;
+  float x = bx*p0.x + by*p1.x + bz*p2.x;
+  float y = bx*p0.y + by*p1.y + bz*p2.y;
+  float z = bx*p0.z + by*p1.z + bz*p2.z;
+  return float3(x,y,z);
+}
+
+float3 ToWorldSpace(in float4x4 toWorldSpace, in float3 positionOS) {
+  return mul(toWorldSpace, float4(positionOS, 1)).xyz;
+}
+
+[numthreads(512, 1, 1)]
 void GenerateGrass(uint3 id : SV_DispatchThreadID)
 {
   if (id.x >= TriangleCount) return;
 
-  uint instanceCount = 100;
-
+  uint triangleIndex = 3 * id.x;
+  uint i0 = Triangles[triangleIndex];
+  uint i1 = Triangles[triangleIndex+1];
+  uint i2 = Triangles[triangleIndex+2];
+  float3 p0 = ToWorldSpace(ObjectToWorldSpaceMatrix, VertexPositions[i0]);
+  float3 p1 = ToWorldSpace(ObjectToWorldSpaceMatrix, VertexPositions[i1]);
+  float3 p2 = ToWorldSpace(ObjectToWorldSpaceMatrix, VertexPositions[i2]);
+  float area = AreaOfTriangle(p0, p1, p2);
+  float d0 = VertexDensities[i0];
+  float d1 = VertexDensities[i1];
+  float d2 = VertexDensities[i2];
+  float density = TriangleDensity(d0, d1, d2);
+  uint instanceCount = ceil(area * density * MaxDensity);
+  [loop]
   for (uint i = 0; i < instanceCount; i++) {
+    float3 positionBarycentric = RandomBarycentric(triangleIndex+i*2);
+    float3 positionWS = BarycentricToWorldSpace(positionBarycentric, p0, p1, p2);
     GrassInstance instance;
-    instance.position = float3(i % 10, 0, i / 10);
+    instance.position = positionWS;
     GrassInstances.Append(instance);
   }
 }

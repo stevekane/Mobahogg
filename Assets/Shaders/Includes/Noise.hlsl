@@ -17,6 +17,33 @@ float hash21(float2 p)
   return frac(p.x * p.y);
 }
 
+uint Hash32(uint x)
+{
+  x ^= 2747636419u;
+  x *= 2654435769u;
+  x ^= x >> 16;
+  x *= 2654435769u;
+  x ^= x >> 16;
+  x *= 2654435769u;
+  return x;
+}
+
+float Hash01(uint seed)
+{
+  uint h = Hash32(seed);
+  return (h >> 8) * (1.0 / 16777216.0);
+}
+
+uint Mix2(uint a, uint b)
+{
+  return Hash32(a ^ (b * 2246822519u + 3266489917u));
+}
+
+uint Mix3(uint a, uint b, uint c)
+{
+  return Hash32(a ^ (b * 2246822519u) ^ (c * 3266489917u));
+}
+
 float noise(float2 p)
 {
   float2 i = floor(p);

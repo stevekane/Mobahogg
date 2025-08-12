@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
-using System.Linq;
 
 [ExecuteAlways]
 [DefaultExecutionOrder(-1)] // run before sdf ( could  / should be done better )
@@ -16,7 +15,6 @@ public class GrassManager : MonoBehaviour
   [Range(1, 1000)] public float MaxDensity = 100;
 
   const string KernelName = "GenerateGrass";
-  const int ThreadsPerGroup = 64;
 
   [StructLayout(LayoutKind.Sequential)]
   struct GrassInstance
@@ -31,6 +29,7 @@ public class GrassManager : MonoBehaviour
   static readonly int GrassInstancesID = Shader.PropertyToID("GrassInstances");
   static readonly int TriangleCountID = Shader.PropertyToID("TriangleCount");
   static readonly int MaxDensityID = Shader.PropertyToID("MaxDensity");
+  static readonly int ObjectToWorldSpaceMatrixID = Shader.PropertyToID("ObjectToWorldSpaceMatrix");
 
   GraphicsBuffer TrianglesBuffer;
   GraphicsBuffer VertexPositionsBuffer;
@@ -71,25 +70,23 @@ public class GrassManager : MonoBehaviour
     if (RenderPass.InstanceMaterial == null) return;
     if (RenderPass.InstanceMesh == null) return;
 
-    // It may be possible to cleanup this disgusting bullshit by taking advantage of the fact
-    // that meshes can upload their data into buffers pretty easily and perhaps we could just access
-    // those existing buffers and avoid doing bookkeeping shit here.
-    // Instead, we could just pass those buffers to the compute shader
+    // TODO: is it possible to use the already-uploaded buffers created by the Mesh?
     var mesh = MeshFilter.sharedMesh;
     var vertexCount = mesh.vertexCount;
     var vertexPositions = mesh.vertices;
     var vertexNormals = mesh.normals;
     var vertexDensities = new float[mesh.vertexCount];
-    var triangles = mesh.GetTriangles(0);
-    var triangleCount = triangles.Count();
+    var triangles = mesh.triangles;
+    var trianglesSize = triangles.Length;
+    var triangleCount = trianglesSize / 3;
     for (var i = 0; i < vertexCount; i++)
     {
       vertexDensities[i] = 1;
     }
     TrianglesBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.Structured,
-      count: triangleCount,
-      stride: Marshal.SizeOf(typeof(int)));
+      count: trianglesSize,
+      stride: Marshal.SizeOf(typeof(uint)));
     TrianglesBuffer.SetData(triangles);
 
     VertexPositionsBuffer = new GraphicsBuffer(
@@ -110,7 +107,7 @@ public class GrassManager : MonoBehaviour
       stride: Marshal.SizeOf(typeof(float)));
     VertexDensitiesBuffer.SetData(vertexDensities);
 
-    var MAX_GRASS_COUNT = (int)Mathf.Pow(2, 20);
+    var MAX_GRASS_COUNT = (int)Mathf.Pow(2, 24); // ~16M. Could be set higher probably if needed
     GrassInstancesBuffer = new GraphicsBuffer(
       GraphicsBuffer.Target.Append,
       count: MAX_GRASS_COUNT,
@@ -129,15 +126,17 @@ public class GrassManager : MonoBehaviour
     IndirectArgsBuffer.SetData(IndirectArgs);
 
     int kernel = GrassComputeShader.FindKernel(KernelName);
-    int groupCount = 1;
 
     GrassComputeShader.SetBuffer(kernel, TrianglesID, TrianglesBuffer);
     GrassComputeShader.SetBuffer(kernel, VertexPositionsID, VertexPositionsBuffer);
     GrassComputeShader.SetBuffer(kernel, VertexNormalsID, VertexNormalsBuffer);
     GrassComputeShader.SetBuffer(kernel, VertexDensitiesID, VertexDensitiesBuffer);
     GrassComputeShader.SetBuffer(kernel, GrassInstancesID, GrassInstancesBuffer);
+    GrassComputeShader.SetMatrix(ObjectToWorldSpaceMatrixID, transform.localToWorldMatrix);
     GrassComputeShader.SetInt(TriangleCountID, triangleCount);
     GrassComputeShader.SetFloat(MaxDensityID, MaxDensity);
+    GrassComputeShader.GetKernelThreadGroupSizes(kernel, out var thx, out var _, out var _);
+    int groupCount = Mathf.CeilToInt(triangleCount / (float)thx);
     GrassComputeShader.Dispatch(kernel, groupCount, 1, 1);
 
     GraphicsBuffer.CopyCount(
