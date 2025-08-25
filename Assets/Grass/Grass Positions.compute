@@ -52,7 +52,8 @@ float3 BarycentricToWorldSpace(float3 barycentric, float3 p0, float3 p1, float3 
   return float3(x,y,z);
 }
 
-float3 ToWorldSpace(in float4x4 toWorldSpace, in float3 positionOS) {
+float3 ToWorldSpace(in float4x4 toWorldSpace, in float3 positionOS)
+{
   return mul(toWorldSpace, float4(positionOS, 1)).xyz;
 }
 
