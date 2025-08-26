@@ -31,7 +31,8 @@ public class GrayScaleRenderer : MonoBehaviour {
   {
     var isPreview = camera.cameraType == CameraType.Preview;
     var isReflection = camera.cameraType == CameraType.Reflection;
-    if (isPreview || isReflection) return;
+    var isSceneView = camera.cameraType == CameraType.SceneView;
+    if (isPreview || isReflection || isSceneView) return;
     RenderPass.Material = Material;
     camera.GetUniversalAdditionalCameraData().scriptableRenderer.EnqueuePass(RenderPass);
   }
