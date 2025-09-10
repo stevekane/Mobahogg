@@ -1,0 +1,18 @@
+HookShot :=
+  ON Fire
+  Traveling
+  HookShot
+
+Traveling :=
+  | Sleep(25)
+  | ON Cancel
+  | ON Hit
+    Pulling
+
+Pulling :=
+  | Sleep(16)
+  | ON Cancel
+
+Sleep(int ticks) :=
+  ON Tick
+  Sleep(ticks-1)

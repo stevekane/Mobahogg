@@ -258,6 +258,7 @@ Shader "Grass/Rendering"
         inputData.viewDirectionWS = GetWorldSpaceNormalizeViewDir(varyings.positionWS);
         inputData.shadowCoord = TransformWorldToShadowCoord(varyings.positionWS);
 
+        // TODO: Think it would be good to sort out how to access Ambient lighting here as well
         SurfaceData surfaceData = (SurfaceData)0;
         surfaceData.albedo = lerp(_BaseColor.rgb, _TipColor.rgb, varyings.uv.y);
         surfaceData.alpha = 1;

@@ -1,0 +1,45 @@
+Process has local state
+Process has an identity
+Process has a current status ( active, done, suspended )
+Process has child processes
+Process has parent process
+Process can defer to spawned process
+Process can write effects
+
+Local State
+  Each process is compiled to a struct of unmanaged state. This state
+  is provided to the process instance as part of the runtime
+
+Process identity
+  A process has a unique identifier. This is primarily used to route
+  messages to it and to identify parent / child processes that should be
+  resumed / killed / suspended etc
+
+Process has a current status
+  suspended processes do nothing during execution
+  active processes run during execution
+  done processes are cleaned up by the runtime prior to scheduling
+
+Parent / Child processes
+  Processes form a tree.
+  Each process has a parent.
+  When the parent is killed, the children are all killed.
+  It is often the case that child processes are created in conjunction
+  with a suspension ( wait for this child process to complete or these
+  child processes ) but this is not always true.
+  It is valid to spawn a child process without suspension.
+  Furthermore, it is possible to be handed a reference to an external process
+  that you wish to suspend against but do not own ( ie, the process you await you
+  do not own )
+  Finally, it is possible to spawn processes with parents other than yourself
+  which will cause them to obey the lifetime rules of their parent and not the process
+  responsible for spawning them.
+
+Effects
+    An Effect interacts with the runtime. Think of these like Main-thread actions.
+    Ideally, the fact that these are effects should be completely invisible to the
+    process language without causing any logical issues to the programmer.
+
+    This would/could be similar to the way GameObjects are defer-spawned / destroyed
+    in Unity itself. Not exactly sure what the ideal thing to do here is but it's worth
+    consideration.
