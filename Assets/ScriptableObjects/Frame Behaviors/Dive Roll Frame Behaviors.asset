@@ -29,12 +29,14 @@ MonoBehaviour:
       data:
         StartFrame: 0
         EndFrame: 32
-        PositionMultiplier: 3
+        ShowPreview: 1
+        PositionMultiplier: 1
     - rid: 2944954043238187079
       type: {class: AnimationOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 0
         EndFrame: 32
+        ShowPreview: 1
         AnimationClip: {fileID: 0}
         StartStateName: Dive Roll
         LayerIndex: 2
@@ -44,6 +46,7 @@ MonoBehaviour:
       data:
         StartFrame: 15
         EndFrame: 16
+        ShowPreview: 1
         Volume: 0.25
         AudioClip: {fileID: 8300000, guid: b9e23c626e5c5c0439db418fb58f911f, type: 3}
     - rid: 2944954207227609088
@@ -51,11 +54,13 @@ MonoBehaviour:
       data:
         StartFrame: 24
         EndFrame: 32
+        ShowPreview: 1
     - rid: 2944954224413245511
       type: {class: VFXOneShotFrameBehavior, ns: , asm: Assembly-CSharp}
       data:
         StartFrame: 15
         EndFrame: 32
+        ShowPreview: 1
         VisualEffectPrefab: {fileID: 5954992169719115302, guid: 45ec114cb58c7e1469831c34f061826b, type: 3}
         BehaviorTag: {fileID: 0}
         AttachedToParent: 0
@@ -65,4 +70,5 @@ MonoBehaviour:
       data:
         StartFrame: 15
         EndFrame: 32
+        ShowPreview: 1
         Intensity: 1
