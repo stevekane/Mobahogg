@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
     var activeSpellJustDown = InputRouter.Instance.JustDownWithin("Active", PortIndex, frameBufferDuration);
     var ultimateSpellJustDown = InputRouter.Instance.JustDownWithin("Ultimate", PortIndex, frameBufferDuration);
     InputRouter.Instance.TryGetValue("Move", PortIndex, out var move);
-    InputRouter.Instance.TryGetButtonState("Jump", PortIndex, out var jumpButtonState);
+    InputRouter.Instance.TryGetButtonState("Hover", PortIndex, out var hoverButtonState);
     InputRouter.Instance.TryGetButtonState("Active", PortIndex, out var activeButtonState);
 
     // Buttons
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
     if (activeButtonState == ButtonState.JustUp || activeButtonState == ButtonState.Up) {
       player.ReleaseActiveAbility();
     }
-    if (player.CanHover && jumpButtonState == ButtonState.Down) {
+    if (player.CanHover && hoverButtonState == ButtonState.Down) {
       player.StartHover();
     } else if (player.CanEndHover) {
       player.EndHover();

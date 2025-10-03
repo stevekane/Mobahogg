@@ -1,0 +1,29 @@
+Idle(TickEvent)
+  REPEAT
+    ON TickEvent
+    AdvanceIdle
+
+Attack(TickEvent)
+  Frames = 20
+  REPEAT(Frames)
+    ON TickEvent
+    AdvanceAttack
+
+Dash(TickEvent)
+  Frames = 6
+  REPEAT(Frames)
+    ON TickEvent
+    AdvanceDash
+
+Player(Action, TickEvent, Input)
+  SimulationTick
+  Current = SPAWN Idle(SimulationTick)
+  REPEAT
+    TickEvent
+    IF Action(Attack)
+      REPLACE(Current, Attack(SimulationTick))
+    IF Action(Dash)
+      REPLACE(Current, Dash(SimulationTick))
+    IF Action(Cancel) AND Current NOT Idle
+      REPLACE(Current, Idle(SimulationTick))
+    SEND SimulationTick

@@ -32,7 +32,9 @@ public class AttackAbility : Ability, ICancellable, IAimable, ITypeAndTagProvide
     CancellationTokenSource.Dispose();
   }
 
-  public override bool IsRunning => Task.Status == UniTaskStatus.Pending && !CancellationTokenSource.IsCancellationRequested;
+  public override bool IsRunning =>
+    Task.Status == UniTaskStatus.Pending
+    && !CancellationTokenSource.IsCancellationRequested;
   public override bool CanRun => CharacterController.IsGrounded;
   public override void Run() {
     CancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(this.destroyCancellationToken);

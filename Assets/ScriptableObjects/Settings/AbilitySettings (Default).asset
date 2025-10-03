@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ede8ce6ddd2a1f4d9953b969e4fc8d6, type: 3}
   m_Name: AbilitySettings (Default)
   m_EditorClassIdentifier: 
-  RisingGravityFactor: 12
-  FallingGravityFactor: 20
-  HoverVelocity: 5
+  RisingGravityFactor: 8
+  FallingGravityFactor: 12
+  HoverVelocity: 2
   GroundMoveSpeed: 10
   CoyoteFrameCount: 12
-  JumpHeight: 5
-  KnockbackDecayRate: 3
+  JumpHeight: 4

@@ -1,0 +1,12 @@
+Processes are fundamentally independent objects. As such, if you wish to coordinate
+their behavior, you will need to do so by designing them to express that coordination.
+
+There are often governing processes that have some kind of directorial influence
+over child processes.
+
+The most classic relationship enabled by structured concurrency is to have a host language
+in which in process may be forcefully killed by retaining a reference to it.
+
+This means that the root of every process is a singular place: the over process or root process.
+
+In a traditional game, we often have some amount of desired ordering 
