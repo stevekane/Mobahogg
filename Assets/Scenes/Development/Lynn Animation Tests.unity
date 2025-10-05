@@ -224,6 +224,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turtle v3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 873ffc04142b8174a96a1ec9fcffe18b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1404610946414566428, guid: 873ffc04142b8174a96a1ec9fcffe18b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1087,7 +1091,7 @@ MonoBehaviour:
   - 1.7227249
   - 2.4058936
   - 6.0299726
-  - 7.375348
+  - 7.3753486
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
   AttackMontage: {fileID: 11400000, guid: 0c4349a2a3ce89b4eaf1d8cb842000ec, type: 2}
   DashMontage: {fileID: 11400000, guid: 215103246f432b349a6fd80515bb19e6, type: 2}
@@ -1242,7 +1246,7 @@ MonoBehaviour:
   - 1.7227249
   - 2.4058936
   - 6.0299726
-  - 7.375348
+  - 7.3753486
   AirborneHoverAnimationClip: {fileID: -203655887218126122, guid: 33a903e47f3799c44b7dbb8d1c8967e5, type: 3}
   AttackMontage: {fileID: 11400000, guid: 0c4349a2a3ce89b4eaf1d8cb842000ec, type: 2}
   DashMontage: {fileID: 11400000, guid: 215103246f432b349a6fd80515bb19e6, type: 2}
@@ -2280,7 +2284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1958429673
 Transform:
   m_ObjectHideFlags: 0
@@ -2294,6 +2298,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2100225988}
   - {fileID: 89507238}
   - {fileID: 18808002}
   m_Father: {fileID: 0}
@@ -2307,7 +2312,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958429671}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 873ffc04142b8174a96a1ec9fcffe18b, type: 3}
+  m_Avatar: {fileID: 9000000, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 1
@@ -2470,6 +2475,69 @@ Transform:
   - {fileID: 1151025752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2100225987
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1958429673}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+      propertyPath: m_Name
+      value: chibi turtle Rig Test
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+--- !u!4 &2100225988 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d205193a34856304ab2ad519eeaa5646, type: 3}
+  m_PrefabInstance: {fileID: 2100225987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
