@@ -144,7 +144,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: DEF-forearm.L.001
+    - boneName: DEF-forearm.L
       humanName: LeftLowerArm
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -176,7 +176,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: DEF-forearm.R.001
+    - boneName: DEF-forearm.R
       humanName: RightLowerArm
       limit:
         min: {x: 0, y: 0, z: 0}
