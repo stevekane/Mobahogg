@@ -1,0 +1,469 @@
+fileFormatVersion: 2
+guid: b5ae922f82e489949ab3a7ca1f206119
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 0
+    importPhysicalCameras: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 0
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: Gauntlet.026
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Gauntlet.026|Hand.arch L.002|Dupli|17
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Gauntlet.026|Hand.arch R.002|Dupli|19
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Gauntlet.026|Forearm.trim top.002|Dupli|4
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Turtle 5H(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Belt_Trim.005
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3904302, z: -0.015189142}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bodysuit.004
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.4016757, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cannon.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.7170457, z: 0.42751315}
+      rotation: {x: 0.7743675, y: 0, z: 0, w: 0.6327361}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Chest armor_Neck POINTS.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest armor_Neck.007
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest armor_back.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest armor_back.trim.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest armor_boobs.003
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest armor_boobs.trim.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3805947, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cone.036
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.087261595, y: 0.032623623, z: 0.09886235}
+      rotation: {x: -0.583354, y: 0.1598457, z: 0.11303445, w: 0.7882707}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cone.037
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.27934715, y: 0.028808547, z: 0.10269284}
+      rotation: {x: -0.57981277, y: -0.19172037, z: -0.14088874, w: 0.77923733}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: Cone.038
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.1812571, y: 0.03404294, z: 0.06717053}
+      rotation: {x: -0.59735096, y: -0.004443591, z: -0.007109705, w: 0.80193615}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Cone.039
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.087261595, y: 0.032623623, z: 0.09886235}
+      rotation: {x: -0.583354, y: 0.1598457, z: 0.11303445, w: 0.7882707}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Cone.040
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.1812571, y: 0.03404294, z: 0.06717053}
+      rotation: {x: -0.59735096, y: -0.004443591, z: -0.007109705, w: 0.80193615}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Cone.041
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.27934715, y: 0.028808547, z: 0.10269284}
+      rotation: {x: -0.57981277, y: -0.19172037, z: -0.14088874, w: 0.77923733}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: Gauntlet.026
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.35345042, y: 1.0778049, z: 0.13145654}
+      rotation: {x: 0.07726712, y: -0.013624278, z: -0.17311288, w: 0.98177195}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: Gauntlet.026|Forearm.002|Dupli|
+      parentName: Gauntlet.026
+      position: {x: 0.000000030292036, y: -0.000000007450581, z: -0.00000002142042}
+      rotation: {x: -0.000000007450579, y: 0.0000000018739694, z: 0.000000014899364, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.black.005|Dupli|1
+      parentName: Gauntlet.026
+      position: {x: 0.000000030292036, y: -0.000000007450581, z: -0.00000002142042}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.trim bottom.002|Dupli|2
+      parentName: Gauntlet.026
+      position: {x: 0.000000030292036, y: -0.000000007450581, z: -0.00000002142042}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.trim bottom point.003|Dupli|3
+      parentName: Gauntlet.026
+      position: {x: -0.07899538, y: -0.09278388, z: -0.000000034458935}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.trim top.002|Dupli|4
+      parentName: Gauntlet.026
+      position: {x: 0.0025449996, y: 0.13870814, z: 0.000000006519258}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.trim top point.002|Dupli|5
+      parentName: Gauntlet.026
+      position: {x: -0.10431227, y: 0.030183505, z: -0.00000002142042}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Forearm.white.003|Dupli|6
+      parentName: Gauntlet.026
+      position: {x: 0.000000030292036, y: -0.000000007450581, z: -0.00000002142042}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Wrist.003|Dupli|7
+      parentName: Gauntlet.026
+      position: {x: -0.0037658806, y: -0.17805757, z: -0.000000019557774}
+      rotation: {x: -0.000000007450579, y: 0.0000000017300721, z: 0.000000014922156, w: 1}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Gauntlet.026|Cube.085|Dupli|8
+      parentName: Gauntlet.026
+      position: {x: -0.012986034, y: -0.31938186, z: -0.16343553}
+      rotation: {x: -0.43324232, y: -0.013236768, z: -0.027520703, w: 0.90076}
+      scale: {x: 1.2687736, y: 1.2687738, z: 1.2687739}
+    - name: Gauntlet.026|Cube.086|Dupli|9
+      parentName: Gauntlet.026
+      position: {x: -0.012986035, y: -0.39425048, z: -0.22339559}
+      rotation: {x: -0.4332425, y: -0.013236773, z: -0.027520718, w: 0.9007599}
+      scale: {x: 1.2687739, y: 1.2687738, z: 1.2687738}
+    - name: Gauntlet.026|Cylinder.049|Dupli|10
+      parentName: Gauntlet.026
+      position: {x: -0.013422072, y: -0.3561718, z: -0.19448586}
+      rotation: {x: -0.43324238, y: -0.013236773, z: -0.027520696, w: 0.90075994}
+      scale: {x: 1.268774, y: 1.193873, z: 1.2687739}
+    - name: Gauntlet.026|Cylinder.050|Dupli|11
+      parentName: Gauntlet.026
+      position: {x: -0.04219298, y: -0.48251337, z: -0.101746045}
+      rotation: {x: -0.70710665, y: -0.00000003829136, z: 0.000000007845975, w: 0.7071069}
+      scale: {x: 1.2000003, y: 1.2778199, z: 1.2000003}
+    - name: Gauntlet.026|Cylinder.051|Dupli|12
+      parentName: Gauntlet.026
+      position: {x: -0.029145598, y: -0.38857272, z: -0.10174605}
+      rotation: {x: -0.70710665, y: -0.00000004250553, z: 0.000000007717572, w: 0.7071069}
+      scale: {x: 1.2687738, y: 1.2687738, z: 1.2687739}
+    - name: Gauntlet.026|Cylinder.052|Dupli|13
+      parentName: Gauntlet.026
+      position: {x: -0.013422102, y: -0.30508348, z: -0.13998748}
+      rotation: {x: 0.0000000033046923, y: 3.6950382e-10, z: -0.030538505, w: 0.9995336}
+      scale: {x: 1.2687739, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Finger.first joint.002|Dupli|14
+      parentName: Gauntlet.026
+      position: {x: -0.028533846, y: -0.43281293, z: -0.10182131}
+      rotation: {x: -0.0000000036817656, y: 0.0000000038559906, z: 0.00000002965662, w: 1}
+      scale: {x: 1.2687738, y: 1.0000004, z: 1.2687738}
+    - name: Gauntlet.026|Finger.tip.002|Dupli|15
+      parentName: Gauntlet.026
+      position: {x: -0.027630106, y: -0.47511178, z: -0.10182132}
+      rotation: {x: -0.0000000036817656, y: 0.0000000038559906, z: 0.00000002965662, w: 1}
+      scale: {x: 1.2687738, y: 1.0000004, z: 1.2687738}
+    - name: Gauntlet.026|Hand.013|Dupli|16
+      parentName: Gauntlet.026
+      position: {x: 0.019114226, y: -0.30356064, z: -0.00093925465}
+      rotation: {x: 0.0000000029674232, y: 0.0000000038559906, z: 0.00000001596925, w: 1}
+      scale: {x: 1.2687738, y: 1.3870198, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch L.002|Dupli|17
+      parentName: Gauntlet.026
+      position: {x: -0.08964214, y: -0.40505198, z: 0.094130754}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch M.003|Dupli|18
+      parentName: Gauntlet.026
+      position: {x: -0.10040212, y: -0.40454316, z: 0.00007054303}
+      rotation: {x: -0.000000007209152, y: 0.000000022738892, z: 0.12026465, w: 0.9927419}
+      scale: {x: 1.2687736, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch R.002|Dupli|19
+      parentName: Gauntlet.026
+      position: {x: -0.08964211, y: -0.40536213, z: -0.095834434}
+      rotation: {x: -0.000000015414747, y: 0.0000000041539967, z: 0.000000029168532, w: 1}
+      scale: {x: 1.2687702, y: 1.2687705, z: 1.2687702}
+    - name: Gauntlet.026|Hand.arch small M.012|Dupli|20
+      parentName: Gauntlet.026
+      position: {x: -0.113125354, y: -0.35508734, z: 0.00007054489}
+      rotation: {x: -0.0000000016594127, y: 0.0000000053493237, z: 0.09707711, w: 0.99527687}
+      scale: {x: 1.2687739, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch small M.013|Dupli|21
+      parentName: Gauntlet.026
+      position: {x: -0.0896422, y: -0.3531312, z: -0.09589798}
+      rotation: {x: -0.000000015414747, y: 0.0000000041539967, z: 0.000000029168532, w: 1}
+      scale: {x: 1.2687702, y: 1.2687705, z: 1.2687702}
+    - name: Gauntlet.026|Hand.arch small M.014|Dupli|22
+      parentName: Gauntlet.026
+      position: {x: -0.08964217, y: -0.3544344, z: 0.09449115}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch small M.015|Dupli|23
+      parentName: Gauntlet.026
+      position: {x: -0.07347256, y: -0.48694757, z: -0.10215082}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch small M.016|Dupli|24
+      parentName: Gauntlet.026
+      position: {x: -0.073472545, y: -0.48694757, z: -0.00082975905}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.arch small M.017|Dupli|25
+      parentName: Gauntlet.026
+      position: {x: -0.073472545, y: -0.48694757, z: 0.10049131}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.015|Dupli|26
+      parentName: Gauntlet.026
+      position: {x: 0.019114196, y: -0.29367596, z: -0.0009392807}
+      rotation: {x: 0.0000000025691176, y: 0.0000000038559906, z: 0.00000002334338, w: 1}
+      scale: {x: 1.2687738, y: 1.2687739, z: 1.2687738}
+    - name: Gauntlet.026|Hand.top.005|Dupli|27
+      parentName: Gauntlet.026
+      position: {x: 0.019114226, y: -0.30356064, z: -0.00093925465}
+      rotation: {x: -0.000000007916239, y: 0.0000000035699261, z: 0.000000029679411, w: 1}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
+    - name: Gauntlet.026|pointy decor.002|Dupli|28
+      parentName: Gauntlet.026
+      position: {x: -0.08461711, y: -0.24522777, z: 0.043916907}
+      rotation: {x: -0.00000001730926, y: 9.876532e-10, z: -0.7283709, w: 0.68518305}
+      scale: {x: 1.1644068, y: 1.2691864, z: 1.244731}
+    - name: Gauntlet.026|Forearm.trim bottom point.006|Dupli|31
+      parentName: Gauntlet.026
+      position: {x: -0.07513279, y: -0.12681627, z: -0.0000000121071935}
+      rotation: {x: -0.000000011184047, y: -4.7747717e-10, z: -0.038236585, w: 0.9992687}
+      scale: {x: 1, y: 1.0000002, z: 1.0000002}
+    - name: Horns.005
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.03741524, y: 1.5987701, z: 0.18243563}
+      rotation: {x: 0.008726536, y: 0, z: 0, w: 0.9999619}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Retopo_Body.014
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3841467, z: 0}
+      rotation: {x: 0.000000081460335, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Retopo_Jacket_SS.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3793302, z: -0.010110847}
+      rotation: {x: 0.00000014106499, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shell.current.outside.001
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.5987701, z: 0.18243563}
+      rotation: {x: 0.008726536, y: 0, z: 0, w: 0.9999619}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Skirt_Bottom.001
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3904301, z: -0.015189142}
+      rotation: {x: 0.00000014106499, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Skirt_Bottom.trim.001
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3904301, z: -0.015189142}
+      rotation: {x: 0.00000014106499, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Skirt_top trim.001
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3904301, z: -0.015189142}
+      rotation: {x: 0.00000014106499, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Skirt_top.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.3904301, z: -0.015189142}
+      rotation: {x: 0.00000014106499, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sphere.024
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.10709786, y: 1.8101237, z: 0.0068142856}
+      rotation: {x: -0.7663502, y: 0.1627726, z: 0.20521198, w: 0.5866008}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
+    - name: Turtle Helmet.004
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.8168538, z: 0.1291098}
+      rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Turtle Helmet.Trim.002
+      parentName: Turtle 5H(Clone)
+      position: {x: 0, y: 1.8284903, z: 0.1291098}
+      rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Weapon.004
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.41395897, y: 1.3690292, z: 0.8985063}
+      rotation: {x: 0.81150293, y: -0.18377447, z: 0.34067985, w: -0.4377525}
+      scale: {x: 1, y: 1, z: 1}
+    - name: belt_Strip.016
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.089500815, y: 1.1236306, z: 0.2746437}
+      rotation: {x: 0.52362305, y: -0.18267602, z: 0.11608447, w: 0.82399803}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: belt_Strip.017
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.15894312, y: 1.1262298, z: 0.21555334}
+      rotation: {x: 0.47134155, y: -0.40272403, z: 0.25591758, w: 0.7417255}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: belt_Strip.018
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.14697607, y: 1.1262298, z: 0.12638952}
+      rotation: {x: 0.41069156, y: -0.54282653, z: 0.34494796, w: 0.64628386}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: belt_Strip.019
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.089500815, y: 1.1236306, z: 0.2746437}
+      rotation: {x: 0.52362305, y: -0.18267602, z: 0.11608447, w: 0.82399803}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: belt_Strip.020
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.15894312, y: 1.1262298, z: 0.21555334}
+      rotation: {x: 0.47134155, y: -0.40272403, z: 0.25591758, w: 0.7417255}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: belt_Strip.021
+      parentName: Turtle 5H(Clone)
+      position: {x: -0.14697607, y: 1.1262298, z: 0.12638952}
+      rotation: {x: 0.41069156, y: -0.54282653, z: 0.34494796, w: 0.64628386}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: eyes
+      parentName: Turtle 5H(Clone)
+      position: {x: 0.061189506, y: 1.7513728, z: 0.1367363}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
