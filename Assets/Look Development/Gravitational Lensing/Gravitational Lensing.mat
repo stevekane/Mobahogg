@@ -100,9 +100,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EinsteinRing: 200
+    - _EinsteinRing: 1000
     - _EnvironmentReflections: 1
-    - _EventHorizon: 100
+    - _EventHorizon: 120
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -110,7 +110,7 @@ Material:
     - _NoiseScale: 300
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PhotonSphereThickness: 2
+    - _PhotonSphereThickness: 5
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Scale: 1000

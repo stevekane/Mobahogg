@@ -33,7 +33,7 @@ public static class FrameBehaviorsExtensions {
           FrameBehavior.StartBehaviors(instance.Behaviors, frame);
           FrameBehavior.UpdateBehaviors(instance.Behaviors, frame);
           FrameBehavior.EndBehaviors(instance.Behaviors, frame);
-          frame = frame + localClock.DeltaFrames();
+          frame += localClock.DeltaFrames();
         }
       } while (frame <= endFrame && token.CanBeCanceled);
     } catch (Exception e) {
@@ -47,11 +47,13 @@ public static class FrameBehaviorsExtensions {
 [Serializable]
 public abstract class FrameBehavior : IConsumer {
   public static bool TryGetValue<T>(object provider, BehaviorTag tag, out T t) {
-    var tProvider = provider as ITypeAndTagProvider<BehaviorTag>;
-    if (tProvider != null) {
+    if (provider is ITypeAndTagProvider<BehaviorTag> tProvider)
+    {
       t = (T)tProvider.Get(typeof(T), tag);
       return true;
-    } else {
+    }
+    else
+    {
       t = default;
       return false;
     }
@@ -60,8 +62,7 @@ public abstract class FrameBehavior : IConsumer {
   public static FrameBehavior Clone(FrameBehavior frameBehavior) => frameBehavior.Clone();
 
   public static T TryGet<T>(object provider, BehaviorTag tag) {
-    var tProvider = provider as ITypeAndTagProvider<BehaviorTag>;
-    return tProvider != null
+    return provider is ITypeAndTagProvider<BehaviorTag> tProvider
       ? (T)tProvider.Get(typeof(T), tag)
       : default;
   }
