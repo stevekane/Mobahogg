@@ -1,0 +1,1116 @@
+fileFormatVersion: 2
+guid: d2ce10666fa158b438213c3b371c7868
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brass_Dark_mat
+    second: {fileID: 2100000, guid: 8afb8b7d32eaea942b7ee352cdc2e361, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brass_mat
+    second: {fileID: 2100000, guid: 28004183de214e449b95e81d5c083f51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark Wood_mat
+    second: {fileID: 2100000, guid: 8afb8b7d32eaea942b7ee352cdc2e361, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Staff_orb Empty
+    second: {fileID: 2100000, guid: b43cf9aa929079c4eb9696983fb80071, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: black_mat
+    second: {fileID: 2100000, guid: 2012b2ec6b292964f8972dd1907f18e1, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 0
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: DEF-spine
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-thigh.L
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-thigh.R
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-shin.L
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-shin.R
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-foot.L
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-foot.R
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.001
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.002
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.004
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.005
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-shoulder.L
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-shoulder.R
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-upper_arm.L
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-upper_arm.R
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-forearm.L
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-forearm.R
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-hand.L
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-hand.R
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-toe.L
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-toe.R
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.006
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DEF-spine.003
+      humanName: UpperChest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Robot v2(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bicep.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.6775976, y: 1.7002485, z: 0.00025359378}
+      rotation: {x: 0, y: 0, z: 0.022849359, w: 0.99973893}
+      scale: {x: 1.3373421, y: 1.3373421, z: 1.337342}
+    - name: Forearm.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.0122541, y: 1.6885811, z: 0.005437754}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerTOP.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.0122541, y: 1.6885811, z: 0.005437754}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerTOP_inset.L.002
+      parentName: Robot v2(Clone)
+      position: {x: -1.1755598, y: 1.7452607, z: 0.0054377685}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerTOP_inset.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.0873737, y: 1.7564951, z: 0.0054377727}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerTOP_inset.L.001
+      parentName: Robot v2(Clone)
+      position: {x: -1.0873737, y: 1.7564951, z: 0.0054377727}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerBOTTOM.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.1304326, y: 1.6172644, z: 0.005437763}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Forearm_LowerBOTTOM.inset.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.154004, y: 1.5982556, z: 0.005437763}
+      rotation: {x: 0, y: -0, z: -0.6907653, w: 0.723079}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Stomach.002
+      parentName: Robot v2(Clone)
+      position: {x: -0.00000000745058, y: 1.2027442, z: -3.3555e-10}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Stomach.003
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000017462297, y: 1.1756582, z: -0.0000000012805684}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Stomach.004
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000013969838, y: 1.1488948, z: -3.4924594e-10}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Stomach.005
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000023865139, y: 1.1199262, z: 1.16415315e-10}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Stomach.006
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000017462297, y: 1.0931629, z: -0.0000000012805684}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Stomach.007
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000015716067, y: 1.066077, z: -1.16415315e-10}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.5938591, z: 0.99999994}
+    - name: Retopo_Groin.002
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 0.8849463, z: 0}
+      rotation: {x: 6.123232e-17, y: 1, z: 6.123232e-17, w: 0.00000031391647}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Retopo_Groin.light
+      parentName: Robot v2(Clone)
+      position: {x: -0.016289467, y: 0.9061332, z: 0.16932407}
+      rotation: {x: -1.21379084e-14, y: 1, z: 0.000000037763648, w: 0.00000031391647}
+      scale: {x: 0.21192159, y: 0.20865013, z: 0.2145538}
+    - name: chest_orb holder large
+      parentName: Robot v2(Clone)
+      position: {x: -0.00000007071483, y: 1.5382073, z: 0.26156622}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: chest_orb holder small
+      parentName: Robot v2(Clone)
+      position: {x: -0.00000007071483, y: 1.5382073, z: 0.26156622}
+      rotation: {x: 0.5559376, y: -0.34364387, z: 0.70697963, w: -0.27022624}
+      scale: {x: 0.9999998, y: 1, z: 0.9999998}
+    - name: Shoulder.019
+      parentName: Robot v2(Clone)
+      position: {x: -0.3779657, y: 1.6587106, z: 0.00000001811803}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.8232093, y: 1, z: 1.064093}
+    - name: Shoulder_Plate1
+      parentName: Robot v2(Clone)
+      position: {x: -0.3709894, y: 1.678226, z: 0.00000001811803}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.95131993, y: 1, z: 1.3230703}
+    - name: Shoulder_Plate2
+      parentName: Robot v2(Clone)
+      position: {x: -0.36412305, y: 1.678226, z: 0.00000001811803}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.95131993, y: 1, z: 1.2771273}
+    - name: Shoulder_Plate3
+      parentName: Robot v2(Clone)
+      position: {x: -0.36412305, y: 1.678226, z: 0.00000001811803}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.95131993, y: 1, z: 1.2539783}
+    - name: Shoulder_Plate4
+      parentName: Robot v2(Clone)
+      position: {x: -0.36412305, y: 1.6855415, z: 0.00000001811803}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.95131993, y: 1, z: 1.16}
+    - name: Pauldrons.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.40990067, y: 1.6554081, z: 0.00035105797}
+      rotation: {x: 0, y: -0, z: -0.6755902, w: 0.7372773}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Back_Bottom
+      parentName: Robot v2(Clone)
+      position: {x: -0.000000054461538, y: 1.4085757, z: -0.20306884}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Back_mid
+      parentName: Robot v2(Clone)
+      position: {x: -0.000000055879354, y: 1.3472619, z: -0.20800745}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Back_Top
+      parentName: Robot v2(Clone)
+      position: {x: -0.00000007035996, y: 1.5052555, z: -0.19383098}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest Plate
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3545849, z: 0.20999047}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_box
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.4765078, z: 0.29317394}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_doohicky
+      parentName: Robot v2(Clone)
+      position: {x: 2.910383e-11, y: 1.6690494, z: 0.15754968}
+      rotation: {x: 0.43951982, y: 0, z: 0, w: 0.8982329}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Chest_orb
+      parentName: Robot v2(Clone)
+      position: {x: -0.000000007527831, y: 1.5382073, z: 0.26156625}
+      rotation: {x: 0.5559377, y: -0.3436439, z: 0.70697945, w: -0.27022618}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top.ab.001
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3563434, z: 0.20469455}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top.ab.002
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3563434, z: 0.20469455}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top.ab.003
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3563434, z: 0.20469455}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top.ab.004
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3563434, z: 0.20469455}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top.ab.005
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3563434, z: 0.20469455}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top Main
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3545849, z: 0.20999047}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest_Top Side
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.3545849, z: 0.20999047}
+      rotation: {x: -0.00000005338507, y: 0.7071068, z: 0.70710677, w: 0.000000053385087}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thruster
+      parentName: Robot v2(Clone)
+      position: {x: -0.000000037252903, y: 1.6356305, z: -0.21354054}
+      rotation: {x: -0.00000007694186, y: -0.38635015, z: 0.9223522, w: 0.00000017886951}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Thruster.003
+      parentName: Robot v2(Clone)
+      position: {x: -0.000000037252978, y: 1.6356304, z: -0.21354058}
+      rotation: {x: -0.000000076941866, y: -0.38635015, z: 0.9223522, w: 0.00000017886951}
+      scale: {x: 1, y: 0.9999998, z: 0.9999998}
+    - name: Thruster.001
+      parentName: Robot v2(Clone)
+      position: {x: -0.103879035, y: 1.5685381, z: -0.26011106}
+      rotation: {x: -0.023701666, y: -0.3861914, z: 0.92101175, w: -0.045076367}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: Thruster_cone
+      parentName: Robot v2(Clone)
+      position: {x: -0.00016985089, y: 1.5532589, z: -0.24098809}
+      rotation: {x: 0.1644174, y: 0.0000000030517429, z: 0.000000058275212, w: 0.9863909}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Wing.001
+      parentName: Robot v2(Clone)
+      position: {x: -0.15658702, y: 1.4218811, z: -0.18597987}
+      rotation: {x: -0.024342565, y: -0.019406071, z: -0.6230618, w: 0.78155285}
+      scale: {x: 0.87278265, y: 0.99375623, z: 0.9995128}
+    - name: Wing_Hinge
+      parentName: Robot v2(Clone)
+      position: {x: -0.15658702, y: 1.4218811, z: -0.18597987}
+      rotation: {x: 0.0866062, y: -0.009772308, z: 0.11169795, w: 0.98991287}
+      scale: {x: 0.59167975, y: 0.8988581, z: 0.54292506}
+    - name: Hand.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.3972737, y: 1.6618314, z: 0.027836641}
+      rotation: {x: 0.50083095, y: 0.24404667, z: 0.6920443, w: 0.45900357}
+      scale: {x: 0.99999994, y: 0.99999976, z: 0.99999964}
+    - name: Hand_Back.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.3632333, y: 1.7162441, z: 0.019961184}
+      rotation: {x: 0, y: -0, z: -0.043619324, w: 0.99904823}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Palm.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.3613691, y: 1.6358936, z: 0.0036565477}
+      rotation: {x: 0.50083095, y: 0.24404675, z: 0.6920444, w: 0.45900342}
+      scale: {x: 0.99999994, y: 1, z: 0.9999997}
+    - name: joint.thumb.001
+      parentName: Robot v2(Clone)
+      position: {x: -1.3372054, y: 1.6154104, z: 0.119726285}
+      rotation: {x: 0.04386677, y: 0.78045595, z: 0.60732573, w: 0.14184433}
+      scale: {x: 0.9999999, y: 0.9999999, z: 1.0188208}
+    - name: joint.index.001
+      parentName: Robot v2(Clone)
+      position: {x: 1.4956989, y: 1.6854953, z: 0.08430426}
+      rotation: {x: 0.000000014886977, y: -6.4997846e-10, z: -0.043619324, w: 0.99904823}
+      scale: {x: 1, y: 1, z: 1.0419941}
+    - name: joint.index.002
+      parentName: Robot v2(Clone)
+      position: {x: 1.5430448, y: 1.6795821, z: 0.08418766}
+      rotation: {x: 0.000000007381489, y: -0.0000000026490983, z: 0.25447106, w: 0.9670804}
+      scale: {x: 1, y: 1, z: 1.0923575}
+    - name: joint.thumb.002.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.3850539, y: 1.592703, z: 0.1406363}
+      rotation: {x: 0.77366287, y: -0.111720935, z: -0.19423631, w: 0.5926521}
+      scale: {x: 0.9999998, y: 0.9999999, z: 1.0240077}
+    - name: joint.middle.001
+      parentName: Robot v2(Clone)
+      position: {x: 1.5075456, y: 1.6774988, z: 0.03798593}
+      rotation: {x: 0.000000014886975, y: -6.499777e-10, z: -0.043619324, w: 0.99904823}
+      scale: {x: 0.99999994, y: 1, z: 1.0468147}
+    - name: joint.middle.002
+      parentName: Robot v2(Clone)
+      position: {x: 1.5550148, y: 1.6729941, z: 0.03791694}
+      rotation: {x: 0.0000000068621233, y: -0.000000014544674, z: 0.254471, w: 0.9670804}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1.0781716}
+    - name: joint.ring.001
+      parentName: Robot v2(Clone)
+      position: {x: 1.5064837, y: 1.6653603, z: -0.014050909}
+      rotation: {x: 0.000000014886977, y: -6.499777e-10, z: -0.043619324, w: 0.99904823}
+      scale: {x: 0.99999994, y: 1, z: 1.0769583}
+    - name: joint.ring.002
+      parentName: Robot v2(Clone)
+      position: {x: 1.554118, y: 1.662742, z: -0.013647772}
+      rotation: {x: 0.0000000068621193, y: -0.000000014544675, z: 0.25447097, w: 0.9670804}
+      scale: {x: 0.99999976, y: 0.99999976, z: 1.0931647}
+    - name: joint.pinkie.001
+      parentName: Robot v2(Clone)
+      position: {x: 1.492613, y: 1.6590945, z: -0.05439853}
+      rotation: {x: 0.000000014886975, y: -6.499776e-10, z: -0.043619324, w: 0.99904823}
+      scale: {x: 0.99999994, y: 1, z: 1.0694897}
+    - name: joint.pinkie.002
+      parentName: Robot v2(Clone)
+      position: {x: 1.5275908, y: 1.6575834, z: -0.054384485}
+      rotation: {x: 0.0000000068621215, y: -0.000000014544677, z: 0.25447097, w: 0.9670804}
+      scale: {x: 0.99999976, y: 0.99999976, z: 1.0885118}
+    - name: Knuckle.001.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.45639, y: 1.7052, z: 0.08410496}
+      rotation: {x: 0, y: -0, z: -0.043619324, w: 0.99904823}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Knuckle.002.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.4559208, y: 1.6998358, z: 0.03754876}
+      rotation: {x: 0, y: -0, z: -0.043619324, w: 0.99904823}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Knuckle.003.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.4546874, y: 1.6857386, z: -0.014110003}
+      rotation: {x: 0, y: -0, z: -0.04361928, w: 0.99904823}
+      scale: {x: 0.9087108, y: 0.9087108, z: 0.9087108}
+    - name: Knuckle.004.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.4538896, y: 1.6766193, z: -0.053355128}
+      rotation: {x: 0, y: -0, z: -0.043619324, w: 0.99904823}
+      scale: {x: 0.9125967, y: 0.9125967, z: 0.9125967}
+    - name: Head.010
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000010826069, y: 1.9, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head_Holder
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000010826069, y: 1.9, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head_Holder.001
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000010826069, y: 1.9, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Lens
+      parentName: Robot v2(Clone)
+      position: {x: 0.0000000081638705, y: 1.9, z: 0.35}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Lens_Holder
+      parentName: Robot v2(Clone)
+      position: {x: 0.000000021545375, y: 1.9, z: 0.35}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Neck.007
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.75, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Neck_ring
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 1.7067657, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wire
+      parentName: Robot v2(Clone)
+      position: {x: -0.101565875, y: 1.7013773, z: -0.060746312}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wire_disk body
+      parentName: Robot v2(Clone)
+      position: {x: -0.073936135, y: 1.701, z: -0.059978094}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Wire_disk head
+      parentName: Robot v2(Clone)
+      position: {x: -0.097433, y: 1.8792262, z: -0.19374347}
+      rotation: {x: 0, y: -0, z: -0.63323736, w: 0.77395767}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.2598176, y: 0.25, z: 0.0009875745}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot.Decor.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.2598176, y: 0.25, z: 0.0009875745}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_orb
+      parentName: Robot v2(Clone)
+      position: {x: -0.25886023, y: 0.32409838, z: 0.105247125}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0670114, y: 1.0670114, z: 1.0670114}
+    - name: Foot_toe
+      parentName: Robot v2(Clone)
+      position: {x: -0.25969014, y: 0, z: 0.23207998}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.001
+      parentName: Robot v2(Clone)
+      position: {x: -0.38569602, y: 0, z: 0.1666182}
+      rotation: {x: 0, y: -0.5, z: 0, w: 0.8660254}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.002
+      parentName: Robot v2(Clone)
+      position: {x: -0.13379297, y: 0, z: 0.16640933}
+      rotation: {x: 0, y: 0.5, z: 0, w: 0.8660254}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.003
+      parentName: Robot v2(Clone)
+      position: {x: -0.25994512, y: 0, z: -0.07543686}
+      rotation: {x: 6.123233e-17, y: 1, z: 6.123233e-17, w: 0.00000019470718}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_top.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.2596901, y: 0.44122595, z: 0.012538753}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hip.R
+      parentName: Robot v2(Clone)
+      position: {x: -0.13416567, y: 0.90240437, z: 0}
+      rotation: {x: 6.123233e-17, y: 1, z: 6.123233e-17, w: 0.00000019470718}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Knee.003
+      parentName: Robot v2(Clone)
+      position: {x: -0.2588694, y: 0.46254045, z: 0.008402491}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Knee_cover
+      parentName: Robot v2(Clone)
+      position: {x: -0.25886905, y: 0.5574861, z: 0.11693408}
+      rotation: {x: 0, y: -0, z: -0.7071067, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Orb_holder foot
+      parentName: Robot v2(Clone)
+      position: {x: -0.2598176, y: 0.25, z: 0.00346032}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh.003
+      parentName: Robot v2(Clone)
+      position: {x: -0.22396839, y: 0.87655604, z: 0.01097662}
+      rotation: {x: -0.19649504, y: -0.0126180565, z: -0.06460184, w: 0.978293}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh_Armor.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.24348189, y: 0.76546615, z: 0.12787747}
+      rotation: {x: -0.16323268, y: -0.0101960385, z: -0.06498202, w: 0.98439246}
+      scale: {x: 1, y: 0.9999997, z: 1.0000001}
+    - name: Thigh_armor back.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.2419507, y: 0.7362759, z: 0.026770521}
+      rotation: {x: -0.19649506, y: -0.012618057, z: -0.064601816, w: 0.978293}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: Forearm_LowerBOTTOM.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.1332719, y: 1.6168004, z: 0.005437768}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm_LowerTOP.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.0723946, y: 1.7585654, z: 0.0054377574}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.9735464, y: 1.694723, z: 0.0050649308}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Bicep.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.6454115, y: 1.7077419, z: 0.00025359285}
+      rotation: {x: 0, y: 0, z: 0.9979261, w: 0.06437052}
+      scale: {x: 1.3373421, y: 1.3373421, z: 1.337342}
+    - name: Foot_top.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.2596901, y: 0.4570669, z: 0.0052332566}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot.R
+      parentName: Robot v2(Clone)
+      position: {x: 0.25981778, y: 0.20927161, z: 0.0649668}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.008
+      parentName: Robot v2(Clone)
+      position: {x: 0.25969002, y: 0.023101237, z: 0.27524787}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.009
+      parentName: Robot v2(Clone)
+      position: {x: 0.42308053, y: 0.023101237, z: 0.18820217}
+      rotation: {x: 0, y: -0.5, z: 0, w: 0.8660254}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.010
+      parentName: Robot v2(Clone)
+      position: {x: 0.096408576, y: 0.023101237, z: 0.1879933}
+      rotation: {x: 0, y: 0.5, z: 0, w: 0.8660254}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Foot_toe.011
+      parentName: Robot v2(Clone)
+      position: {x: 0.25994506, y: 0.026509603, z: -0.094649024}
+      rotation: {x: 6.123233e-17, y: 1, z: 6.123233e-17, w: 0.00000019470718}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm_LowerBOTTOM.inset.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.1585485, y: 1.6024199, z: 0.005437763}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm_LowerTOP_inset.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.0056167, y: 1.7791474, z: 0.005437764}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm_LowerTOP_inset.R.001
+      parentName: Robot v2(Clone)
+      position: {x: 1.0911036, y: 1.7654074, z: 0.005437775}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm_LowerTOP_inset.R.002
+      parentName: Robot v2(Clone)
+      position: {x: 1.1801041, y: 1.7494247, z: 0.0054377685}
+      rotation: {x: 0, y: 0, z: 0.6601234, w: 0.75115716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hip.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.13416567, y: 0.90240437, z: 0}
+      rotation: {x: 6.123233e-17, y: 1, z: 6.123233e-17, w: 0.00000019470718}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Thigh_Armor.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.24348195, y: 0.7654661, z: 0.12787747}
+      rotation: {x: -0.16323268, y: -0.0101960385, z: -0.06498202, w: 0.98439246}
+      scale: {x: 1, y: 0.9999997, z: 1.0000001}
+    - name: Thigh_armor back.L
+      parentName: Robot v2(Clone)
+      position: {x: -0.2416779, y: 0.73489475, z: 0.018019345}
+      rotation: {x: -0.19649506, y: -0.012618057, z: -0.064601816, w: 0.978293}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: joint.thumb.001.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.3417501, y: 1.6195748, z: 0.119726285}
+      rotation: {x: 0.77366287, y: -0.111720935, z: -0.19423631, w: 0.5926521}
+      scale: {x: 0.9999998, y: 0.9999999, z: 1.0188208}
+    - name: joint.thumb.002
+      parentName: Robot v2(Clone)
+      position: {x: -1.3805094, y: 1.5885391, z: 0.14063627}
+      rotation: {x: 0.04386677, y: 0.78045595, z: 0.60732573, w: 0.14184433}
+      scale: {x: 0.9999999, y: 0.9999999, z: 1.0240078}
+    - name: Foot.Decor.R
+      parentName: Robot v2(Clone)
+      position: {x: -0.2598176, y: 0.25, z: 0.0009875745}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Hand.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.3777764, y: 1.6216798, z: 0.030796906}
+      rotation: {x: 0.19946775, y: -0.5201953, z: -0.5175725, w: 0.6494061}
+      scale: {x: 0.99999994, y: 0.99999976, z: 0.99999976}
+    - name: Palm.R
+      parentName: Robot v2(Clone)
+      position: {x: 1.3777764, y: 1.6216798, z: 0.030796917}
+      rotation: {x: 0.1994678, y: -0.5201953, z: -0.51757246, w: 0.649406}
+      scale: {x: 0.99999994, y: 1, z: 0.9999997}
+    - name: Hand_Back.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.3584033, y: 1.7083869, z: 0.016836602}
+      rotation: {x: 0, y: 0, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Knuckle.001.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.4535007, y: 1.7032229, z: 0.08412565}
+      rotation: {x: 0, y: 0, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Knuckle.002.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.4547307, y: 1.7020377, z: 0.03767973}
+      rotation: {x: 0, y: 0, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Knuckle.003.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.4522169, y: 1.6856546, z: -0.014387509}
+      rotation: {x: 0, y: 0, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.9087108, y: 0.9087108, z: 0.9087108}
+    - name: Knuckle.004.L
+      parentName: Robot v2(Clone)
+      position: {x: -1.4508573, y: 1.6748793, z: -0.053676095}
+      rotation: {x: 0, y: 0, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.9125967, y: 0.9125967, z: 0.9125967}
+    - name: joint.index.003
+      parentName: Robot v2(Clone)
+      position: {x: -1.4916551, y: 1.6870558, z: 0.08430426}
+      rotation: {x: -6.4998035e-10, y: 0.000000014886979, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1.0419941}
+    - name: joint.index.004
+      parentName: Robot v2(Clone)
+      position: {x: -1.539027, y: 1.6814375, z: 0.084187664}
+      rotation: {x: 0.0000000019956765, y: 0.000000007584289, z: 0.94122183, w: -0.33778906}
+      scale: {x: 1, y: 1, z: 1.0923575}
+    - name: joint.middle.003
+      parentName: Robot v2(Clone)
+      position: {x: -1.5509905, y: 1.6747731, z: 0.03791694}
+      rotation: {x: 0.000000013891257, y: 0.000000008103658, z: 0.94122183, w: -0.3377892}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1.0781716}
+    - name: joint.middle.004
+      parentName: Robot v2(Clone)
+      position: {x: -1.5035213, y: 1.6792784, z: 0.03798593}
+      rotation: {x: -6.4997957e-10, y: 0.000000014886977, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1.0468147}
+    - name: joint.pinkie.003
+      parentName: Robot v2(Clone)
+      position: {x: -1.488596, y: 1.6609586, z: -0.05439853}
+      rotation: {x: -6.4997957e-10, y: 0.000000014886976, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1.0694897}
+    - name: joint.ring.003
+      parentName: Robot v2(Clone)
+      position: {x: -1.5024627, y: 1.6671807, z: -0.01405091}
+      rotation: {x: -6.499796e-10, y: 0.000000014886979, z: 0.99904823, w: -0.043619454}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1.0769583}
+    - name: joint.ring.004
+      parentName: Robot v2(Clone)
+      position: {x: -1.5500973, y: 1.6645671, z: -0.013647774}
+      rotation: {x: 0.000000013891259, y: 0.000000008103657, z: 0.94122183, w: -0.3377892}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1.0931647}
+    - name: joint.pinkie.004
+      parentName: Robot v2(Clone)
+      position: {x: -1.5235815, y: 1.6595346, z: -0.054384474}
+      rotation: {x: 0.000000013891259, y: 0.000000008103657, z: 0.94122183, w: -0.3377892}
+      scale: {x: 0.9999998, y: 0.9999998, z: 1.0885118}
+    - name: Shoulder.021
+      parentName: Robot v2(Clone)
+      position: {x: 0.3779658, y: 1.6632724, z: -0.00006647164}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.8232093, y: 1, z: 1.064093}
+    - name: Pauldrons.R
+      parentName: Robot v2(Clone)
+      position: {x: -0.32321048, y: 1.3130811, z: 0.00035105797}
+      rotation: {x: 0, y: -0, z: -0.30070585, w: 0.95371693}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Game Rig_deform
+      parentName: Robot v2(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: DEF-spine
+      parentName: Game Rig_deform
+      position: {x: 0.000000017986498, y: -0.055200044, z: -0.8260955}
+      rotation: {x: -0.0000002209075, y: 0.7659776, z: -0.6428673, w: 0.00000026108518}
+      scale: {x: 1.000056, y: 0.9999999, z: 1.0000325}
+    - name: DEF-spine.001
+      parentName: DEF-spine
+      position: {x: 0.000000019318922, y: 0.2190917, z: -0.0000000074505766}
+      rotation: {x: 0.058322273, y: -0.00000010411699, z: -0.000000050382972, w: 0.9982978}
+      scale: {x: 1.0000296, y: 0.9999974, z: 1.0000237}
+    - name: DEF-spine.002
+      parentName: DEF-spine.001
+      position: {x: -0.000000018918428, y: 0.17564993, z: -0.0000000013969838}
+      rotation: {x: 0.02593669, y: 0.00000013708494, z: -0.000000015029746, w: 0.9996636}
+      scale: {x: 0.99997216, y: 0.9999874, z: 1.0000086}
+    - name: DEF-spine.003
+      parentName: DEF-spine.002
+      position: {x: 0.000000015547203, y: 0.20673944, z: -0.000000006984918}
+      rotation: {x: 0.016248908, y: 4.4387605e-10, z: 0.00000001739781, w: 0.99986804}
+      scale: {x: 1.0000293, y: 0.9999601, z: 1.0000702}
+    - name: DEF-spine.004
+      parentName: DEF-spine.003
+      position: {x: 4.9196647e-11, y: 0.2055235, z: -0.000000010244546}
+      rotation: {x: -0.1049552, y: 0.000000054509357, z: -0.000000048613924, w: 0.99447703}
+      scale: {x: 1.0000753, y: 1.0002334, z: 0.9998483}
+    - name: DEF-spine.005
+      parentName: DEF-spine.004
+      position: {x: -0.00000000641926, y: 0.059169214, z: -0.000000010884834}
+      rotation: {x: 0.09147712, y: -0.000000073734334, z: 0.00000004041014, w: 0.99580723}
+      scale: {x: 1.0000007, y: 1.0005018, z: 0.99949265}
+    - name: DEF-spine.006
+      parentName: DEF-spine.005
+      position: {x: 0.000000015069261, y: 0.12907773, z: 0.000000002502924}
+      rotation: {x: -0.32936087, y: 0.000000011495399, z: 0.00000020835587, w: 0.94420415}
+      scale: {x: 1.0000077, y: 0.9977805, z: 1.0022491}
+    - name: DEF-shoulder.L
+      parentName: DEF-spine.003
+      position: {x: 0.018299976, y: 0.17908597, z: -0.07912087}
+      rotation: {x: 0.53241646, y: 0.43657184, z: -0.4079479, w: 0.5995967}
+      scale: {x: 1.0000255, y: 1.0000187, z: 1.0000852}
+    - name: DEF-upper_arm.L
+      parentName: DEF-shoulder.L
+      position: {x: 0.021408716, y: 0.41019914, z: -0.048841003}
+      rotation: {x: -0.13261719, y: -0.9289696, z: -0.08488817, w: 0.33499566}
+      scale: {x: 0.99996895, y: 1.0002218, z: 0.99990255}
+    - name: DEF-upper_arm.L.001
+      parentName: DEF-upper_arm.L
+      position: {x: 0.00000008381903, y: 0.20194909, z: 0.000000012805685}
+      rotation: {x: 0.000000007450579, y: -0.00000005960463, z: 0.00000012665984, w: 1}
+      scale: {x: 1.0000204, y: 1.000021, z: 1.0000234}
+    - name: DEF-forearm.L
+      parentName: DEF-upper_arm.L.001
+      position: {x: 0.000000014901161, y: 0.20194885, z: 0.00000014482066}
+      rotation: {x: 0.03974793, y: -0.00000057123145, z: -0.00000044205353, w: -0.9992098}
+      scale: {x: 1.0000333, y: 0.9999869, z: 1.0000994}
+    - name: DEF-forearm.L.001
+      parentName: DEF-forearm.L
+      position: {x: 0.0000001359731, y: 0.21982405, z: 0.00000011315569}
+      rotation: {x: -0.00000022724268, y: -0.0000002552745, z: -0.00000033078308, w: 1}
+      scale: {x: 1.0000191, y: 1.0000099, z: 1.0000157}
+    - name: DEF-hand.L
+      parentName: DEF-forearm.L.001
+      position: {x: -0.00000006798655, y: 0.21982399, z: -0.00000011920929}
+      rotation: {x: 0.0076196776, y: -0.00012792404, z: -0.01681382, w: -0.9998296}
+      scale: {x: 1.0000312, y: 1.0000154, z: 1.0000043}
+    - name: DEF-shoulder.R
+      parentName: DEF-spine.003
+      position: {x: -0.018299913, y: 0.17908597, z: -0.07912087}
+      rotation: {x: 0.5324167, y: -0.43657163, z: 0.40794772, w: 0.59959686}
+      scale: {x: 1.0000322, y: 1.0000193, z: 1.0000807}
+    - name: DEF-upper_arm.R
+      parentName: DEF-shoulder.R
+      position: {x: -0.021408524, y: 0.4101993, z: -0.048841}
+      rotation: {x: -0.1326171, y: 0.92896974, z: 0.08488809, w: 0.3349956}
+      scale: {x: 0.99997455, y: 1.0002357, z: 0.9999059}
+    - name: DEF-upper_arm.R.001
+      parentName: DEF-upper_arm.R
+      position: {x: -0.00000010617077, y: 0.20194907, z: 0.00000009406358}
+      rotation: {x: 0.00000010803339, y: -0.00000005960463, z: -0.000000022351736, w: 1}
+      scale: {x: 1.0000335, y: 1.0000206, z: 1.0000378}
+    - name: DEF-forearm.R
+      parentName: DEF-upper_arm.R.001
+      position: {x: -0.00000009033829, y: 0.20194916, z: 0.00000006798655}
+      rotation: {x: -0.039747927, y: -0.000000507575, z: -0.00000043723264, w: 0.9992098}
+      scale: {x: 1.0000391, y: 0.99998, z: 1.0001068}
+    - name: DEF-forearm.R.001
+      parentName: DEF-forearm.R
+      position: {x: 0.00000022095628, y: 0.2198241, z: 0.00000011897646}
+      rotation: {x: -0.0000002011656, y: 0.000000055411455, z: 0.00000010659501, w: 1}
+      scale: {x: 1.0000155, y: 1.0000199, z: 1.000024}
+    - name: DEF-hand.R
+      parentName: DEF-forearm.R.001
+      position: {x: 0.00000004284084, y: 0.21982415, z: 0.00000010058284}
+      rotation: {x: -0.007619731, y: -0.00012759789, z: -0.016813844, w: 0.9998296}
+      scale: {x: 1.0000509, y: 1.0000137, z: 1.0000134}
+    - name: DEF-breast.L
+      parentName: DEF-spine.003
+      position: {x: 0.1963776, y: 0.06838753, z: -0.07800622}
+      rotation: {x: 0.00000003790609, y: -0.69758123, z: 0.71650577, w: 0.00000018727785}
+      scale: {x: 1.0000274, y: 1.0000448, z: 1.0000877}
+    - name: DEF-breast.R
+      parentName: DEF-spine.003
+      position: {x: -0.19637764, y: 0.06838752, z: -0.07800613}
+      rotation: {x: 0.00000007288973, y: -0.6975812, z: 0.7165058, w: 0.00000015321822}
+      scale: {x: 1.0000274, y: 1.0000175, z: 1.0000542}
+    - name: DEF-pelvis.L
+      parentName: DEF-spine
+      position: {x: 0.00000005810639, y: 0.000000103376806, z: -0.000000044703512}
+      rotation: {x: -0.15743336, y: -0.77113396, z: 0.35053027, w: -0.5076375}
+      scale: {x: 1.000004, y: 1.0000153, z: 1.000008}
+    - name: DEF-pelvis.R
+      parentName: DEF-spine
+      position: {x: -0.000000027432527, y: 0.00000009778887, z: -0.00000001862642}
+      rotation: {x: 0.15743351, y: -0.7711337, z: 0.35053012, w: 0.5076377}
+      scale: {x: 1.0000165, y: 1.0000161, z: 1.0000187}
+    - name: DEF-thigh.L
+      parentName: DEF-spine
+      position: {x: 0.17601256, y: 0.10380416, z: -0.02517751}
+      rotation: {x: -0.97555125, y: -0.06713642, z: -0.06573614, w: 0.19867356}
+      scale: {x: 1.0000598, y: 1.0000422, z: 1.0000159}
+    - name: DEF-thigh.L.001
+      parentName: DEF-thigh.L
+      position: {x: 0.000000030267984, y: 0.19895604, z: 0.000000055879354}
+      rotation: {x: -0, y: 0.00000008568168, z: -0.000000037252903, w: 1}
+      scale: {x: 1.0000232, y: 1.0000136, z: 1.0000044}
+    - name: DEF-shin.L
+      parentName: DEF-thigh.L.001
+      position: {x: -0.000000013038516, y: 0.19895586, z: 0.000000009313226}
+      rotation: {x: -0.33548146, y: 0.012099254, z: 0.017431337, w: 0.9418078}
+      scale: {x: 1.0000168, y: 1.0006149, z: 0.99940854}
+    - name: DEF-shin.L.001
+      parentName: DEF-shin.L
+      position: {x: 0.0000000018626451, y: 0.10349717, z: 0.00000006146729}
+      rotation: {x: -0, y: 0.00000001708375, z: -0.0000000017463435, w: 1}
+      scale: {x: 1.000015, y: 1.0000222, z: 1.000004}
+    - name: DEF-foot.L
+      parentName: DEF-shin.L.001
+      position: {x: 0.00000003958121, y: 0.10349714, z: 0.000000044703484}
+      rotation: {x: 0.37842622, y: -0.08441982, z: 0.04412333, w: 0.9207171}
+      scale: {x: 0.99981743, y: 1.000438, z: 0.99981594}
+    - name: DEF-toe.L
+      parentName: DEF-foot.L
+      position: {x: -0.000000012857299, y: 0.35331896, z: -0.000000011346856}
+      rotation: {x: 0.00008877925, y: -0.89244807, z: -0.45115003, w: 0.00006829574}
+      scale: {x: 0.99999505, y: 1.0157963, z: 0.984512}
+    - name: DEF-thigh.R
+      parentName: DEF-spine
+      position: {x: -0.17601259, y: 0.10380402, z: -0.02517744}
+      rotation: {x: -0.9755513, y: 0.067136474, z: 0.06573683, w: 0.19867346}
+      scale: {x: 1.000024, y: 1.0000143, z: 1.0000169}
+    - name: DEF-thigh.R.001
+      parentName: DEF-thigh.R
+      position: {x: 0.000000022817403, y: 0.19895598, z: 0.000000013038516}
+      rotation: {x: -0, y: -0.000000013038514, z: 0.000000014901159, w: 1}
+      scale: {x: 1.0000249, y: 1.0000207, z: 1.0000037}
+    - name: DEF-shin.R
+      parentName: DEF-thigh.R.001
+      position: {x: -0.000000011175871, y: 0.19895598, z: 0.0000000018626451}
+      rotation: {x: -0.3354778, y: -0.0120994, z: -0.017431216, w: 0.9418092}
+      scale: {x: 1.000034, y: 1.0006348, z: 0.9994135}
+    - name: DEF-shin.R.001
+      parentName: DEF-shin.R
+      position: {x: -0.000000007916242, y: 0.103497125, z: -0.0000000037252903}
+      rotation: {x: 0.00000020861623, y: 0.000000037983423, z: -0.0000000416567, w: 1}
+      scale: {x: 1.0000087, y: 1.0000098, z: 1.0000012}
+    - name: DEF-foot.R
+      parentName: DEF-shin.R.001
+      position: {x: 0.00000002142042, y: 0.1034971, z: 0.000000007450581}
+      rotation: {x: 0.37842795, y: 0.08453223, z: -0.044077497, w: 0.9207083}
+      scale: {x: 0.9998331, y: 1.000762, z: 0.9994759}
+    - name: DEF-toe.R
+      parentName: DEF-foot.R
+      position: {x: 0.0000000060285856, y: 0.35331884, z: -0.0000000017753337}
+      rotation: {x: 0.00006681867, y: -0.8924482, z: -0.45115006, w: 0.000021684915}
+      scale: {x: 0.9999806, y: 1.0159993, z: 0.98427445}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
