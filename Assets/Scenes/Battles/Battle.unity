@@ -4060,7 +4060,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &771628483
 Transform:
   m_ObjectHideFlags: 0
@@ -6206,7 +6206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1181073219
 Transform:
   m_ObjectHideFlags: 0
@@ -6491,7 +6491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1228444693
 Transform:
   m_ObjectHideFlags: 0
@@ -6758,7 +6758,7 @@ MonoBehaviour:
   RenderingMaterial: {fileID: 2100000, guid: d5ad406a233a3b842863df18c369e101, type: 2}
   ScreenSpaceSDFMaterial: {fileID: 2100000, guid: a561af45b02fc544390717d93fa0b194, type: 2}
   Spheres:
-  - {fileID: 26659514}
+  - {fileID: 1270539975}
 --- !u!4 &1278720322
 Transform:
   m_ObjectHideFlags: 0
@@ -10131,7 +10131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1914417710
 Transform:
   m_ObjectHideFlags: 0

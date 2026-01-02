@@ -36,7 +36,7 @@ public class CreepDropZone : MonoBehaviour {
         CreepManager.Active.transform);
       SacrificeTransforms.Add(sacrificeTransform);
     }
-    MatchManager.Instance.SetRequiredResources(Team.TeamType, SacrificeTransforms.Count);
+    // MatchManager.Instance.SetRequiredResources(Team.TeamType, SacrificeTransforms.Count);
   }
 
   public void OnHurt(MeleeAttackEvent attackEvent) {
@@ -73,7 +73,7 @@ public class CreepDropZone : MonoBehaviour {
         lifetime: 3);
       Consumed++;
       FramesTillConsumption = FramesPerConsumption;
-      MatchManager.Instance.DeductRequiredResource(Team.TeamType);
+      // MatchManager.Instance.DeductRequiredResource(Team.TeamType);
       // TODO: Probably want to like... do something here like play a throwing animation or whatever
       // Destroy(deadCreep.gameObject);
     } else {

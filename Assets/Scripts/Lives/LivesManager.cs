@@ -70,12 +70,4 @@ public class LivesManager : MonoBehaviour {
   void Start() {
     MatchManager.Instance.Players.ForEach((p,i) => TryStartRespawnFromPod(p.TeamType, 0, i));
   }
-
-  void FixedUpdate() {
-    foreach (var teamType in Teams) {
-      var playersAlive = Players.Count(p => OnTeam(teamType, p));
-      var podsAlive = RespawnPods.Count(p => OnTeam(teamType, p));
-      MatchManager.Instance.SetLives(teamType, playersAlive + podsAlive);
-    }
-  }
 }

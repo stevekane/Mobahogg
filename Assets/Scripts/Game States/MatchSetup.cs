@@ -14,7 +14,7 @@ public enum PotentialPlayerState {
 public class PotentialPlayer {
   public PotentialPlayerState State;
   public string Name = "Player";
-  public bool Team;
+  public TeamType TeamType;
 }
 
 public static class Names {
@@ -105,7 +105,10 @@ public class MatchSetup : MonoBehaviour {
 
   void ToggleTeam(int index) {
     var player = Players[index];
-    player.Team = !player.Team;
+    player.TeamType =
+      player.TeamType == TeamType.Turtles
+      ? TeamType.Robots
+      : TeamType.Turtles;
     PlayerGridCards[index].Render(player);
   }
 
@@ -118,7 +121,9 @@ public class MatchSetup : MonoBehaviour {
     };
     PlayerGridCards[index].Render(player);
     if (Players.TrueForAll(p => p.State == PotentialPlayerState.Ready || p.State == PotentialPlayerState.Disconnected)) {
-      MatchManager.Instance.StartMatch(Players.Where(p => p.State == PotentialPlayerState.Ready), MatchConfig);
+      MatchManager.Instance.Players = Players.Where(p => p.State == PotentialPlayerState.Ready).ToList();
+      MatchManager.Instance.MatchConfig = MatchConfig;
+      MatchManager.Instance.IsActiveMatch = true;
     }
   }
 
