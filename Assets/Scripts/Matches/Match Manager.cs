@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder((int)ExecutionGroups.Managers)]
 public class MatchManager : SingletonBehavior<MatchManager>
 {
   [Header("References")]
@@ -14,10 +15,15 @@ public class MatchManager : SingletonBehavior<MatchManager>
   public int Timer;
   public int NextBattleOffset;
 
+  public readonly EventSource OnLoadBattle = new();
+  public readonly EventSource OnUnloadBattle = new();
+  public readonly EventSource OnPreBattleStart = new();
+  public readonly EventSource OnPostBattleStart = new();
   public readonly EventSource OnBattleStart = new();
   public readonly EventSource OnBattleEnd = new();
 
   MatchState MatchState;
+  AsyncOperation LoadBattleOperation;
 
   public bool HasMatchConfig => MatchConfig != null;
 
@@ -28,8 +34,6 @@ public class MatchManager : SingletonBehavior<MatchManager>
     {
       BattleIndex = MatchConfig.StartingBattleIndex
     };
-    NextBattleOffset = 0;
-    Timer = 0;
     LoadBattle(MatchState.BattleIndex);
   }
 
@@ -42,19 +46,11 @@ public class MatchManager : SingletonBehavior<MatchManager>
 
   void LoadBattle(int battleIndex)
   {
-    var battleSceneName = MatchConfig.SceneName(battleIndex);
-    var battleLoad = SceneManager.LoadSceneAsync(battleSceneName);
-    battleLoad.completed += OnBattleLoad;
+    var loadingBattleScene = SceneManager.GetSceneByName(MatchConfig.SceneName(battleIndex));
+    LoadBattleOperation = SceneManager.LoadSceneAsync(loadingBattleScene.name);
     MatchState.BattleState = BattleState.LoadBattle;
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(false);
-  }
-
-  void OnBattleLoad(AsyncOperation battleLoad)
-  {
-    Debug.Assert(MatchState.BattleState == BattleState.LoadBattle, "OnBattleLoad invoked when not in load battle state");
-    battleLoad.completed -= OnBattleLoad;
-    StartPreBattle();
   }
 
   void StartPreBattle()
@@ -63,6 +59,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
     Timer = MatchConfig.PreBattleDuration.Ticks;
     PreBattleOverlay.gameObject.SetActive(true);
     PostBattleOverlay.gameObject.SetActive(false);
+    OnPreBattleStart.Fire();
   }
 
   void StartActiveBattle()
@@ -75,15 +72,15 @@ public class MatchManager : SingletonBehavior<MatchManager>
 
   void StartPostBattle()
   {
-    MatchState.BattleState = BattleState.PreBattle;
-    Timer = MatchConfig.PreBattleDuration.Ticks;
+    MatchState.BattleState = BattleState.PostBattle;
+    Timer = MatchConfig.PostBattleDuration.Ticks;
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(true);
+    OnPostBattleStart.Fire();
   }
 
   void EndMatch()
   {
-    Debug.Log("Match is over");
     MatchState.BattleState = BattleState.NoBattle;
     MatchState.Complete = true;
     PreBattleOverlay.gameObject.SetActive(false);
@@ -95,7 +92,14 @@ public class MatchManager : SingletonBehavior<MatchManager>
     if (MatchState == null)
       return;
 
-    if (MatchState.BattleState == BattleState.PreBattle)
+    if (MatchState.BattleState == BattleState.LoadBattle)
+    {
+      if (LoadBattleOperation.isDone)
+      {
+        StartPreBattle();
+      }
+    }
+    else if (MatchState.BattleState == BattleState.PreBattle)
     {
       if (Timer <= 0)
       {
@@ -104,7 +108,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
       else
       {
         Timer--;
-        PreBattleOverlay.SetCountdown((float)Timer/60);
+        PreBattleOverlay.SetCountdown((float)Timer / 60);
       }
     }
     else if (MatchState.BattleState == BattleState.PostBattle)

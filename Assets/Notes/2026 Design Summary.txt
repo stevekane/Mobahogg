@@ -1,0 +1,5 @@
+Match Manager
+
+A match is a series of battles. Each battle ends with an outcome: Tie or team victory.
+A match may currently be playing a core battle or it may be playing a side battle.
+side battles 

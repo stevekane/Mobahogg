@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1000000)]
 public class Battle : MonoBehaviour
@@ -18,8 +17,9 @@ public class Battle : MonoBehaviour
   {
     if (!MatchManager.Instance.HasMatchConfig)
     {
+      Debug.Log("Started a match because match manager has no config");
       var matchConfig = ScriptableObject.CreateInstance<MatchConfig>();
-      matchConfig.BattleSceneNames = new string[1] { SceneManager.GetActiveScene().name };
+      matchConfig.BattleSceneNames = new string[1] { gameObject.scene.name };
       matchConfig.ForceReloadScene = false;
       matchConfig.RepeatMatch = true;
       matchConfig.StartingBattleIndex = 0;

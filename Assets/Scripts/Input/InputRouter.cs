@@ -13,7 +13,7 @@ public enum ButtonState {
   JustUp
 }
 
-public struct PortValue {
+public readonly struct PortValue {
   public readonly string ActionName;
   public readonly int PortIndex;
   public readonly Vector2 Value;
@@ -24,7 +24,7 @@ public struct PortValue {
   }
 }
 
-public struct PortButtonState {
+public readonly struct PortButtonState {
   public readonly string ActionName;
   public readonly int PortIndex;
   public readonly ButtonState ButtonState;

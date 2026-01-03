@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 class TugOfWarGameMode : MonoBehaviour
@@ -5,20 +6,46 @@ class TugOfWarGameMode : MonoBehaviour
   [SerializeField] Mouth TurtleMouth;
   [SerializeField] Mouth RobotMouth;
 
-  void Start()
+  void Awake()
   {
     MatchManager.Instance.OnBattleStart.Listen(OnBattleStart);
+    MatchManager.Instance.OnPreBattleStart.Listen(OnPreBattleStart);
+    MatchManager.Instance.OnPostBattleStart.Listen(OnPostBattleStart);
   }
 
   void OnDestroy()
   {
     MatchManager.Instance.OnBattleStart.Unlisten(OnBattleStart);
+    MatchManager.Instance.OnPreBattleStart.Unlisten(OnPreBattleStart);
+    MatchManager.Instance.OnPostBattleStart.Unlisten(OnPostBattleStart);
+  }
+
+  public Timeval Duration = Timeval.FromSeconds(3);
+  IEnumerator DelayedEnding()
+  {
+    yield return new WaitForSeconds(Duration.Seconds);
+    MatchManager.Instance.EndBattle(0);
+  }
+
+  void OnPreBattleStart()
+  {
+    TurtleMouth.gameObject.SetActive(false);
+    RobotMouth.gameObject.SetActive(false);
+  }
+
+  void OnPostBattleStart()
+  {
+    TurtleMouth.gameObject.SetActive(false);
+    RobotMouth.gameObject.SetActive(false);
   }
 
   void OnBattleStart()
   {
     MatchManager.Instance.Players.ForEach(SpawnManager.Active.Spawn);
+    TurtleMouth.gameObject.SetActive(true);
+    RobotMouth.gameObject.SetActive(true);
     TurtleMouth.Activate();
     RobotMouth.Activate();
+    StartCoroutine(DelayedEnding());
   }
 }
