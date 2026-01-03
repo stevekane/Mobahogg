@@ -47,7 +47,7 @@ public class LightPowerActive : UniTaskAbility, IHeld {
         SpellStaff.EmissionPoint.position,
         Quaternion.LookRotation(SpellStaff.EmissionPoint.forward, SpellStaff.EmissionPoint.up),
         SpellStaff.EmissionPoint);
-    } catch (Exception e) {
+    } catch {
       Animator.SetTrigger("Stop Hold");
     }
   }

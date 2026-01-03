@@ -102,7 +102,7 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
         }
         SpellAffected.MultiplySpeed(0);
       });
-    } catch (Exception e) {
+    } catch {
       foreach (var notify in Settings.ActiveAnimationMontage.Notifies) {
         // Cleanup running notifies... is this really the same as "end"? maybe should be own thing?
         if (Frame >= notify.StartFrame && Frame <= notify.EndFrame) {

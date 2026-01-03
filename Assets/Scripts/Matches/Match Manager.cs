@@ -15,8 +15,6 @@ public class MatchManager : SingletonBehavior<MatchManager>
   public int Timer;
   public int NextBattleOffset;
 
-  public readonly EventSource OnLoadBattle = new();
-  public readonly EventSource OnUnloadBattle = new();
   public readonly EventSource OnPreBattleStart = new();
   public readonly EventSource OnPostBattleStart = new();
   public readonly EventSource OnBattleStart = new();

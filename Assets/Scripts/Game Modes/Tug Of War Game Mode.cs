@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 class TugOfWarGameMode : MonoBehaviour
@@ -20,13 +19,6 @@ class TugOfWarGameMode : MonoBehaviour
     MatchManager.Instance.OnPostBattleStart.Unlisten(OnPostBattleStart);
   }
 
-  public Timeval Duration = Timeval.FromSeconds(3);
-  IEnumerator DelayedEnding()
-  {
-    yield return new WaitForSeconds(Duration.Seconds);
-    MatchManager.Instance.EndBattle(0);
-  }
-
   void OnPreBattleStart()
   {
     TurtleMouth.gameObject.SetActive(false);
@@ -46,6 +38,5 @@ class TugOfWarGameMode : MonoBehaviour
     RobotMouth.gameObject.SetActive(true);
     TurtleMouth.Activate();
     RobotMouth.Activate();
-    StartCoroutine(DelayedEnding());
   }
 }

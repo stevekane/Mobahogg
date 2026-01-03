@@ -6,7 +6,13 @@ using Unity.Collections;
 
 namespace Animation {
   public class TwistChain : MonoBehaviour {
-    [SerializeField, Range(0,1)] float Weight = 1;
+    // 0414 is warning for unused variable
+    // accessed via reflection in FloatProperty.Bind
+    #pragma warning disable 0414
+    [SerializeField, Range(0,1)]
+    float Weight = 1;
+    #pragma warning restore 0414
+
     [SerializeField] Transform Root;
     [SerializeField] Transform Tip;
     [SerializeField] Transform RootEffector;
