@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1000000)]
-public class Battle : MonoBehaviour {
+public class Battle : MonoBehaviour
+{
   public Timeval PreBattleDuration = Timeval.FromSeconds(3);
   public Timeval PostBattleDuration = Timeval.FromSeconds(3);
   public List<PotentialPlayer> Players = new() {
@@ -13,8 +14,10 @@ public class Battle : MonoBehaviour {
     new() { Name = "Connie", TeamType = TeamType.Robots, State = PotentialPlayerState.Ready }
    };
 
-void Start() {
-    if (!MatchManager.Instance.IsActiveMatch) {
+  void Start()
+  {
+    if (!MatchManager.Instance.HasMatchConfig)
+    {
       var matchConfig = ScriptableObject.CreateInstance<MatchConfig>();
       matchConfig.BattleSceneNames = new string[1] { SceneManager.GetActiveScene().name };
       matchConfig.ForceReloadScene = false;
@@ -24,7 +27,7 @@ void Start() {
       matchConfig.PostBattleDuration = PostBattleDuration;
       MatchManager.Instance.Players = Players;
       MatchManager.Instance.MatchConfig = matchConfig;
-      MatchManager.Instance.IsActiveMatch = true;
+      MatchManager.Instance.StartMatch();
     }
   }
 }

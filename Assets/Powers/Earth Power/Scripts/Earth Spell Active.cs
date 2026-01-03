@@ -51,7 +51,7 @@ public class EarthSpellActive : UniTaskAbility, IAimed {
     CameraManager.Instance.Shake(Settings.ActiveCameraShakeIntensity);
     Vibrator.StartVibrate(Vector3.up, Settings.ActiveSlamHitStop.Ticks, 0.125f, 20);
     HitStop.FramesRemaining = Settings.ActiveSlamHitStop.Ticks;
-    foreach (var player in LivesManager.Active.Players) {
+    foreach (var player in SpawnManager.Active.Players) {
       var delta = player.transform.position - AbilityManager.transform.position;
       if (delta.magnitude < Settings.ActiveKnockbackRadius && player.gameObject != AbilityManager.gameObject) {
         var direction = delta.XZ().normalized;

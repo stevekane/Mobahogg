@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
   public int PortIndex;
 
-  public Player Player => LivesManager.Active.Players.FirstOrDefault(p => p.PortIndex == PortIndex);
+  public Player Player => SpawnManager.Active.Players.FirstOrDefault(p => p.PortIndex == PortIndex);
 
   void FixedUpdate() {
     var player = Player;

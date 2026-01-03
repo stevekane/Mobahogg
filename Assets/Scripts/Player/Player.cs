@@ -147,11 +147,7 @@ public class Player : MonoBehaviour {
     });
   }
 
-  void Start() {
-    LivesManager.Active.AddPlayer(this);
-  }
+  void Start() => SpawnManager.Active.Add(this);
 
-  void OnDestroy() {
-    LivesManager.Active.RemovePlayer(this);
-  }
+  void OnDestroy() => SpawnManager.Active.Remove(this);
 }

@@ -123,7 +123,6 @@ public class MatchSetup : MonoBehaviour {
     if (Players.TrueForAll(p => p.State == PotentialPlayerState.Ready || p.State == PotentialPlayerState.Disconnected)) {
       MatchManager.Instance.Players = Players.Where(p => p.State == PotentialPlayerState.Ready).ToList();
       MatchManager.Instance.MatchConfig = MatchConfig;
-      MatchManager.Instance.IsActiveMatch = true;
     }
   }
 
