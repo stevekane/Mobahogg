@@ -67,7 +67,12 @@ public class Mouth : MonoBehaviour
     TongueHealth -= 1;
   }
 
-  IEnumerator Start() {
+  public void Activate()
+  {
+    StartCoroutine(CloseBehavior());
+  }
+
+  IEnumerator CloseBehavior() {
     yield return MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, 1);
     StartCoroutine(ClosedBehavior());
   }

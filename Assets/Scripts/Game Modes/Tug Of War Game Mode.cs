@@ -2,6 +2,9 @@ using UnityEngine;
 
 class TugOfWarGameMode : MonoBehaviour
 {
+  [SerializeField] Mouth TurtleMouth;
+  [SerializeField] Mouth RobotMouth;
+
   void Start()
   {
     MatchManager.Instance.OnBattleStart.Listen(OnBattleStart);
@@ -15,5 +18,7 @@ class TugOfWarGameMode : MonoBehaviour
   void OnBattleStart()
   {
     MatchManager.Instance.Players.ForEach(SpawnManager.Active.Spawn);
+    TurtleMouth.Activate();
+    RobotMouth.Activate();
   }
 }
