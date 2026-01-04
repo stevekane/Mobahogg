@@ -205,6 +205,9 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   Inputs Inputs;
   InputPort[] InputPorts = new InputPort[MAX_PORT_COUNT];
 
+  [Header("Settings")]
+  public InputSettings Settings;
+
   [Header("Debug")]
   [SerializeField] bool ShowDebug;
 
@@ -290,7 +293,8 @@ public class InputRouter : SingletonBehavior<InputRouter> {
   void RegisterDevice(InputDevice device) {
     for (var i = 0; i < MAX_PORT_COUNT; i++) {
       if (!DeviceToPortMap.Values.Contains(i)) {
-        Debug.Log($"Device Registered: {device.displayName}");
+        if (ShowDebug)
+          Debug.Log($"Device Registered: {device.displayName}");
         DeviceToPortMap.Add(device, i);
         DeviceConnected.Fire(i);
         break;
@@ -302,7 +306,8 @@ public class InputRouter : SingletonBehavior<InputRouter> {
     if (DeviceToPortMap.TryGetValue(device, out int port)) {
       DeviceToPortMap.Remove(device);
       DeviceDisconnected.Fire(port);
-      Debug.Log($"Device Unregistered: {device.displayName}");
+      if (ShowDebug)
+        Debug.Log($"Device Unregistered: {device.displayName}");
     } else {
       Debug.LogError($"Unrecognized device Unregistered: {device.displayName}");
     }

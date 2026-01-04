@@ -15,13 +15,11 @@ public class Battle : MonoBehaviour
 
   void Start()
   {
-    if (!MatchManager.Instance.HasMatchConfig)
+    if (MatchManager.Instance.MatchConfig == null)
     {
       Debug.Log("Started a match because match manager has no config");
       var matchConfig = ScriptableObject.CreateInstance<MatchConfig>();
       matchConfig.BattleSceneNames = new string[1] { gameObject.scene.name };
-      matchConfig.ForceReloadScene = false;
-      matchConfig.RepeatMatch = true;
       matchConfig.StartingBattleIndex = 0;
       matchConfig.PreBattleDuration = PreBattleDuration;
       matchConfig.PostBattleDuration = PostBattleDuration;

@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
     var player = Player;
     if (!player)
       return;
-    var frameBufferDuration = SettingsManager.Instance.InputSettings.InputBufferFrameWindow;
+    var frameBufferDuration = InputRouter.Instance.Settings.InputBufferFrameWindow;
     var jumpJustDown = InputRouter.Instance.JustDownWithin("Jump", PortIndex, frameBufferDuration);
     var attackJustDown = InputRouter.Instance.JustDownWithin("Attack", PortIndex, frameBufferDuration);
     var dashJustDown = InputRouter.Instance.JustDownWithin("Dash", PortIndex, frameBufferDuration);

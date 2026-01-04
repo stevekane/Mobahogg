@@ -6,9 +6,16 @@ using UnityEngine.SceneManagement;
 public class MatchManager : SingletonBehavior<MatchManager>
 {
   [Header("References")]
+  [SerializeField] LoadBattleOverlay LoadBattleOverlay;
   [SerializeField] PreBattleOverlay PreBattleOverlay;
   [SerializeField] PostBattleOverlay PostBattleOverlay;
-  [SerializeField] MatchSettings MatchSettings;
+
+  string WinnerText(int nextBattleIndex) => nextBattleIndex switch
+  {
+    > 0 => "Turtles Win",
+    < 0 => "Robots Win",
+    _ => "Tie"
+  };
 
   public MatchConfig MatchConfig;
   public List<PotentialPlayer> Players;
@@ -23,15 +30,15 @@ public class MatchManager : SingletonBehavior<MatchManager>
   MatchState MatchState;
   AsyncOperation LoadBattleOperation;
 
-  public bool HasMatchConfig => MatchConfig != null;
-
   public void StartMatch()
   {
-    Debug.Assert(HasMatchConfig, "Must have active Match Config");
+    Debug.Assert(MatchConfig != null, "Must have active Match Config");
     MatchState = new()
     {
       BattleIndex = MatchConfig.StartingBattleIndex
     };
+    Timer = 0;
+    NextBattleOffset = 0;
     LoadBattle(MatchState.BattleIndex);
   }
 
@@ -47,6 +54,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
     var loadingBattleScene = SceneManager.GetSceneByName(MatchConfig.SceneName(battleIndex));
     LoadBattleOperation = SceneManager.LoadSceneAsync(loadingBattleScene.name);
     MatchState.BattleState = BattleState.LoadBattle;
+    LoadBattleOverlay.gameObject.SetActive(true);
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(false);
   }
@@ -55,7 +63,10 @@ public class MatchManager : SingletonBehavior<MatchManager>
   {
     MatchState.BattleState = BattleState.PreBattle;
     Timer = MatchConfig.PreBattleDuration.Ticks;
+    LoadBattleOverlay.gameObject.SetActive(false);
     PreBattleOverlay.gameObject.SetActive(true);
+    PreBattleOverlay.SetBattleIndex(MatchState.BattleIndex, MatchConfig.BattleCount);
+    PreBattleOverlay.SetName(MatchConfig.SceneName(MatchState.BattleIndex));
     PostBattleOverlay.gameObject.SetActive(false);
     OnPreBattleStart.Fire();
   }
@@ -63,6 +74,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
   void StartActiveBattle()
   {
     MatchState.BattleState = BattleState.ActiveBattle;
+    LoadBattleOverlay.gameObject.SetActive(false);
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(false);
     OnBattleStart.Fire();
@@ -72,8 +84,10 @@ public class MatchManager : SingletonBehavior<MatchManager>
   {
     MatchState.BattleState = BattleState.PostBattle;
     Timer = MatchConfig.PostBattleDuration.Ticks;
+    LoadBattleOverlay.gameObject.SetActive(false);
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(true);
+    PostBattleOverlay.SetWinner(WinnerText(NextBattleOffset));
     OnPostBattleStart.Fire();
   }
 
@@ -81,6 +95,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
   {
     MatchState.BattleState = BattleState.NoBattle;
     MatchState.Complete = true;
+    LoadBattleOverlay.gameObject.SetActive(false);
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(false);
   }
@@ -92,6 +107,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
 
     if (MatchState.BattleState == BattleState.LoadBattle)
     {
+      LoadBattleOverlay.SetCompletionFraction(LoadBattleOperation.progress);
       if (LoadBattleOperation.isDone)
       {
         StartPreBattle();
@@ -120,7 +136,10 @@ public class MatchManager : SingletonBehavior<MatchManager>
         }
         else
         {
-          EndMatch();
+          // Eventually there should be proper end match handling
+          // For now, we just start it again
+          // EndMatch();
+          StartMatch();
         }
       }
       else

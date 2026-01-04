@@ -5,6 +5,12 @@ class TugOfWarGameMode : MonoBehaviour
   [SerializeField] Mouth TurtleMouth;
   [SerializeField] Mouth RobotMouth;
 
+  [ContextMenu("End")]
+  void End()
+  {
+    MatchManager.Instance.EndBattle(Random.Range(-1, 1));
+  }
+
   void Awake()
   {
     MatchManager.Instance.OnBattleStart.Listen(OnBattleStart);
