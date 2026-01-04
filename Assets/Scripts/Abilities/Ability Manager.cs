@@ -15,7 +15,7 @@ namespace Abilities {
     public EventSource<Ability> OnRegisterAbility = new();
     public EventSource<Ability> OnUnregisterAbility = new();
 
-    void Start() {
+    void Awake() {
       AbilityContainer.GetComponentsInChildren<Ability>().ForEach(Register);
     }
 

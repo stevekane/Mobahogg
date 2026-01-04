@@ -8,12 +8,13 @@ public class DiveRollAbility : Ability, IAimed, ISteered {
   [SerializeField] float RootMotionMultiplier = 2;
   [SerializeField] float TurnSpeed = 180;
   [Header("Writes To")]
-  [SerializeField] SpellAffected SpellAffected;
 
   int Frame;
+  SpellAffected SpellAffected;
 
   void Start() {
     Frame = FrameDuration;
+    SpellAffected = AbilityManager.LocateComponent<SpellAffected>();
     AnimatorCallbackHandler.OnRootMotion.Listen(OnAnimatorMove);
   }
 

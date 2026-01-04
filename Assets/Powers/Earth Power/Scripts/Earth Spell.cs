@@ -49,8 +49,8 @@ public class EarthSpell : MonoBehaviour {
     Rocks.ForEach(r => SpawnSpike(r.transform.position, r.transform.rotation, right));
     Rocks.ForEach(Destroy);
     CameraManager.Instance.Shake(Settings.CameraShakeIntensity);
-    if (LivesManager.Active) {
-      foreach (var player in LivesManager.Active.Players) {
+    if (SpawnManager.Active) {
+      foreach (var player in SpawnManager.Active.Players) {
         var distance = PhysicsUtils.DistanceFromLine(start.XZ(), end.XZ(), player.transform.position.XZ());
         if (distance <= Settings.MaxDamageDistance && player.TryGetComponent(out SpellAffected spellAffected)) {
           spellAffected.ChangeHealth(Settings.HealthDelta);

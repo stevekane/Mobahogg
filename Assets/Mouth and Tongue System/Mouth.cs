@@ -14,19 +14,16 @@ public class Mouth : MonoBehaviour
   public Sphere Sphere;
   public Tongue Tongue;
   public Claw Claw;
-  public TongueHealthMeter TongueHealthMeter;
 
   [Header("Mouth Behavior")]
-  public Vector3 ClosedLocalMouthPosition = new Vector3(0, 0, -5);
-  public Vector3 OpenLocalMouthPosition = new Vector3(0, 0, 0);
   public float ClosedLocalXRotation = 45;
   public float OpenLocalXRotation = 0;
+  public float PullingStrength = 1;
   public Timeval ClosedDuration = Timeval.FromSeconds(5);
   public Timeval OpenDuration = Timeval.FromSeconds(0.5f);
   public Timeval OpeningDuration = Timeval.FromSeconds(0.5f);
   public Timeval ClosingDuration = Timeval.FromSeconds(0.1f);
   public Timeval FireTravelDuration = Timeval.FromTicks(3);
-  public float PullingStrength = 1;
 
   [Header("Claw Impact")]
   public float ClawImpactCameraShakeIntensity = 10;
@@ -38,16 +35,16 @@ public class Mouth : MonoBehaviour
   public EasingFunctions.EasingFunctionName ClawImpactEasingFunctionName;
 
   [Header("Tongue Strike")]
-  public float TongueStrikeVibrationAmplitude = 1;
   public int TongueMaxHealth = 3;
-  public Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
+  public float TongueStrikeVibrationAmplitude = 1;
   public float TongueStrikeImpulseDistance = 1;
+  public Timeval TongueStrikeFlashDuration = Timeval.FromSeconds(0.25f);
   public EasingFunctions.EasingFunctionName TongueStrikeImpulseEasingFunction = EasingFunctions.EasingFunctionName.EaseOutCubic;
 
   [Header("Tongue Healing")]
   int TongueHealth = 3;
-  public Timeval TongueDeathDuration = Timeval.FromSeconds(0.2f);
   public float TongueDeathCameraShakeIntensity = 25;
+  public Timeval TongueDeathDuration = Timeval.FromSeconds(0.2f);
   public Timeval TimeSinceLastDamageBeforeHealing = Timeval.FromSeconds(2);
   public Timeval HealTickPeriod = Timeval.FromSeconds(0.5f);
 
@@ -68,41 +65,44 @@ public class Mouth : MonoBehaviour
         ticks: TongueStrikeFlashDuration.Ticks,
         easingFunctionName: TongueStrikeImpulseEasingFunction));
     TongueHealth -= 1;
-    TongueHealthMeter.SetHealth(TongueHealth);
   }
 
-  IEnumerator Start() {
+  public void Activate()
+  {
+    StartCoroutine(CloseBehavior());
+  }
+
+  IEnumerator CloseBehavior() {
     yield return MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, 1);
-    yield return ClosedBehavior();
+    StartCoroutine(ClosedBehavior());
   }
 
   IEnumerator ClosedBehavior()
   {
     yield return CoroutineDelay.WaitFixed(ClosedDuration);
-    yield return OpeningBehavior();
+    StartCoroutine(OpeningBehavior());
   }
 
   IEnumerator OpenBehavior()
   {
     yield return CoroutineDelay.WaitFixed(OpenDuration);
-    yield return FiringBehavior();
+    StartCoroutine(FiringBehavior());
   }
 
   IEnumerator OpeningBehavior()
   {
     TongueHealth = TongueMaxHealth;
-    TongueHealthMeter.SetHealth(TongueHealth);
     Tongue.gameObject.SetActive(true);
     Claw.transform.position = transform.position;
     Claw.gameObject.SetActive(true);
     yield return MouthModel.transform.SlerpLocalEulerX(OpenLocalXRotation, OpeningDuration.Ticks);
-    yield return OpenBehavior();
+    StartCoroutine(OpenBehavior());
   }
 
   IEnumerator ClosingBehavior()
   {
     yield return MouthModel.transform.SlerpLocalEulerX(ClosedLocalXRotation, ClosingDuration.Ticks);
-    yield return ClosedBehavior();
+    StartCoroutine(ClosedBehavior());
   }
 
   IEnumerator FiringBehavior() {
@@ -114,9 +114,7 @@ public class Mouth : MonoBehaviour
       Claw.transform.position = Vector3.Lerp(initialPosition, targetPosition, interpolant);
       yield return new WaitForFixedUpdate();
     }
-    // Claw.transform.SetParent(Sphere.transform, worldPositionStays: true);
     Claw.transform.SetParent(Sphere.transform, worldPositionStays: true);
-    // Move the sphere
     var sphereImpulse = new SphereImpulse(
       transform.forward,
       ClawImpactImpulseDistance,
@@ -146,7 +144,7 @@ public class Mouth : MonoBehaviour
         20);
       mouth.Tongue.Vibrate(ClawImpactTongueVibrationIntensity);
     }
-    yield return PullingBehavior();
+    StartCoroutine(PullingBehavior());
   }
 
   IEnumerator PullingBehavior() {
@@ -176,7 +174,7 @@ public class Mouth : MonoBehaviour
       Claw.GetComponent<Flash>().TurnOff();
     }
     yield return this.FirstCoroutine(Pull(), TongueDied());
-    yield return ClosingBehavior();
+    StartCoroutine(ClosingBehavior());
   }
 
   // TODO: Sketchy. This is largely visual but also has gameplay effects including

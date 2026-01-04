@@ -30,6 +30,7 @@ public class HookshotStateMachine : MonoBehaviour
       State.Retracting => UpdateRetracting,
       State.Pulling => UpdatePulling,
       State.Recovering => UpdateRecovering,
+      _ => throw new Exception("unhandled state")
     };
     update();
   }

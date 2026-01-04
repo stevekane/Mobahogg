@@ -47,7 +47,7 @@ public class LightPowerActive : UniTaskAbility, IHeld {
         SpellStaff.EmissionPoint.position,
         Quaternion.LookRotation(SpellStaff.EmissionPoint.forward, SpellStaff.EmissionPoint.up),
         SpellStaff.EmissionPoint);
-    } catch (Exception e) {
+    } catch {
       Animator.SetTrigger("Stop Hold");
     }
   }
@@ -55,9 +55,9 @@ public class LightPowerActive : UniTaskAbility, IHeld {
   async UniTask RunHealing(CancellationToken token) {
     try {
       PlayerToBeamMap.Clear();
-      LivesManager.Active.Players.ForEach(AddBeamForTeamate);
-      LivesManager.Active.OnAdd.Listen(AddBeamForTeamate);
-      LivesManager.Active.OnRemove.Listen(RemoveBeamForTeamate);
+      SpawnManager.Active.Players.ForEach(AddBeamForTeamate);
+      SpawnManager.Active.OnAddPlayer.Listen(AddBeamForTeamate);
+      SpawnManager.Active.OnRemovePlayer.Listen(RemoveBeamForTeamate);
       while (true) {
         foreach (var player in PlayerToBeamMap.Keys) {
           player.GetComponent<SpellAffected>().ChangeHealth(Settings.ActiveProcHealthChange);
@@ -65,8 +65,8 @@ public class LightPowerActive : UniTaskAbility, IHeld {
         await Tasks.Delay(Settings.ActiveProcCooldown.Ticks, LocalClock, token);
       }
     } finally {
-      LivesManager.Active.OnAdd.Unlisten(AddBeamForTeamate);
-      LivesManager.Active.OnRemove.Unlisten(RemoveBeamForTeamate);
+      SpawnManager.Active.OnAddPlayer.Unlisten(AddBeamForTeamate);
+      SpawnManager.Active.OnRemovePlayer.Unlisten(RemoveBeamForTeamate);
       foreach (var beamInstance in PlayerToBeamMap.Values) {
         beamInstance.Destroy();
       }

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-1000000)]
-public class Battle : MonoBehaviour {
+public class Battle : MonoBehaviour
+{
   public Timeval PreBattleDuration = Timeval.FromSeconds(3);
   public Timeval PostBattleDuration = Timeval.FromSeconds(3);
   public List<PotentialPlayer> Players = new() {
@@ -13,10 +13,13 @@ public class Battle : MonoBehaviour {
     new() { Name = "Connie", TeamType = TeamType.Robots, State = PotentialPlayerState.Ready }
    };
 
-void Start() {
-    if (!MatchManager.Instance.IsActiveMatch) {
+  void Start()
+  {
+    if (!MatchManager.Instance.HasMatchConfig)
+    {
+      Debug.Log("Started a match because match manager has no config");
       var matchConfig = ScriptableObject.CreateInstance<MatchConfig>();
-      matchConfig.BattleSceneNames = new string[1] { SceneManager.GetActiveScene().name };
+      matchConfig.BattleSceneNames = new string[1] { gameObject.scene.name };
       matchConfig.ForceReloadScene = false;
       matchConfig.RepeatMatch = true;
       matchConfig.StartingBattleIndex = 0;
@@ -24,7 +27,7 @@ void Start() {
       matchConfig.PostBattleDuration = PostBattleDuration;
       MatchManager.Instance.Players = Players;
       MatchManager.Instance.MatchConfig = matchConfig;
-      MatchManager.Instance.IsActiveMatch = true;
+      MatchManager.Instance.StartMatch();
     }
   }
 }
