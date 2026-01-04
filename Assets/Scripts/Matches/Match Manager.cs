@@ -9,6 +9,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
   [SerializeField] LoadBattleOverlay LoadBattleOverlay;
   [SerializeField] PreBattleOverlay PreBattleOverlay;
   [SerializeField] PostBattleOverlay PostBattleOverlay;
+  [SerializeField] Timeval PostLoadDelay = Timeval.FromSeconds(1);
 
   string WinnerText(int nextBattleIndex) => nextBattleIndex switch
   {
@@ -33,10 +34,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
   public void StartMatch()
   {
     Debug.Assert(MatchConfig != null, "Must have active Match Config");
-    MatchState = new()
-    {
-      BattleIndex = MatchConfig.StartingBattleIndex
-    };
+    MatchState = new(MatchConfig);
     Timer = 0;
     NextBattleOffset = 0;
     LoadBattle(MatchState.BattleIndex);
@@ -57,6 +55,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
     LoadBattleOverlay.gameObject.SetActive(true);
     PreBattleOverlay.gameObject.SetActive(false);
     PostBattleOverlay.gameObject.SetActive(false);
+    Timer = PostLoadDelay.Ticks;
   }
 
   void StartPreBattle()
@@ -108,9 +107,15 @@ public class MatchManager : SingletonBehavior<MatchManager>
     if (MatchState.BattleState == BattleState.LoadBattle)
     {
       LoadBattleOverlay.SetCompletionFraction(LoadBattleOperation.progress);
-      if (LoadBattleOperation.isDone)
+      if (LoadBattleOperation.isDone && LoadBattleOperation.progress == 1)
       {
-        StartPreBattle();
+        if (Timer <= 0)
+        {
+          StartPreBattle();
+        } else
+        {
+          Timer--;
+        }
       }
     }
     else if (MatchState.BattleState == BattleState.PreBattle)
@@ -164,4 +169,10 @@ class MatchState
   public bool Complete;
   public int BattleIndex;
   public BattleState BattleState;
+  public MatchState(MatchConfig config)
+  {
+    BattleIndex = config.StartingBattleIndex;
+    Complete = default;
+    BattleState = default;
+  }
 }
