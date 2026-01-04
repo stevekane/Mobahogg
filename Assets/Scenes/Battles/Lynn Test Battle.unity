@@ -4476,6 +4476,19 @@ MonoBehaviour:
     Millis: 0
   PostBattleDuration:
     Millis: 3000
+  Players:
+  - State: 3
+    Name: Alice
+    TeamType: 0
+  - State: 3
+    Name: Bob
+    TeamType: 0
+  - State: 3
+    Name: Jim
+    TeamType: 1
+  - State: 3
+    Name: Connie
+    TeamType: 1
 --- !u!1001 &855020085
 PrefabInstance:
   m_ObjectHideFlags: 0
