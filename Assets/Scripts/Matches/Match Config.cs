@@ -4,8 +4,8 @@ using UnityEngine;
 public class MatchConfig : ScriptableObject {
   public Timeval PreBattleDuration = Timeval.FromSeconds(3);
   public Timeval PostBattleDuration = Timeval.FromSeconds(3);
-  public string[] BattleSceneNames;
+  public SceneReference[] SceneReferences;
   public int StartingBattleIndex = 0;
-  public int BattleCount => BattleSceneNames.Length;
-  public string SceneName(int i) => BattleSceneNames[i];
+  public int BattleCount => SceneReferences.Length;
+  public string SceneName(int i) => SceneReferences[i].SceneName;
 }

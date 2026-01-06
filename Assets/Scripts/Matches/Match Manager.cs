@@ -31,7 +31,7 @@ public class MatchManager : SingletonBehavior<MatchManager>
   MatchState MatchState;
   AsyncOperation LoadBattleOperation;
 
-  void Awake()
+  void Start()
   {
     LoadBattleOverlay.gameObject.SetActive(false);
     PreBattleOverlay.gameObject.SetActive(false);
@@ -40,7 +40,6 @@ public class MatchManager : SingletonBehavior<MatchManager>
 
   public void StartMatch()
   {
-    Debug.Assert(MatchConfig != null, "Must have active Match Config");
     MatchState = new(MatchConfig);
     Timer = 0;
     NextBattleOffset = 0;

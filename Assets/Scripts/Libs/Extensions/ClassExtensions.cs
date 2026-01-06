@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
+using System.Data.Common;
+
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 #endif
@@ -327,6 +329,15 @@ public static class ArrayLikeExtensions {
   public static int IndexOf<T>(this T[] xs, T t) {
     for (int i = 0; i < xs.Length; i++) {
       if (ReferenceEquals(xs[i],t)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public static int IndexOf<T>(this T[] xs, Predicate<T> pred) {
+    for (int i = 0; i < xs.Length; i++) {
+      if (pred(xs[i])) {
         return i;
       }
     }

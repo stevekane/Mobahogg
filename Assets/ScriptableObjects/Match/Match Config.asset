@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89326a656a411bb48b55b6d128488fbe, type: 3}
-  m_Name: TESTING MATCH CONFIG
+  m_Name: Match Config
   m_EditorClassIdentifier: 
-  ForceReloadScene: 0
-  RepeatMatch: 1
-  StartingBattleIndex: 0
   PreBattleDuration:
     Millis: 3000
   PostBattleDuration:
     Millis: 3000
-  BattleSceneNames:
-  - Battle
-  - Battle
-  - Battle
+  SceneReferences:
+  - {fileID: 11400000, guid: cebcf7794aa359746b47ab0cdd1815a1, type: 2}
+  - {fileID: 11400000, guid: 613b051e3878cd744ad57dee4609d112, type: 2}
+  - {fileID: 11400000, guid: 2efe459a4612da44d8f28e05285b6b37, type: 2}
+  - {fileID: 11400000, guid: d45c34c69d83dee44832d2ca99ce83e4, type: 2}
+  - {fileID: 11400000, guid: 35192457ada56384ca7af10be3441ff0, type: 2}
+  StartingBattleIndex: 0
