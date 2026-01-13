@@ -1,11 +1,12 @@
 using KinematicCharacterController;
 using UnityEngine;
 
+[RequireComponent(typeof(PhysicsMover))]
 public class RotatingPlatform : MonoBehaviour, IMoverController {
   [SerializeField] LocalClock LocalClock;
   [SerializeField] float DegreesPerSecond = 30f;
 
-  void Start() {
+  void Awake() {
     GetComponent<PhysicsMover>().MoverController = this;
   }
 

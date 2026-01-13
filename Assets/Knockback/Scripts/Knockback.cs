@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// TODO: COuld remove direct reference to CharacterController and use Event
+// TODO: Could remove direct reference to CharacterController and use Event
 [DefaultExecutionOrder((int)ExecutionGroups.State)]
 public class Knockback : MonoBehaviour {
   static Vector3 Longer(Vector3 x, Vector3 y) =>
