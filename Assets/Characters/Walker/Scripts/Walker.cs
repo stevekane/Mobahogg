@@ -125,17 +125,6 @@ namespace Characters.Walker
       {
         CharacterController.Velocity.Set(Vector3.zero);
       }
-      /*
-      We have two capabilities.
-      Move and Jump.
-
-      We have one primary goal: reach our target
-
-      We construct an strategy for reaching the target that makes use of our capabilities and our knowledge
-      of the environment.
-
-      If there is no direct path to our target
-      */
       if (CanJump() && JumpValue() > 0)
       {
         Jump();
