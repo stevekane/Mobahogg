@@ -16,7 +16,7 @@ public class PropertyFieldBinder : PropertyField, IPropertyBinder {
   }
 }
 
-public class PolymorphicListElement<E> : VisualElement, IPropertyBinder
+public class PolymorphicListPropertyElement<E> : VisualElement, IPropertyBinder
 where
 E : VisualElement, IBindable, IPropertyBinder, new() {
   Button DeleteButton;
@@ -27,7 +27,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
 
   public E GetDetails => Details;
 
-  public PolymorphicListElement(Action<int> onDelete) {
+  public PolymorphicListPropertyElement(Action<int> onDelete) {
     OnDelete = onDelete;
     DetailsContainer = new();
     DetailsContainer.style.flexGrow = 1;
@@ -57,7 +57,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
   }
 }
 
-public class PolymorphicList<T, E> : VisualElement, IPropertyBinder where
+public class PolymorphicListProperty<T, E> : VisualElement, IPropertyBinder where
 E : VisualElement, IBindable, IPropertyBinder, new() {
   VisualElement ListContainer;
   GenericMenu TypeSelectionMenu;
@@ -67,7 +67,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
   public EventSource OnChange = new();
   public List<E> Elements = new();
 
-  public PolymorphicList() {
+  public PolymorphicListProperty() {
     ListContainer = new VisualElement { name = "ListItemsContainer" };
     Add(ListContainer);
     Button addButton = new Button(DisplayConcreteTypeMenu);
@@ -87,7 +87,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
     SerializedProperty itemsProperty = SerializedObject.FindProperty(PropertyPath);
     for (int i = 0; i < itemsProperty.arraySize; i++) {
       SerializedProperty property = itemsProperty.GetArrayElementAtIndex(i);
-      PolymorphicListElement<E> listElement = new PolymorphicListElement<E>(Delete);
+      PolymorphicListPropertyElement<E> listElement = new PolymorphicListPropertyElement<E>(Delete);
       listElement.BindProperty(property);
       Elements.Add(listElement.GetDetails);
       ListContainer.Add(listElement);
@@ -120,7 +120,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
     SerializedObject.ApplyModifiedPropertiesWithoutUndo();
 
     // Create and add a new list element.
-    PolymorphicListElement<E> listElement = new PolymorphicListElement<E>(Delete);
+    PolymorphicListPropertyElement<E> listElement = new PolymorphicListPropertyElement<E>(Delete);
     listElement.BindProperty(property);
     Elements.Add(listElement.GetDetails);
     ListContainer.Add(listElement);
@@ -138,7 +138,7 @@ E : VisualElement, IBindable, IPropertyBinder, new() {
     Elements.Clear();
     ListContainer.RemoveAt(index);
     for (int i = 0; i < ListContainer.childCount; i++) {
-      PolymorphicListElement<E> element = ListContainer[i] as PolymorphicListElement<E>;
+      PolymorphicListPropertyElement<E> element = ListContainer[i] as PolymorphicListPropertyElement<E>;
       SerializedProperty property = itemsProperty.GetArrayElementAtIndex(i);
       element.BindProperty(property);
       Elements.Add(element.GetDetails);

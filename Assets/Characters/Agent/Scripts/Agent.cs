@@ -1,89 +1,97 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[DefaultExecutionOrder(1)] // possibly puts it after navmeshagent though this may be irrelevant
 class Agent : MonoBehaviour
 {
-  [SerializeField] NavMeshAgent NavMeshAgent;
   [SerializeField] KCharacterController CharacterController;
   [SerializeField] float MoveSpeed = 6;
-  [SerializeField] float Acceleration = 3;
-  [SerializeField] float Deceleration = 12;
-  [SerializeField] float TurnSpeed = 90;
-
-  /*
-  Potentially useful APIs:
-
-  NavMeshAgent
-  .SamplePathPosition // look ahead
-  .Raycast // detect if breaks in navmesh along in some direction
-  .FindClosestEdge // seems to like... find a point near closest...edge? unsure
-  .steeringTarget // either next corner or next link enter / link exit
-  */
-
-  bool CanRun() => NavMeshAgent.isOnNavMesh && CharacterController.IsGrounded;
-  void Run(Vector3 direction, float speed)
-  {
-    CharacterController.DirectVelocity.Add(speed * direction);
-  }
+  [SerializeField] float MaxAcceleration = 3;
+  [SerializeField] float MaxTurnSpeed = 90;
+  NavMeshPath NavMeshPath;
+  Vector3[] Corners;
+  int CornerCount;
 
   void Awake()
   {
-    NavMeshAgent.updatePosition = false;
-    NavMeshAgent.updateRotation = false;
-    NavMeshAgent.updateUpAxis = false;
+    NavMeshPath = new();
+    Corners = new Vector3[16];
   }
 
-  [SerializeField] bool UseNavMeshAgent;
   void FixedUpdate()
   {
-    var dt = Time.fixedDeltaTime;
     var currentVelocity = (CharacterController.DirectVelocity.Current + CharacterController.Velocity.Current).XZ();
-    var currentSpeed = currentVelocity.magnitude;
-    NavMeshAgent.nextPosition = CharacterController.transform.position;
-    NavMeshAgent.destination =
+    Vector3? destination =
       SpawnManager.Active.Players.Count > 0
       ? SpawnManager.Active.Players[0].transform.position
-      : CharacterController.transform.position;
-    if (NavMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
+      : null;
+    if (destination.HasValue && Vector3.SqrMagnitude(destination.Value-transform.position) > 1)
     {
-      NavMeshAgent.ResetPath();
+      NavMesh.CalculatePath(transform.position, destination.Value, NavMesh.AllAreas, NavMeshPath);
+      CornerCount = NavMeshPath.GetCornersNonAlloc(Corners);
+      if (NavMeshPath.status == NavMeshPathStatus.PathComplete)
+      {
+        var dt = Time.fixedDeltaTime;
+        var desiredDirection = Corners[1]-Corners[0];
+        var velocity = NextVelocity(
+          currentVelocity,
+          desiredDirection,
+          MaxTurnSpeed * Mathf.Deg2Rad,
+          MaxAcceleration,
+          MoveSpeed,
+          dt).XZ();
+        CharacterController.DirectVelocity.Add(velocity);
+        if (velocity.sqrMagnitude > 0)
+        {
+          CharacterController.Rotation.Set(Quaternion.LookRotation(velocity.normalized));
+        }
+      }
     }
-    var desiredDirection = NavMeshAgent.steeringTarget;
-    var desiredVelocity = NavMeshAgent.desiredVelocity.XZ();
-    var desiredHeading = desiredVelocity.normalized;
-    var desiredSpeed = desiredVelocity.magnitude;
-    var nextHeading = CharacterController.transform.forward;
-    if (!Mathf.Approximately(desiredHeading.sqrMagnitude, 0))
+    else
     {
-      var currentRotation = CharacterController.transform.rotation;
-      var desiredRotation = Quaternion.LookRotation(desiredHeading);
-      var nextRotation = Quaternion.RotateTowards(currentRotation, desiredRotation, dt * TurnSpeed);
-      nextHeading = nextRotation * Vector3.forward;
-      CharacterController.Rotation.Set(nextRotation);
+      NavMeshPath.ClearCorners();
+      CornerCount = NavMeshPath.GetCornersNonAlloc(Corners);
     }
-    var acceleration = currentSpeed < desiredSpeed ? Acceleration : Deceleration;
-    var nextSpeed = Mathf.MoveTowards(currentSpeed, desiredSpeed, dt * acceleration);
     CharacterController.Acceleration.Add(Physics.gravity);
-    CharacterController.DirectVelocity.Add(nextSpeed * nextHeading);
+  }
+
+  Vector3 NextVelocity(
+    Vector3 velocity,
+    Vector3 desiredDir,      // must be normalized, y = 0
+    float maxTurnRate,       // radians per second
+    float maxAccel,          // units per second^2
+    float maxSpeed,          // units per second
+    float dt)
+  {
+    velocity.y = 0f;
+    desiredDir.y = 0f;
+    float speed = velocity.magnitude;
+    if (speed < 1e-3f)
+    {
+      Vector3 v = desiredDir * Mathf.Min(maxAccel * dt, maxSpeed);
+      return v;
+    }
+    Vector3 forward = velocity / speed;
+    float maxTurn = maxTurnRate * dt;
+    Vector3 newForward = Vector3.RotateTowards(forward, desiredDir, maxTurn, 0f);
+    float desiredSpeed = maxSpeed;
+    float newSpeed = Mathf.MoveTowards(speed, desiredSpeed, maxAccel * dt);
+    return newForward * newSpeed;
   }
 
   void OnDrawGizmos()
   {
-    if (NavMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
+    if (NavMeshPath == null)
+      return;
+    Gizmos.color = NavMeshPath.status switch
     {
-      Gizmos.DrawLineStrip(NavMeshAgent.path.corners, looped: false);
-      Gizmos.DrawSphere(NavMeshAgent.steeringTarget, 1f);
+      NavMeshPathStatus.PathComplete => Color.green,
+      NavMeshPathStatus.PathPartial => Color.yellow,
+      _ => Color.red
+    };
+    // Debug.Log($"Count: {CornerCount} | Status: {NavMeshPath.status}");
+    for (var i = 1; i < CornerCount; i++)
+    {
+      Gizmos.DrawLine(Corners[i], Corners[i-1]);
     }
-  }
-
-  void OnGUI()
-  {
-    GUILayout.BeginVertical("box");
-    GUILayout.Label("Agent Debug");
-    GUILayout.Label($"velocity: {NavMeshAgent.velocity}");
-    GUILayout.Label($"desiredVelocity: {NavMeshAgent.desiredVelocity}");
-    GUILayout.EndVertical();
   }
 }

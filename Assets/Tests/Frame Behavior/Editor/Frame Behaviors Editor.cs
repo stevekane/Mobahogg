@@ -10,7 +10,7 @@ public class FrameBehaviorsEditor : Editor {
   PropertyField PreviewPrefabField;
   FrameSlider FrameSlider;
   PropertyField EndFrameField;
-  PolymorphicList<FrameBehavior, FrameBehaviorRoot> FrameBehaviors;
+  PolymorphicListProperty<FrameBehavior, FrameBehaviorRoot> FrameBehaviors;
   int Frame;
   int EndFrame;
 
@@ -30,7 +30,7 @@ public class FrameBehaviorsEditor : Editor {
     FrameSlider.RegisterCallback<ChangeEvent<int>>(OnFrameChange);
     FrameSlider.Frame = Frame;
     FrameSlider.EndFrame = EndFrame;
-    FrameBehaviors = new PolymorphicList<FrameBehavior, FrameBehaviorRoot>();
+    FrameBehaviors = new PolymorphicListProperty<FrameBehavior, FrameBehaviorRoot>();
     FrameBehaviors.BindProperty(serializedObject.FindProperty("Behaviors"));
     FrameBehaviors.OnChange.Listen(OnListChange);
     PreviewScene = new FrameBehaviorsPreviewScene();
