@@ -19,7 +19,8 @@ public class JumpNeighborhood : INavigationNeighborhood
       Vector3 target = from + MaxJumpDistance * direction;
       bool onNavMesh = NavMesh.SamplePosition(target, out var hit, NAVMESH_SAMPLE_DISTANCE, NAVMESH_AREA_MASK);
       bool noDirectPath = NavMesh.Raycast(from, target, out var _, NAVMESH_AREA_MASK);
-      if (onNavMesh && noDirectPath)
+      bool raycastHit = Physics.Raycast(from, direction, maxDistance: MaxJumpDistance);
+      if (onNavMesh && noDirectPath && !raycastHit)
       {
         neighbors.Append(new(hit.position, MaxJumpDistance, Tag));
       }
