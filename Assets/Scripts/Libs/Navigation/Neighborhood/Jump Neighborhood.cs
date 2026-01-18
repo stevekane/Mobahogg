@@ -10,11 +10,10 @@ public class JumpNeighborhood : INavigationNeighborhood
   [field: SerializeField]
   public NavigationTag Tag { get; set; }
 
-  public int Neighbors(Vector3 from, Neighbor[] buffer, int offset)
+  public void AppendNeighbors(Vector3 from, AppendOnly<Neighbor> neighbors)
   {
     const float NAVMESH_SAMPLE_DISTANCE = 0.25f;
     const int NAVMESH_AREA_MASK = NavMesh.AllAreas;
-    int count = 0;
     foreach (var direction in Directions.Octal)
     {
       Vector3 target = from + MaxJumpDistance * direction;
@@ -22,10 +21,8 @@ public class JumpNeighborhood : INavigationNeighborhood
       bool noDirectPath = NavMesh.Raycast(from, target, out var _, NAVMESH_AREA_MASK);
       if (onNavMesh && noDirectPath)
       {
-        buffer[offset + count] = new Neighbor(hit.position, MaxJumpDistance, Tag);
-        count++;
+        neighbors.Append(new(hit.position, MaxJumpDistance, Tag));
       }
     }
-    return count;
   }
 }

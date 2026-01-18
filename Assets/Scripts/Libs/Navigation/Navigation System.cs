@@ -19,8 +19,8 @@ public readonly struct NavigationNode
 public readonly struct Neighbor
 {
   public readonly Vector3 Position;
-  public readonly float Cost;
   public readonly NavigationTag Tag;
+  public readonly float Cost;
 
   public Neighbor(Vector3 position, float cost, NavigationTag tag)
   {
@@ -32,8 +32,8 @@ public readonly struct Neighbor
 
 public static class NavigationSystem
 {
-  // Caller-provided neighbor expansion. Fill into buffer, return count.
-  public delegate int ExpandFunc(Vector3 from, Neighbor[] buffer);
+  // Main-thread only scratch buffer. Allocates only if capacity is exceeded.
+  static readonly List<Neighbor> NeighborScratch = new(capacity: 512);
 
   static bool TrySampleOnNavMesh(Vector3 p, out Vector3 onMesh)
   {
@@ -62,7 +62,8 @@ public static class NavigationSystem
     if (!TrySampleOnNavMesh(from, out var startPos)) return 0;
     if (!TrySampleOnNavMesh(to, out var goalPos)) return 0;
 
-    if ((startPos - goalPos).sqrMagnitude <= goalRadius * goalRadius)
+    float goalRad2 = goalRadius * goalRadius;
+    if ((startPos - goalPos).sqrMagnitude <= goalRad2)
     {
       nodes.Add(new NavigationNode(startPos, default));
       return 1;
@@ -72,7 +73,6 @@ public static class NavigationSystem
     var poolF = ArrayPool<float>.Shared;
     var poolI = ArrayPool<int>.Shared;
     var poolT = ArrayPool<NavigationTag>.Shared;
-    var poolN = ArrayPool<Neighbor>.Shared;
 
     Vector3[] pos = poolV3.Rent(maxNodes);
     float[] g = poolF.Rent(maxNodes);
@@ -80,19 +80,14 @@ public static class NavigationSystem
     int[] parent = poolI.Rent(maxNodes);
     NavigationTag[] arriveTag = poolT.Rent(maxNodes);
 
-    // Heap for open set, stores node indices
     int[] heap = poolI.Rent(maxNodes);
     int heapCount = 0;
 
-    // Hash table mapping quantized key -> node index+1 (0 means empty)
-    // Keep size as power-of-two-ish, at least 2x nodes.
     int hashSize = 1;
     while (hashSize < maxNodes * 2) hashSize <<= 1;
     int[] hashVals = poolI.Rent(hashSize);
-    int[] state = poolI.Rent(maxNodes); // 0=unseen,1=open,2=closed
 
-    // neighbor buffer: typically small (8 for walk)
-    Neighbor[] neigh = poolN.Rent(64);
+    int[] state = poolI.Rent(maxNodes); // 0=unseen,1=open,2=closed
 
     try
     {
@@ -102,45 +97,48 @@ public static class NavigationSystem
       int nodeCount = 0;
 
       int startIndex = AddOrGetNode(startPos, default, parentIndex: -1, gScore: 0f);
+      if (startIndex < 0) return 0;
+
       Push(startIndex);
 
       int iters = 0;
       while (heapCount > 0 && iters++ < maxIterations)
       {
         int current = PopMin();
-        if (state[current] == 2) continue; // stale heap entry
+
+        if (state[current] == 2)
+          continue; // stale heap entry already processed
+
         state[current] = 2;
 
         Vector3 cp = pos[current];
-        if ((cp - goalPos).sqrMagnitude <= goalRadius * goalRadius)
-        {
-          // Reconstruct into `nodes`
+        if ((cp - goalPos).sqrMagnitude <= goalRad2)
           return Reconstruct(current, nodes);
-        }
 
-        int nCount = 0;
-        foreach (var neighborhood in neighbors)
+        NeighborScratch.Clear();
+
+        var appendOnly = new AppendOnly<Neighbor>(NeighborScratch);
+        for (int n = 0; n < neighbors.Count; n++)
+          neighbors[n].AppendNeighbors(cp, appendOnly);
+
+        for (int i = 0; i < NeighborScratch.Count; i++)
         {
-          nCount += neighborhood.Neighbors(cp, neigh, nCount);
-        }
+          var nb = NeighborScratch[i];
 
-        for (int i = 0; i < nCount; i++)
-        {
-          var nb = neigh[i];
-
-          // Snap neighbor to navmesh; if it can't be sampled, ignore
           if (!TrySampleOnNavMesh(nb.Position, out var np))
             continue;
 
           float tentativeG = g[current] + nb.Cost;
 
           int nbIndex = AddOrGetNode(np, nb.Tag, current, tentativeG);
-
-          // If we didn't improve g-score, ignore
           if (nbIndex < 0)
             continue;
 
-          // Add/update in open
+          // If we improved a node that was previously closed, re-open it.
+          if (state[nbIndex] == 2)
+            state[nbIndex] = 1;
+
+          // Always push on improvement (duplicates allowed; stale entries are skipped).
           if (state[nbIndex] != 2)
           {
             state[nbIndex] = 1;
@@ -155,8 +153,6 @@ public static class NavigationSystem
 
       int AddOrGetNode(Vector3 p, NavigationTag tag, int parentIndex, float gScore)
       {
-        if (nodeCount >= maxNodes) return -1;
-
         var key = QuantKey(p, quantize);
         int slot = FindSlot(key, hashVals, hashSize, pos, quantize);
 
@@ -175,7 +171,8 @@ public static class NavigationSystem
           return -1; // no improvement
         }
 
-        // New node
+        if (nodeCount >= maxNodes) return -1;
+
         int idx = nodeCount++;
         pos[idx] = p;
         g[idx] = gScore;
@@ -189,7 +186,6 @@ public static class NavigationSystem
 
       float Heuristic(Vector3 a, Vector3 b)
       {
-        // Simple: planar distance (time-optimal later)
         var d = b - a;
         d.y = 0f;
         return d.magnitude;
@@ -197,20 +193,17 @@ public static class NavigationSystem
 
       int Reconstruct(int endIndex, List<NavigationNode> outNodes)
       {
-        // Build reversed, then reverse in-place by emitting into list and reversing.
-        int count = 0;
         int cur = endIndex;
+        int count = 0;
+
         while (cur >= 0)
         {
-          // Tag means "action used to arrive here from parent"
           outNodes.Add(new NavigationNode(pos[cur], arriveTag[cur]));
           cur = parent[cur];
-          count++;
-          if (count > maxNodes) break;
+          if (++count > maxNodes) break;
         }
-        outNodes.Reverse();
 
-        // Start node has no "arrive action". Keep default tag; caller can ignore node[0].Tag.
+        outNodes.Reverse();
         return outNodes.Count;
       }
 
@@ -220,6 +213,7 @@ public static class NavigationSystem
       {
         int i = heapCount++;
         heap[i] = node;
+
         while (i > 0)
         {
           int p = (i - 1) >> 1;
@@ -233,21 +227,26 @@ public static class NavigationSystem
       {
         int root = heap[0];
         heapCount--;
+
         if (heapCount > 0)
         {
           heap[0] = heap[heapCount];
+
           int i = 0;
           while (true)
           {
             int l = i * 2 + 1;
-            int r = l + 1;
             if (l >= heapCount) break;
+
+            int r = l + 1;
             int s = (r < heapCount && f[heap[r]] < f[heap[l]]) ? r : l;
+
             if (f[heap[i]] <= f[heap[s]]) break;
             (heap[i], heap[s]) = (heap[s], heap[i]);
             i = s;
           }
         }
+
         return root;
       }
 
@@ -255,7 +254,6 @@ public static class NavigationSystem
 
       static (int x, int y, int z) QuantKey(Vector3 p, float q)
       {
-        // Use rounding; you can also use floor if you prefer.
         return (
           Mathf.RoundToInt(p.x / q),
           Mathf.RoundToInt(p.y / q),
@@ -267,21 +265,20 @@ public static class NavigationSystem
         (int x, int y, int z) key,
         int[] table,
         int tableSize,
-        Vector3[] pos,
+        Vector3[] posArr,
         float q)
       {
         uint h = Hash(key);
         int mask = tableSize - 1;
         int slot = (int)(h & (uint)mask);
 
-        // open addressing
         while (true)
         {
           int v = table[slot];
           if (v == 0) return slot;
 
           int idx = v - 1;
-          var k2 = QuantKey(pos[idx], q);
+          var k2 = QuantKey(posArr[idx], q);
           if (k2 == key) return slot;
 
           slot = (slot + 1) & mask;
@@ -290,7 +287,6 @@ public static class NavigationSystem
 
       static uint Hash((int x, int y, int z) k)
       {
-        // simple mix
         unchecked
         {
           uint h = 2166136261u;
@@ -311,7 +307,6 @@ public static class NavigationSystem
       poolI.Return(heap, clearArray: false);
       poolI.Return(hashVals, clearArray: false);
       poolI.Return(state, clearArray: false);
-      poolN.Return(neigh, clearArray: false);
     }
   }
 }
