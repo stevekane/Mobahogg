@@ -3209,7 +3209,7 @@ MonoBehaviour:
     - rid: 6955638526251368518
       type: {class: JumpNeighborhood, ns: , asm: Assembly-CSharp}
       data:
-        MaxJumpDistance: 10
+        MaxJumpDistance: 5
         <Tag>k__BackingField: {fileID: 11400000, guid: 81f541c07677cfc46895078f0a381c10, type: 2}
     - rid: 6955638526251368519
       type: {class: WalkNeighborhood, ns: , asm: Assembly-CSharp}

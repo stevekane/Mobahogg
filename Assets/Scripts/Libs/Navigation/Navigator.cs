@@ -12,7 +12,6 @@ public class Navigator : MonoBehaviour
   readonly List<NavigationNode> Nodes = new(capacity: 64);
 
   /*
-  TODO: change the type of the NeighborBuffer from a naked array to an append-only list facade
   TODO: think about sane options for supporting sampling larger regions ( say for example by radius )
         this would allow jumping off the diagonals / cardinals which may allow that system to find
         better paths. This problem is less relevant for walking nodes but for longer-range scans
@@ -22,7 +21,7 @@ public class Navigator : MonoBehaviour
         provides
   TODO: add ballistic collision-checking to jumping to eliminate candidate nodes and capture the
         idea that jumping through blockers makes no sense
-  TODO: consider if a hextile discretization would more natuirally suport radial-like queries
+  TODO: consider if a hextile discretization would more naturally suport radial-like queries
   */
 
   void OnDrawGizmos()
