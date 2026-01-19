@@ -8,8 +8,10 @@ public class Navigator : MonoBehaviour
   [SerializeField] Transform Target;
   [SerializeField] List<NavigationTag> StringPullTags;
   [SerializeField] PolymorphicList<INavigationNeighborhood> NavigationNeighborhoods;
+  [SerializeField] bool DoNavigation = true;
+  [SerializeField] bool Debug;
 
-  readonly List<NavigationNode> Nodes = new(capacity: 64);
+  readonly List<NavigationNode> Nodes = new(capacity: 128);
 
   /*
   TODO: think about sane options for supporting sampling larger regions ( say for example by radius )
@@ -19,13 +21,13 @@ public class Navigator : MonoBehaviour
   TODO: consider if raw access to the navmesh should be a thing. Maybe systems should interact with
         the NavigationSystem allowing more abstractions / optimizations than raw acces to the NavMesh
         provides
-  TODO: add ballistic collision-checking to jumping to eliminate candidate nodes and capture the
-        idea that jumping through blockers makes no sense
   TODO: consider if a hextile discretization would more naturally suport radial-like queries
   */
 
-  void OnDrawGizmos()
+  void FixedUpdate()
   {
+    if (!DoNavigation)
+      return;
     var from = transform.position;
     var to = Target ? Target.transform.position : Vector3.zero;
     NavigationSystem.CalculatePath(
@@ -35,8 +37,19 @@ public class Navigator : MonoBehaviour
       NavigationNeighborhoods.AsList(),
       goalRadius: 1,
       quantize: 1);
-    PathSmoothing.StringPull(Nodes, n => StringPullTags.Contains(n.Tag));
+    PathSmoothing.StringPull(Nodes, StringPullTags);
+  }
+
+  void OnDrawGizmos()
+  {
+    if (!Debug)
+      return;
     Gizmos.color = Color.green;
-    Gizmos.DrawLineStrip(Nodes.Select(n => n.Position).ToArray(), looped: false);
+    for (var i = 1; i < Nodes.Count; i++)
+    {
+      var p0 = Nodes[i-1].Position;
+      var p1 = Nodes[i+0].Position;
+      Gizmos.DrawLine(p0, p1);
+    }
   }
 }

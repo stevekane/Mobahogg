@@ -69,31 +69,6 @@ public static class NavigationSystem
       Mathf.FloorToInt(p.z / q));
   }
 
-  static void EnsureCapacity<T>(List<T> list, int cap)
-  {
-    if (list.Capacity < cap) list.Capacity = cap;
-  }
-
-  static void ResetSearch(int maxNodesHint)
-  {
-    Open.Clear();
-    IndexByCell.Clear();
-
-    Positions.Clear();
-    G.Clear();
-    F.Clear();
-    Parent.Clear();
-    ArriveTag.Clear();
-    State.Clear();
-
-    EnsureCapacity(Positions, maxNodesHint);
-    EnsureCapacity(G, maxNodesHint);
-    EnsureCapacity(F, maxNodesHint);
-    EnsureCapacity(Parent, maxNodesHint);
-    EnsureCapacity(ArriveTag, maxNodesHint);
-    EnsureCapacity(State, maxNodesHint);
-  }
-
   static int AddNode(Vector3 p, NavigationTag tag, int parentIndex, float gScore, Vector3 goalPos)
   {
     int idx = Positions.Count;
@@ -145,7 +120,6 @@ public static class NavigationSystem
     List<INavigationNeighborhood> neighborhoods,
     float goalRadius = 1f,
     float quantize = 1f,
-    int maxNodes = 4096,
     int maxIterations = 20000)
   {
     nodes.Clear();
@@ -161,7 +135,14 @@ public static class NavigationSystem
       return 1;
     }
 
-    ResetSearch(maxNodes);
+    Open.Clear();
+    IndexByCell.Clear();
+    Positions.Clear();
+    G.Clear();
+    F.Clear();
+    Parent.Clear();
+    ArriveTag.Clear();
+    State.Clear();
 
     int startIndex = AddNode(startPos, default, parentIndex: -1, gScore: 0f, goalPos);
     IndexByCell[QuantKey(startPos, quantize)] = startIndex;
@@ -206,9 +187,6 @@ public static class NavigationSystem
         }
         else
         {
-          if (Positions.Count >= maxNodes)
-            continue;
-
           int nextIndex = AddNode(np, nb.Tag, current, tentativeG, goalPos);
           IndexByCell[key] = nextIndex;
           Open.Push(nextIndex, F[nextIndex]);

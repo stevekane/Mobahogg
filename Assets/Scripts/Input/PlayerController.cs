@@ -1,11 +1,23 @@
-using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder((int)ExecutionGroups.Input+1)]
 public class PlayerController : MonoBehaviour {
   public int PortIndex;
 
-  public Player Player => SpawnManager.Active.Players.FirstOrDefault(p => p.PortIndex == PortIndex);
+  public Player Player {
+    get {
+      var count = SpawnManager.Active.Players.Count;
+      for (var i = 0; i < count; i++)
+      {
+        var player = SpawnManager.Active.Players[i];
+        if (player.PortIndex == PortIndex)
+        {
+          return player;
+        }
+      }
+      return null;
+    }
+  }
 
   void FixedUpdate() {
     var player = Player;
