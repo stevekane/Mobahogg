@@ -100,9 +100,9 @@ public sealed class NavGraphVisualizer : MonoBehaviour
       return;
 
     _cart = NavGraphGenerators.BuildCartesianFromNavMesh(Origin, CellSize, HalfWidth, HalfHeight, AreaMask);
-    _hex = NavGraphGenerators.BuildHexFromNavMesh(Origin, CellSize, HalfWidth, HalfHeight, AreaMask);
+    //_hex = NavGraphGenerators.BuildHexFromNavMesh(Origin, CellSize, HalfWidth, HalfHeight, AreaMask);
     NavGraph.Set(_cart, _hex, _cart);
-    NavGraph.RebuildJumpField(MaxJumpDistance, JumpDirections.Sixteen);
+    NavGraph.RebuildJumpField(MaxJumpDistance, JumpDirs);
     INavGrid src = JumpLinkSource == ActiveNavGrid.Cartesian ? (INavGrid)_cart : (INavGrid)_hex;
     _jumpLinks = (src != null)
       ? JumpLinkField.Build(src, MaxJumpDistance, JumpDirs)

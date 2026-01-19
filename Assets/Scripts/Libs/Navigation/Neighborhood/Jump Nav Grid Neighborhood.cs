@@ -6,10 +6,10 @@ public sealed class JumpNavGridNeighborhood : INavigationNeighborhood
   [field: SerializeField]
   public NavigationTag Tag { get; set; }
 
-  [Min(1f)]
+  [Min(0f)]
   public float MinJumpDistance = 0.5f;
 
-  [Min(1f)]
+  [Min(0f)]
   public float MaxJumpDistance = 10f;
 
   [Min(0f)]
@@ -30,22 +30,29 @@ public sealed class JumpNavGridNeighborhood : INavigationNeighborhood
     if (!(grid.TryGetTag(a, b, out var t) && t == NavCellTag.Walk))
       return;
 
-    if (!field.TryGetCellIndex(a, b, out int idx))
+    if (!field.TryGetCellIndex(a, b, out int cellIndex))
       return;
 
     float minD = Mathf.Max(0f, MinJumpDistance);
     float maxD = Mathf.Max(minD, MaxJumpDistance);
     maxD = Mathf.Min(maxD, field.MaxJumpDistance);
-    field.ForEachFromIndex(idx, e =>
+
+    for (int ei = field.FirstEdgeIndex(cellIndex); ei != -1; ei = field.NextEdgeIndex(ei))
     {
+      var e = field.GetEdge(ei);
+
       float d = e.Distance;
-      if (d < minD || d > maxD) return true;
+      if (d < minD || d > maxD)
+        continue;
+
+      // landing must still be walk (in case tags change dynamically)
       if (!(grid.TryGetTag(e.ToA, e.ToB, out var lt) && lt == NavCellTag.Walk))
-        return true;
+        continue;
+
       Vector3 landing = grid.CellCenterWorld(e.ToA, e.ToB);
       float cost = d * CostPerUnitDistance + ExtraCost;
+
       neighbors.Append(new Neighbor(landing, cost, Tag));
-      return true;
-    });
+    }
   }
 }

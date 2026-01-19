@@ -26,10 +26,10 @@ public enum JumpDirections
 {
   Octal = 8,
   Dodec = 12,
-  Sixteen = 16,
+  enDodec = 126
 }
 
-public sealed class JumpLinkField
+public sealed partial class JumpLinkField
 {
   public readonly float MaxJumpDistance;
   public readonly JumpDirections Directions;
